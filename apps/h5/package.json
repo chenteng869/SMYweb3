@@ -1,0 +1,1 @@
+{"name": "wopc-h5", "version": "1.0.0", "description": "WOPC创业家 · 萨摩亚SPV 移动端 H5 应用", "type": "module", "scripts": {"dev": "vite --port 5187 --host", "build": "vite build", "preview": "vite preview"}, "dependencies": {"vue": "^3.4.21"}, "devDependencies": {"@vitejs/plugin-vue": "^5.0.4", "typescript": "^5.4.5", "vite": "^5.2.8"}}

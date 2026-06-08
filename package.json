@@ -1,0 +1,48 @@
+{
+  "name": "smy-web3-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MSB-EXCHANGE Web3 生态系统管理后台 Monorepo - 包含 h5-app / admin-web / admin-web-legacy / api 四个子项目",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:h5": "npm run dev --workspace=h5-app",
+    "dev:admin": "npm run dev --workspace=admin-web",
+    "dev:admin-legacy": "npm run dev --workspace=admin-web-legacy",
+    "dev:api": "npm run start:dev --workspace=api",
+    "dev:all": "concurrently -k -n api,admin-web,admin-legacy,h5 -c cyan,green,yellow,magenta \"cd apps/api && npm run start:dev\" \"cd apps/admin-web && npm run dev\" \"cd apps/admin-web-legacy && npm run dev\" \"cd apps/h5-app && npm run dev\"",
+    "build:h5": "npm run build --workspace=h5-app",
+    "build:admin": "npm run build --workspace=admin-web",
+    "build:admin-legacy": "npm run build --workspace=admin-web-legacy",
+    "build:api": "npm run build --workspace=api",
+    "build:all": "node scripts/build-all.js",
+    "lint:h5": "npm run lint --workspace=h5-app",
+    "lint:admin": "npm run lint --workspace=admin-web",
+    "lint:admin-legacy": "npm run lint --workspace=admin-web-legacy",
+    "lint:api": "npm run lint --workspace=api",
+    "lint:all": "npm run lint:h5 && npm run lint:admin && npm run lint:admin-legacy && npm run lint:api",
+    "test:api": "npm run test --workspace=api",
+    "test:e2e:api": "npm run test:e2e --workspace=api",
+    "clean": "node scripts/clean.js",
+    "install:all": "npm install --workspaces --include-workspace-root"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "web3",
+    "msb-exchange",
+    "monorepo",
+    "next.js",
+    "nestjs",
+    "vite",
+    "react"
+  ],
+  "author": "MSB-EXCHANGE Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}

@@ -1,0 +1,1960 @@
+// WOPC 创业家 管理后台 - Prisma Schema
+// 覆盖 H5 全部业务模块:User / DLC / Company / Bank / Payment / Tax / Legal / AI / Video / Media / Document / Notification / DID / Order
+// + OpenClaw 智能体 / n8n 工作流 / AI 大模型集成 / BPM 工作流引擎
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// 1. 管理员与权限 (Admin & Auth)
+// ============================================================
+model AdminUser {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  email         String    @unique
+  password      String
+  name          String
+  avatar        String?
+  roleId        Int
+  role          AdminRole @relation(fields: [roleId], references: [id])
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  auditLogs     AuditLog[]
+}
+
+model AdminRole {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  code        String     @unique
+  description String?
+  permissions String     // JSON: ["*"] or ["users:read", ...]
+  isSystem    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  users       AdminUser[]
+}
+
+model AuditLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int?
+  user       AdminUser? @relation(fields: [userId], references: [id])
+  action     String    // "login" / "create_user" / "update_company" / ...
+  module     String    // "auth" / "users" / "companies" / ...
+  resource   String?   // 资源 ID
+  method     String?   // GET/POST/PUT/DELETE
+  path       String?
+  ip         String?
+  userAgent  String?
+  status     String    @default("success") // "success" / "failed"
+  detail     String?   // JSON 详情
+  createdAt  DateTime  @default(now())
+}
+
+// ============================================================
+// 2. H5 用户 (User)
+// ============================================================
+model User {
+  id              Int       @id @default(autoincrement())
+  openId          String    @unique
+  unionId         String?
+  phone           String?   @unique
+  email           String?   @unique
+  name            String
+  avatar          String?
+  dlcLevel        Int       @default(1)
+  dvcBalance      Float     @default(0)
+  usdtBalance     Float     @default(0)
+  kycStatus       String    @default("unverified") // unverified/pending/verified/rejected
+  kycName         String?
+  kycIdNo         String?
+  kycCountry      String?
+  kycSubmittedAt  DateTime?
+  kycVerifiedAt   DateTime?
+  isActive        Boolean   @default(true)
+  isBanned        Boolean   @default(false)
+  bannedReason    String?
+  inviteCode      String?   @unique
+  invitedBy       Int?
+  inviter         User?     @relation("UserInvites", fields: [invitedBy], references: [id])
+  invitees        User[]    @relation("UserInvites")
+  lastActiveAt    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  companies       Company[]
+  bankAccounts    BankAccount[]
+  paymentTxns     PaymentTransaction[]
+  orders          Order[]
+  dvcTransactions DvcTransaction[]
+  didIdentities   DidIdentity[]
+  businessCards   BusinessCard[]
+  documents       Document[]
+  videoComments   VideoComment[]
+  mediaPosts      MediaPost[]
+  aiMessages      AiMessage[]
+  aiTodos         AiTodo[]
+  contracts       Contract[]
+  notifications   Notification[]
+}
+
+// ============================================================
+// 3. DLC 等级与积分 (DLC Level & DVC)
+// ============================================================
+model DlcLevel {
+  id             Int       @id @default(autoincrement())
+  level          Int       @unique
+  name           String
+  color          String
+  minDvc         Float
+  maxDvc         Float
+  benefits       String    // JSON array
+  commissionRate Float
+  sortOrder      Int       @default(0)
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model DvcTransaction {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  type        String    // earn/spend/reward/convert
+  amount      Float
+  balance     Float
+  description String
+  relatedType String?   // order / reward / staking
+  relatedId   Int?
+  status      String    @default("completed")
+  createdAt   DateTime  @default(now())
+}
+
+model DvsfPool {
+  id           Int       @id @default(autoincrement())
+  name         String
+  totalAmount  Float     @default(0)
+  distributed  Float     @default(0)
+  period       String    // 2026Q1 / 2026-06
+  status       String    @default("active") // active/closed
+  distributeAt DateTime?
+  description  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  records      DvsfRecord[]
+}
+
+model DvsfRecord {
+  id        Int       @id @default(autoincrement())
+  poolId    Int
+  pool      DvsfPool  @relation(fields: [poolId], references: [id])
+  userId    Int
+  level     Int
+  amount    Float
+  txHash    String?
+  status    String    @default("pending") // pending/distributed/failed
+  createdAt DateTime  @default(now())
+}
+
+// ============================================================
+// 4. 公司管理 (Company)
+// ============================================================
+model Company {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  user                User      @relation(fields: [userId], references: [id])
+  name                String
+  type                String    // samoa_spv/hong_kong/singapore/bvi/cayman/delaware/seychelles
+  jurisdiction        String
+  registrationNumber  String?   @unique
+  incorporationDate   DateTime?
+  status              String    @default("pending") // active/pending/suspended/dissolved
+  complianceStatus    String    @default("good") // good/warning/overdue/critical
+  annualReturnDue     DateTime?
+  registeredAddress   String?
+  businessScope       String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  directors    Director[]
+  shareholders Shareholder[]
+  documents    CompanyDocument[]
+  bankAccounts BankAccount[]
+  orders       Order[]
+}
+
+model Director {
+  id            Int      @id @default(autoincrement())
+  companyId     Int
+  company       Company  @relation(fields: [companyId], references: [id])
+  name          String
+  nationality   String
+  idType        String?  // passport/id_card
+  idNumber      String?
+  appointedDate DateTime
+  resignedDate  DateTime?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+}
+
+model Shareholder {
+  id         Int      @id @default(autoincrement())
+  companyId  Int
+  company    Company  @relation(fields: [companyId], references: [id])
+  name       String
+  type       String   // individual/corporate
+  shares     Int
+  percentage Float
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model CompanyDocument {
+  id         Int       @id @default(autoincrement())
+  companyId  Int
+  company    Company   @relation(fields: [companyId], references: [id])
+  name       String
+  type       String    // certificate/contract/report
+  fileUrl    String
+  status     String    @default("uploaded") // uploaded/pending/expired
+  uploadDate DateTime  @default(now())
+  expiryDate DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+// ============================================================
+// 5. 银行账户 (Bank Account)
+// ============================================================
+model BankAccount {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  companyId     Int?
+  company       Company?  @relation(fields: [companyId], references: [id])
+  bankName      String
+  accountNumber String    @unique
+  accountName   String
+  currency      String
+  swiftCode     String?
+  iban          String?
+  bankAddress   String?
+  status        String    @default("pending") // active/pending/closed/rejected
+  purpose       String?   // 收款/付款/薪资
+  openedAt      DateTime?
+  closedAt      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ============================================================
+// 6. 支付管理 (Payment)
+// ============================================================
+model PaymentChannel {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  type               String    // card/bank_transfer/crypto/ewallet/local
+  icon               String?
+  description        String?
+  currencies         String    // JSON array
+  feeRate            Float     @default(0)
+  minAmount          Float     @default(0)
+  maxAmount          Float     @default(0)
+  processingTime     String?
+  settlementTime     String?
+  supportedCountries String    // JSON array
+  isActive           Boolean   @default(true)
+  sortOrder          Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  transactions       PaymentTransaction[]
+}
+
+model PaymentTransaction {
+  id            Int             @id @default(autoincrement())
+  userId        Int?
+  user          User?           @relation(fields: [userId], references: [id])
+  channelId     Int
+  channel       PaymentChannel  @relation(fields: [channelId], references: [id])
+  channelName   String
+  type          String          // incoming/outgoing
+  amount        Float
+  currency      String
+  fee           Float           @default(0)
+  netAmount     Float
+  status        String          @default("pending") // completed/pending/processing/failed/refunded
+  counterparty  String?
+  description   String?
+  reference     String?         @unique
+  metadata      String?         // JSON
+  completedAt   DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model ExchangeRate {
+  id        Int      @id @default(autoincrement())
+  from      String
+  to        String
+  rate      Float
+  change24h Float    @default(0)
+  source    String?
+  timestamp DateTime @default(now())
+
+  @@unique([from, to])
+}
+
+// ============================================================
+// 7. 税务管理 (Tax)
+// ============================================================
+model TaxRate {
+  id                     Int      @id @default(autoincrement())
+  country                String
+  countryCode            String
+  structureType          String   // samoa_spv/hong_kong/...
+  corporateTax           Float
+  vatGst                 Float
+  withholdingTax         Float
+  capitalGainsTax        Float
+  doubleTaxationTreaties String   // JSON array
+  notes                  String?
+  effectiveDate          DateTime
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([countryCode, structureType])
+}
+
+// ============================================================
+// 8. 法务合规 (Legal)
+// ============================================================
+model LegalCompliance {
+  id          Int      @id @default(autoincrement())
+  country     String
+  countryCode String
+  category    String   // KYC / AML / Tax / Data / Labor
+  requirement String
+  description String
+  penalty     String?
+  status      String   @default("required") // required/recommended/optional
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contract {
+  id          Int       @id @default(autoincrement())
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id])
+  name        String
+  type        String    // service / employment / nda / share
+  parties     String    // JSON array
+  content     String?
+  fileUrl     String?
+  status      String    @default("draft") // draft/reviewing/signed/expired
+  aiGenerated Boolean   @default(false)
+  createdDate DateTime  @default(now())
+  signedDate  DateTime?
+  expiryDate  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================================
+// 9. AI 大脑 (AI Agents)
+// ============================================================
+model AiAgent {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  role         String   // 财务顾问/法务顾问/...
+  description  String
+  icon         String?
+  color        String   @default("#3B82F6")
+  capabilities String   // JSON array
+  systemPrompt String
+  modelName    String   @default("gpt-4")
+  temperature  Float    @default(0.7)
+  status       String   @default("active") // active/idle/busy/offline
+  messageCount Int      @default(0)
+  sortOrder    Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  messages AiMessage[]
+  todos    AiTodo[]
+}
+
+model AiMessage {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  agentId   Int
+  agent     AiAgent  @relation(fields: [agentId], references: [id])
+  agentName String
+  role      String   // user/agent/system
+  content   String
+  tokens    Int      @default(0)
+  rating    Int?     // 1-5
+  createdAt DateTime @default(now())
+}
+
+model AiTodo {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  agentId     Int
+  agent       AiAgent   @relation(fields: [agentId], references: [id])
+  agentName   String
+  title       String
+  description String?
+  priority    String    @default("medium") // high/medium/low
+  status      String    @default("pending") // pending/in_progress/completed
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AiKnowledge {
+  id        Int      @id @default(autoincrement())
+  title     String
+  category  String   // tax/legal/payment/company/finance
+  content   String
+  source    String?
+  tags      String   // JSON array
+  embedding String?  // JSON
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+// 10. 视频中心 (Video)
+// ============================================================
+model Video {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  thumbnail   String?
+  videoUrl    String
+  duration    Int      @default(0) // 秒
+  category    String
+  tags        String   // JSON array
+  author      String
+  authorId    Int?
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  shares      Int      @default(0)
+  status      String   @default("published") // draft/published/removed
+  isFeatured  Boolean  @default(false)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  comments VideoComment[]
+}
+
+model VideoComment {
+  id        Int      @id @default(autoincrement())
+  videoId   Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userName  String
+  userAvatar String?
+  content   String
+  likes     Int      @default(0)
+  parentId  Int?
+  isHidden  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ============================================================
+// 11. 自媒体 (Media)
+// ============================================================
+model MediaPost {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  title       String
+  content     String
+  platform    String    // wechat/weibo/tiktok/xiaohongshu/twitter/linkedin
+  status      String    @default("draft") // draft/scheduled/published/failed
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  impressions Int       @default(0)
+  clicks      Int       @default(0)
+  likes       Int       @default(0)
+  shares      Int       @default(0)
+  comments    Int       @default(0)
+  aiGenerated Boolean   @default(false)
+  imageUrls   String?   // JSON array
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================================
+// 12. 文档中心 (Document)
+// ============================================================
+model Document {
+  id         Int       @id @default(autoincrement())
+  userId     Int?
+  user       User?     @relation(fields: [userId], references: [id])
+  name       String
+  type       String    // passport/license/contract/report/invoice
+  category   String    // KYC/公司/合同/...
+  fileUrl    String
+  fileSize   Int       @default(0) // bytes
+  mimeType   String?
+  status     String    @default("uploaded") // uploaded/pending/expired
+  expiryDate DateTime?
+  uploadedAt DateTime  @default(now())
+  createdAt  DateTime  @default(now())
+}
+
+// ============================================================
+// 13. DID 数字身份 (DID Identity)
+// ============================================================
+model DidIdentity {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @unique
+  user        User      @relation(fields: [userId], references: [id])
+  did         String    @unique // did:wopc:xxxx
+  publicKey   String
+  blockchain  String    @default("wopc-chain")
+  status      String    @default("active") // active/revoked
+  issuedAt    DateTime  @default(now())
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================================
+// 14. AI 商业名片 (Business Card)
+// ============================================================
+model BusinessCard {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  name       String
+  title      String
+  company    String?
+  phone      String?
+  email      String?
+  website    String?
+  avatar     String?
+  qrCode     String?
+  theme      String   @default("default")
+  viewCount  Int      @default(0)
+  isPublic   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+// ============================================================
+// 15. 通知 (Notification)
+// ============================================================
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      String   @default("info") // info/success/warning/error
+  read      Boolean  @default(false)
+  actionUrl String?
+  createdAt DateTime @default(now())
+}
+
+// ============================================================
+// 16. 订单/工单 (Order)
+// ============================================================
+model Order {
+  id          Int       @id @default(autoincrement())
+  orderNo     String    @unique
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  companyId   Int?
+  company     Company?  @relation(fields: [companyId], references: [id])
+  type        String    // company_registration/bank_account/payment_setup/compliance/tax_filing
+  title       String
+  amount      Float     @default(0)
+  currency    String    @default("USD")
+  status      String    @default("new") // new/processing/reviewing/completed/cancelled
+  assignedTo  String?
+  progress    Int       @default(0) // 0-100
+  notes       String?
+  attachments String?   // JSON array
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+}
+
+// ============================================================
+// 17. 系统配置 (System Config)
+// ============================================================
+model SystemConfig {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  group     String   @default("default") // general/security/notification/feature
+  label     String?
+  type      String   @default("string") // string/number/boolean/json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+// 18. OpenClaw 智能体 (4 models)
+// ============================================================
+model OpenClawAgent {
+  id            Int       @id @default(autoincrement())
+  name          String
+  type          String    // chatbot/rpa_agent/data_analyst/code_assistant/document_processor
+  description   String?
+  icon          String?
+  version       String    @default("1.0.0")
+  config        String    // JSON: 完整智能体配置(工具链/prompt模板/记忆设置)
+  tools         String    // JSON array: ["web_search","code_runner","file_reader",...]
+  memoryType    String    @default("short_term") // short_term/long_term/hybrid
+  status        String    @default("draft") // draft/testing/active/archived
+  runCount      Int       @default(0)
+  successRate   Float     @default(0)
+  avgLatencyMs  Int       @default(0)
+  createdBy     String?
+  tags          String?   // JSON array
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  fineTunes     OpenClawFineTune[]
+  monitorLogs   OpenClawMonitorLog[]
+}
+
+model OpenClawMarketplaceItem {
+  id            Int       @id @default(autoincrement())
+  name          String
+  category      String    // productivity/customer_service/data_analysis/content_creation/security
+  description   String
+  icon          String?
+  version       String
+  author        String
+  rating        Float     @default(0)
+  downloadCount Int       @default(0)
+  price         Float     @default(0) // 0 = 免费
+  currency      String    @default("USD")
+  config        String    // JSON: 智能体配置模板
+  screenshots   String?   // JSON array URLs
+  features      String?   // JSON array
+  requirements  String?   // JSON: 依赖/API keys needed
+  status        String    @default("published") // published/unlisted/removed
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model OpenClawFineTune {
+  id            Int       @id @default(autoincrement())
+  agentId       Int
+  agent         OpenClawAgent @relation(fields: [agentId], references: [id])
+  name          String
+  baseModel     String    // gpt-4o/claude-3.5/qwen2.5/deepseek-v3
+  datasetName   String
+  datasetSize   Int       @default(0)
+  epochs        Int       @default(3)
+  learningRate  Float     @default(0.0001)
+  batchSize     Int       @default(8)
+  status        String    @default("pending") // pending/training/completed/failed
+  progress      Float     @default(0) // 0-100
+  trainedAt     DateTime?
+  modelOutput   String?   // 输出模型路径/ID
+  metrics       String?   // JSON: {loss, accuracy, f1, ...}
+  errorMessage  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model OpenClawMonitorLog {
+  id            Int       @id @default(autoincrement())
+  agentId       Int
+  agent         OpenClawAgent @relation(fields: [agentId], references: [id])
+  sessionId     String
+  userInput     String
+  agentOutput   String?
+  tokensUsed    Int       @default(0)
+  latencyMs     Int       @default(0)
+  status        String    @default("success") // success/error/timeout
+  errorCode     String?
+  errorMessage  String?
+  metadata      String?   // JSON
+  createdAt     DateTime  @default(now())
+}
+
+// ============================================================
+// 24. 注册管理模块 (Registration) - 4 models
+// ============================================================
+model RegDomestic {
+  id                Int       @id @default(autoincrement())
+  userId            Int       @unique // 关联 H5 用户
+  entityType        String    // limited_company / individual_business / sole_proprietorship / partnership / branch_office
+  companyName       String?   // 企业名称
+  registerType      String    @default("new") // new_register / change_address / change_capital / change_directors / cancel
+  province          String?   // 省份
+  city              String?   // 城市
+  district          String?   // 区县
+  registeredAddress String?  // 注册地址
+  businessScope     String?   // 经营范围(JSON数组或逗号分隔)
+  capital           Float     @default(0) // 注册资本(万元)
+  legalPersonName   String?   // 法定代表人
+  legalPersonId     String?   // 法人证件号
+  contactPhone      String?   // 联系电话
+  contactEmail      String?   // 联系邮箱
+  taxType           String?   @default("general") // general_taxpayer / small_scale / individual
+  status            String    @default("draft") // draft / submitted / reviewing / approved / rejected / completed
+  submitAt          DateTime?
+  approveAt         DateTime?
+  rejectReason      String?
+  registrationNumber String?  // 统一社会信用代码
+  licenseUrl        String?   // 营业执照图片URL
+  notes             String?   // JSON: 备注信息
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model RegOverseas {
+  id                Int       @id @default(autoincrement())
+  userId            Int       @unique // 关联 H5 用户
+  jurisdiction      String    // bvi / cayman / seychelles / samoa_spv / hong_kong / singapore / delaware / labuan / marshall / mauritius / dubai / jersey / guernsey
+  companyName       String?   // 英文公司名
+  chineseName       String?   // 中文名(可选)
+  entity_type       String    // ibc / llc / lp / foundation / limited / branch
+  registerPurpose   String?   // investment / trading / holding / ip_holding / crypto / ecommerce / consulting / other
+  authorizedCapital Float?   // 授权资本
+  currency          String    @default("USD")
+  shareStructure    String?   // JSON: [{name,shares,percentage,type}]
+  directors         String?   // JSON: [{name,nationality,idType,idNumber}]
+  uboInfo           String?   // JSON: 最终受益人信息
+  registeredAgent   String?   // 注册代理机构
+  agentContact      String?   // 代理联系方式
+  status            String    @default("draft") // draft / name_reserved / incorporating / active / struck_off / liquidated
+  submittedAt       DateTime?
+  incorporationDate DateTime?
+  renewalDueDate    DateTime?
+  registrationNumber String?
+  certificateUrl    String?
+  annualReturnStatus String?  @default("not_due") // not_due / filed / overdue
+  complianceNotes   String?   // JSON: 合规备注(经济实质/CRS/FATCA等)
+  totalCostUsd      Float?     // 总费用(USD)
+  timelineWeeks     Int?       // 预计周期(周)
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model RegPrivacy {
+  id                Int       @id @default(autoincrement())
+  regDomesticId     Int?      // 关联国内注册
+  regOverseasId     Int?      // 关联海外注册
+  privacyLevel      String    @default("standard") // basic / standard / enhanced / maximum
+  gdprCompliant     Boolean   @default(false)
+  dataOfficer       String?   // 数据保护官(DPO)
+  dpiaCompleted     Boolean   @default(false) // 数据保护影响评估
+  cookiePolicy      String?   // Cookie 政策内容
+  privacyPolicyUrl  String?   // 隐私政策URL
+  dataProcessing    String?   // JSON: 数据处理活动清单
+  dataRetention     String?   // JSON: 数据保留策略
+  thirdPartySharing String?   // JSON: 第三方共享协议
+  breachProtocol    String?   // JSON: 数据泄露应对预案
+  lastAuditDate     DateTime?
+  nextReviewDate    DateTime?
+  riskScore         Int       @default(0) // 0-100 风险评分
+  status            String    @default("active") // active / under_review / non_compliant / suspended
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model RegContract {
+  id                Int       @id @default(autoincrement())
+  regDomesticId     Int?
+  regOverseasId     Int?
+  contractType      String    // incorporation_agreement / shareholder_agreement / director_service / nda / operating_agreement / power_of_attorney / service_agreement / lease / other
+  title             String
+  parties           String    // JSON: [{name,role,signatory}]
+  content           String?   // 合同正文(Markdown或纯文本)
+  templateId        Int?
+  fileUrl           String?   // PDF/Word 文件 URL
+  status            String    @default("draft") // draft / reviewing / signed / expired / terminated
+  effectiveDate     DateTime?
+  expiryDate        DateTime?
+  signMethod        String?   // electronic / wet_ink / digital_signature / none
+  signedBy          String?   // JSON: 已签署方
+  aiGenerated       Boolean   @default(false)
+  aiDraftPrompt     String?
+  reminderDaysBefore Int      @default(30) // 到期提醒天数
+  autoRenew         Boolean   @default(false)
+  notes             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// ============================================================
+// 19. n8n 工作流 (4 models)
+// ============================================================
+model N8nWorkflow {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String?
+  nodes         String    // JSON: 工作流节点定义
+  connections   String    // JSON: 节点连接关系
+  settings      String?   // JSON: 全局设置(超时/重试/错误处理)
+  status        String    @default("draft") // draft/active/paused/error
+  version       Int       @default(1)
+  runCount      Int       @default(0)
+  lastRunAt     DateTime?
+  lastStatus    String?   // success/error/running
+  tags          String?   // JSON array
+  createdBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  executions    N8nExecution[]
+  triggers      N8nTrigger[]
+}
+
+model N8nTrigger {
+  id            Int       @id @default(autoincrement())
+  workflowId    Int
+  workflow      N8nWorkflow @relation(fields: [workflowId], references: [id])
+  type          String    // webhook/schedule/webhook_manual/cron/email/event
+  name          String
+  config        String    // JSON: 触发器配置(cron表达式/webhook路径等)
+  isActive      Boolean   @default(true)
+  lastTriggered  DateTime?
+  triggerCount  Int       @default(0)
+  errorCount    Int       @default(0)
+  lastError     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model N8nExecution {
+  id            Int       @id @default(autoincrement())
+  workflowId    Int
+  workflow      N8nWorkflow @relation(fields: [workflowId], references: [id])
+  triggerType   String
+  status        String    @default("running") // running/success/error/cancelled/waiting
+  startedAt     DateTime  @default(now())
+  finishedAt    DateTime?
+  durationMs    Int       @default(0)
+  nodeResults   String?   // JSON: 各节点执行结果
+  inputPayload  String?   // JSON
+  outputPayload String?   // JSON
+  errorMessage  String?
+  retryCount    Int       @default(0)
+  createdAt     DateTime  @default(now())
+}
+
+model N8nTemplate {
+  id            Int       @id @default(autoincrement())
+  name          String
+  category      String    // automation/integration/data_processing/ai/notification/marketing
+  description   String
+  thumbnail     String?
+  nodes         String    // JSON: 模板节点定义
+  connections   String    // JSON: 连接定义
+  useCount      Int       @default(0)
+  rating        Float     @default(0)
+  difficulty    String    @default("beginner") // beginner/intermediate/advanced
+  tags          String?   // JSON array
+  author        String?
+  isOfficial    Boolean   @default(false)
+  status        String    @default("published")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ============================================================
+// 20. AI 大模型集成 (6 models)
+// ============================================================
+model AiModelProvider {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique // OpenAI / Anthropic / Google / DeepSeek / Qwen / Ollama
+  code          String    @unique // openai / anthropic / google / deepseek / qwen / ollama
+  type          String    // cloud/self_hosted/open_source
+  apiUrl        String
+  apiKey        String?   // 加密存储
+  models        AiModelInstance[]
+  costRecords   AiModelCostRecord[]
+  status        String    @default("active") // active/maintenance/disabled
+  maxRpm        Int       @default(60) // requests per minute
+  maxTpm        Int       @default(1000000) // tokens per minute
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiModelInstance {
+  id            Int       @id @default(autoincrement())
+  providerId    Int
+  provider      AiModelProvider @relation(fields: [providerId], references: [id])
+  modelId       String    @unique // gpt-4o / claude-3.5-sonnet / gemini-pro 等
+  name          String
+  alias         String?
+  contextWindow Int       @default(128000)
+  maxOutput     Int       @default(4096)
+  inputPrice    Float     @default(0) // per 1M tokens
+  outputPrice   Float     @default(0) // per 1M tokens
+  capabilities  String    // JSON: ["vision","function_calling","json_mode","streaming"]
+  supportsVision Boolean  @default(false)
+  supportsTools Boolean   @default(false)
+  status        String    @default("available") // available/deprecated/experimental
+  sortOrder     Int       @default(0)
+  isRecommended Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  recognitions   AiSmartRecognition[]
+  recommendations AiRecommendation[]
+}
+
+model AiSmartRecognition {
+  id            Int       @id @default(autoincrement())
+  instanceId    Int
+  instance      AiModelInstance @relation(fields: [instanceId], references: [id])
+  taskType      String    // ocr/image_classify/object_detection/sentiment/entity_extraction/summarization/translation
+  name          String
+  inputSample   String?   // 示例输入
+  outputFormat  String    // JSON 结构描述
+  accuracy      Float     @default(0)
+  avgLatencyMs  Int       @default(0)
+  callCount     Int       @default(0)
+  config        String?   // JSON: 任务特定参数
+  status        String    @default("active") // active/testing/disabled
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiRecommendation {
+  id            Int       @id @default(autoincrement())
+  instanceId    Int
+  instance      AiModelInstance @relation(fields: [instanceId], references: [id])
+  scenario      String    // coding/writing/analysis/creative/math/reasoning/chat/long_context
+  score         Float     @default(0) // 推荐分数 0-100
+  reason        String?   // 推荐理由
+  pros          String?   // JSON array
+  cons          String?   // JSON array
+  useCases      String?   // JSON array
+  benchmarkData String?   // JSON: 基准测试数据
+  sortOrder     Int       @default(0)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiPromptTemplate {
+  id            Int       @id @default(autoincrement())
+  name          String
+  category      String    // system/user/few_shot/function_calling/chain_of_thought
+  description   String?
+  template      String    // Prompt 模板内容,支持 {{variable}} 占位符
+  variables     String?   // JSON: [{name,type,required,default,description}]
+  modelHint     String?   // 推荐使用的模型
+  outputExample String?   // 示例输出
+  version       Int       @default(1)
+  useCount      Int       @default(0)
+  rating        Float     @default(0)
+  tags          String?   // JSON array
+  isPublic      Boolean   @default(true)
+  createdBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiModelCostRecord {
+  id            Int       @id @default(autoincrement())
+  providerId    Int
+  provider      AiModelProvider @relation(fields: [providerId], references: [id])
+  date          DateTime
+  modelId       String
+  requestCount  Int       @default(0)
+  inputTokens   BigInt    @default(0)
+  outputTokens  BigInt    @default(0)
+  inputCost     Float     @default(0)
+  outputCost    Float     @default(0)
+  totalCost     Float     @default(0)
+  currency      String    @default("USD")
+  cacheHitRate  Float     @default(0)
+  avgLatencyMs  Int       @default(0)
+  metadata      String?   // JSON
+  createdAt     DateTime  @default(now())
+}
+
+// ============================================================
+// 21. BPM 工作流引擎 (4 models)
+// ============================================================
+model BpmProcessDef {
+  id            Int       @id @default(autoincrement())
+  name          String
+  code          String    @unique
+  category      String    // approval/onboarding/procurement/finance/hr/quality/custom
+  description   String?
+  version       Int       @default(1)
+  definition    String    // JSON: BPMN 定义(节点/网关/流程线)
+  formConfig    String?   // JSON: 表单字段定义
+  variables     String?   // JSON: 流程变量
+  status        String    @default("draft") // draft/active/archived
+  priority      String    @default("normal") // low/normal/high/critical
+  instances     BpmProcessInstance[]
+  monitorMetrics BpmMonitorMetric[]
+  createdBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model BpmProcessInstance {
+  id            Int       @id @default(autoincrement())
+  defId         Int
+  def           BpmProcessDef @relation(fields: [defId], references: [id])
+  instanceNo    String    @unique
+  title         String?
+  initiator     String?
+  status        String    @default("running") // running/completed/cancelled/suspended/rejected
+  priority      String    @default("normal")
+  currentNodes  String?   // JSON: 当前活动节点
+  variables     String?   // JSON: 运行时变量值
+  formData      String?   // JSON: 表单数据
+  startedAt     DateTime  @default(now())
+  completedAt   DateTime?
+  durationHours Float     @default(0)
+  tasks         BpmTask[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model BpmTask {
+  id            Int       @id @default(autoincrement())
+  instanceId    Int
+  instance      BpmProcessInstance @relation(fields: [instanceId], references: [id])
+  nodeId        String
+  nodeName      String
+  assignee      String?   // 处理人
+  assigneeRole  String?   // 处理角色
+  type          String    @default("approval") // approval/review/input/notify/sign/auto
+  status        String    @default("pending") // pending/in_progress/completed/skipped/delegated
+  priority      String    @default("normal")
+  dueDate       DateTime?
+  completedAt   DateTime?
+  comment       String?
+  attachmentUrls String?  // JSON array
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model BpmMonitorMetric {
+  id            Int       @id @default(autoincrement())
+  defId         Int
+  def           BpmProcessDef @relation(fields: [defId], references: [id])
+  date          DateTime
+  totalInstances Int      @default(0)
+  completedCnt  Int       @default(0)
+  cancelledCnt  Int       @default(0)
+  rejectedCnt   Int       @default(0)
+  avgDurationHrs Float    @default(0)
+  overdueCnt    Int       @default(0)
+  activeCnt     Int       @default(0)
+  bottleneckNode String?   // 瓶颈节点
+  createdAt     DateTime  @default(now())
+}
+
+// ============================================================
+// 22. AI 全球获客模块 (10 models)
+// ============================================================
+model AcquisitionPlatform {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique // douyin / kuaishou / xiaohongshu / weixin_video / facebook / linkedin / google / whatsapp / tiktok / line / twitter / instagram / youtube
+  displayName   String    // 抖音 / 快手 / 小红书 / 视频号 / Facebook / LinkedIn / Google / WhatsApp / TikTok / LINE
+  region        String    // domestic / overseas / global
+  category      String    // short_video / social / search / messaging / professional / ecommerce
+  icon          String?
+  apiProvider   String?   // official_api / third_party / scraping / sdk
+  apiKey        String?   // 加密存储
+  apiSecret     String?   // 加密存储
+  accessToken   String?   // OAuth token
+  tokenExpiresAt DateTime?
+  webhookUrl    String?
+  rateLimit     Int       @default(1000) // 每日调用限制
+  dailyUsed     Int       @default(0)
+  features      String?   // JSON: ["post","comment","dm","ads","analytics","live","shop"]
+  status        String    @default("active") // active / limited / disabled / expired
+  configs       AcquisitionApiConfig[]
+  campaigns     AcquisitionCampaign[]
+  leads         AcquisitionLead[]
+  influencers   AcquisitionInfluencer[]
+  reports       AcquisitionReport[]
+  apiLogs       AcquisitionApiLog[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionApiConfig {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      AcquisitionPlatform @relation(fields: [platformId], references: [id])
+  configKey     String    @unique // 如 douyin_open_id / fb_page_id / wa_business_id
+  configValue   String    // JSON 或字符串值
+  configType    String    @default("string") // string / json / encrypted / file
+  description   String?
+  isRequired    Boolean   @default(false)
+  lastVerified  DateTime?
+  isValid       Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionCampaign {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      AcquisitionPlatform @relation(fields: [platformId], references: [id])
+  name          String
+  objective     String    // awareness / traffic / leads / conversion / engagement / app_install
+  strategy      String?   // JSON: 策略配置(目标人群/预算/创意方向)
+  contentType   String    // image / video / text / carousel / story / live
+  status        String    @default("draft") // draft / running / paused / completed / archived
+  budgetDaily   Float     @default(0)
+  budgetTotal   Float     @default(0)
+  spentTotal    Float     @default(0)
+  impressions   BigInt    @default(0)
+  clicks        BigInt    @default(0)
+  ctr           Float     @default(0)
+  conversions   Int       @default(0)
+  cpa           Float     @default(0) // cost per acquisition
+  roas          Float     @default(0) // return on ad spend
+  startDate     DateTime?
+  endDate       DateTime?
+  aBTestVariant String?   // A/B 测试变体
+  targetAudience String?  // JSON: 目标受众
+  contents      AcquisitionContent[]
+  tasks         AcquisitionTask[]
+  funnels       AcquisitionFunnel[]
+  reports       AcquisitionReport[]
+  leads         AcquisitionLead[]
+  createdBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionContent {
+  id            Int       @id @default(autoincrement())
+  campaignId    Int
+  campaign      AcquisitionCampaign @relation(fields: [campaignId], references: [id])
+  title         String
+  body          String?   // 正文/文案
+  mediaUrls     String?   // JSON array: 图片/视频 URLs
+  ctaText       String?   // Call to Action 文案
+  ctaLink       String?   // CTA 链接
+  hashtags      String?   // JSON array: 话题标签
+  mentionIds    String?   // JSON: @提及的达人 IDs
+  publishTime   DateTime?
+  platformPostId String?  // 发布后返回的平台帖子 ID
+  status        String    @default("draft") // draft / scheduled / publishing / published / failed / rejected
+  reach         BigInt    @default(0)
+  likes         BigInt    @default(0)
+  comments      BigInt    @default(0)
+  shares        BigInt    @default(0)
+  saves         BigInt    @default(0)
+  clicks        BigInt    @default(0)
+  errorMessage  String?
+  aiGenerated   Boolean   @default(false) // 是否 AI 生成
+  aiPrompt      String?   // AI 生成用的 prompt
+  templateId    Int?      // 使用的模板
+  template      AcquisitionTemplate? @relation(fields: [templateId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionLead {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      AcquisitionPlatform @relation(fields: [platformId], references: [id])
+  campaignId    Int?
+  campaign      AcquisitionCampaign? @relation(fields: [campaignId], references: [id])
+  externalId    String?   // 平台用户 ID
+  name          String?
+  phone         String?
+  email         String?
+  wechatId      String?
+  source        String?   // dm / comment / form / ad_click / live / referral
+  stage         String    @default("new") // new / contacted / qualified / proposal / negotiation / won / lost
+  score         Int       @default(0) // AI 打分 0-100
+  tags          String?   // JSON array
+  notes         String?
+  assignedTo    String?   // 销售负责人
+  valueEstimate Float     @default(0) // 预估价值
+  convertedAt   DateTime?
+  lastActivity  DateTime?
+  customFields  String?   // JSON: 自定义字段
+  tasks         AcquisitionTask[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionInfluencer {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      AcquisitionPlatform @relation(fields: [platformId], references: [id])
+  externalId    String    @unique // 平台达人 ID
+  nickname      String
+  avatarUrl     String?
+  bio           String?
+  followers     BigInt    @default(0)
+  following     Int       @default(0)
+  postsCount    Int       @default(0)
+  avgLikes      Float     @default(0)
+  avgComments   Float     @default(0)
+  engagementRate Float    @default(0)
+  erTier        String?   // micro / mid / macro / mega (达人层级)
+  categories    String?   // JSON array: 领域标签
+  location      String?
+  language      String?
+  contactInfo   String?   // JSON: 联系方式
+  priceRange    String?   // 报价范围
+  collaborationStatus String @default("none") // none / contacted / negotiating / collaborating / completed / blacklisted
+  performanceScore Float  @default(0) // 综合评分
+  lastSyncAt    DateTime?
+  notes         String?
+  tags          String?   // JSON
+  status        String    @default("active") // active / inactive / suspended
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionTask {
+  id            Int       @id @default(autoincrement())
+  campaignId    Int?
+  campaign      AcquisitionCampaign? @relation(fields: [campaignId], references: [id])
+  leadId        Int?
+  lead          AcquisitionLead? @relation(fields: [leadId], references: [id])
+  type          String    // follow_up / dm_send / comment_reply / post_publish / ai_engage / sync_data / scrape_profile / report_gen
+  title         String
+  config        String?   // JSON: 任务具体配置
+  status        String    @default("pending") // pending / running / success / failed / cancelled / retrying
+  priority      String    @default("normal") // low / normal / high / urgent
+  scheduledAt   DateTime?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  retryCount    Int       @default(0)
+  maxRetries    Int       @default(3)
+  result        String?   // JSON: 执行结果
+  errorMessage  String?
+  executedBy    String?   // system / manual / ai_agent
+  logs          String?   // JSON array: 执行日志
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionReport {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      AcquisitionPlatform @relation(fields: [platformId], references: [id])
+  campaignId    Int?
+  campaign      AcquisitionCampaign? @relation(fields: [campaignId], references: [id])
+  reportDate    DateTime
+  reportType    String    // daily / weekly / monthly / campaign / ad_hoc
+  metrics       String    // JSON: 完整指标数据(impressions/clicks/cost/conversion/etc.)
+  summary       String?   // Markdown 格式摘要
+  insights      String?   // JSON: AI 生成的洞察建议
+  generatedBy   String?   // system / ai / manual
+  createdAt     DateTime  @default(now())
+}
+
+model AcquisitionFunnel {
+  id            Int       @id @default(autoincrement())
+  campaignId    Int
+  campaign      AcquisitionCampaign @relation(fields: [campaignId], references: [id])
+  funnelName    String    @default("default")
+  stages        String    // JSON: [{name:"曝光",value:1234},{name:"点击",value:567},{name:"留资",value:89},...}]
+  dateRange     String?   // JSON: {from, to}
+  conversionRates String? // JSON: {stage_to_stage: rates}
+  benchmarks    String?   // JSON: 行业基准对比
+  dropPoints    String?   // JSON: 流失点分析
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionTemplate {
+  id            Int       @id @default(autoincrement())
+  name          String
+  category      String    // welcome_dm / comment_reply / post_template / ad_copy / follow_up / landing_page
+  platformHint  String?   // 适用平台提示
+  language      String    @default("zh-CN")
+  subject       String?   // 标题(DM/邮件用)
+  body          String    // 模板正文(支持 {{variable}} 占位符)
+  variables     String?   // JSON: [{name,type,required,default,description}]
+  style         String?   // formal / casual / emoji_heavy / professional
+  effectiveness Float     @default(0) // 效果评分(基于历史数据)
+  useCount      Int       @default(0)
+  isPublic      Boolean   @default(true)
+  createdBy     String?
+  contents      AcquisitionContent[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AcquisitionApiLog {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      AcquisitionPlatform @relation(fields: [platformId], references: [id])
+  method        String    // GET / POST / PUT / DELETE
+  endpoint      String
+  requestBody   String?   // JSON
+  responseBody  String?   // JSON
+  statusCode    Int
+  latencyMs     Int       @default(0)
+  isSuccess     Boolean   @default(false)
+  errorCode     String?
+  errorMessage  String?
+  costUsd       Float     @default(0) // API 调用成本
+  metadata      String?   // JSON
+  createdAt     DateTime  @default(now())
+}
+
+// ============================================================
+// 22. AI电视新闻模块 (8 models) - 每经AI电视模式
+// ============================================================
+model AiTvDigitalHuman {
+  id            Int       @id @default(autoincrement())
+  name          String    // N小白 / N小黑 / 财经主播 等
+  code          String    @unique // digital_human_code
+  gender        String    // male / female
+  style         String    // news_anchor / casual / professional
+  avatarUrl     String    // 形象照片/渲染图
+  modelType     String    @default("saas") // saas(硅基/曦灵) / self_made(MetaHuman UE5)
+  modelProvider String?   // tencent_cloud / baidu_xiling / silicon_base / meta_human
+  modelConfig   String?   // JSON: 模型详细配置(面部骨骼/材质/动作绑定)
+  ttsEngine     String?   // volcengine_aliyun_xunfei / custom
+  ttsVoiceId    String?   // TTS 音色 ID
+  ttsSettings   String?   // JSON: TTS 参数(语速/音调/音量)
+  backgroundUrl String?   // 演播厅背景图/UE场景
+  outfit        String?   // 服装配置
+  expressions   String?   // JSON: 表情包配置(52组微表情映射)
+  ttsConfigId   Int?
+  ttsConfig     AiTvTtsConfig? @relation(fields: [ttsConfigId], references: [id])
+  status        String    @default("active") // active / training / archived
+  version       Int       @default(1)
+  useCount      Int       @default(0)
+  articles      AiTvArticle[]
+  broadcasts    AiTvBroadcastLog[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvNewsSource {
+  id            Int       @id @default(autoincrement())
+  name          String    // 上交所公告 / 财联社快讯 / 新浪财经 等
+  sourceType    String    // api_crawler / rss / manual / ai_generate
+  category      String    // stock_market / industry / company_announcement / macro_economy / crypto
+  apiUrl        String?   // API 地址或 RSS URL
+  apiKey        String?   // 密钥
+  crawlRule     String?   // JSON: 爬虫规则(selector/interval/fields)
+  refreshFreq   Int       @default(300) // 刷新间隔秒数
+  isActive      Boolean   @default(true)
+  lastFetchedAt DateTime?
+  fetchCount    Int       @default(0)
+  status        String    @default("active")
+  articles      AiTvArticle[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvArticle {
+  id            Int       @id @default(autoincrement())
+  sourceId      Int
+  source        AiTvNewsSource @relation(fields: [sourceId], references: [id])
+  humanId       Int?      // 可选绑定的数字人
+  human         AiTvDigitalHuman? @relation(fields: [humanId], references: [id])
+  title         String
+  originalContent String?  // 原始资讯内容
+  draftContent  String?   // AI改写后的口播稿
+  finalContent  String?   // 最终审定稿(人工编辑后)
+  summary       String?   // 摘要(用于节目单预览)
+  category      String    // morning_report / industry_news / company_announce / market_close / breaking_news
+  priority      String    @default("normal") // urgent / high / normal / low
+  readTimeSec   Int       @default(60) // 预估阅读时长(秒)
+  aiModel       String?   // 使用的 AI 改写模型(qwen/tongyi/wenxin/deepseek)
+  aiPrompt      String?   // AI改写用的 prompt 模板
+  status        String    @default("draft") // draft / reviewing / approved / scheduled / broadcasted / rejected
+  reviewedBy    String?
+  reviewedAt    DateTime?
+  broadcastedAt DateTime?
+  wordCount     Int       @default(0)
+  tags          String?   // JSON array
+  attachments   String?   // JSON: 附件URLs
+  scheduleItems AiTvSchedule[]
+  broadcasts    AiTvBroadcastLog[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvSchedule {
+  id            Int       @id @default(autoincrement())
+  articleId     Int
+  article       AiTvArticle @relation(fields: [articleId], references: [id])
+  programSlot   String    // time_slot 编码: morning_09 / noon_12 / afternoon_14 / evening_18 / night_20 / overnight_02
+  slotLabel     String    // 早盘播报(9:00-11:30) / 午间速递(12:00-13:00) ...
+  scheduledFor  DateTime  // 计划播出时间
+  durationMin   Int       @default(5) // 预计播出时长(分钟)
+  orderIndex    Int       @default(0) // 在该时段内的排序
+  status        String    @default("pending") // pending / broadcasting / completed / skipped / replaced
+  actualStart   DateTime?
+  actualEnd     DateTime?
+  replacedBy    Int?      // 被哪条稿件替换
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvTtsConfig {
+  id            Int       @id @default(autoincrement())
+  engine        String    // volcengine / aliyun_tts / xunfei / azure / elevenlabs
+  name          String
+  voiceId       String
+  voiceName     String    // 显示名: 新闻女声-晓雅 / 新闻男声-云峰
+  language      String    @default("zh-CN")
+  sampleRate    Int       @default(16000)
+  format        String    @default("mp3")
+  speed         Float     @default(1.0) // 语速 0.5~2.0
+  pitch         Float     @default(1.0) // 音调
+  volume        Float     @default(1.0) // 音量 0~1
+  emotion       String?   // neutral / happy / serious (情感风格)
+  sampleAudioUrl String?  // 试听音频
+  pricePerChar  Float     @default(0) // 每100字价格
+  status        String    @default("active")
+  sortOrder     Int       @default(0)
+  humans        AiTvDigitalHuman[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvStreamPush {
+  id            Int       @id @default(autoincrement())
+  name          String    // 推流任务名称
+  pushType      String    @default("rtmp") // rtmp / rtmps / srt / whip
+  rtmpUrl       String    // RTMP 推流地址
+  streamKey     String    // 推流密钥
+  targetPlatforms String  // JSON array: ["douyin","video_account","kuaishou","website","app"]
+  resolution    String    @default("1080p")
+  fps           Int       @default(30)
+  bitrate       Int       @default(4000) // kbps
+  codec         String    @default("h264")
+  gpuServer     String?   // GPU 服务器地址
+  status        String    @default("idle") // idle / pushing / error / stopped
+  currentProgram String?  // 当前正在推流的节目名
+  startedAt     DateTime?
+  uptimeSec     Int       @default(0)
+  totalPushBytes BigInt   @default(0)
+  lastError     String?
+  autoRestart   Boolean   @default(true) // 断线自动重连
+  healthCheckUrl String?  // 健康检查回调
+  logs          AiTvBroadcastLog[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvMediaAsset {
+  id            Int       @id @default(autoincrement())
+  name          String
+  assetType     String    // video / image / audio / subtitle_template / lower_third / background
+  category      String    // anchor_bg / news_tickertape / logo / transition / b_roll
+  url           String    // 文件 URL 或存储路径
+  thumbnailUrl  String?
+  format        String?   // mp4 / jpg / png / srt / ass
+  durationSec   Int?      // 视频/音频时长
+  fileSize      Int?      // bytes
+  resolution    String?   // 1920x1080
+  tags          String?   // JSON array
+  usageCount    Int       @default(0)
+  status        String    @default("available") // available / processing / archived
+  uploadedBy    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model AiTvBroadcastLog {
+  id            Int       @id @default(autoincrement())
+  articleId     Int?
+  article       AiTvArticle? @relation(fields: [articleId], references: [id])
+  humanId       Int?
+  human         AiTvDigitalHuman? @relation(fields: [humanId], references: [id])
+  pushId        Int?
+  push          AiTvStreamPush? @relation(fields: [pushId], references: [id])
+  scheduleId    Int?
+  programTitle  String
+  startedAt     DateTime
+  endedAt       DateTime?
+  durationSec   Int       @default(0)
+  status        String    @default("success") // success / partial / error / interrupted
+  viewerPeak    Int       @default(0)
+  viewerAvg     Float     @default(0)
+  errorMsg      String?
+  recordingFile String?   // 录制文件
+  metadata      String?   // JSON: 其他元数据
+  createdAt     DateTime  @default(now())
+}
+
+// ============================================================
+// 22. 直播管理模块 (Live Streaming) - 6 models
+// ============================================================
+model LivePlatform {
+  id            Int       @id @default(autoincrement())
+  name          String    @unique // weixin_video / douyin / kuaishou / youzan / weihou
+  displayName   String    // 视频号直播 / 抖音直播 / 快手直播 / 有赞直播 / 微吼直播
+  type          String    @default("domestic") // domestic / overseas
+  category      String    // short_video / ecommerce / professional
+  icon          String?
+  description   String?
+  appId         String?   // 平台 AppID
+  appSecret     String?   // 加密存储的 AppSecret
+  pushUrl       String?   // RTMP 推流地址
+  pullUrl       String?   // 拉流/播放地址
+  apiEndpoint   String?   // 平台 API 地址
+  apiConfig     String?   // JSON: 其他 API 配置项
+  status        String    @default("active") // active / disabled / maintenance
+  sortOrder     Int       @default(0)
+  rooms         LiveRoom[]
+  streams       LiveStream[]
+  analytics     LiveAnalytics[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model LiveRoom {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      LivePlatform @relation(fields: [platformId], references: [id])
+  roomId        String    @unique // 平台房间唯一标识
+  title         String
+  coverUrl      String?
+  description   String?
+  anchorName    String?   // 主播名称
+  anchorAvatar  String?
+  category      String?   // 财经/教育/电商/娱乐/科技
+  tags          String?   // JSON array
+  rtmpPushUrl   String?   // 实际推流地址
+  hlsPullUrl    String?   // HLS 播放地址
+  flvPullUrl    String?   // FLV 播放地址
+  status        String    @default("offline") // offline / living / replay / banned
+  maxViewers    Int       @default(0)
+  likeCount     Int       @default(0)
+  commentCount  Int       @default(0)
+  shareCount    Int       @default(0)
+  giftAmount    Float     @default(0) // 礼物收入
+  settings      String?   // JSON: 直播间设置(弹幕/礼物/连麦等)
+  streamKey     String?   // 推流密钥
+  startedAt     DateTime?
+  endedAt       DateTime?
+  createdBy     String?
+  streams       LiveStream[]
+  comments      LiveComment[]
+  schedules     LiveSchedule[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model LiveStream {
+  id            Int       @id @default(autoincrement())
+  roomId        Int
+  room          LiveRoom @relation(fields: [roomId], references: [id])
+  platformId    Int
+  platform      LivePlatform @relation(fields: [platformId], references: [id])
+  streamId      String    @unique // 本次直播唯一 ID
+  title         String?
+  startedAt     DateTime  @default(now())
+  endedAt       DateTime?
+  durationSec   Int       @default(0)
+  peakViewers   Int       @default(0)
+  totalViews    Int       @default(0)
+  totalLikes    Int       @default(0)
+  totalComments Int       @default(0)
+  totalShares   Int       @default(0)
+  totalGifts    Float     @default(0)
+  newFollowers  Int       @default(0)
+  status        String    @default("living") // living / ended / error / banned
+  resolution    String?   // 1080p / 720p / 480p
+  bitrate       Int?      // 码率 kbps
+  errorMessage  String?
+  recordingUrl  String?   // 回放地址
+  thumbnailUrl  String?
+  metrics       String?   // JSON: 详细指标(每分钟观众数曲线等)
+  createdAt     DateTime  @default(now())
+}
+
+model LiveSchedule {
+  id            Int       @id @default(autoincrement())
+  roomId        Int
+  room          LiveRoom @relation(fields: [roomId], references: [id])
+  title         String
+  plannedStart  DateTime
+  plannedEnd    DateTime?
+  description   String?
+  repeatRule    String?   // JSON: 重复规则(cron/weekly/daily)
+  reminderMins  Int       @default(30) // 提前提醒分钟
+  status        String    @default("scheduled") // scheduled / started / cancelled / completed / missed
+  actualStart   DateTime?
+  actualEnd     DateTime?
+  notifyChannels String?   // JSON array: ["wechat","sms","email"]
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model LiveComment {
+  id            Int       @id @default(autoincrement())
+  roomId        Int
+  room          LiveRoom @relation(fields: [roomId], references: [id])
+  userId        String?
+  userName      String?
+  userAvatar    String?
+  content       String
+  commentType   String    @default("text") // text / gift / share / follow / like
+  isPinned      Boolean   @default(false)
+  isDeleted     Boolean   @default(false)
+  sentiment     String?   // positive / negative / neutral (AI分析)
+  replyToId     Int?      // 回复目标
+  replyTo       LiveComment? @relation("CommentReplies", fields: [replyToId], references: [id])
+  replies       LiveComment[] @relation("CommentReplies")
+  createdAt     DateTime  @default(now())
+}
+
+model LiveAnalytics {
+  id            Int       @id @default(autoincrement())
+  platformId    Int
+  platform      LivePlatform @relation(fields: [platformId], references: [id])
+  date          DateTime
+  roomCount     Int       @default(0)
+  totalDurationMin Float   @default(0)
+  totalViews    BigInt    @default(0)
+  totalLikes    BigInt    @default(0)
+  newFollowers  Int       @default(0)
+  totalRevenue  Float     @default(0)
+  avgViewers    Float     @default(0)
+  peakViewers   Int       @default(0)
+  commentRate   Float     @default(0)
+  shareRate     Float     @default(0)
+  followRate    Float     @default(0)
+  topRooms      String?   // JSON: 当天 Top 房间
+  metadata      String?   // JSON
+  createdAt     DateTime  @default(now())
+}
+
+// ============================================================
+// 23. 注册管理模块 (Registration) - 8 models
+// ============================================================
+
+// 国内注册方案
+model DomesticRegistrationPlan {
+  id                Int       @id @default(autoincrement())
+  code              String    @unique // limited_company / individual_sole / partnership / branch / non_profit
+  name              String    // 有限责任公司 / 个体工商户 / 个人独资企业 / 合伙企业 / 分公司 / 非营利组织
+  category          String    // enterprise / individual / special
+  description       String?   // 详细说明
+  minCapital        Float     @default(0) // 最低注册资本(万元)
+  taxRate           Float     @default(0.25) // 企业所得税率
+  vatRate           Float     @default(0.13) // 增值税率
+  timelineDays      Int       @default(7) // 注册周期(天)
+  annualFee         Float     @default(0) // 年度维护费用(元)
+  requiredDocs      String?   // JSON array: ["身份证","营业执照","章程"...]
+  pros              String?   // JSON array: 优势列表
+  cons              String?   // JSON array: 劣势/注意事项
+  suitability       String?   // 适用场景
+  sortOrder         Int       @default(0)
+  isActive          Boolean   @default(true)
+  registrations     DomesticRegistration[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// 国内注册记录
+model DomesticRegistration {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  planId              Int
+  plan                DomesticRegistrationPlan @relation(fields: [planId], references: [id])
+  companyName         String
+  legalPersonName     String
+  legalPersonIdType   String    // id_card / passport / other
+  legalPersonIdNo     String?
+  registeredCapital   Float     @default(0) // 万元
+  businessScope       String?
+  registeredAddress   String?
+  contactPhone        String?
+  contactEmail        String?
+  status              String    @default("pending") // pending/reviewing/approved/rejected/completed/cancelled
+  progress            Int       @default(0) // 0-100
+  progressSteps       String?   // JSON: [{step:"核名",done:true},{step:"提交材料",done:false}...]
+  registrationNumber  String?
+  creditCode          String?   // 统一社会信用代码
+  issuedDate          DateTime?
+  expiryDate          DateTime?
+  agentName           String?   // 代办机构
+  agentFee            Float     @default(0)
+  governmentFee       Float     @default(0) // 官方费用
+  notes               String?
+  attachments         String?   // JSON array of file URLs
+  submittedAt         DateTime?
+  completedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// 海外注册方案 (离岸公司)
+model OverseasJurisdiction {
+  id                  Int       @id @default(autoincrement())
+  code                String    @unique // bvi / cayman / seychelles / samoa_spv / hong_kong / singapore / delaware / marshall / labuan / nevis
+  name                String    // 英属维尔京(BVI) / 开曼群岛 / 塞舌尔 / Samoa SPV / 香港 / 新加坡 / 特拉华 / 马绍尔 / 纳闽 / 尼维斯
+  region              String    // caribbean / asia_pacific / europe / north_america
+  country             String    // 所属国家/地区英文名
+  countryCode         String    // ISO 2位代码
+  flagIcon            String?   // 国旗图标URL
+  corporateTax        Float     @default(0) // 企业所得税率(0表示免税)
+  vatRate             Float     @default(0) // VAT/GST
+  withholdingTax      Float     @default(0) // 预提税
+  capitalGainsTax     Float     @default(0) // 资本利得税
+  privacyLevel        Int       @default(0) // 隐私保护等级 1-5
+  reputationLevel     Int       @default(3) // 声誉等级 1-5
+  setupTimeDays       Int       @default(7) // 注册天数
+  setupFeeUsd         Float     @default(0) // 注册费用(USD)
+  annualFeeUsd        Float     @default(0) // 年度费用(USD)
+  minimumShareholder Int       @default(1) // 最少股东数
+  minimumDirector     Int       @default(1) // 最少董事数
+  standardCurrency    String    @default("USD") // 标准货币
+  doubleTaxTreaties   String?   // JSON array: ["China","UK","USA"...
+  features            String?   // JSON array: ["零税收","高度保密","无外汇管制"...
+  risks               String?   // JSON array: 风险点
+  bestFor             String?   // 适用场景
+  description         String?   // 详细介绍
+  sortOrder           Int       @default(0)
+  isActive            Boolean   @default(true)
+  registrations       OverseasRegistration[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// 海外注册记录
+model OverseasRegistration {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  jurisdictionId      Int
+  jurisdiction        OverseasJurisdiction @relation(fields: [jurisdictionId], references: [id])
+  companyName         String
+  companyType         String    @default("limited") // limited / llc / foundation / spv / branch
+  registeredCapital   Float?    // 注册资本
+  currency            String    @default("USD")
+  shareholders         String?   // JSON: [{name,type,shares,nationality}...]
+  directors           String?   // JSON: [{name,nationality}...]
+  registeredAgent     String?   // 注册代理人/秘书公司
+  registeredAddress   String?
+  businessScope       String?
+  status              String    @default("pending")
+  progress            Int       @default(0)
+  progressSteps       String?
+  registrationNumber  String?
+  incorporationDate   DateTime?
+  renewalDueDate      DateTime?
+  agentName           String?
+  totalFeeUsd         Float     @default(0)
+  notes               String?
+  attachments         String?
+  submittedAt         DateTime?
+  completedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// 隐私合规项
+model PrivacyComplianceItem {
+  id                  Int       @id @default(autoincrement())
+  region              String    // china_gdpr / eu_gdpr / california_ccpa / pipl / etc
+  regionName          String    // 中国个保法 / EU GDPR / California CCPA / PIPL
+  category            String    // data_collection / data_processing / data_transfer / data_storage / consent / rights / breach
+  requirementTitle    String
+  requirementDetail   String
+  penalty             String?   // 处罚说明
+  complianceLevel     String    @default("required") // required / recommended / optional
+  deadlineDate        DateTime?
+  status              String    @default("pending") // pending / in_progress / completed / overdue
+  responsibleDept     String?   // 负责部门
+  evidenceUrl         String?   // 合规证明文件
+  lastAuditDate       DateTime?
+  nextAuditDate       DateTime?
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// 合同模板
+model RegistrationContractTemplate {
+  id                  Int       @id @default(autoincrement())
+  type                String    // domestic / overseas / privacy / nda / service_agreement / shareholder
+  name                String    // 如 "有限责任公司设立协议"
+  version             String    @default("1.0")
+  content             String    // Markdown 或 HTML 格式的合同正文
+  variables           String?   // JSON: [{name:"公司名称",type:"text",required:true,default:"",description:""}]
+  jurisdiction        String?   // 适用法域
+  language            String    @default("zh-CN")
+  usageCount          Int       @default(0)
+  isOfficial          Boolean   @default(false)
+  tags                String?   // JSON array
+  status              String    @default("active")
+  createdBy           String?
+  contracts           RegistrationContract[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// 合同实例（已填写/签署）
+model RegistrationContract {
+  id                  Int       @id @default(autoincrement())
+  templateId          Int
+  template            RegistrationContractTemplate @relation(fields: [templateId], references: [id])
+  userId              Int?
+  registrationType     String    // domestic / overseas
+  registrationId       Int?      // 关联的国内或海外注册ID
+  title               String    // 合同标题
+  parties             String?   // JSON: [{name,role,signed:false}...]
+  filledVariables     String?   // JSON: 已填写的变量值
+  content             String?   // 最终生成的合同内容
+  fileUrl             String?   // PDF 文件 URL
+  status              String    @default("draft") // draft / reviewing / signed / expired / cancelled
+  aiGenerated         Boolean   @default(false)
+  signedDate          DateTime?
+  expiryDate          DateTime?
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// ============================================================
+// 用户管理增强模块 (Users Enhancement) - 6 new models
+// ============================================================
+
+// 角色定义 (RBAC)
+model Role {
+  id            Int       @id @default(autoincrement())
+  code          String    @unique // super_admin / admin / compliance_officer / kyc_reviewer / operator / viewer / custom_*
+  name          String    // 超级管理员 / 合规官 / KYC审核员 / 运营人员 / 只读用户
+  description   String?
+  permissions   String    // JSON array: ["user:create","user:read","user:update","kyc:approve","role:manage"...]
+  isSystem      Boolean   @default(false) // 系统内置角色不可删除
+  userCount     Int       @default(0) // 缓存: 关联用户数
+  sortOrder     Int       @default(0)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userRoles     UserRole[]
+}
+
+// 用户-角色关联 (多对多)
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+  role      Role     @relation(fields: [roleId], references: [id])
+  assignedBy Int?    // 分配人ID
+  assignedAt DateTime @default(now())
+  @@unique([userId, roleId])
+}
+
+// 风险评估记录 (AML/CFT)
+model UserRiskAssessment {
+  id                  Int       @id @default(autoincrement())
+  userId              Int       @unique // 每个用户一条最新记录
+  overallScore        Int       @default(0) // 综合风险分 0-100
+  riskLevel           String    @default("low") // low / medium / high / critical
+  identityRisk        Int       @default(0) // 身份风险 0-100
+  transactionRisk     Int       @default(0) // 交易风险 0-100
+  behavioralRisk      Int       @default(0) // 行为风险 0-100
+  geographicRisk      Int       @default(0) // 地域风险 0-100
+  sanctionsHit        Boolean   @default(false) // 制裁名单命中
+  sanctionsSource     String?   // 制裁来源 ofac/un/eu/uk/etc
+  sanctionsMatchName  String?   // 命中名称
+  pepFlag             Boolean   @default(false) // 政治敏感人物(PEP)
+  pepDetails          String?   // PEP详情JSON
+  boDeclared          Boolean   @default(false) // 实控人已声明(Samoa法规要求)
+  boInfo              String?   // 实控人信息JSON [{name,nationality,idType,idNo,ownershipPercent}...]
+  sourceOfFundsVerified Boolean @default(false) // 资金来源已核实
+  sofDocuments        String?   // 资金来源证明文件URLs JSON array
+  lastAssessedAt      DateTime  @default(now())
+  nextReviewDate      DateTime? // 下次复核日期
+  notes               String?   // 风评师备注
+  assessedBy          Int?      // 评估人ID
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// 操作审计日志 (Audit Trail - 防篡改)
+model AuditLogEnhanced {
+  id            Int       @id @default(autoincrement())
+  userId        Int?      // 操作人ID (可为系统自动)
+  userType      String    @default("admin") // admin / system / api
+  action        String    // user.create / user.update / kyc.approve / role.assign / session.terminate / risk.update / login.failed / etc
+  targetId      Int?      // 目标对象ID
+  targetType    String?   // user / role / kyc / session / config
+  description   String?   // 操作描述
+  ipAddress     String?
+  userAgent     String?
+  requestData   String?   // 请求数据摘要(JSON)
+  responseData  String?   // 响应数据摘要(JSON)
+  statusCode    Int?      // HTTP状态码
+  durationMs    Int?      // 执行耗时(ms)
+  createdAt     DateTime  @default(now()) // 审计时间戳(不可修改!)
+  
+  @@index([userId])
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
+
+// 用户会话 (Session Management)
+model UserSession {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  sessionId       String    @unique // JWT session ID or token hash
+  deviceType      String    // desktop / mobile / tablet / api
+  deviceName      String?   // 如 "Chrome on Windows" 或 "iPhone 15 Pro"
+  ipAddress       String
+  location        String?   // 城市/国家
+  userAgent       String?
+  mfaVerified     Boolean   @default(false)
+  lastActivityAt  DateTime  @default(now())
+  expiresAt       DateTime
+  isActive        Boolean   @default(true)
+  terminatedAt    DateTime?
+  terminateReason String?   // force_logout / password_change / security_risk / expired / etc
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([isActive])
+  @@index([expiresAt])
+}
+
+// 登录历史 (Login History)
+model LoginHistory {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  loginMethod   String    @default("password") // password / sms / oauth / sso / mfa
+  ipAddress     String
+  location      String?
+  deviceInfo    String?
+  status        String    @default("success") // success / failed / blocked / mfa_required
+  failReason    String?   // wrong_password / account_locked / ip_blocked / etc
+  mfaStatus     String?   // not_required / passed / failed / skipped
+  createdAt     DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([status])
+  @@index([ipAddress])
+  @@index([createdAt])
+}
