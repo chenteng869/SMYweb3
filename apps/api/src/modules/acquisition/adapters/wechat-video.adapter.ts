@@ -599,38 +599,38 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
     const info = raw.authorizer_info as Record<string, unknown> || raw;
 
     return {
-      id: `wechat_video:${raw.authorizer_appid || raw.appid || ''}`,
+      id: `wechat_video:${String(raw.authorizer_appid || raw.appid || '')}`,
       platform: 'wechat_video' as NormalizedInfluencer['platform'],
-      platformId: raw.authorizer_appid || raw.appid || '',
-      displayName: info.nick_name || '微信视频号',
-      username: info.alias || info.user_name,
-      bio: info.signature || info.alias || '',
-      followerCount: undefined, // 微信不公开粉丝数
+      platformId: String(raw.authorizer_appid || raw.appid || ''),
+      displayName: String(info.nick_name || '微信视频号'),
+      username: String(info.alias || info.user_name || ''),
+      bio: String(info.signature || info.alias || ''),
+      followerCount: undefined,
       followingCount: undefined,
-      postCount: raw.broadcast_total_count || undefined,
+      postCount: Number(raw.broadcast_total_count) || undefined,
       engagementRate: undefined,
-      avatarUrl: info.head_img,
-      profileUrl: info.qrcode_url,
-      isVerified: !!(info.verify_type_info?.id && info.verify_type_info.id > -1),
+      avatarUrl: String(info.head_img || ''),
+      profileUrl: String(info.qrcode_url || ''),
+      isVerified: !!((info.verify_type_info as { id?: number })?.id && (info.verify_type_info as { id?: number }).id > -1),
       verificationType: this.getVerifyTypeName(
-        info.verify_type_info?.id,
-        info.service_type_info?.id
+        (info.verify_type_info as { id?: number })?.id,
+        (info.service_type_info as { id?: number })?.id
       ),
       location: undefined,
       language: 'zh-CN',
       tags: ['视频号', '微信', '直播'],
       avgEngagement: raw.broadcast_avg_data
         ? {
-            likes: raw.broadcast_avg_data.like_count || 0,
-            comments: raw.broadcast_avg_data.comment_count || 0,
+            likes: Number((raw.broadcast_avg_data as Record<string, unknown>).like_count || 0),
+            comments: Number((raw.broadcast_avg_data as Record<string, unknown>).comment_count || 0),
             shares: 0,
             saves: 0,
           }
         : undefined,
       contactInfo: {
-        website: info.qrcode_url,
+        website: String(info.qrcode_url || ''),
       },
-      lastActiveAt: raw.last_broadcast_time ? new Date(raw.last_broadcast_time * 1000) : undefined,
+      lastActiveAt: raw.last_broadcast_time ? new Date(Number(raw.last_broadcast_time) * 1000) : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
     };
@@ -689,13 +689,13 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
   normalizeComment(raw: Record<string, unknown>): NormalizedComment {
     return {
       id: `wechat_danmaku:${raw.comment_id || Date.now()}`,
-      contentId: raw.room_id || '',
-      authorId: raw.user_id || '',
-      authorName: raw.nickname || '匿名观众',
-      authorAvatarUrl: raw.avatar_url,
-      text: raw.content || '',
-      createdAt: new Date((raw.create_time || 0) * 1000),
-      likes: raw.like_count || 0,
+      contentId: String(raw.room_id || ''),
+      authorId: String(raw.user_id || ''),
+      authorName: String(raw.nickname || '匿名观众'),
+      authorAvatarUrl: String(raw.avatar_url || ''),
+      text: String(raw.content || ''),
+      createdAt: new Date(Number(raw.create_time || 0) * 1000),
+      likes: Number(raw.like_count || 0),
       replyCount: 0,
       rawJson: JSON.stringify(raw),
     };
@@ -842,7 +842,7 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
       );
     }
 
-    return data;
+    return data as unknown as Record<string, unknown>;
   }
 
   /**

@@ -577,9 +577,9 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
         shares: 0,
         saves: 0,
       },
-      contactInfo: { website: ui.profile_deep_link },
-      contentCategories: this.inferCategories(ui.bio_description, ui.display_name),
-      lastActiveAt: raw.last_video_time ? new Date(raw.last_video_time * 1000) : undefined,
+      contactInfo: { website: String(ui.profile_deep_link || '') },
+      contentCategories: this.inferCategories(String(ui.bio_description || ''), String(ui.display_name || '')),
+      lastActiveAt: raw.last_video_time ? new Date(Number(raw.last_video_time) * 1000) : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
     };
@@ -637,8 +637,9 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
   // ==================== 错误处理 ====================
 
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const code = error?.errorCode || error?.code || error?.status;
-    const msgStr = error?.message || error?.body || String(error);
+    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
+    const code = errRecord?.errorCode || errRecord?.code || errRecord?.status;
+    const msgStr = (error as Error)?.message || errRecord?.body || String(error);
     const known = code ? TIKTOK_ERROR_CODES[code as number] : null;
     let msg: string;
     if (known) {

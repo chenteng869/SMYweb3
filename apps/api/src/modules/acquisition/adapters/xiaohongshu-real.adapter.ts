@@ -709,22 +709,22 @@ export class XiaohongshuRealAdapter extends BasePlatformAdapter {
       id: `xiaohongshu:${originalId}`,
       platform: 'xiaohongshu' as NormalizedInfluencer['platform'],
       platformId: originalId,
-      displayName: userInfo.nickname || '小红书用户',
-      username: userInfo.red_id,
-      bio: userInfo.desc || '',
+      displayName: String(userInfo.nickname || '小红书用户'),
+      username: String(userInfo.red_id || ''),
+      bio: String(userInfo.desc || ''),
       followerCount: basic.fans ?? 0,
       followingCount: basic.follows ?? 0,
       postCount: basic.note_count ?? 0,
       engagementRate: this.calculateXhsEngagementRate(basic, interactionData),
-      avatarUrl: userInfo.avatar,
+      avatarUrl: String(userInfo.avatar || ''),
       profileUrl: userInfo.red_id
         ? `https://www.xiaohongshu.com/user/profile/${userInfo.red_id}`
         : undefined,
-      isVerified: !!raw.verify_info?.type,
-      verificationType: raw.verify_info?.type || undefined,
-      location: userInfo.ip_location || undefined,
+      isVerified: !!((raw.verify_info as Record<string, unknown>)?.type),
+      verificationType: String((raw.verify_info as Record<string, unknown>)?.type || '') || undefined,
+      location: (userInfo.ip_location as string) || undefined,
       language: 'zh-CN',
-      tags: this.extractTags(userInfo.desc, userInfo.nickname, raw.tags),
+      tags: this.extractTags((userInfo.desc as string) || '', (userInfo.nickname as string) || '', Array.isArray(raw.tags) ? raw.tags : []),
       avgEngagement: {
         likes: interactionData.liked
           ? Math.floor(interactionData.liked / Math.max(basic.note_count || 1, 1))
@@ -740,14 +740,14 @@ export class XiaohongshuRealAdapter extends BasePlatformAdapter {
           : 0,
       },
       contactInfo: {
-        email: raw.rcmd_contact?.email,
-        phone: raw.rcmd_contact?.phone,
-        website: raw.link || raw.home_link,
+        email: (raw.rcmd_contact as { email?: string })?.email,
+        phone: (raw.rcmd_contact as { phone?: string })?.phone,
+        website: String(raw.link || raw.home_link || ''),
       },
       businessContact: (raw.ad_coop as { accepts_ads?: boolean })?.accepts_ads
         ? {
-            email: raw.rcmd_contact?.email,
-            wechatId: raw.rcmd_contact?.wechat,
+            email: (raw.rcmd_contact as { email?: string; wechat?: string })?.email,
+            wechatId: (raw.rcmd_contact as { email?: string; wechat?: string })?.wechat,
             minCooperationFee: (raw.ad_coop as { min_price?: number })?.min_price,
           }
         : undefined,
@@ -778,37 +778,36 @@ export class XiaohongshuRealAdapter extends BasePlatformAdapter {
    * @param raw 小红书笔记原始数据
    * @returns 标准化的内容数据
    */
-  normalizeContent(raw: any): NormalizedContent {
+  normalizeContent(raw: Record<string, unknown>): NormalizedContent {
     const isVideo = raw.type === 'video' || !!raw.video;
 
     return {
-      id: `xhs_note:${raw.note_id}`,
+      id: `xhs_note:${String(raw.note_id)}`,
       platform: 'xiaohongshu',
-      authorId: raw.user?.user_id || '',
+      authorId: String((raw.user as Record<string, unknown>)?.user_id || ''),
       contentType: isVideo ? 'video' : 'image',
-      title: raw.title || raw.display_title,
-      caption: raw.desc || raw.display_title,
+      title: String(raw.title || raw.display_title || ''),
+      caption: String(raw.desc || raw.display_title || ''),
       mediaUrls: isVideo
-        ? raw.video?.media?.stream?.h264
-            ?.sort((a: any, b: any) => b.avg_bitrate - a.avg_bitrate)
-            ?.map((v: any) => v.master_url) || []
-        : raw.image_list
-            ?.map((img: any) => img.url_default?.url || img.url_pre?.url)
-            .filter(Boolean) || [],
+        ? (((raw.video as Record<string, unknown>)?.media as Record<string, unknown>)?.stream as { h264?: unknown[] })?.h264
+            ?.map((v: Record<string, unknown>) => String(v.master_url || '')).filter(Boolean) || []
+        : Array.isArray(raw.image_list)
+            ? raw.image_list.map((img: Record<string, unknown>) => String(((img as { url_default?: { url?: string } })?.url_default)?.url || '')).filter(Boolean)
+            : [],
       thumbnailUrl: isVideo
-        ? raw.video?.cover?.url
-        : raw.image_list?.[0]?.url_default?.url || raw.cover?.url,
-      publishedAt: new Date((raw.time || 0) * 1000),
+        ? String(((raw.video as Record<string, unknown>)?.cover as { url?: string })?.url || '')
+        : String((Array.isArray(raw.image_list) ? ((raw.image_list[0] as { url_default?: { url?: string } })?.url_default)?.url : null) || ''),
+      publishedAt: new Date(Number(raw.time || 0) * 1000),
       engagement: {
-        views: 0, // 小红书不公开浏览量
-        likes: parseInt(raw.interact_info?.liked_count || '0', 10),
-        comments: parseInt(raw.interact_info?.comment_count || '0', 10),
-        shares: parseInt(raw.interact_info?.share_count || '0', 10),
-        saves: parseInt(raw.interact_info?.collected_count || '0', 10),
+        views: 0,
+        likes: parseInt(String((raw.interact_info as Record<string, unknown>)?.liked_count || '0'), 10),
+        comments: parseInt(String((raw.interact_info as Record<string, unknown>)?.comment_count || '0'), 10),
+        shares: parseInt(String((raw.interact_info as Record<string, unknown>)?.share_count || '0'), 10),
+        saves: parseInt(String((raw.interact_info as Record<string, unknown>)?.collected_count || '0'), 10),
       },
       tags: [
-        ...(raw.tag_list?.map((t: any) => t.name) || []),
-        ...(raw.topic_list?.map((t: any) => t.name) || []),
+        ...(Array.isArray(raw.tag_list) ? raw.tag_list.map((t: Record<string, unknown>) => String(t.name)) : []),
+        ...(Array.isArray(raw.topic_list) ? raw.topic_list.map((t: Record<string, unknown>) => String(t.name)) : []),
       ],
       url: raw.note_id ? `https://www.xiaohongshu.com/explore/${raw.note_id}` : undefined,
       rawJson: JSON.stringify(raw),
@@ -856,7 +855,7 @@ export class XiaohongshuRealAdapter extends BasePlatformAdapter {
     const errorCode = errRecord?.errorCode || errRecord?.code || errRecord?.status;
     const errorMessage = (error as Error)?.message || errRecord?.msg || errRecord?.body || String(error);
 
-    const knownMessage = errorCode ? XHS_ERROR_CODES[errorCode] : null;
+    const knownMessage = errorCode ? XHS_ERROR_CODES[String(errorCode)] : null;
 
     let humanReadableMessage: string;
 
