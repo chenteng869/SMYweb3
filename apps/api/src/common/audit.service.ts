@@ -6,7 +6,15 @@ import { Request } from 'express';
 export class AuditService {
   constructor(private prisma: PrismaService) {}
 
-  async log(req: Request | any, userId: number | null, action: string, module: string, resource?: string, detail?: any, status = 'success') {
+  async log(
+    req: Request | any,
+    userId: number | null,
+    action: string,
+    module: string,
+    resource?: string,
+    detail?: any,
+    status = 'success'
+  ) {
     try {
       await this.prisma.auditLog.create({
         data: {

@@ -36,20 +36,27 @@ export class N8nService {
 
   async createWorkflow(data: any) {
     if (data.nodes && typeof data.nodes !== 'string') data.nodes = JSON.stringify(data.nodes);
-    if (data.connections && typeof data.connections !== 'string') data.connections = JSON.stringify(data.connections);
-    if (data.settings && typeof data.settings !== 'string') data.settings = JSON.stringify(data.settings);
+    if (data.connections && typeof data.connections !== 'string')
+      data.connections = JSON.stringify(data.connections);
+    if (data.settings && typeof data.settings !== 'string')
+      data.settings = JSON.stringify(data.settings);
     return this.prisma.n8nWorkflow.create({ data });
   }
 
   async updateWorkflow(id: number, data: any) {
     // 版本 +1
-    const current = await this.prisma.n8nWorkflow.findUnique({ where: { id }, select: { version: true } });
+    const current = await this.prisma.n8nWorkflow.findUnique({
+      where: { id },
+      select: { version: true },
+    });
     if (current) {
       data.version = (current.version || 0) + 1;
     }
     if (data.nodes && typeof data.nodes !== 'string') data.nodes = JSON.stringify(data.nodes);
-    if (data.connections && typeof data.connections !== 'string') data.connections = JSON.stringify(data.connections);
-    if (data.settings && typeof data.settings !== 'string') data.settings = JSON.stringify(data.settings);
+    if (data.connections && typeof data.connections !== 'string')
+      data.connections = JSON.stringify(data.connections);
+    if (data.settings && typeof data.settings !== 'string')
+      data.settings = JSON.stringify(data.settings);
     return this.prisma.n8nWorkflow.update({ where: { id }, data });
   }
 
@@ -207,21 +214,22 @@ export class N8nService {
       ` as unknown as any[],
     ]);
 
-    const successRate = totalExecs > 0 ? Math.round(successExecs / totalExecs * 10000) / 100 : 0;
-    const avgDurationMs = execsWithDuration.length > 0
-      ? Math.round(
-          execsWithDuration.reduce((sum, e) => {
-            const duration = new Date(e.finishedAt).getTime() - new Date(e.startedAt).getTime();
-            return sum + duration;
-          }, 0) / execsWithDuration.length
-        )
-      : 0;
+    const successRate = totalExecs > 0 ? Math.round((successExecs / totalExecs) * 10000) / 100 : 0;
+    const avgDurationMs =
+      execsWithDuration.length > 0
+        ? Math.round(
+            execsWithDuration.reduce((sum, e) => {
+              const duration = new Date(e.finishedAt).getTime() - new Date(e.startedAt).getTime();
+              return sum + duration;
+            }, 0) / execsWithDuration.length
+          )
+        : 0;
 
     return {
       totalExecutions: totalExecs,
       successRate,
       avgDurationMs,
-      trend7Days: dailyData.map(d => ({
+      trend7Days: dailyData.map((d) => ({
         date: d.day instanceof Date ? d.day.toISOString().split('T')[0] : String(d.day),
         count: Number(d.count),
       })),
@@ -235,7 +243,8 @@ export class N8nService {
     const where: any = {};
     if (category) where.category = category;
     if (difficulty) where.difficulty = difficulty;
-    if (isOfficial !== undefined && isOfficial !== '' && isOfficial !== null) where.isOfficial = isOfficial === 'true' || isOfficial === true;
+    if (isOfficial !== undefined && isOfficial !== '' && isOfficial !== null)
+      where.isOfficial = isOfficial === 'true' || isOfficial === true;
     const [data, total] = await Promise.all([
       this.prisma.n8nTemplate.findMany({
         where,
@@ -254,13 +263,15 @@ export class N8nService {
 
   async createTemplate(data: any) {
     if (data.nodes && typeof data.nodes !== 'string') data.nodes = JSON.stringify(data.nodes);
-    if (data.connections && typeof data.connections !== 'string') data.connections = JSON.stringify(data.connections);
+    if (data.connections && typeof data.connections !== 'string')
+      data.connections = JSON.stringify(data.connections);
     return this.prisma.n8nTemplate.create({ data });
   }
 
   async updateTemplate(id: number, data: any) {
     if (data.nodes && typeof data.nodes !== 'string') data.nodes = JSON.stringify(data.nodes);
-    if (data.connections && typeof data.connections !== 'string') data.connections = JSON.stringify(data.connections);
+    if (data.connections && typeof data.connections !== 'string')
+      data.connections = JSON.stringify(data.connections);
     return this.prisma.n8nTemplate.update({ where: { id }, data });
   }
 
@@ -302,8 +313,14 @@ export class N8nService {
       }),
     ]);
     return {
-      categoryDistribution: categoryStats.reduce((acc, item) => ({ ...acc, [item.category]: item._count }), {}),
-      difficultyDistribution: difficultyStats.reduce((acc, item) => ({ ...acc, [item.difficulty]: item._count }), {}),
+      categoryDistribution: categoryStats.reduce(
+        (acc, item) => ({ ...acc, [item.category]: item._count }),
+        {}
+      ),
+      difficultyDistribution: difficultyStats.reduce(
+        (acc, item) => ({ ...acc, [item.difficulty]: item._count }),
+        {}
+      ),
       mostPopular: popular,
     };
   }

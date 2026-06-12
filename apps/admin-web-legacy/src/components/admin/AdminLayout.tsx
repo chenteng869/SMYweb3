@@ -568,7 +568,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: '0 24px', background: colorBgContainer, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Header
+          style={{
+            padding: '0 24px',
+            background: colorBgContainer,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}

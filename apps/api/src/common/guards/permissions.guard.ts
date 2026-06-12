@@ -16,7 +16,8 @@ export class PermissionsGuard implements CanActivate {
     const { user } = context.switchToHttp().getRequest();
     if (!user) throw new ForbiddenException('未登录');
 
-    const perms: string[] = typeof user.permissions === 'string' ? JSON.parse(user.permissions) : (user.permissions || []);
+    const perms: string[] =
+      typeof user.permissions === 'string' ? JSON.parse(user.permissions) : user.permissions || [];
     if (perms.includes('*')) return true;
     for (const p of required) {
       if (perms.includes(p)) return true;

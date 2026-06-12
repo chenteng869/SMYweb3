@@ -9,7 +9,8 @@ export class LegalService {
   async listCompliance(query: any) {
     const { search, countryCode, category } = query;
     const where: any = {};
-    if (search) where.OR = [{ requirement: { contains: search } }, { country: { contains: search } }];
+    if (search)
+      where.OR = [{ requirement: { contains: search } }, { country: { contains: search } }];
     if (countryCode) where.countryCode = countryCode;
     if (category) where.category = category;
     return this.prisma.legalCompliance.findMany({ where, orderBy: { countryCode: 'asc' } });
@@ -35,14 +36,21 @@ export class LegalService {
     if (type) where.type = type;
     if (search) where.OR = [{ name: { contains: search } }];
     const [data, total] = await Promise.all([
-      this.prisma.contract.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: true } }),
+      this.prisma.contract.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { user: true },
+      }),
       this.prisma.contract.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
   }
 
   async createContract(data: any) {
-    if (data.parties && typeof data.parties !== 'string') data.parties = JSON.stringify(data.parties);
+    if (data.parties && typeof data.parties !== 'string')
+      data.parties = JSON.stringify(data.parties);
     return this.prisma.contract.create({ data });
   }
 

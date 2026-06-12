@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PrismaService } from '../../common/prisma.service';
+import { WalletsModule } from '../wallets/wallets.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PrismaService } from '../../common/prisma.service';
         signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '7d' },
       }),
     }),
+    WalletsModule,
   ],
   providers: [AuthService, JwtStrategy, PrismaService],
   controllers: [AuthController],

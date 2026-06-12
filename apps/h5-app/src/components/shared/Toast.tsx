@@ -36,7 +36,13 @@ const toastConfig = {
   },
 };
 
-export function ToastItem({ toast, onRemove }: { toast: ToastType; onRemove: (id: string) => void }) {
+export function ToastItem({
+  toast,
+  onRemove,
+}: {
+  toast: ToastType;
+  onRemove: (id: string) => void;
+}) {
   const config = toastConfig[toast.type];
   const Icon = config.icon;
 
@@ -58,7 +64,9 @@ export function ToastItem({ toast, onRemove }: { toast: ToastType; onRemove: (id
       <div className="flex-1 min-w-0">
         <p className="text-body-sm font-medium text-text-primary">{toast.title}</p>
         {toast.description && (
-          <p className="text-caption text-text-secondary mt-0.5 line-clamp-2">{toast.description}</p>
+          <p className="text-caption text-text-secondary mt-0.5 line-clamp-2">
+            {toast.description}
+          </p>
         )}
       </div>
       <button

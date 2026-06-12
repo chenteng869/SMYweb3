@@ -12,23 +12,23 @@
 
 **为什么需要这章**：官网是「海购星 Samoa DAO」**唯一面向搜索引擎和未登录访客**的资产——H5 / 小程序 / APP 全部要登录、要权限、要鉴权，**只有官网是公开流量入口**。本节定义可量化的业务目标，作为后续 SEO、A/B、内容运营的北极星。
 
-| 目标分类 | 指标 | 目标值 | 监控频率 |
-|---|---|---|---|
-| 流量 | 月度自然搜索 UV | ≥ 80,000（12 个月内） | 周 |
-| | Google 收录页面数 | ≥ 200 | 周 |
-| | 百度收录页面数 | ≥ 350 | 周 |
-| | 域名权威度（Ahrefs DR） | ≥ 35（12 个月内） | 月 |
-| 转化 | 落地页 → 注册转化率 | ≥ 4.5% | 日 |
-| | 注册 → 7 日激活率 | ≥ 55% | 周 |
-| | 试用 → 付费转化率 | ≥ 12% | 月 |
-| | 博客读者 → 邮件订阅 | ≥ 8% | 月 |
-| 性能 | Lighthouse Performance | ≥ 90（移动 + 桌面） | 每次发布 |
-| | LCP（ Largest Contentful Paint） | < 2.5s（p75 4G） | 实时 |
-| | INP（Interaction to Next Paint） | < 200ms（p75） | 实时 |
-| | CLS（Cumulative Layout Shift） | < 0.1（p75） | 实时 |
-| 品牌 | 直接访问占比 | ≥ 25% | 月 |
-| | 媒体引述数 | ≥ 15 篇 / 季度 | 季度 |
-| | NPS（注册 30 天后调研） | ≥ 45 | 季度 |
+| 目标分类 | 指标                             | 目标值                | 监控频率 |
+| -------- | -------------------------------- | --------------------- | -------- |
+| 流量     | 月度自然搜索 UV                  | ≥ 80,000（12 个月内） | 周       |
+|          | Google 收录页面数                | ≥ 200                 | 周       |
+|          | 百度收录页面数                   | ≥ 350                 | 周       |
+|          | 域名权威度（Ahrefs DR）          | ≥ 35（12 个月内）     | 月       |
+| 转化     | 落地页 → 注册转化率              | ≥ 4.5%                | 日       |
+|          | 注册 → 7 日激活率                | ≥ 55%                 | 周       |
+|          | 试用 → 付费转化率                | ≥ 12%                 | 月       |
+|          | 博客读者 → 邮件订阅              | ≥ 8%                  | 月       |
+| 性能     | Lighthouse Performance           | ≥ 90（移动 + 桌面）   | 每次发布 |
+|          | LCP（ Largest Contentful Paint） | < 2.5s（p75 4G）      | 实时     |
+|          | INP（Interaction to Next Paint） | < 200ms（p75）        | 实时     |
+|          | CLS（Cumulative Layout Shift）   | < 0.1（p75）          | 实时     |
+| 品牌     | 直接访问占比                     | ≥ 25%                 | 月       |
+|          | 媒体引述数                       | ≥ 15 篇 / 季度        | 季度     |
+|          | NPS（注册 30 天后调研）          | ≥ 45                  | 季度     |
 
 ---
 
@@ -38,37 +38,37 @@
 
 ### 2.1 潜在用户（C 端 / 中小企业主）
 
-| # | 故事 |
-|---|---|
-| US-1 | 作为**萨摩亚本地中小企业主**，我从 Google 搜索"萨摩亚公司注册流程"，进入 `/zh-CN/features/company-register`，看到流程图 + 费用表 + 用户证言，点 CTA「免费咨询」 |
+| #    | 故事                                                                                                                                                              |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US-1 | 作为**萨摩亚本地中小企业主**，我从 Google 搜索"萨摩亚公司注册流程"，进入 `/zh-CN/features/company-register`，看到流程图 + 费用表 + 用户证言，点 CTA「免费咨询」   |
 | US-2 | 作为**想出海做跨境电商的创业者**，我看完定价页 `/zh-CN/pricing` 后，对比 Starter / Pro / Enterprise，留资（邮箱 + 公司名 + 月营收区间），1 个工作日内收到 BD 跟进 |
-| US-3 | 作为**非中文母语者**，我浏览器语言是日语，访问官网自动跳 `/ja-JP/`，看到全日语落地页，能切换到英文或中文 |
-| US-4 | 作为**回头访客**，我 30 天前留过资，今天再访问时看到「您已留资，BD 张三将在 24h 内联系您」个性化提示 |
+| US-3 | 作为**非中文母语者**，我浏览器语言是日语，访问官网自动跳 `/ja-JP/`，看到全日语落地页，能切换到英文或中文                                                          |
+| US-4 | 作为**回头访客**，我 30 天前留过资，今天再访问时看到「您已留资，BD 张三将在 24h 内联系您」个性化提示                                                              |
 
 ### 2.2 开发者 / 合作伙伴
 
-| # | 故事 |
-|---|---|
-| US-5 | 作为**第三方开发者**，我进入 `/en-US/docs/api-reference`，看到 OpenAPI 3.1 文档，能直接复制 cURL 示例调 `/api/public/website/lead` |
+| #    | 故事                                                                                                                                                                 |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US-5 | 作为**第三方开发者**，我进入 `/en-US/docs/api-reference`，看到 OpenAPI 3.1 文档，能直接复制 cURL 示例调 `/api/public/website/lead`                                   |
 | US-6 | 作为**想集成 DID 凭证的合作伙伴**，我读 `/en-US/docs/integrations/did-verifier`，按步骤在自己的 Node.js 后端调 `/api/public/website/verify-vc`，跑通 end-to-end demo |
-| US-7 | 作为**贡献者**，我在 GitHub 看到 typo，点文档页底部的「在 GitHub 编辑此页」跳转 PR |
-| US-8 | 作为**集成方安全审计员**，我在 `/en-US/docs/security` 找到 SOC2 报告下载链接、渗透测试白皮书、加密规范 |
+| US-7 | 作为**贡献者**，我在 GitHub 看到 typo，点文档页底部的「在 GitHub 编辑此页」跳转 PR                                                                                   |
+| US-8 | 作为**集成方安全审计员**，我在 `/en-US/docs/security` 找到 SOC2 报告下载链接、渗透测试白皮书、加密规范                                                               |
 
 ### 2.3 投资人 / 媒体
 
-| # | 故事 |
-|---|---|
-| US-9 | 作为**机构投资人**，我访问 `/en-US/investors`（v2 上线前为 `/en-US/about` 单独区块），看到融资信息、董事会、增长数据 |
-| US-10 | 作为**财经媒体记者**，我通过 `/en-US/press` 下载品牌素材包（logo SVG / 配色规范 / 高管照片），并找到 PR 联系人邮箱 |
-| US-11 | 作为**自媒体内容创作者**，我在 `/en-US/blog` 看到 3 篇关于「Web3 出海合规」的深度长文，转发到 Twitter 并附官网链接 |
+| #     | 故事                                                                                                                 |
+| ----- | -------------------------------------------------------------------------------------------------------------------- |
+| US-9  | 作为**机构投资人**，我访问 `/en-US/investors`（v2 上线前为 `/en-US/about` 单独区块），看到融资信息、董事会、增长数据 |
+| US-10 | 作为**财经媒体记者**，我通过 `/en-US/press` 下载品牌素材包（logo SVG / 配色规范 / 高管照片），并找到 PR 联系人邮箱   |
+| US-11 | 作为**自媒体内容创作者**，我在 `/en-US/blog` 看到 3 篇关于「Web3 出海合规」的深度长文，转发到 Twitter 并附官网链接   |
 
 ### 2.4 内部 BD / 市场运营
 
-| # | 故事 |
-|---|---|
-| US-12 | 作为**市场运营**，我在 `/admin/website/leads` 看到今日新增 47 个 Lead，导出 CSV 给 BD 团队 |
+| #     | 故事                                                                                                                                   |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| US-12 | 作为**市场运营**，我在 `/admin/website/leads` 看到今日新增 47 个 Lead，导出 CSV 给 BD 团队                                             |
 | US-13 | 作为**内容运营**，我用 MDX 写博客 `apps/website/content/blog/2026-06-samoa-tax-guide.mdx`，提交 git → CI 自动 build → ISR 重新生成页面 |
-| US-14 | 作为**增长经理**，我在 `/admin/website/ab-tests` 创建 A/B 实验：landing hero 文案 A vs B，50/50 流量分流，3 天后看到统计显著性 |
+| US-14 | 作为**增长经理**，我在 `/admin/website/ab-tests` 创建 A/B 实验：landing hero 文案 A vs B，50/50 流量分流，3 天后看到统计显著性         |
 
 ---
 
@@ -78,54 +78,54 @@
 
 ### 3.1 目标与定位差异
 
-| 维度 | H5 / 小程序 / APP | 官网 |
-|---|---|---|
-| 主要目标 | 交易 + 留存 + 复购 | **获客 + 品牌 + SEO 流量** |
-| 用户态 | 100% 登录 | **99% 匿名**（访客） |
-| 转化路径 | 进 APP → 下单 → 支付 | 访问 → 留资 → BD 跟进 → 注册 |
-| 留存手段 | 推送 / 订阅消息 / Web Push | **邮件订阅 + 内容营销 + 私域沉淀** |
-| 核心 KPI | GMV / DAU / 留存 | **UV / 转化率 / 关键词排名 / Lighthouse 分数** |
-| 数据敏感度 | 高（KYC / 支付） | 低（仅 Lead 信息 + Cookie） |
+| 维度       | H5 / 小程序 / APP          | 官网                                           |
+| ---------- | -------------------------- | ---------------------------------------------- |
+| 主要目标   | 交易 + 留存 + 复购         | **获客 + 品牌 + SEO 流量**                     |
+| 用户态     | 100% 登录                  | **99% 匿名**（访客）                           |
+| 转化路径   | 进 APP → 下单 → 支付       | 访问 → 留资 → BD 跟进 → 注册                   |
+| 留存手段   | 推送 / 订阅消息 / Web Push | **邮件订阅 + 内容营销 + 私域沉淀**             |
+| 核心 KPI   | GMV / DAU / 留存           | **UV / 转化率 / 关键词排名 / Lighthouse 分数** |
+| 数据敏感度 | 高（KYC / 支付）           | 低（仅 Lead 信息 + Cookie）                    |
 
 ### 3.2 技术栈差异
 
-| 维度 | H5 | 小程序 | APP | **官网** |
-|---|---|---|---|---|
-| 框架 | Vite + React 19 | 微信原生 | RN / Flutter | **Next.js 14（App Router）** |
-| 渲染 | CSR（Client Side Render） | 微信 JS 引擎 | Native | **SSR + SSG + ISR 混合** |
-| 路由 | React Router v6 | 微信页面栈 | React Navigation | **Next.js file-based + `[locale]`** |
-| 状态管理 | Zustand + React Query | `App.globalData` | Redux / Zustand | **React Server Components + URL state + Server Actions** |
-| 构建 | Vite 5 | 微信开发者工具 | Metro | **Next.js 14 + Turbopack** |
-| 部署 | CDN 静态资源 | 微信审核 | App Store / Google Play | **Vercel / Cloudflare Pages / 自建 CDN** |
-| 鉴权 | JWT（7 天） | 微信 code → unionid | 手机号 / 苹果登录 | **无登录态**（Lead 用 cookie + 邮箱标记） |
-| SEO | ❌ 不关心 | ❌ 不关心 | ❌ 不关心 | ✅ **必须**（meta / JSON-LD / sitemap） |
-| 后端 API | `/api/h5/*` | `/api/h5/*` | `/api/h5/*` | **`/api/public/website/*`**（**单独**） |
+| 维度     | H5                        | 小程序              | APP                     | **官网**                                                 |
+| -------- | ------------------------- | ------------------- | ----------------------- | -------------------------------------------------------- |
+| 框架     | Vite + React 19           | 微信原生            | RN / Flutter            | **Next.js 14（App Router）**                             |
+| 渲染     | CSR（Client Side Render） | 微信 JS 引擎        | Native                  | **SSR + SSG + ISR 混合**                                 |
+| 路由     | React Router v6           | 微信页面栈          | React Navigation        | **Next.js file-based + `[locale]`**                      |
+| 状态管理 | Zustand + React Query     | `App.globalData`    | Redux / Zustand         | **React Server Components + URL state + Server Actions** |
+| 构建     | Vite 5                    | 微信开发者工具      | Metro                   | **Next.js 14 + Turbopack**                               |
+| 部署     | CDN 静态资源              | 微信审核            | App Store / Google Play | **Vercel / Cloudflare Pages / 自建 CDN**                 |
+| 鉴权     | JWT（7 天）               | 微信 code → unionid | 手机号 / 苹果登录       | **无登录态**（Lead 用 cookie + 邮箱标记）                |
+| SEO      | ❌ 不关心                 | ❌ 不关心           | ❌ 不关心               | ✅ **必须**（meta / JSON-LD / sitemap）                  |
+| 后端 API | `/api/h5/*`               | `/api/h5/*`         | `/api/h5/*`             | **`/api/public/website/*`**（**单独**）                  |
 
 ### 3.3 鉴权与身份差异（**最重要的差异**）
 
-| 维度 | H5 | **官网** |
-|---|---|---|
-| 默认身份 | 登录 `User` | **匿名访客**（无 `User.id`） |
-| 身份载体 | JWT（Authorization Header） | **HttpOnly Cookie（leadId）** + LocalStorage（locale） |
-| 跨域 | 同源 `smy.app` | **`smy.app` ↔ `api.smy.app` 跨域**——必须 CORS 白名单 |
-| 隐私门槛 | 用户协议 + KYC | **GDPR / CCPA / PIPL**——Cookie banner 强制 |
-| 二次身份 | 同设备静默登录 | **邮箱标记**——用邮箱关联 Lead 记录 |
-| 反作弊 | 风控引擎（设备指纹 + IP） | **Cloudflare Turnstile / hCaptcha**（**不**用极验——海外访问困难） |
+| 维度     | H5                          | **官网**                                                          |
+| -------- | --------------------------- | ----------------------------------------------------------------- |
+| 默认身份 | 登录 `User`                 | **匿名访客**（无 `User.id`）                                      |
+| 身份载体 | JWT（Authorization Header） | **HttpOnly Cookie（leadId）** + LocalStorage（locale）            |
+| 跨域     | 同源 `smy.app`              | **`smy.app` ↔ `api.smy.app` 跨域**——必须 CORS 白名单              |
+| 隐私门槛 | 用户协议 + KYC              | **GDPR / CCPA / PIPL**——Cookie banner 强制                        |
+| 二次身份 | 同设备静默登录              | **邮箱标记**——用邮箱关联 Lead 记录                                |
+| 反作弊   | 风控引擎（设备指纹 + IP）   | **Cloudflare Turnstile / hCaptcha**（**不**用极验——海外访问困难） |
 
 ### 3.4 为什么 API 单独走 `/api/public/website/*`（**不**复用 `/api/h5/*`）
 
 **为什么需要这章**：3 个客户端 + 1 个官网共用后端，但 API 路径**必须**物理隔离——这是「公开流量」与「鉴权流量」的本质区别。混用会引发 4 类严重问题（性能、安全、审计、CDN 缓存）。本节给硬性约束。
 
-| 维度 | `/api/h5/*` | **`/api/public/website/*`** |
-|---|---|---|
-| 鉴权 | 必须 JWT | **完全公开**（无 JWT） |
-| 限流 | 按 userId 限流 | **按 IP + UA + Cookie** 限流 |
-| 缓存 | 几乎不缓存 | **CDN 可激进缓存**（30s ~ 1h） |
-| WAF | 后台规则 | **更严**——防爬虫 / 防爆破 / 防 SQL 注入 |
-| 审计 | 写 AuditLog（关联 adminUser） | **写访问日志 + Lead 表**，**不**写 AuditLog |
-| 域名白名单 | H5 / 小程序 / APP 客户端 | **搜索引擎爬虫 + 第三方集成** |
-| 鉴权层级 | NestJS Guards 全套 | **仅** CORS guard + RateLimit guard |
-| 字段过滤 | `class-transformer` `@Expose()` | **额外 DTO 过滤**——不能泄露 admin 字段 |
+| 维度       | `/api/h5/*`                     | **`/api/public/website/*`**                 |
+| ---------- | ------------------------------- | ------------------------------------------- |
+| 鉴权       | 必须 JWT                        | **完全公开**（无 JWT）                      |
+| 限流       | 按 userId 限流                  | **按 IP + UA + Cookie** 限流                |
+| 缓存       | 几乎不缓存                      | **CDN 可激进缓存**（30s ~ 1h）              |
+| WAF        | 后台规则                        | **更严**——防爬虫 / 防爆破 / 防 SQL 注入     |
+| 审计       | 写 AuditLog（关联 adminUser）   | **写访问日志 + Lead 表**，**不**写 AuditLog |
+| 域名白名单 | H5 / 小程序 / APP 客户端        | **搜索引擎爬虫 + 第三方集成**               |
+| 鉴权层级   | NestJS Guards 全套              | **仅** CORS guard + RateLimit guard         |
+| 字段过滤   | `class-transformer` `@Expose()` | **额外 DTO 过滤**——不能泄露 admin 字段      |
 
 **硬性约束**（违反即代码 review 拒绝）：
 
@@ -140,48 +140,48 @@ export class WebsiteBadController { ... }
 
 ### 3.5 SEO 能力差异（**官网独有**）
 
-| SEO 能力 | H5（CSR） | 小程序 | APP | **官网（SSR/SSG）** |
-|---|---|---|---|---|
-| `<title>` / `<meta>` | 客户端设置（**不**被爬虫抓取） | 微信 SEO 黑盒 | N/A | **服务端渲染，爬虫直接抓** |
-| Open Graph | 部分支持（需预渲染） | ❌ | N/A | **完整支持**（`generateMetadata`） |
-| 结构化数据 JSON-LD | ❌ | ❌ | N/A | **完整支持**（`schema.org/Organization` / `Article` / `Product` / `FAQ`） |
-| `sitemap.xml` | ❌ | ❌ | N/A | **动态生成**（`app/sitemap.ts`） |
-| `robots.txt` | ❌ | ❌ | N/A | **动态生成**（`app/robots.ts`） |
-| Canonical | ❌ | ❌ | N/A | **自动 + 手动**（`alternates.canonical`） |
-| Hreflang（多语言） | ❌ | ❌ | N/A | **自动**（`alternates.languages`） |
-| Core Web Vitals | 差（CSR） | 中 | 优 | **优**（SSG 静态资源 + CDN） |
+| SEO 能力             | H5（CSR）                      | 小程序        | APP | **官网（SSR/SSG）**                                                       |
+| -------------------- | ------------------------------ | ------------- | --- | ------------------------------------------------------------------------- |
+| `<title>` / `<meta>` | 客户端设置（**不**被爬虫抓取） | 微信 SEO 黑盒 | N/A | **服务端渲染，爬虫直接抓**                                                |
+| Open Graph           | 部分支持（需预渲染）           | ❌            | N/A | **完整支持**（`generateMetadata`）                                        |
+| 结构化数据 JSON-LD   | ❌                             | ❌            | N/A | **完整支持**（`schema.org/Organization` / `Article` / `Product` / `FAQ`） |
+| `sitemap.xml`        | ❌                             | ❌            | N/A | **动态生成**（`app/sitemap.ts`）                                          |
+| `robots.txt`         | ❌                             | ❌            | N/A | **动态生成**（`app/robots.ts`）                                           |
+| Canonical            | ❌                             | ❌            | N/A | **自动 + 手动**（`alternates.canonical`）                                 |
+| Hreflang（多语言）   | ❌                             | ❌            | N/A | **自动**（`alternates.languages`）                                        |
+| Core Web Vitals      | 差（CSR）                      | 中            | 优  | **优**（SSG 静态资源 + CDN）                                              |
 
 ### 3.6 性能与缓存策略差异
 
-| 资源 | H5 | **官网** |
-|---|---|---|
-| HTML | 1 个空壳 + JS 渲染 | **每个 URL 一个静态 HTML**（ISR 缓存） |
-| JS bundle | 全部加载（~800KB gzipped） | **按路由懒加载**（首屏 ~120KB gzipped） |
-| 图片 | 普通 `<img>` | **`next/image`**（自动 WebP / AVIF / 懒加载 / 响应式） |
-| 字体 | 系统字体 | **`next/font`**（自动子集化 + preload） |
-| 缓存策略 | Browser cache + Service Worker | **CDN edge cache + ISR + Browser cache 三层** |
-| 失效 | 版本号 + 强制刷新 | **On-Demand Revalidation**（`revalidatePath` / `revalidateTag`） |
+| 资源      | H5                             | **官网**                                                         |
+| --------- | ------------------------------ | ---------------------------------------------------------------- |
+| HTML      | 1 个空壳 + JS 渲染             | **每个 URL 一个静态 HTML**（ISR 缓存）                           |
+| JS bundle | 全部加载（~800KB gzipped）     | **按路由懒加载**（首屏 ~120KB gzipped）                          |
+| 图片      | 普通 `<img>`                   | **`next/image`**（自动 WebP / AVIF / 懒加载 / 响应式）           |
+| 字体      | 系统字体                       | **`next/font`**（自动子集化 + preload）                          |
+| 缓存策略  | Browser cache + Service Worker | **CDN edge cache + ISR + Browser cache 三层**                    |
+| 失效      | 版本号 + 强制刷新              | **On-Demand Revalidation**（`revalidatePath` / `revalidateTag`） |
 
 ### 3.7 数据采集差异
 
-| 维度 | H5 | **官网** |
-|---|---|---|
-| 行为埋点 | 自研 + 神策 / Sensors | **GA4 + 百度统计 + 友盟 + Mixpanel** 四件套 |
-| 转化漏斗 | 后台 BI 平台 | **GA4 Funnels + Mixpanel Cohorts** |
-| 热图 | — | **Hotjar / Microsoft Clarity**（**不**用百度热图——海外访问慢） |
-| A/B 测试 | 无 | **自研 A/B 框架 + PostHog**（详见 §13） |
-| Session Replay | — | **Microsoft Clarity（免费）** / LogRocket（付费） |
-| GDPR 合规 | 用户协议覆盖 | **必须** Cookie banner + Do Not Track 尊重 |
+| 维度           | H5                    | **官网**                                                       |
+| -------------- | --------------------- | -------------------------------------------------------------- |
+| 行为埋点       | 自研 + 神策 / Sensors | **GA4 + 百度统计 + 友盟 + Mixpanel** 四件套                    |
+| 转化漏斗       | 后台 BI 平台          | **GA4 Funnels + Mixpanel Cohorts**                             |
+| 热图           | —                     | **Hotjar / Microsoft Clarity**（**不**用百度热图——海外访问慢） |
+| A/B 测试       | 无                    | **自研 A/B 框架 + PostHog**（详见 §13）                        |
+| Session Replay | —                     | **Microsoft Clarity（免费）** / LogRocket（付费）              |
+| GDPR 合规      | 用户协议覆盖          | **必须** Cookie banner + Do Not Track 尊重                     |
 
 ### 3.8 内容生产差异
 
-| 维度 | H5 / 后台 | **官网** |
-|---|---|---|
-| 内容源 | 数据库（CMS 后台） | **MDX 文件**（`apps/website/content/`）+ **Headless CMS**（Sanity / Strapi / Contentlayer 候选） |
-| 发布流程 | 运营在后台点「发布」 | **Git 提交 → CI 触发 build → ISR 重生成** |
-| 版本控制 | 后台内置 | **Git 全程**（可回滚） |
-| 协作 | 后台角色权限 | **Git PR + Review** |
-| 多语言 | 字典文件 | **每篇 MDX 有 4 个 `.zh-CN.mdx` / `.en-US.mdx` / `.ja-JP.mdx` / `.ko-KR.mdx`** |
+| 维度     | H5 / 后台            | **官网**                                                                                         |
+| -------- | -------------------- | ------------------------------------------------------------------------------------------------ |
+| 内容源   | 数据库（CMS 后台）   | **MDX 文件**（`apps/website/content/`）+ **Headless CMS**（Sanity / Strapi / Contentlayer 候选） |
+| 发布流程 | 运营在后台点「发布」 | **Git 提交 → CI 触发 build → ISR 重生成**                                                        |
+| 版本控制 | 后台内置             | **Git 全程**（可回滚）                                                                           |
+| 协作     | 后台角色权限         | **Git PR + Review**                                                                              |
+| 多语言   | 字典文件             | **每篇 MDX 有 4 个 `.zh-CN.mdx` / `.en-US.mdx` / `.ja-JP.mdx` / `.ko-KR.mdx`**                   |
 
 ---
 
@@ -227,6 +227,7 @@ BD 在后台 `/admin/leads/:id` 标记 status=contacted
 ```
 
 **SLA**：
+
 - 首屏 LCP < 2.5s（4G 网络，p75）
 - 弹窗打开 < 100ms（本地状态，不打后端）
 - 表单提交 → 返回结果 < 800ms
@@ -258,6 +259,7 @@ GA4 归因 → 转化
 ```
 
 **SEO 关键节点**：
+
 - 提交 sitemap 给 Google Search Console + 百度站长平台
 - 每篇文章手动设置 `canonical` + `hreflang`
 - 内部链接结构：博客 → 功能详情 → 落地页
@@ -288,6 +290,7 @@ GA4 归因 → 转化
 ```
 
 **关键工具**：
+
 - 邮件发送：**Resend**（开发友好）+ **SendGrid**（生产稳定）
 - 邮件模板：**React Email** 组件
 - 反垃圾：**SPF + DKIM + DMARC** 三件套
@@ -323,29 +326,29 @@ BD 跟进 + 签约
 
 ### 5.1 PageView（页面浏览 — 替代 GA4 自有存储）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| visitorId | String(64) | ✓ | Cookie 中的 UUID（**不**用 IP 关联） |
-| sessionId | String(64) | ✓ | 30 分钟无活动即结束会话 |
-| path | String(2048) | ✓ | URL 路径（含 query） |
-| locale | String(8) | | zh-CN / en-US / ja-JP / ko-KR |
-| referrer | String(2048) | | 来源 URL |
-| utmSource | String(128) | | UTM 参数 |
-| utmMedium | String(128) | | |
-| utmCampaign | String(128) | | |
-| utmContent | String(128) | | |
-| utmTerm | String(128) | | |
-| deviceType | enum | ✓ | `desktop` / `mobile` / `tablet` |
-| os | String(64) | | iOS / Android / Windows / macOS / Linux |
-| browser | String(64) | | Chrome / Safari / Edge / Firefox |
-| country | String(2) | | ISO 3166-1 alpha-2（Cloudflare CF-IPCountry） |
-| city | String(64) | | |
-| durationMs | Int | | 页面停留时长（visibilitychange + beforeunload） |
-| scrollDepth | Int | | 0-100（百分比） |
-| isBounce | Boolean | | 单页访问即跳出 |
-| experimentsJson | String | | A/B 实验曝光记录（JSON 字符串） |
-| createdAt | DateTime | | 访问时间 |
+| 字段            | 类型         | 必填 | 说明                                            |
+| --------------- | ------------ | ---- | ----------------------------------------------- |
+| id              | String       | ✓    |                                                 |
+| visitorId       | String(64)   | ✓    | Cookie 中的 UUID（**不**用 IP 关联）            |
+| sessionId       | String(64)   | ✓    | 30 分钟无活动即结束会话                         |
+| path            | String(2048) | ✓    | URL 路径（含 query）                            |
+| locale          | String(8)    |      | zh-CN / en-US / ja-JP / ko-KR                   |
+| referrer        | String(2048) |      | 来源 URL                                        |
+| utmSource       | String(128)  |      | UTM 参数                                        |
+| utmMedium       | String(128)  |      |                                                 |
+| utmCampaign     | String(128)  |      |                                                 |
+| utmContent      | String(128)  |      |                                                 |
+| utmTerm         | String(128)  |      |                                                 |
+| deviceType      | enum         | ✓    | `desktop` / `mobile` / `tablet`                 |
+| os              | String(64)   |      | iOS / Android / Windows / macOS / Linux         |
+| browser         | String(64)   |      | Chrome / Safari / Edge / Firefox                |
+| country         | String(2)    |      | ISO 3166-1 alpha-2（Cloudflare CF-IPCountry）   |
+| city            | String(64)   |      |                                                 |
+| durationMs      | Int          |      | 页面停留时长（visibilitychange + beforeunload） |
+| scrollDepth     | Int          |      | 0-100（百分比）                                 |
+| isBounce        | Boolean      |      | 单页访问即跳出                                  |
+| experimentsJson | String       |      | A/B 实验曝光记录（JSON 字符串）                 |
+| createdAt       | DateTime     |      | 访问时间                                        |
 
 ```prisma
 model PageView {
@@ -380,6 +383,7 @@ model PageView {
 ```
 
 **采集策略**：
+
 - **不**前端写死发请求 → 用 `@vercel/analytics` 或自研 `lib/tracker.ts`
 - 1 分钟内同 path 多次访问去重（`sessionId + path + 1min`）
 - **不**采集：精确 IP、邮箱、手机号（合规）
@@ -387,29 +391,29 @@ model PageView {
 
 ### 5.2 LeadForm（线索表单提交）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| leadNo | String(20) | ✓ | 业务编号 `LD-2026-00001`（年度递增） |
-| name | String(64) | ✓ | 姓名 |
-| email | String(128) | ✓ | 邮箱（**唯一去重 + MX 校验**） |
-| phone | String(32) | | 手机号（E.164 格式） |
-| company | String(128) | | 公司名 |
-| companySize | enum | | `1-10` / `11-50` / `51-200` / `201-1000` / `1000+` |
-| country | String(2) | | ISO 国家码 |
-| interestArea | String[] | | 感兴趣领域（数组：`company` / `tax` / `legal` / `banking`） |
-| monthlyRevenue | enum | | `<$10K` / `$10K-$100K` / `$100K-$1M` / `>$1M` |
-| message | String(2000) | | 需求描述 |
-| source | enum | ✓ | `landing_hero` / `pricing` / `blog_inline` / `contact_form` / `demo_request` |
-| referrerPath | String(2048) | | 来源落地页 |
-| utmParams | String | | UTM JSON |
-| status | enum | ✓ | `new` / `contacted` / `qualified` / `negotiating` / `closed_won` / `closed_lost` / `spam` |
-| assignedToAdminId | String? | | BD 负责人（关联 AdminUser） |
-| assignedToAdmin | AdminUser? | | 详见 §12 规范 |
-| experimentVariant | String(64) | | 当前 A/B 实验变体 |
-| ipAddress | String(45) | | 提交 IP（**不**长期保留，90 天后匿名化） |
-| userAgent | String(512) | | |
-| createdAt, updatedAt, deletedAt | | | 通用 |
+| 字段                            | 类型         | 必填 | 说明                                                                                      |
+| ------------------------------- | ------------ | ---- | ----------------------------------------------------------------------------------------- |
+| id                              | String       | ✓    |                                                                                           |
+| leadNo                          | String(20)   | ✓    | 业务编号 `LD-2026-00001`（年度递增）                                                      |
+| name                            | String(64)   | ✓    | 姓名                                                                                      |
+| email                           | String(128)  | ✓    | 邮箱（**唯一去重 + MX 校验**）                                                            |
+| phone                           | String(32)   |      | 手机号（E.164 格式）                                                                      |
+| company                         | String(128)  |      | 公司名                                                                                    |
+| companySize                     | enum         |      | `1-10` / `11-50` / `51-200` / `201-1000` / `1000+`                                        |
+| country                         | String(2)    |      | ISO 国家码                                                                                |
+| interestArea                    | String[]     |      | 感兴趣领域（数组：`company` / `tax` / `legal` / `banking`）                               |
+| monthlyRevenue                  | enum         |      | `<$10K` / `$10K-$100K` / `$100K-$1M` / `>$1M`                                             |
+| message                         | String(2000) |      | 需求描述                                                                                  |
+| source                          | enum         | ✓    | `landing_hero` / `pricing` / `blog_inline` / `contact_form` / `demo_request`              |
+| referrerPath                    | String(2048) |      | 来源落地页                                                                                |
+| utmParams                       | String       |      | UTM JSON                                                                                  |
+| status                          | enum         | ✓    | `new` / `contacted` / `qualified` / `negotiating` / `closed_won` / `closed_lost` / `spam` |
+| assignedToAdminId               | String?      |      | BD 负责人（关联 AdminUser）                                                               |
+| assignedToAdmin                 | AdminUser?   |      | 详见 §12 规范                                                                             |
+| experimentVariant               | String(64)   |      | 当前 A/B 实验变体                                                                         |
+| ipAddress                       | String(45)   |      | 提交 IP（**不**长期保留，90 天后匿名化）                                                  |
+| userAgent                       | String(512)  |      |                                                                                           |
+| createdAt, updatedAt, deletedAt |              |      | 通用                                                                                      |
 
 ```prisma
 model LeadForm {
@@ -445,30 +449,31 @@ model LeadForm {
 ```
 
 **业务约束**：
+
 - 邮箱去重：同邮箱 24h 内重复提交 → 取最新，**不**新增记录
 - 反垃圾：Turnstile 验证失败 → status='spam'，不入 BD 看板
 - 合规：90 天后 `ipAddress` 字段自动置空（cron job）
 
 ### 5.3 ABTest（A/B 实验配置）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| key | String(64) | ✓ | 实验唯一标识（如 `homepage_hero_v1`） |
-| name | String(128) | ✓ | 实验名 |
-| description | String(2000) | | |
-| status | enum | ✓ | `draft` / `running` / `paused` / `completed` / `archived` |
-| variants | String | ✓ | JSON 数组：`[{ key: 'A', weight: 50, payload: {...} }, { key: 'B', weight: 50, payload: {...} }]` |
-| targetAudience | String | | 受众过滤条件（JSON：locale / country / deviceType） |
-| trafficAllocation | Int | ✓ | 0-100（参与实验的流量百分比） |
-| primaryMetric | String(64) | | 主要指标（如 `cta_click_rate`） |
-| secondaryMetrics | String | | 次要指标 JSON 数组 |
-| minimumSampleSize | Int | | 最小样本量（统计显著性） |
-| startedAt | DateTime? | | 实验开始时间 |
-| endedAt | DateTime? | | 实验结束时间 |
-| createdByAdminId | String? | | 创建人 |
-| createdBy | AdminUser? | | 详见 §12 |
-| createdAt, updatedAt, deletedAt | | | 通用 |
+| 字段                            | 类型         | 必填 | 说明                                                                                              |
+| ------------------------------- | ------------ | ---- | ------------------------------------------------------------------------------------------------- |
+| id                              | String       | ✓    |                                                                                                   |
+| key                             | String(64)   | ✓    | 实验唯一标识（如 `homepage_hero_v1`）                                                             |
+| name                            | String(128)  | ✓    | 实验名                                                                                            |
+| description                     | String(2000) |      |                                                                                                   |
+| status                          | enum         | ✓    | `draft` / `running` / `paused` / `completed` / `archived`                                         |
+| variants                        | String       | ✓    | JSON 数组：`[{ key: 'A', weight: 50, payload: {...} }, { key: 'B', weight: 50, payload: {...} }]` |
+| targetAudience                  | String       |      | 受众过滤条件（JSON：locale / country / deviceType）                                               |
+| trafficAllocation               | Int          | ✓    | 0-100（参与实验的流量百分比）                                                                     |
+| primaryMetric                   | String(64)   |      | 主要指标（如 `cta_click_rate`）                                                                   |
+| secondaryMetrics                | String       |      | 次要指标 JSON 数组                                                                                |
+| minimumSampleSize               | Int          |      | 最小样本量（统计显著性）                                                                          |
+| startedAt                       | DateTime?    |      | 实验开始时间                                                                                      |
+| endedAt                         | DateTime?    |      | 实验结束时间                                                                                      |
+| createdByAdminId                | String?      |      | 创建人                                                                                            |
+| createdBy                       | AdminUser?   |      | 详见 §12                                                                                          |
+| createdAt, updatedAt, deletedAt |              |      | 通用                                                                                              |
 
 ```prisma
 model ABTest {
@@ -537,25 +542,25 @@ model ABTestStatusLog {
 
 ### 5.4 SEOPageMeta（页面 SEO 元数据）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| path | String(512) | ✓ | 页面路径（含 `[locale]` 占位） |
-| locale | String(8) | ✓ | 单独存（`/` + `/en-US` 是不同记录） |
-| title | String(128) | ✓ | `<title>` |
-| description | String(256) | ✓ | `<meta name="description">` |
-| keywords | String(512) | | 逗号分隔 |
-| canonical | String(512) | | 规范 URL |
-| ogImage | String(512) | | Open Graph 图片（1200×630） |
-| ogType | String(32) | | `website` / `article` / `product` |
-| twitterCard | String(32) | | `summary` / `summary_large_image` |
-| jsonLd | String | | JSON-LD 结构化数据 |
-| robotsIndex | Boolean | ✓ | `index` / `noindex` |
-| robotsFollow | Boolean | ✓ | `follow` / `nofollow` |
-| hreflangAlternates | String | | JSON：`{ 'en-US': '/en-US/...', 'ja-JP': '/ja-JP/...' }` |
-| priority | Decimal | | sitemap priority（0.0-1.0） |
-| changefreq | String(16) | | sitemap changefreq |
-| createdAt, updatedAt | | | 通用 |
+| 字段                 | 类型        | 必填 | 说明                                                     |
+| -------------------- | ----------- | ---- | -------------------------------------------------------- |
+| id                   | String      | ✓    |                                                          |
+| path                 | String(512) | ✓    | 页面路径（含 `[locale]` 占位）                           |
+| locale               | String(8)   | ✓    | 单独存（`/` + `/en-US` 是不同记录）                      |
+| title                | String(128) | ✓    | `<title>`                                                |
+| description          | String(256) | ✓    | `<meta name="description">`                              |
+| keywords             | String(512) |      | 逗号分隔                                                 |
+| canonical            | String(512) |      | 规范 URL                                                 |
+| ogImage              | String(512) |      | Open Graph 图片（1200×630）                              |
+| ogType               | String(32)  |      | `website` / `article` / `product`                        |
+| twitterCard          | String(32)  |      | `summary` / `summary_large_image`                        |
+| jsonLd               | String      |      | JSON-LD 结构化数据                                       |
+| robotsIndex          | Boolean     | ✓    | `index` / `noindex`                                      |
+| robotsFollow         | Boolean     | ✓    | `follow` / `nofollow`                                    |
+| hreflangAlternates   | String      |      | JSON：`{ 'en-US': '/en-US/...', 'ja-JP': '/ja-JP/...' }` |
+| priority             | Decimal     |      | sitemap priority（0.0-1.0）                              |
+| changefreq           | String(16)  |      | sitemap changefreq                                       |
+| createdAt, updatedAt |             |      | 通用                                                     |
 
 ```prisma
 model SEOPageMeta {
@@ -595,22 +600,22 @@ model SEOPageMeta {
 new → contacted → qualified → negotiating → closed_won
                   ↘                     ↘
                    closed_lost          closed_lost
-                               
+
 任意状态 → spam（运营标记） / unqualified（明确无意向）
 ```
 
 **状态定义**：
 
-| 状态 | 颜色（00-foundation §8.3.1） | 文字 | 触发条件 | Owner |
-|---|---|---|---|---|
-| `new` | `#F6A623` 橙 | 待跟进 | 表单提交成功，尚未有人联系 | BD 全员 |
-| `contacted` | `#3B82F6` 蓝 | 已联系 | BD 在 24h 内拨打电话 / 发邮件 | BD 全员 |
-| `qualified` | `#8B5CF6` 紫 | 已确认意向 | 客户回复有具体需求 | BD 高级 |
-| `negotiating` | `#F59E0B` 琥珀 | 商务谈判中 | 发送报价 / 合同中 | BD 高级 |
-| `closed_won` | `#10B981` 绿 | 成交 | 合同签署 + 首付款到账 | BD 总监 |
-| `closed_lost` | `#EF4444` 红 | 失单 | 客户明确拒绝 / 30 天无回复 | BD 总监 |
-| `spam` | `#9CA3AF` 浅灰 | 垃圾线索 | Turnstile 失败 / 邮箱无效 / 关键字过滤 | 运营 |
-| `unqualified` | `#6B7280` 灰 | 无意向 | 客户不在目标画像（如个人开发者） | 运营 |
+| 状态          | 颜色（00-foundation §8.3.1） | 文字       | 触发条件                               | Owner   |
+| ------------- | ---------------------------- | ---------- | -------------------------------------- | ------- |
+| `new`         | `#F6A623` 橙                 | 待跟进     | 表单提交成功，尚未有人联系             | BD 全员 |
+| `contacted`   | `#3B82F6` 蓝                 | 已联系     | BD 在 24h 内拨打电话 / 发邮件          | BD 全员 |
+| `qualified`   | `#8B5CF6` 紫                 | 已确认意向 | 客户回复有具体需求                     | BD 高级 |
+| `negotiating` | `#F59E0B` 琥珀               | 商务谈判中 | 发送报价 / 合同中                      | BD 高级 |
+| `closed_won`  | `#10B981` 绿                 | 成交       | 合同签署 + 首付款到账                  | BD 总监 |
+| `closed_lost` | `#EF4444` 红                 | 失单       | 客户明确拒绝 / 30 天无回复             | BD 总监 |
+| `spam`        | `#9CA3AF` 浅灰               | 垃圾线索   | Turnstile 失败 / 邮箱无效 / 关键字过滤 | 运营    |
+| `unqualified` | `#6B7280` 灰                 | 无意向     | 客户不在目标画像（如个人开发者）       | 运营    |
 
 **状态变更日志**（遵循 00-foundation §4.3 独立表模式）：
 
@@ -635,12 +640,12 @@ model LeadFormStatusLog {
 
 **验收用例**：
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | LeadForm 状态变更 | 同步写 1 条 `LeadFormStatusLog` |
-| 2 | 同一 Lead 24h 内被 2 个 BD 同时改为 `contacted` | 第二次修改者收到 409 冲突提示 |
-| 3 | BD 标记 `spam` | 状态从 `new` 直接跳 `spam`，**不**走中间态 |
-| 4 | 30 天未联系自动 `closed_lost` | cron job 每日 03:00 扫描 |
+| #   | 用例                                            | 期望                                       |
+| --- | ----------------------------------------------- | ------------------------------------------ |
+| 1   | LeadForm 状态变更                               | 同步写 1 条 `LeadFormStatusLog`            |
+| 2   | 同一 Lead 24h 内被 2 个 BD 同时改为 `contacted` | 第二次修改者收到 409 冲突提示              |
+| 3   | BD 标记 `spam`                                  | 状态从 `new` 直接跳 `spam`，**不**走中间态 |
+| 4   | 30 天未联系自动 `closed_lost`                   | cron job 每日 03:00 扫描                   |
 
 ### 6.2 ABTest 状态机（实验生命周期）
 
@@ -654,15 +659,16 @@ draft → running → paused ↔ running
 
 **状态定义**：
 
-| 状态 | 颜色 | 文字 | 触发条件 |
-|---|---|---|---|
-| `draft` | `#9CA3AF` 浅灰 | 草稿 | 创建未启动 |
-| `running` | `#10B981` 绿 | 运行中 | 启动后开始分流 |
-| `paused` | `#F59E0B` 琥珀 | 已暂停 | 人工暂停（紧急情况 / 节假日） |
-| `completed` | `#3B82F6` 蓝 | 已完成 | 达到样本量 / 显著性 / 手动结束 |
-| `archived` | `#6B7280` 灰 | 已归档 | 90 天后自动归档 |
+| 状态        | 颜色           | 文字   | 触发条件                       |
+| ----------- | -------------- | ------ | ------------------------------ |
+| `draft`     | `#9CA3AF` 浅灰 | 草稿   | 创建未启动                     |
+| `running`   | `#10B981` 绿   | 运行中 | 启动后开始分流                 |
+| `paused`    | `#F59E0B` 琥珀 | 已暂停 | 人工暂停（紧急情况 / 节假日）  |
+| `completed` | `#3B82F6` 蓝   | 已完成 | 达到样本量 / 显著性 / 手动结束 |
+| `archived`  | `#6B7280` 灰   | 已归档 | 90 天后自动归档                |
 
 **关键规则**：
+
 - `draft → running`：必须设置 `startedAt`，开始分配流量
 - `running → paused`：保留分流比例，访客继续看到原变体（**不**重新随机）
 - `paused → running`：继续原实验，**不**重置样本
@@ -677,48 +683,48 @@ draft → running → paused ↔ running
 
 ### 7.1 公开接口（无需鉴权）
 
-| Method | Path | 限流 | 说明 |
-|---|---|---|---|
-| GET | `/api/public/website/config` | 60/min/IP | 全局配置（GA ID / Turnstile Key / 公告） |
-| GET | `/api/public/website/seo/:path` | 300/min/IP | 单页 SEO 元数据（按 path 查 SEOPageMeta） |
-| GET | `/api/public/website/blog/posts` | 60/min/IP | 博客列表（分页 + tag + locale） |
-| GET | `/api/public/website/blog/posts/:slug` | 60/min/IP | 博客详情（MDX 编译后 HTML） |
-| GET | `/api/public/website/case-studies` | 60/min/IP | 案例列表 |
-| GET | `/api/public/website/case-studies/:slug` | 60/min/IP | 案例详情 |
-| GET | `/api/public/website/testimonials` | 60/min/IP | 用户证言（按行业 / 国家筛选） |
-| GET | `/api/public/website/pricing-plans` | 60/min/IP | 价格方案（多币种） |
-| GET | `/api/public/website/locales` | 60/min/IP | 支持的语言列表 |
-| POST | `/api/public/website/track/pageview` | 300/min/IP | 上报页面浏览（不强制必传） |
-| POST | `/api/public/website/track/event` | 300/min/IP | 上报自定义事件（按钮点击 / 表单字段） |
-| POST | `/api/public/website/track/experiment` | 600/min/IP | 上报 A/B 实验曝光 |
-| POST | `/api/public/website/leads` | 3/hour/IP | 提交 Lead（**必须** Turnstile） |
-| POST | `/api/public/website/newsletter/subscribe` | 5/hour/IP | 订阅 newsletter（**必须** Turnstile） |
-| POST | `/api/public/website/newsletter/unsubscribe` | 10/hour/IP | 退订（带 token 验证） |
-| POST | `/api/public/website/partners/apply` | 3/hour/IP | 合作申请（**必须** Turnstile） |
-| POST | `/api/public/website/demo-request` | 3/hour/IP | 预约演示（**必须** Turnstile） |
-| POST | `/api/public/website/contact` | 5/hour/IP | 联系表单（**必须** Turnstile） |
-| GET | `/api/public/website/sitemap.xml` | 1000/min/IP | 动态 sitemap |
-| GET | `/api/public/website/robots.txt` | 1000/min/IP | 动态 robots |
+| Method | Path                                         | 限流        | 说明                                      |
+| ------ | -------------------------------------------- | ----------- | ----------------------------------------- |
+| GET    | `/api/public/website/config`                 | 60/min/IP   | 全局配置（GA ID / Turnstile Key / 公告）  |
+| GET    | `/api/public/website/seo/:path`              | 300/min/IP  | 单页 SEO 元数据（按 path 查 SEOPageMeta） |
+| GET    | `/api/public/website/blog/posts`             | 60/min/IP   | 博客列表（分页 + tag + locale）           |
+| GET    | `/api/public/website/blog/posts/:slug`       | 60/min/IP   | 博客详情（MDX 编译后 HTML）               |
+| GET    | `/api/public/website/case-studies`           | 60/min/IP   | 案例列表                                  |
+| GET    | `/api/public/website/case-studies/:slug`     | 60/min/IP   | 案例详情                                  |
+| GET    | `/api/public/website/testimonials`           | 60/min/IP   | 用户证言（按行业 / 国家筛选）             |
+| GET    | `/api/public/website/pricing-plans`          | 60/min/IP   | 价格方案（多币种）                        |
+| GET    | `/api/public/website/locales`                | 60/min/IP   | 支持的语言列表                            |
+| POST   | `/api/public/website/track/pageview`         | 300/min/IP  | 上报页面浏览（不强制必传）                |
+| POST   | `/api/public/website/track/event`            | 300/min/IP  | 上报自定义事件（按钮点击 / 表单字段）     |
+| POST   | `/api/public/website/track/experiment`       | 600/min/IP  | 上报 A/B 实验曝光                         |
+| POST   | `/api/public/website/leads`                  | 3/hour/IP   | 提交 Lead（**必须** Turnstile）           |
+| POST   | `/api/public/website/newsletter/subscribe`   | 5/hour/IP   | 订阅 newsletter（**必须** Turnstile）     |
+| POST   | `/api/public/website/newsletter/unsubscribe` | 10/hour/IP  | 退订（带 token 验证）                     |
+| POST   | `/api/public/website/partners/apply`         | 3/hour/IP   | 合作申请（**必须** Turnstile）            |
+| POST   | `/api/public/website/demo-request`           | 3/hour/IP   | 预约演示（**必须** Turnstile）            |
+| POST   | `/api/public/website/contact`                | 5/hour/IP   | 联系表单（**必须** Turnstile）            |
+| GET    | `/api/public/website/sitemap.xml`            | 1000/min/IP | 动态 sitemap                              |
+| GET    | `/api/public/website/robots.txt`             | 1000/min/IP | 动态 robots                               |
 
 ### 7.2 内部接口（需 admin JWT 鉴权）
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| GET | `/api/admin/website/leads` | `leads:read` | Lead 列表（分页 + 状态筛选） |
-| GET | `/api/admin/website/leads/:id` | `leads:read` | Lead 详情（含状态日志） |
-| PATCH | `/api/admin/website/leads/:id` | `leads:write` | 修改 Lead（含状态变更） |
-| POST | `/api/admin/website/leads/:id/assign` | `leads:write` | 分配给 BD |
-| GET | `/api/admin/website/leads/:id/status-logs` | `leads:read` | 状态变更历史 |
-| GET | `/api/admin/website/leads/export` | `leads:export` | 导出 CSV |
-| GET | `/api/admin/website/ab-tests` | `website:read` | 实验列表 |
-| POST | `/api/admin/website/ab-tests` | `website:write` | 创建实验 |
-| PATCH | `/api/admin/website/ab-tests/:id` | `website:write` | 修改实验（含启动 / 暂停 / 结束） |
-| GET | `/api/admin/website/ab-tests/:id/results` | `website:read` | 实验结果（统计显著性） |
-| GET | `/api/admin/website/seo-pages` | `website:read` | SEO 页面列表 |
-| PUT | `/api/admin/website/seo-pages/:id` | `website:write` | 修改 SEO 元数据 |
-| GET | `/api/admin/website/pageviews/stats` | `website:read` | 流量统计（按日 / 路径 / 来源） |
-| GET | `/api/admin/website/newsletter/subscribers` | `website:read` | 订阅者列表 |
-| POST | `/api/admin/website/newsletter/campaigns` | `website:write` | 发起邮件活动 |
+| Method | Path                                        | 权限            | 说明                             |
+| ------ | ------------------------------------------- | --------------- | -------------------------------- |
+| GET    | `/api/admin/website/leads`                  | `leads:read`    | Lead 列表（分页 + 状态筛选）     |
+| GET    | `/api/admin/website/leads/:id`              | `leads:read`    | Lead 详情（含状态日志）          |
+| PATCH  | `/api/admin/website/leads/:id`              | `leads:write`   | 修改 Lead（含状态变更）          |
+| POST   | `/api/admin/website/leads/:id/assign`       | `leads:write`   | 分配给 BD                        |
+| GET    | `/api/admin/website/leads/:id/status-logs`  | `leads:read`    | 状态变更历史                     |
+| GET    | `/api/admin/website/leads/export`           | `leads:export`  | 导出 CSV                         |
+| GET    | `/api/admin/website/ab-tests`               | `website:read`  | 实验列表                         |
+| POST   | `/api/admin/website/ab-tests`               | `website:write` | 创建实验                         |
+| PATCH  | `/api/admin/website/ab-tests/:id`           | `website:write` | 修改实验（含启动 / 暂停 / 结束） |
+| GET    | `/api/admin/website/ab-tests/:id/results`   | `website:read`  | 实验结果（统计显著性）           |
+| GET    | `/api/admin/website/seo-pages`              | `website:read`  | SEO 页面列表                     |
+| PUT    | `/api/admin/website/seo-pages/:id`          | `website:write` | 修改 SEO 元数据                  |
+| GET    | `/api/admin/website/pageviews/stats`        | `website:read`  | 流量统计（按日 / 路径 / 来源）   |
+| GET    | `/api/admin/website/newsletter/subscribers` | `website:read`  | 订阅者列表                       |
+| POST   | `/api/admin/website/newsletter/campaigns`   | `website:write` | 发起邮件活动                     |
 
 ### 7.3 关键 DTO 校验（Zod）
 
@@ -729,17 +735,23 @@ import { z } from 'zod';
 export const CreateLeadDto = z.object({
   name: z.string().min(2).max(64),
   email: z.string().email().max(128),
-  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/).optional(),  // E.164
+  phone: z
+    .string()
+    .regex(/^\+?[1-9]\d{1,14}$/)
+    .optional(), // E.164
   company: z.string().max(128).optional(),
   companySize: z.enum(['1-10', '11-50', '51-200', '201-1000', '1000+']).optional(),
   country: z.string().length(2).optional(),
-  interestArea: z.array(z.enum(['company', 'tax', 'legal', 'banking', 'ai'])).max(5).optional(),
+  interestArea: z
+    .array(z.enum(['company', 'tax', 'legal', 'banking', 'ai']))
+    .max(5)
+    .optional(),
   monthlyRevenue: z.enum(['<$10K', '$10K-$100K', '$100K-$1M', '>$1M']).optional(),
   message: z.string().max(2000).optional(),
   source: z.enum(['landing_hero', 'pricing', 'blog_inline', 'contact_form', 'demo_request']),
   referrerPath: z.string().max(2048).optional(),
   utmParams: z.record(z.string()).optional(),
-  turnstileToken: z.string().min(10),  // 必填
+  turnstileToken: z.string().min(10), // 必填
   experimentVariant: z.string().max(64).optional(),
 });
 
@@ -747,6 +759,7 @@ export type CreateLeadPayload = z.infer<typeof CreateLeadDto>;
 ```
 
 **关键约束**：
+
 - 邮箱 + 域名 MX 记录校验（防无效邮箱）
 - 手机号 E.164 国际格式
 - Turnstile token 必填，后端二次校验
@@ -760,15 +773,15 @@ export type CreateLeadPayload = z.infer<typeof CreateLeadDto>;
 
 ### 8.1 为什么必须用 Next.js（**不**用 Vite + React）
 
-| 能力 | Vite + React (H5 用) | **Next.js 14 (官网用)** |
-|---|---|---|
-| 渲染 | CSR（首屏空 HTML，靠 JS 渲染） | **SSR / SSG / ISR 混合** |
-| SEO | ❌ 爬虫看不到内容 | ✅ 爬虫直接拿到完整 HTML |
-| 首屏 | 慢（要先下 JS 再渲染） | **快**（HTML 直接有内容） |
-| 数据获取 | useEffect + fetch | **Server Components + Server Actions** |
-| 路由 | React Router v6（前端） | **file-based + RSC**（部分服务端） |
-| 缓存 | 浏览器缓存 | **CDN edge + ISR + 浏览器 三级** |
-| 部署 | 任意 CDN | **Vercel / Cloudflare Pages（最佳）** |
+| 能力     | Vite + React (H5 用)           | **Next.js 14 (官网用)**                |
+| -------- | ------------------------------ | -------------------------------------- |
+| 渲染     | CSR（首屏空 HTML，靠 JS 渲染） | **SSR / SSG / ISR 混合**               |
+| SEO      | ❌ 爬虫看不到内容              | ✅ 爬虫直接拿到完整 HTML               |
+| 首屏     | 慢（要先下 JS 再渲染）         | **快**（HTML 直接有内容）              |
+| 数据获取 | useEffect + fetch              | **Server Components + Server Actions** |
+| 路由     | React Router v6（前端）        | **file-based + RSC**（部分服务端）     |
+| 缓存     | 浏览器缓存                     | **CDN edge + ISR + 浏览器 三级**       |
+| 部署     | 任意 CDN                       | **Vercel / Cloudflare Pages（最佳）**  |
 
 **结论**：Vite + React 适合**已登录的 SPA**（H5 / 后台），**完全不适合**营销官网。SEO 是硬要求，必须用 Next.js。
 
@@ -905,22 +918,23 @@ apps/website/
 
 ### 8.3 渲染策略（按页面分级）
 
-| 页面 | 渲染策略 | 缓存 TTL | revalidate |
-|---|---|---|---|
-| `/` 首页 | **SSG + ISR** | 1h | `revalidate: 3600` |
-| `/about` | SSG | 永久 | — |
-| `/pricing` | SSG + ISR | 6h | `revalidate: 21600` |
-| `/features/:feature` | SSG + ISR | 24h | `revalidatePath` on update |
-| `/blog` 列表 | SSG + ISR | 10min | `revalidate: 600` |
-| `/blog/:slug` | SSG + ISR | 永久（内容更新触发） | `revalidatePath` on publish |
-| `/case-studies/:slug` | SSG + ISR | 永久 | `revalidatePath` on update |
-| `/docs/*` | **SSG 100%**（文档是静态的） | 永久 | `revalidatePath` on git push |
-| `/contact` / `/partners` / `/demo-request` | **SSR**（表单提交态） | 0 | — |
-| `/legal/*` | SSG | 永久 | — |
-| `/sitemap.xml` | 动态生成 | 1h | — |
-| `/robots.txt` | 动态生成 | 24h | — |
+| 页面                                       | 渲染策略                     | 缓存 TTL             | revalidate                   |
+| ------------------------------------------ | ---------------------------- | -------------------- | ---------------------------- |
+| `/` 首页                                   | **SSG + ISR**                | 1h                   | `revalidate: 3600`           |
+| `/about`                                   | SSG                          | 永久                 | —                            |
+| `/pricing`                                 | SSG + ISR                    | 6h                   | `revalidate: 21600`          |
+| `/features/:feature`                       | SSG + ISR                    | 24h                  | `revalidatePath` on update   |
+| `/blog` 列表                               | SSG + ISR                    | 10min                | `revalidate: 600`            |
+| `/blog/:slug`                              | SSG + ISR                    | 永久（内容更新触发） | `revalidatePath` on publish  |
+| `/case-studies/:slug`                      | SSG + ISR                    | 永久                 | `revalidatePath` on update   |
+| `/docs/*`                                  | **SSG 100%**（文档是静态的） | 永久                 | `revalidatePath` on git push |
+| `/contact` / `/partners` / `/demo-request` | **SSR**（表单提交态）        | 0                    | —                            |
+| `/legal/*`                                 | SSG                          | 永久                 | —                            |
+| `/sitemap.xml`                             | 动态生成                     | 1h                   | —                            |
+| `/robots.txt`                              | 动态生成                     | 24h                  | —                            |
 
 **On-Demand Revalidation**（运营改 CMS 后立即刷新）：
+
 ```typescript
 // apps/website/src/app/api/revalidate/route.ts
 import { revalidatePath, revalidateTag } from 'next/cache';
@@ -959,33 +973,33 @@ export interface BlogPost {
   author: string;
   tags: string[];
   coverImage?: string;
-  content: string;  // MDX 编译后
+  content: string; // MDX 编译后
   readingTimeMin: number;
 }
 
 export async function getBlogPosts(locale: string): Promise<BlogPost[]> {
-  const files = fs.readdirSync(BLOG_DIR)
-    .filter(f => f.endsWith(`.${locale}.mdx`));
+  const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(`.${locale}.mdx`));
 
-  return files.map(file => {
-    const slug = file.replace(`.${locale}.mdx`, '');
-    const raw = fs.readFileSync(path.join(BLOG_DIR, file), 'utf8');
-    const { data, content } = matter(raw);
-    return {
-      slug,
-      locale,
-      title: data.title,
-      description: data.description,
-      publishedAt: data.publishedAt,
-      updatedAt: data.updatedAt,
-      author: data.author,
-      tags: data.tags ?? [],
-      coverImage: data.coverImage,
-      content,
-      readingTimeMin: Math.ceil(content.split(/\s+/).length / 200),
-    };
-  })
-  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  return files
+    .map((file) => {
+      const slug = file.replace(`.${locale}.mdx`, '');
+      const raw = fs.readFileSync(path.join(BLOG_DIR, file), 'utf8');
+      const { data, content } = matter(raw);
+      return {
+        slug,
+        locale,
+        title: data.title,
+        description: data.description,
+        publishedAt: data.publishedAt,
+        updatedAt: data.updatedAt,
+        author: data.author,
+        tags: data.tags ?? [],
+        coverImage: data.coverImage,
+        content,
+        readingTimeMin: Math.ceil(content.split(/\s+/).length / 200),
+      };
+    })
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 ```
 
@@ -1002,9 +1016,7 @@ coverImage: /images/blog/samoa-company-2026.jpg
 
 # 萨摩亚公司注册全流程
 
-<Callout type="info">
-本文基于 2026 年 6 月最新政策，所有信息均经过萨摩亚注册处官方核对。
-</Callout>
+<Callout type="info">本文基于 2026 年 6 月最新政策，所有信息均经过萨摩亚注册处官方核对。</Callout>
 
 ## 一、为什么选择萨摩亚
 
@@ -1021,10 +1033,12 @@ coverImage: /images/blog/samoa-company-2026.jpg
 
 ## 三、常见问题
 
-<Faq items={[
-  { q: '需要本人去萨摩亚吗？', a: '不需要，远程即可。' },
-  { q: '注册需要多久？', a: '10-15 个工作日。' },
-]} />
+<Faq
+  items={[
+    { q: '需要本人去萨摩亚吗？', a: '不需要，远程即可。' },
+    { q: '注册需要多久？', a: '10-15 个工作日。' },
+  ]}
+/>
 ```
 
 ### 8.5 多语言 i18n 路由
@@ -1051,14 +1065,14 @@ export function middleware(req: NextRequest) {
   if (
     pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
-    pathname.includes('.')  // 文件
+    pathname.includes('.') // 文件
   ) {
     return NextResponse.next();
   }
 
   // 检查路径是否已包含 locale
   const pathnameHasLocale = LOCALES.some(
-    locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
 
   if (pathnameHasLocale) return NextResponse.next();
@@ -1083,18 +1097,18 @@ export const config = {
 
 ### 9.1 技术栈
 
-| 层 | 选型 | 原因 |
-|---|---|---|
-| 基础 UI | **shadcn/ui**（基于 Radix UI） | 可复制可定制，无运行时依赖，**不**锁死主题 |
-| 样式 | **Tailwind CSS 3.4** | 原子化 + 树摇，与 Next.js 完美集成 |
-| 动效 | **Framer Motion 11** | 轻量、声明式、支持 RSC |
-| 图标 | **lucide-react** | 与 shadcn 同源，tree-shakable |
-| 字体 | **next/font**（Inter + Noto Sans SC/JP/KR） | 自动子集化 + preload + 零 CLS |
-| 图表 | **Recharts** | 纯 React，与 RSC 兼容（不**用** ECharts——H5 后台在用） |
-| 主题 | **next-themes** | 暗色模式 SSR 友好 |
-| 代码高亮 | **Shiki**（构建时） | 服务端高亮，**不**用 Prism（运行时） |
-| 表单 | **React Hook Form + Zod** | 类型安全 + 性能好 |
-| 国际化 | **next-intl** | App Router 官方推荐 |
+| 层       | 选型                                        | 原因                                                   |
+| -------- | ------------------------------------------- | ------------------------------------------------------ |
+| 基础 UI  | **shadcn/ui**（基于 Radix UI）              | 可复制可定制，无运行时依赖，**不**锁死主题             |
+| 样式     | **Tailwind CSS 3.4**                        | 原子化 + 树摇，与 Next.js 完美集成                     |
+| 动效     | **Framer Motion 11**                        | 轻量、声明式、支持 RSC                                 |
+| 图标     | **lucide-react**                            | 与 shadcn 同源，tree-shakable                          |
+| 字体     | **next/font**（Inter + Noto Sans SC/JP/KR） | 自动子集化 + preload + 零 CLS                          |
+| 图表     | **Recharts**                                | 纯 React，与 RSC 兼容（不**用** ECharts——H5 后台在用） |
+| 主题     | **next-themes**                             | 暗色模式 SSR 友好                                      |
+| 代码高亮 | **Shiki**（构建时）                         | 服务端高亮，**不**用 Prism（运行时）                   |
+| 表单     | **React Hook Form + Zod**                   | 类型安全 + 性能好                                      |
+| 国际化   | **next-intl**                               | App Router 官方推荐                                    |
 
 ### 9.2 Hero 组件（核心营销组件）
 
@@ -1213,11 +1227,13 @@ import { locales } from '@/i18n/config';
 
 export async function generateMetadata({
   params: { locale },
-}: { params: { locale: string } }): Promise<Metadata> {
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'marketing.home' });
 
   return {
-    title: t('title'),  // 海购星 - 萨摩亚合规出海一站式平台
+    title: t('title'), // 海购星 - 萨摩亚合规出海一站式平台
     description: t('description'),
     keywords: ['萨摩亚', '公司注册', '出海', '合规', 'DID', 'KYC'],
     authors: [{ name: '海购星 Samoa DAO' }],
@@ -1411,36 +1427,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   // 静态页面
-  const staticPages = ['', '/about', '/pricing', '/contact', '/partners']
-    .flatMap(path => locales.map(locale => ({
+  const staticPages = ['', '/about', '/pricing', '/contact', '/partners'].flatMap((path) =>
+    locales.map((locale) => ({
       url: `${baseUrl}/${locale}${path}`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: path === '' ? 1.0 : 0.8,
-    })));
+    }))
+  );
 
   // 博客
-  const blogPages = (await Promise.all(
-    locales.map(async locale => {
-      const posts = await getBlogPosts(locale);
-      return posts.map(post => ({
-        url: `${baseUrl}/${locale}/blog/${post.slug}`,
-        lastModified: new Date(post.updatedAt ?? post.publishedAt),
-        changeFrequency: 'monthly' as const,
-        priority: 0.6,
-      }));
-    }),
-  )).flat();
+  const blogPages = (
+    await Promise.all(
+      locales.map(async (locale) => {
+        const posts = await getBlogPosts(locale);
+        return posts.map((post) => ({
+          url: `${baseUrl}/${locale}/blog/${post.slug}`,
+          lastModified: new Date(post.updatedAt ?? post.publishedAt),
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+        }));
+      })
+    )
+  ).flat();
 
   // 案例
   const caseStudies = await getCaseStudies();
-  const casePages = caseStudies.flatMap(cs =>
-    locales.map(locale => ({
+  const casePages = caseStudies.flatMap((cs) =>
+    locales.map((locale) => ({
       url: `${baseUrl}/${locale}/case-studies/${cs.slug}`,
       lastModified: new Date(cs.updatedAt),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
-    })),
+    }))
   );
 
   return [...staticPages, ...blogPages, ...casePages];
@@ -1480,18 +1499,18 @@ export default function robots(): MetadataRoute.Robots {
 
 ### 10.5 SEO 验收清单
 
-| # | 验收项 | 工具 | 期望 |
-|---|---|---|---|
-| 1 | `<title>` 长度 | Lighthouse SEO | 50-60 字符 |
-| 2 | `<meta description>` 长度 | Lighthouse SEO | 150-160 字符 |
-| 3 | H1 唯一 | Lighthouse SEO | 每页 1 个 H1 |
-| 4 | 图片 alt | Lighthouse SEO | 100% 覆盖 |
-| 5 | Canonical | `curl -I` | 与 URL 一致或规范化 |
-| 6 | Hreflang | Google Search Console | 4 语言 + x-default 完整 |
-| 7 | JSON-LD 验证 | Google Rich Results Test | 无错误 |
-| 8 | Sitemap 可访问 | `curl sitemap.xml` | 200 + 合法 XML |
-| 9 | Robots.txt | `curl robots.txt` | 200 + 包含 sitemap |
-| 10 | Lighthouse SEO 分数 | Lighthouse | ≥ 95 |
+| #   | 验收项                    | 工具                     | 期望                    |
+| --- | ------------------------- | ------------------------ | ----------------------- |
+| 1   | `<title>` 长度            | Lighthouse SEO           | 50-60 字符              |
+| 2   | `<meta description>` 长度 | Lighthouse SEO           | 150-160 字符            |
+| 3   | H1 唯一                   | Lighthouse SEO           | 每页 1 个 H1            |
+| 4   | 图片 alt                  | Lighthouse SEO           | 100% 覆盖               |
+| 5   | Canonical                 | `curl -I`                | 与 URL 一致或规范化     |
+| 6   | Hreflang                  | Google Search Console    | 4 语言 + x-default 完整 |
+| 7   | JSON-LD 验证              | Google Rich Results Test | 无错误                  |
+| 8   | Sitemap 可访问            | `curl sitemap.xml`       | 200 + 合法 XML          |
+| 9   | Robots.txt                | `curl robots.txt`        | 200 + 包含 sitemap      |
+| 10  | Lighthouse SEO 分数       | Lighthouse               | ≥ 95                    |
 
 ---
 
@@ -1501,20 +1520,20 @@ export default function robots(): MetadataRoute.Robots {
 
 ### 11.1 关键优化清单
 
-| 优化项 | 实现 | 目标 |
-|---|---|---|
-| **图片优化** | `<Image>` 组件 | 自动 WebP/AVIF + 懒加载 + 响应式 |
-| **字体优化** | `next/font/google` | 子集化 + preload + 零 CLS |
-| **JS bundle 拆分** | App Router + dynamic import | 首屏 < 120KB gzipped |
-| **CSS 关键路径** | Tailwind JIT | 首屏 CSS < 20KB |
-| **预加载** | `<link rel="preload">` | LCP 资源优先 |
-| **预连接** | `<link rel="preconnect">` | 第三方域提前握手 |
-| **CDN 缓存** | Vercel Edge / Cloudflare | HTML 30min，静态资源 1y |
-| **流式渲染** | React Server Components | TTFB < 600ms |
-| **图片懒加载** | `loading="lazy"` | 折叠以下图片延后 |
-| **代码分割** | 路由级 + 组件级 | 不在首屏的组件 lazy |
-| **压缩** | Brotli（Vercel/Cloudflare 默认） | 文本资源 70%+ 压缩 |
-| **HTTP/3 + 0-RTT** | Vercel / Cloudflare 默认 | 复用连接 |
+| 优化项             | 实现                             | 目标                             |
+| ------------------ | -------------------------------- | -------------------------------- |
+| **图片优化**       | `<Image>` 组件                   | 自动 WebP/AVIF + 懒加载 + 响应式 |
+| **字体优化**       | `next/font/google`               | 子集化 + preload + 零 CLS        |
+| **JS bundle 拆分** | App Router + dynamic import      | 首屏 < 120KB gzipped             |
+| **CSS 关键路径**   | Tailwind JIT                     | 首屏 CSS < 20KB                  |
+| **预加载**         | `<link rel="preload">`           | LCP 资源优先                     |
+| **预连接**         | `<link rel="preconnect">`        | 第三方域提前握手                 |
+| **CDN 缓存**       | Vercel Edge / Cloudflare         | HTML 30min，静态资源 1y          |
+| **流式渲染**       | React Server Components          | TTFB < 600ms                     |
+| **图片懒加载**     | `loading="lazy"`                 | 折叠以下图片延后                 |
+| **代码分割**       | 路由级 + 组件级                  | 不在首屏的组件 lazy              |
+| **压缩**           | Brotli（Vercel/Cloudflare 默认） | 文本资源 70%+ 压缩               |
+| **HTTP/3 + 0-RTT** | Vercel / Cloudflare 默认         | 复用连接                         |
 
 ### 11.2 图片优化示例
 
@@ -1617,14 +1636,14 @@ export default function Home() {
 
 ### 12.1 工具矩阵
 
-| 工具 | 覆盖 | 主要职责 | 采样率 | 隐私 |
-|---|---|---|---|---|
-| **Google Analytics 4 (GA4)** | 海外（Google 流量） | 流量分析、转化漏斗、受众 | 100% | Cookieless mode 可选 |
-| **百度统计** | 国内（百度 / 360 / 搜狗） | 国内 SEO 排名、搜索词 | 100% | 合规版（无 PII） |
-| **友盟（cnzz）** | 国内补充 | 实时访客、点击热图 | 100% | — |
-| **Mixpanel** | 全球产品分析 | 用户行为 cohort、funnel | 100% → 10%（高流量降级） | Cookieless 模式 |
-| **Hotjar** | 海外 | 点击热图、滚动深度、feedback | 10% 采样 | EU 屏蔽 |
-| **Microsoft Clarity** | 全球 | Session Replay（**免费**替代 Hotjar） | 100% | 自动屏蔽敏感输入 |
+| 工具                         | 覆盖                      | 主要职责                              | 采样率                   | 隐私                 |
+| ---------------------------- | ------------------------- | ------------------------------------- | ------------------------ | -------------------- |
+| **Google Analytics 4 (GA4)** | 海外（Google 流量）       | 流量分析、转化漏斗、受众              | 100%                     | Cookieless mode 可选 |
+| **百度统计**                 | 国内（百度 / 360 / 搜狗） | 国内 SEO 排名、搜索词                 | 100%                     | 合规版（无 PII）     |
+| **友盟（cnzz）**             | 国内补充                  | 实时访客、点击热图                    | 100%                     | —                    |
+| **Mixpanel**                 | 全球产品分析              | 用户行为 cohort、funnel               | 100% → 10%（高流量降级） | Cookieless 模式      |
+| **Hotjar**                   | 海外                      | 点击热图、滚动深度、feedback          | 10% 采样                 | EU 屏蔽              |
+| **Microsoft Clarity**        | 全球                      | Session Replay（**免费**替代 Hotjar） | 100%                     | 自动屏蔽敏感输入     |
 
 ### 12.2 GA4 集成
 
@@ -1776,15 +1795,15 @@ export const tracker = new Tracker();
 
 ### 13.1 方案对比
 
-| 维度 | 自研 A/B 框架 | **PostHog（推荐）** | GrowthBook |
-|---|---|---|---|
-| 实施成本 | 高（自研分流 + 统计） | **低**（SDK 开箱即用） | 中 |
-| 统计显著性 | 需自研（Z 检验 / 贝叶斯） | **内置**（PostHog 实验引擎） | 内置 |
-| Feature Flag | 需自研 | **内置** | 内置 |
-| 数据存储 | 自建 DB | **PostHog Cloud / 自托管** | 多种 |
-| 多变体支持 | ✅ | ✅ | ✅ |
-| MDE 检测 | 需自研 | ✅ 自动 | ✅ |
-| 价格 | 自建成本 | **< 100 万 MAU 免费** | 开源免费 |
+| 维度         | 自研 A/B 框架             | **PostHog（推荐）**          | GrowthBook |
+| ------------ | ------------------------- | ---------------------------- | ---------- |
+| 实施成本     | 高（自研分流 + 统计）     | **低**（SDK 开箱即用）       | 中         |
+| 统计显著性   | 需自研（Z 检验 / 贝叶斯） | **内置**（PostHog 实验引擎） | 内置       |
+| Feature Flag | 需自研                    | **内置**                     | 内置       |
+| 数据存储     | 自建 DB                   | **PostHog Cloud / 自托管**   | 多种       |
+| 多变体支持   | ✅                        | ✅                           | ✅         |
+| MDE 检测     | 需自研                    | ✅ 自动                      | ✅         |
+| 价格         | 自建成本                  | **< 100 万 MAU 免费**        | 开源免费   |
 
 **推荐**：**PostHog**（功能最全，free tier 够用）。
 
@@ -1847,26 +1866,26 @@ export function Hero() {
 
 ### 13.3 实验规范
 
-| 规范 | 说明 |
-|---|---|
-| **分流方式** | 哈希 `visitorId` → modulo 100 → 落到变体 |
-| **流量分配** | 起步 10% → 30% → 100% 灰度 |
+| 规范           | 说明                                                             |
+| -------------- | ---------------------------------------------------------------- |
+| **分流方式**   | 哈希 `visitorId` → modulo 100 → 落到变体                         |
+| **流量分配**   | 起步 10% → 30% → 100% 灰度                                       |
 | **最小样本量** | 公式 `n = 16 * p * (1-p) / δ²`（p=基线转化率，δ=最小可检测效应） |
-| **运行周期** | ≥ 7 天（覆盖工作日 + 周末） |
-| **显著性阈值** | p < 0.05（双尾） |
-| **停止条件** | 达到样本量 **+** 显著性 **+** ≥ 7 天 |
-| **互斥实验** | 同页面**最多** 1 个实验（避免互相干扰） |
-| **回滚预案** | 暂停实验 = 100% 流量回 control |
+| **运行周期**   | ≥ 7 天（覆盖工作日 + 周末）                                      |
+| **显著性阈值** | p < 0.05（双尾）                                                 |
+| **停止条件**   | 达到样本量 **+** 显著性 **+** ≥ 7 天                             |
+| **互斥实验**   | 同页面**最多** 1 个实验（避免互相干扰）                          |
+| **回滚预案**   | 暂停实验 = 100% 流量回 control                                   |
 
 ### 13.4 关键实验清单（v1 启动）
 
-| # | 实验名 | 页面 | 变体 |
-|---|---|---|---|
-| 1 | `homepage_hero_v1` | `/` | A: 通用 CTA「立即注册」 / B: 钩子 CTA「免费咨询萨摩亚公司注册」 |
-| 2 | `pricing_anchor_v1` | `/pricing` | A: 月付优先 / B: 年付优先（省 20%） |
-| 3 | `blog_cta_inline_v1` | `/blog/*` | A: 文中无 CTA / B: 文末 CTA 卡片 |
-| 4 | `lead_form_fields_v1` | 表单 | A: 4 字段 / B: 2 字段（极简） |
-| 5 | `social_proof_position_v1` | `/` | A: 顶部证言 / B: 底部证言 |
+| #   | 实验名                     | 页面       | 变体                                                            |
+| --- | -------------------------- | ---------- | --------------------------------------------------------------- |
+| 1   | `homepage_hero_v1`         | `/`        | A: 通用 CTA「立即注册」 / B: 钩子 CTA「免费咨询萨摩亚公司注册」 |
+| 2   | `pricing_anchor_v1`        | `/pricing` | A: 月付优先 / B: 年付优先（省 20%）                             |
+| 3   | `blog_cta_inline_v1`       | `/blog/*`  | A: 文中无 CTA / B: 文末 CTA 卡片                                |
+| 4   | `lead_form_fields_v1`      | 表单       | A: 4 字段 / B: 2 字段（极简）                                   |
+| 5   | `social_proof_position_v1` | `/`        | A: 顶部证言 / B: 底部证言                                       |
 
 ---
 
@@ -1876,14 +1895,14 @@ export function Hero() {
 
 ### 14.1 技术栈
 
-| 库 | 用途 |
-|---|---|
-| **React Hook Form** | 状态管理 + 性能（不重渲染） |
-| **Zod** | 类型安全校验 + 错误信息多语言 |
-| **@hookform/resolvers** | Zod ↔ RHF 桥接 |
-| **next-use-translation** | 错误信息 i18n |
-| **react-turnstile** | Cloudflare Turnstile 验证 |
-| **sonner** | Toast 提示 |
+| 库                       | 用途                          |
+| ------------------------ | ----------------------------- |
+| **React Hook Form**      | 状态管理 + 性能（不重渲染）   |
+| **Zod**                  | 类型安全校验 + 错误信息多语言 |
+| **@hookform/resolvers**  | Zod ↔ RHF 桥接                |
+| **next-use-translation** | 错误信息 i18n                 |
+| **react-turnstile**      | Cloudflare Turnstile 验证     |
+| **sonner**               | Toast 提示                    |
 
 ### 14.2 Lead 提交表单（核心）
 
@@ -2000,18 +2019,18 @@ export function LeadCaptureForm({ source }: { source: string }) {
 
 ### 14.3 表单通用规则
 
-| 规则 | 说明 |
-|---|---|
-| 必填项标 `*` | 视觉强提示 |
-| 错误就近显示 | 输入框下方红字 |
-| 提交前 `dirty` 检查 | 提示是否离开 |
-| Turnstile 必填 | 防机器人 |
-| 提交后 toast | 成功 / 失败都提示 |
-| 成功后跳感谢页 | **不**留在原页（避免重复提交） |
-| 失败后保留输入 | 用户改完可重提 |
-| 失败有重试入口 | 错误信息含客服联系方式 |
-| 多语言错误 | 错误信息走 i18n（**不**硬编码中文） |
-| 防止重复提交 | 提交中按钮 disabled + loading |
+| 规则                | 说明                                |
+| ------------------- | ----------------------------------- |
+| 必填项标 `*`        | 视觉强提示                          |
+| 错误就近显示        | 输入框下方红字                      |
+| 提交前 `dirty` 检查 | 提示是否离开                        |
+| Turnstile 必填      | 防机器人                            |
+| 提交后 toast        | 成功 / 失败都提示                   |
+| 成功后跳感谢页      | **不**留在原页（避免重复提交）      |
+| 失败后保留输入      | 用户改完可重提                      |
+| 失败有重试入口      | 错误信息含客服联系方式              |
+| 多语言错误          | 错误信息走 i18n（**不**硬编码中文） |
+| 防止重复提交        | 提交中按钮 disabled + loading       |
 
 ---
 
@@ -2021,12 +2040,12 @@ export function LeadCaptureForm({ source }: { source: string }) {
 
 ### 15.1 语言支持
 
-| code | 语言 | 默认 URL | 字典文件 |
-|---|---|---|---|
+| code    | 语言     | 默认 URL                | 字典文件          |
+| ------- | -------- | ----------------------- | ----------------- |
 | `zh-CN` | 简体中文 | `https://smy.app/zh-CN` | `i18n/zh-CN.json` |
-| `en-US` | 英文 | `https://smy.app/en-US` | `i18n/en-US.json` |
-| `ja-JP` | 日文 | `https://smy.app/ja-JP` | `i18n/ja-JP.json` |
-| `ko-KR` | 韩文 | `https://smy.app/ko-KR` | `i18n/ko-KR.json` |
+| `en-US` | 英文     | `https://smy.app/en-US` | `i18n/en-US.json` |
+| `ja-JP` | 日文     | `https://smy.app/ja-JP` | `i18n/ja-JP.json` |
+| `ko-KR` | 韩文     | `https://smy.app/ko-KR` | `i18n/ko-KR.json` |
 
 > **关键决策**：i18n namespace 严格按 [00-foundation §5.5.1](../../admin-prd/00-foundation.md) 速查表。**官网** 不在原速查表内，本项目新增 namespace：**`marketing`**（营销文案）、`forms`（表单）、`seo`（SEO 模板）——保持与 §5.5.1 同结构（全小写、无连字符、复数加 s）。
 
@@ -2131,14 +2150,14 @@ export function LocaleSwitcher() {
 
 ### 15.4 翻译工作流
 
-| 步骤 | 工具 | 责任方 |
-|---|---|---|
-| 1. 工程师写 key（en-US 为主） | `i18n/en-US.json` | 前端 |
-| 2. 翻译其他语言 | **Lokalise** / Crowdin / 内部工具 | 翻译团队 |
-| 3. 翻译提交 PR | Git | 翻译 |
-| 4. CI 检查 key 完整性 | `i18next-parser` 校验 | CI |
-| 5. 未翻译项标记 | missing key 检测 | CI |
-| 6. 部署 | Vercel 自动 | — |
+| 步骤                          | 工具                              | 责任方   |
+| ----------------------------- | --------------------------------- | -------- |
+| 1. 工程师写 key（en-US 为主） | `i18n/en-US.json`                 | 前端     |
+| 2. 翻译其他语言               | **Lokalise** / Crowdin / 内部工具 | 翻译团队 |
+| 3. 翻译提交 PR                | Git                               | 翻译     |
+| 4. CI 检查 key 完整性         | `i18next-parser` 校验             | CI       |
+| 5. 未翻译项标记               | missing key 检测                  | CI       |
+| 6. 部署                       | Vercel 自动                       | —        |
 
 ---
 
@@ -2148,48 +2167,48 @@ export function LocaleSwitcher() {
 
 ### 16.1 SEO 验收（5 条）
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 首页 `<title>` 抓取 | 长度 50-60 字符，含核心关键词 |
-| 2 | 提交 sitemap 给 Google Search Console | 24h 内索引率 ≥ 80% |
-| 3 | 4 语言 hreflang 检查 | Google Search Console 零错误 |
-| 4 | JSON-LD 通过 Google Rich Results Test | Organization + Article + FAQ 全通过 |
-| 5 | Lighthouse SEO 分数（4 个核心页） | ≥ 95 |
+| #   | 用例                                  | 期望                                |
+| --- | ------------------------------------- | ----------------------------------- |
+| 1   | 首页 `<title>` 抓取                   | 长度 50-60 字符，含核心关键词       |
+| 2   | 提交 sitemap 给 Google Search Console | 24h 内索引率 ≥ 80%                  |
+| 3   | 4 语言 hreflang 检查                  | Google Search Console 零错误        |
+| 4   | JSON-LD 通过 Google Rich Results Test | Organization + Article + FAQ 全通过 |
+| 5   | Lighthouse SEO 分数（4 个核心页）     | ≥ 95                                |
 
 ### 16.2 性能验收（3 条）
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 6 | Lighthouse Performance（移动 4G 模拟） | ≥ 90 |
-| 7 | LCP p75（4 个核心页） | < 2.5s |
-| 8 | CLS p75 | < 0.1 |
+| #   | 用例                                   | 期望   |
+| --- | -------------------------------------- | ------ |
+| 6   | Lighthouse Performance（移动 4G 模拟） | ≥ 90   |
+| 7   | LCP p75（4 个核心页）                  | < 2.5s |
+| 8   | CLS p75                                | < 0.1  |
 
 ### 16.3 表单验收（3 条）
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 9 | 提交 Lead 成功 | 跳感谢页 + 后端写 LeadForm（status=new） + 发邮件 + Slack 通知 |
-| 10 | 提交失败（Turnstile 失效） | 提示人机验证失败，**不**写库 |
-| 11 | 重复提交（同邮箱 1h 内 3 次） | 第 3 次返回 429，前端提示「请稍后再试」 |
+| #   | 用例                          | 期望                                                           |
+| --- | ----------------------------- | -------------------------------------------------------------- |
+| 9   | 提交 Lead 成功                | 跳感谢页 + 后端写 LeadForm（status=new） + 发邮件 + Slack 通知 |
+| 10  | 提交失败（Turnstile 失效）    | 提示人机验证失败，**不**写库                                   |
+| 11  | 重复提交（同邮箱 1h 内 3 次） | 第 3 次返回 429，前端提示「请稍后再试」                        |
 
 ### 16.4 A/B 实验验收（2 条）
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 12 | 启动实验后访问页面 | 50% 流量看到 A，50% 看到 B（±5% 误差） |
-| 13 | 暂停实验 | 100% 流量回到 control（不分流） |
+| #   | 用例               | 期望                                   |
+| --- | ------------------ | -------------------------------------- |
+| 12  | 启动实验后访问页面 | 50% 流量看到 A，50% 看到 B（±5% 误差） |
+| 13  | 暂停实验           | 100% 流量回到 control（不分流）        |
 
 ### 16.5 i18n 验收（1 条）
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 14 | 浏览器语言日语访问 | 自动跳 `/ja-JP`，无硬编码中文字符串 |
+| #   | 用例               | 期望                                |
+| --- | ------------------ | ----------------------------------- |
+| 14  | 浏览器语言日语访问 | 自动跳 `/ja-JP`，无硬编码中文字符串 |
 
 ### 16.6 CDN 缓存验收（1 条）
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 15 | 第二次访问首页 | HTML 来自 CDN 边缘（`x-vercel-cache: HIT` 或 `cf-cache-status: HIT`），TTFB < 100ms |
+| #   | 用例           | 期望                                                                                |
+| --- | -------------- | ----------------------------------------------------------------------------------- |
+| 15  | 第二次访问首页 | HTML 来自 CDN 边缘（`x-vercel-cache: HIT` 或 `cf-cache-status: HIT`），TTFB < 100ms |
 
 ---
 
@@ -2199,18 +2218,18 @@ export function LocaleSwitcher() {
 
 ### 17.1 性能预算（**每次发布必检**）
 
-| 指标 | 移动（4G 模拟） | 桌面 | 测量工具 |
-|---|---|---|---|
-| **Performance** | ≥ 90 | ≥ 95 | Lighthouse |
-| **LCP** | < 2.5s | < 1.5s | Web Vitals |
-| **INP** | < 200ms | < 100ms | Web Vitals |
-| **CLS** | < 0.1 | < 0.05 | Web Vitals |
-| **TBT** | < 200ms | < 100ms | Lighthouse |
-| **FCP** | < 1.8s | < 1.0s | Lighthouse |
-| **Speed Index** | < 3.4s | < 2.0s | Lighthouse |
-| **首屏 JS（gzip）** | < 130KB | < 200KB | Build report |
-| **首屏 CSS（gzip）** | < 20KB | < 30KB | Build report |
-| **LCP 图片（KB）** | < 100KB | < 200KB | WebPageTest |
+| 指标                 | 移动（4G 模拟） | 桌面    | 测量工具     |
+| -------------------- | --------------- | ------- | ------------ |
+| **Performance**      | ≥ 90            | ≥ 95    | Lighthouse   |
+| **LCP**              | < 2.5s          | < 1.5s  | Web Vitals   |
+| **INP**              | < 200ms         | < 100ms | Web Vitals   |
+| **CLS**              | < 0.1           | < 0.05  | Web Vitals   |
+| **TBT**              | < 200ms         | < 100ms | Lighthouse   |
+| **FCP**              | < 1.8s          | < 1.0s  | Lighthouse   |
+| **Speed Index**      | < 3.4s          | < 2.0s  | Lighthouse   |
+| **首屏 JS（gzip）**  | < 130KB         | < 200KB | Build report |
+| **首屏 CSS（gzip）** | < 20KB          | < 30KB  | Build report |
+| **LCP 图片（KB）**   | < 100KB         | < 200KB | WebPageTest  |
 
 ### 17.2 CI 集成（Lighthouse CI）
 
@@ -2244,31 +2263,33 @@ jobs:
 
 ```json
 // lighthouse-budget.json
-[{
-  "path": "/*",
-  "resourceSizes": [
-    { "resourceType": "script", "budget": 130 },
-    { "resourceType": "stylesheet", "budget": 20 },
-    { "resourceType": "image", "budget": 100 },
-    { "resourceType": "font", "budget": 80 }
-  ],
-  "timings": [
-    { "metric": "interactive", "budget": 3000 },
-    { "metric": "first-contentful-paint", "budget": 1800 },
-    { "metric": "largest-contentful-paint", "budget": 2500 },
-    { "metric": "cumulative-layout-shift", "budget": 0.1 }
-  ]
-}]
+[
+  {
+    "path": "/*",
+    "resourceSizes": [
+      { "resourceType": "script", "budget": 130 },
+      { "resourceType": "stylesheet", "budget": 20 },
+      { "resourceType": "image", "budget": 100 },
+      { "resourceType": "font", "budget": 80 }
+    ],
+    "timings": [
+      { "metric": "interactive", "budget": 3000 },
+      { "metric": "first-contentful-paint", "budget": 1800 },
+      { "metric": "largest-contentful-paint", "budget": 2500 },
+      { "metric": "cumulative-layout-shift", "budget": 0.1 }
+    ]
+  }
+]
 ```
 
 ### 17.3 实时监控
 
-| 工具 | 用途 | 采样率 |
-|---|---|---|
-| **Vercel Speed Insights**（部署在 Vercel） | 真实用户 Core Web Vitals | 100% |
-| **Google Search Console** | CrUX（Chrome User Experience Report） | 自动 |
-| **Sentry Performance** | 自定义 trace + transaction | 100% |
-| **PageSpeed Insights API** | 定时任务调 Lighthouse | 每日 1 次 |
+| 工具                                       | 用途                                  | 采样率    |
+| ------------------------------------------ | ------------------------------------- | --------- |
+| **Vercel Speed Insights**（部署在 Vercel） | 真实用户 Core Web Vitals              | 100%      |
+| **Google Search Console**                  | CrUX（Chrome User Experience Report） | 自动      |
+| **Sentry Performance**                     | 自定义 trace + transaction            | 100%      |
+| **PageSpeed Insights API**                 | 定时任务调 Lighthouse                 | 每日 1 次 |
 
 ---
 
@@ -2278,19 +2299,20 @@ jobs:
 
 ### 18.1 方案对比
 
-| 维度 | **Vercel（推荐）** | Cloudflare Pages | 自建 CDN（阿里云 / AWS） |
-|---|---|---|---|
-| Next.js 集成 | **原生最佳** | 良好（部分 RSC 限制） | 需自配 |
-| 边缘缓存 | 100+ 节点 | 200+ 节点 | 50-100 节点（国内受限） |
-| ISR 支持 | ✅ 一级公民 | 部分支持 | 需自实现 |
-| 部署速度 | **秒级** | 秒级 | 分钟级 |
-| 预览环境 | ✅ 每个 PR | ✅ | ❌ |
-| 价格 | $20/月起 | **免费** | ¥1000+/月 |
-| 国内访问 | 慢（需代理） | 慢 | **快** |
-| 团队熟悉度 | 高 | 中 | 中 |
-| 原子回滚 | ✅ | ✅ | 需脚本 |
+| 维度         | **Vercel（推荐）** | Cloudflare Pages      | 自建 CDN（阿里云 / AWS） |
+| ------------ | ------------------ | --------------------- | ------------------------ |
+| Next.js 集成 | **原生最佳**       | 良好（部分 RSC 限制） | 需自配                   |
+| 边缘缓存     | 100+ 节点          | 200+ 节点             | 50-100 节点（国内受限）  |
+| ISR 支持     | ✅ 一级公民        | 部分支持              | 需自实现                 |
+| 部署速度     | **秒级**           | 秒级                  | 分钟级                   |
+| 预览环境     | ✅ 每个 PR         | ✅                    | ❌                       |
+| 价格         | $20/月起           | **免费**              | ¥1000+/月                |
+| 国内访问     | 慢（需代理）       | 慢                    | **快**                   |
+| 团队熟悉度   | 高                 | 中                    | 中                       |
+| 原子回滚     | ✅                 | ✅                    | 需脚本                   |
 
 **推荐**：
+
 - **海外流量为主** → Vercel
 - **国内流量为主** → 阿里云 / 腾讯云 CDN + 自建 Next.js
 - **混合** → Vercel 主站 + 阿里云 CDN 国内镜像（DNS 智能解析）
@@ -2313,7 +2335,10 @@ jobs:
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://*.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.sentry.io https://*.google-analytics.com; frame-ancestors 'none';"
@@ -2322,31 +2347,25 @@ jobs:
     },
     {
       "source": "/_next/static/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     },
     {
       "source": "/(.*)\\.(jpg|jpeg|png|webp|avif|svg)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=2592000" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     }
   ],
-  "redirects": [
-    { "source": "/blog", "destination": "/en-US/blog", "permanent": false }
-  ]
+  "redirects": [{ "source": "/blog", "destination": "/en-US/blog", "permanent": false }]
 }
 ```
 
 ### 18.3 环境分级
 
-| 环境 | 域名 | 部署触发 | 用途 |
-|---|---|---|---|
-| **preview** | `pr-{number}.smy.app` | 每个 PR 自动 | QA 验证 |
-| **staging** | `staging.smy.app` | main 分支 | 集成测试 |
-| **production** | `smy.app` | release tag | 正式流量 |
-| **production 中镜像** | `smy.cn` | 手动 | 国内用户（智能 DNS） |
+| 环境                  | 域名                  | 部署触发     | 用途                 |
+| --------------------- | --------------------- | ------------ | -------------------- |
+| **preview**           | `pr-{number}.smy.app` | 每个 PR 自动 | QA 验证              |
+| **staging**           | `staging.smy.app`     | main 分支    | 集成测试             |
+| **production**        | `smy.app`             | release tag  | 正式流量             |
+| **production 中镜像** | `smy.cn`              | 手动         | 国内用户（智能 DNS） |
 
 ### 18.4 部署清单（每次上线必勾）
 
@@ -2367,14 +2386,14 @@ jobs:
 
 ### 19.1 监控分层
 
-| 层 | 工具 | 指标 | 告警阈值 |
-|---|---|---|---|
-| **可用性** | Better Uptime / UptimeRobot | HTTP 200 / SSL 证书 / DNS | 1 分钟内 2 次失败 |
-| **性能** | Vercel Speed Insights + Sentry | LCP / INP / CLS / TTFB | p75 > 阈值持续 5 分钟 |
-| **错误** | Sentry | JS 异常 / API 5xx | 5 分钟内 > 10 次 |
-| **流量** | GA4 + 自建 PageView | UV / 跳出率 / 转化 | 日 UV 同比下降 > 30% |
-| **SEO** | Google Search Console | 索引数 / 排名 / 抓取错误 | 索引数 1 周内下降 > 10% |
-| **业务** | 自建指标看板 | Lead 数 / 订阅数 / A/B 显著 | 日 Lead 数 < 10 |
+| 层         | 工具                           | 指标                        | 告警阈值                |
+| ---------- | ------------------------------ | --------------------------- | ----------------------- |
+| **可用性** | Better Uptime / UptimeRobot    | HTTP 200 / SSL 证书 / DNS   | 1 分钟内 2 次失败       |
+| **性能**   | Vercel Speed Insights + Sentry | LCP / INP / CLS / TTFB      | p75 > 阈值持续 5 分钟   |
+| **错误**   | Sentry                         | JS 异常 / API 5xx           | 5 分钟内 > 10 次        |
+| **流量**   | GA4 + 自建 PageView            | UV / 跳出率 / 转化          | 日 UV 同比下降 > 30%    |
+| **SEO**    | Google Search Console          | 索引数 / 排名 / 抓取错误    | 索引数 1 周内下降 > 10% |
+| **业务**   | 自建指标看板                   | Lead 数 / 订阅数 / A/B 显著 | 日 Lead 数 < 10         |
 
 ### 19.2 Sentry 集成
 
@@ -2401,9 +2420,9 @@ import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  tracesSampleRate: 0.1,  // 10% 采样
-  replaysSessionSampleRate: 0.05,  // 5% session replay
-  replaysOnErrorSampleRate: 1.0,  // 错误时 100% replay
+  tracesSampleRate: 0.1, // 10% 采样
+  replaysSessionSampleRate: 0.05, // 5% session replay
+  replaysOnErrorSampleRate: 1.0, // 错误时 100% replay
   beforeSend(event) {
     // 脱敏
     if (event.user) {
@@ -2427,7 +2446,7 @@ groups:
         for: 1m
         labels: { severity: critical }
         annotations:
-          summary: "官网宕机"
+          summary: '官网宕机'
 
       - alert: SSLExpiringSoon
         expr: probe_ssl_earliest_cert_expiry{job="smy-app"} - time() < 86400 * 14
@@ -2458,14 +2477,14 @@ groups:
 
 ### 19.4 监控看板（每日看）
 
-| 面板 | 工具 | 看什么 |
-|---|---|---|
-| 实时流量 | GA4 DebugView | 当前在线 / 事件流 |
-| 性能 | Vercel Analytics | LCP / INP / CLS 趋势 |
-| 错误 | Sentry | 异常 / 性能问题 |
-| SEO | GSC | 索引 / 排名 / 抓取错误 |
-| 业务 | 自建 Mixpanel | Lead 漏斗 / A/B 结果 |
-| 告警 | Slack / PagerDuty | 即时通知 |
+| 面板     | 工具              | 看什么                 |
+| -------- | ----------------- | ---------------------- |
+| 实时流量 | GA4 DebugView     | 当前在线 / 事件流      |
+| 性能     | Vercel Analytics  | LCP / INP / CLS 趋势   |
+| 错误     | Sentry            | 异常 / 性能问题        |
+| SEO      | GSC               | 索引 / 排名 / 抓取错误 |
+| 业务     | 自建 Mixpanel     | Lead 漏斗 / A/B 结果   |
+| 告警     | Slack / PagerDuty | 即时通知               |
 
 ---
 
@@ -2517,42 +2536,42 @@ groups:
 
 ## 附录 A · 关键决策记录
 
-| 决策 | 选项 | 最终选择 | 理由 |
-|---|---|---|---|
-| 前端框架 | Vite + React / Next.js | **Next.js 14** | SEO 必须 SSR/SSG |
-| UI 组件库 | Ant Design / MUI / shadcn | **shadcn/ui** | 可定制，无运行时依赖 |
-| 表单 | Formik / React Hook Form | **RHF + Zod** | 性能 + 类型安全 |
-| 状态管理 | Redux / Zustand / URL state | **RSC + URL state** | 官网无全局状态 |
-| i18n | next-i18next / next-intl | **next-intl** | App Router 官方推荐 |
-| 验证码 | 极验 / reCAPTCHA / Turnstile | **Cloudflare Turnstile** | 海外体验好，免费 |
-| A/B 框架 | 自研 / PostHog / GrowthBook | **PostHog** | 功能全 + free tier 够用 |
-| 热图 | Hotjar / Clarity / FullStory | **Microsoft Clarity** | 免费 + Session Replay |
-| 部署 | Vercel / Cloudflare / 自建 | **Vercel** | Next.js 原生最佳 |
-| 内容 | Headless CMS / MDX 文件 | **MDX 文件**（v1）→ Sanity（v2） | 起步轻量，Git 控版本 |
-| API 前缀 | `/api/h5/*` 复用 / `/api/public/website/*` 单独 | **单独** | 公开流量与鉴权流量物理隔离 |
-| Lead 关联 admin | JSON 字段 / 外键 | **外键 + Restrict** | 遵循 00-foundation §12 |
+| 决策            | 选项                                            | 最终选择                         | 理由                       |
+| --------------- | ----------------------------------------------- | -------------------------------- | -------------------------- |
+| 前端框架        | Vite + React / Next.js                          | **Next.js 14**                   | SEO 必须 SSR/SSG           |
+| UI 组件库       | Ant Design / MUI / shadcn                       | **shadcn/ui**                    | 可定制，无运行时依赖       |
+| 表单            | Formik / React Hook Form                        | **RHF + Zod**                    | 性能 + 类型安全            |
+| 状态管理        | Redux / Zustand / URL state                     | **RSC + URL state**              | 官网无全局状态             |
+| i18n            | next-i18next / next-intl                        | **next-intl**                    | App Router 官方推荐        |
+| 验证码          | 极验 / reCAPTCHA / Turnstile                    | **Cloudflare Turnstile**         | 海外体验好，免费           |
+| A/B 框架        | 自研 / PostHog / GrowthBook                     | **PostHog**                      | 功能全 + free tier 够用    |
+| 热图            | Hotjar / Clarity / FullStory                    | **Microsoft Clarity**            | 免费 + Session Replay      |
+| 部署            | Vercel / Cloudflare / 自建                      | **Vercel**                       | Next.js 原生最佳           |
+| 内容            | Headless CMS / MDX 文件                         | **MDX 文件**（v1）→ Sanity（v2） | 起步轻量，Git 控版本       |
+| API 前缀        | `/api/h5/*` 复用 / `/api/public/website/*` 单独 | **单独**                         | 公开流量与鉴权流量物理隔离 |
+| Lead 关联 admin | JSON 字段 / 外键                                | **外键 + Restrict**              | 遵循 00-foundation §12     |
 
 ---
 
 ## 附录 B · 与 H5 / 小程序 / APP 的关键差异速查
 
-| 维度 | H5 / 小程序 / APP | **官网** |
-|---|---|---|
-| 渲染 | CSR / Native | **SSR + SSG + ISR** |
-| 鉴权 | JWT | **无登录态（Cookie + Email 标记）** |
-| API 前缀 | `/api/h5/*` | **`/api/public/website/*`** |
-| 用户实体 | `User` | **`Lead`（线索）** |
-| 状态机 | H5 业务状态机 | **Lead 状态机 + ABTest 状态机** |
-| KPI | GMV / DAU / 留存 | **UV / 转化率 / 关键词排名 / Lighthouse** |
-| 性能 | 首屏 < 3s | **LCP < 2.5s + Lighthouse 90+** |
-| SEO | ❌ | **✅ 完整 meta + JSON-LD + sitemap + hreflang** |
-| 内容生产 | 后台 CMS | **MDX 文件 + Git 流程** |
-| 分析 | 神策 / Sensors | **GA4 + 百度统计 + 友盟 + Mixpanel + Hotjar + Clarity** |
-| 隐私 | 用户协议 + KYC | **GDPR + CCPA + PIPL（Cookie banner）** |
-| 验证码 | 极验 | **Cloudflare Turnstile** |
-| 部署 | CDN 静态资源 | **Vercel / Cloudflare Pages** |
-| A/B 测试 | 无 | **PostHog 实验引擎** |
-| 监控 | 业务指标 | **uptime + 性能 + SEO + 业务四层** |
+| 维度     | H5 / 小程序 / APP | **官网**                                                |
+| -------- | ----------------- | ------------------------------------------------------- |
+| 渲染     | CSR / Native      | **SSR + SSG + ISR**                                     |
+| 鉴权     | JWT               | **无登录态（Cookie + Email 标记）**                     |
+| API 前缀 | `/api/h5/*`       | **`/api/public/website/*`**                             |
+| 用户实体 | `User`            | **`Lead`（线索）**                                      |
+| 状态机   | H5 业务状态机     | **Lead 状态机 + ABTest 状态机**                         |
+| KPI      | GMV / DAU / 留存  | **UV / 转化率 / 关键词排名 / Lighthouse**               |
+| 性能     | 首屏 < 3s         | **LCP < 2.5s + Lighthouse 90+**                         |
+| SEO      | ❌                | **✅ 完整 meta + JSON-LD + sitemap + hreflang**         |
+| 内容生产 | 后台 CMS          | **MDX 文件 + Git 流程**                                 |
+| 分析     | 神策 / Sensors    | **GA4 + 百度统计 + 友盟 + Mixpanel + Hotjar + Clarity** |
+| 隐私     | 用户协议 + KYC    | **GDPR + CCPA + PIPL（Cookie banner）**                 |
+| 验证码   | 极验              | **Cloudflare Turnstile**                                |
+| 部署     | CDN 静态资源      | **Vercel / Cloudflare Pages**                           |
+| A/B 测试 | 无                | **PostHog 实验引擎**                                    |
+| 监控     | 业务指标          | **uptime + 性能 + SEO + 业务四层**                      |
 
 ---
 
@@ -2587,11 +2606,11 @@ apps/website/
 
 ## 附录 D · Roadmap（v1 → v3）
 
-| 版本 | 目标 | 关键能力 |
-|---|---|---|
-| **v1（3 个月内）** | 基础营销站 + SEO | 10 个核心页 + 4 语言 + 博客 + Lead 表单 + GA4 |
-| **v2（6 个月内）** | 增长优化 | 文档站 + 案例 + A/B 平台 + Newsletter + Mixpanel |
-| **v3（12 个月内）** | 内容生态 | Headless CMS + 多作者 + 视频 + 播客 + 国际化媒体合作 |
+| 版本                | 目标             | 关键能力                                             |
+| ------------------- | ---------------- | ---------------------------------------------------- |
+| **v1（3 个月内）**  | 基础营销站 + SEO | 10 个核心页 + 4 语言 + 博客 + Lead 表单 + GA4        |
+| **v2（6 个月内）**  | 增长优化         | 文档站 + 案例 + A/B 平台 + Newsletter + Mixpanel     |
+| **v3（12 个月内）** | 内容生态         | Headless CMS + 多作者 + 视频 + 播客 + 国际化媒体合作 |
 
 ---
 

@@ -11,12 +11,14 @@ export class DlcService {
   }
 
   async updateLevel(id: number, data: any) {
-    if (data.benefits && typeof data.benefits !== 'string') data.benefits = JSON.stringify(data.benefits);
+    if (data.benefits && typeof data.benefits !== 'string')
+      data.benefits = JSON.stringify(data.benefits);
     return this.prisma.dlcLevel.update({ where: { id }, data });
   }
 
   async createLevel(data: any) {
-    if (data.benefits && typeof data.benefits !== 'string') data.benefits = JSON.stringify(data.benefits);
+    if (data.benefits && typeof data.benefits !== 'string')
+      data.benefits = JSON.stringify(data.benefits);
     return this.prisma.dlcLevel.create({ data });
   }
 
@@ -28,7 +30,13 @@ export class DlcService {
     if (userId) where.userId = Number(userId);
     if (status) where.status = status;
     const [data, total] = await Promise.all([
-      this.prisma.dvcTransaction.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: true } }),
+      this.prisma.dvcTransaction.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { user: true },
+      }),
       this.prisma.dvcTransaction.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };

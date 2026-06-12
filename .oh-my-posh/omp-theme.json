@@ -1,0 +1,121 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "final_space": true,
+  "osc99": true,
+  "console_title_template": "{{ .Folder }} :: {{ .Shell }}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "session",
+          "style": "diamond",
+          "foreground": "#ffffff",
+          "background": "#5f5fff",
+          "template": " \u26a1 {{ .UserName }} "
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#ffffff",
+          "background": "#2e9599",
+          "properties": {
+            "style": "full",
+            "enable_hyperlink": true
+          },
+          "template": " \udb80\ude80 {{ .Path }} "
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "powerline_symbol": "\uE0B0",
+          "foreground": "#011627",
+          "background": "#74c7be",
+          "background_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}#ffb86c{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ff75b5{{ end }}",
+            "{{ if gt .Ahead 0 }}#b6e3ff{{ end }}",
+            "{{ if gt .Behind 0 }}#ffa3a3{{ end }}"
+          ],
+          "properties": {
+            "branch_max_length": 40,
+            "fetch_status": true,
+            "fetch_upstream_icon": "\u2191"
+          },
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }} {{ if .Working.Changed }}\u2026{{ end }}{{ if .Staging.Changed }}\u2026{{ end }} "
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "right",
+      "newline": false,
+      "segments": [
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "#26d782",
+          "template": "\udb81\uddae v{{ .Major }}.{{ .Minor }}",
+          "properties": {
+            "display_mode": "files",
+            "fetch_version": true
+          }
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "foreground": "#ffe873",
+          "template": " \udb81\udcdf v{{ .Major }}.{{ .Minor }}",
+          "properties": {
+            "display_mode": "files",
+            "fetch_version": true
+          }
+        },
+        {
+          "type": "executiontime",
+          "style": "plain",
+          "foreground": "#f1184c",
+          "foreground_templates": [
+            "{{ if gt .Code 5000 }}#ff0000{{ end }}",
+            "{{ if gt .Code 2000 }}#ffa500{{ end }}",
+            "{{ if gt .Code 1000 }}#ffff00{{ end }}",
+            "{{ if gt .Code 500 }}#76ee00{{ end }}"
+          ],
+          "template": " \u23f1\ufe0f {{ .FormattedMs }}"
+        },
+        {
+          "type": "battery",
+          "style": "plain",
+          "foreground": "#ffffff",
+          "foreground_templates": [
+            "{{ if and (gt .Percentage 25) (eq .State \"discharging\") }}#ffff66{{ end }}",
+            "{{ if and (le .Percentage 25) (eq .State \"discharging\") }}#ff0000{{ end }}"
+          ],
+          "template": " \udb80\udd05 {{ .Percentage }}% "
+        },
+        {
+          "type": "time",
+          "style": "plain",
+          "foreground": "#888888",
+          "template": " \u23f0 {{ .CurrentDate | date \"15:04:05\" }} "
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "foreground": "#5f5fff",
+          "template": "\u276f "
+        }
+      ]
+    }
+  ]
+}

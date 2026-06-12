@@ -34,7 +34,8 @@ export class RegistrationService {
   async deleteDomesticPlan(id: number) {
     await this.getDomesticPlan(id);
     const count = await this.prisma.domesticRegistration.count({ where: { planId: id } });
-    if (count > 0) throw new HttpException(`该方案下还有 ${count} 条注册记录，无法删除`, HttpStatus.BAD_REQUEST);
+    if (count > 0)
+      throw new HttpException(`该方案下还有 ${count} 条注册记录，无法删除`, HttpStatus.BAD_REQUEST);
     return this.prisma.domesticRegistrationPlan.delete({ where: { id } });
   }
 
@@ -136,7 +137,8 @@ export class RegistrationService {
   async deleteJurisdiction(id: number) {
     await this.getJurisdiction(id);
     const count = await this.prisma.overseasRegistration.count({ where: { jurisdictionId: id } });
-    if (count > 0) throw new HttpException(`该法域下还有 ${count} 条注册记录，无法删除`, HttpStatus.BAD_REQUEST);
+    if (count > 0)
+      throw new HttpException(`该法域下还有 ${count} 条注册记录，无法删除`, HttpStatus.BAD_REQUEST);
     return this.prisma.overseasJurisdiction.delete({ where: { id } });
   }
 
@@ -162,7 +164,11 @@ export class RegistrationService {
         skip: (Number(page) - 1) * Number(pageSize),
         take: Number(pageSize),
         orderBy: { createdAt: 'desc' },
-        include: { jurisdiction: { select: { id: true, code: true, name: true, country: true, flagIcon: true } } },
+        include: {
+          jurisdiction: {
+            select: { id: true, code: true, name: true, country: true, flagIcon: true },
+          },
+        },
       }),
       this.prisma.overseasRegistration.count({ where }),
     ]);
@@ -211,7 +217,9 @@ export class RegistrationService {
     return {
       total,
       byStatus: Object.fromEntries(byStatus.map((s) => [s.status, s._count.id])),
-      byJurisdiction: Object.fromEntries(byJurisdiction.map((j) => [String(j.jurisdictionId), j._count.id])),
+      byJurisdiction: Object.fromEntries(
+        byJurisdiction.map((j) => [String(j.jurisdictionId), j._count.id])
+      ),
       totalFeesUsd: feeAgg._sum.totalFeeUsd || 0,
     };
   }
@@ -320,7 +328,8 @@ export class RegistrationService {
   async deleteTemplate(id: number) {
     await this.getTemplate(id);
     const count = await this.prisma.registrationContract.count({ where: { templateId: id } });
-    if (count > 0) throw new HttpException(`该模板下还有 ${count} 份合同，无法删除`, HttpStatus.BAD_REQUEST);
+    if (count > 0)
+      throw new HttpException(`该模板下还有 ${count} 份合同，无法删除`, HttpStatus.BAD_REQUEST);
     return this.prisma.registrationContractTemplate.delete({ where: { id } });
   }
 

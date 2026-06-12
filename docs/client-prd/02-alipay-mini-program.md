@@ -11,37 +11,37 @@
 
 > **为什么需要这章**：明确支付宝小程序在三大端（H5 / 微信小程序 / 支付宝小程序）中的**差异化定位**——避免"为做而做"，每个端必须有自己的"主战场"。
 
-| 目标 | 指标 | 备注 |
-|---|---|---|
-| 拉新成本 | 支付宝渠道 CAC < $1.2 | 支付宝对金融类精准人群投放 |
-| 7 日留存 | ≥ 38% | 金融类用户粘性高于微信场景 |
-| 金融类转化 | 花呗分期支付占比 ≥ 25% | 独有能力 |
-| 商家收款 | T+0 结算资金到账 < 实时 | 商家端强诉求 |
-| 芝麻信用 | 信用分 600+ 用户占比 ≥ 30% | 用作 KYC 补充 / 风控标签 |
-| 生活号粉丝 | 关注生活号用户数 ≥ 40% 注册用户 | 长期触达通道 |
+| 目标       | 指标                            | 备注                       |
+| ---------- | ------------------------------- | -------------------------- |
+| 拉新成本   | 支付宝渠道 CAC < $1.2           | 支付宝对金融类精准人群投放 |
+| 7 日留存   | ≥ 38%                           | 金融类用户粘性高于微信场景 |
+| 金融类转化 | 花呗分期支付占比 ≥ 25%          | 独有能力                   |
+| 商家收款   | T+0 结算资金到账 < 实时         | 商家端强诉求               |
+| 芝麻信用   | 信用分 600+ 用户占比 ≥ 30%      | 用作 KYC 补充 / 风控标签   |
+| 生活号粉丝 | 关注生活号用户数 ≥ 40% 注册用户 | 长期触达通道               |
 
 **与微信小程序的定位差异**：
 
-| 维度 | 微信小程序 | 支付宝小程序 | 优先级 |
-|---|---|---|---|
-| 拉新主战场 | 社交分享、扫码、朋友圈 | 支付成功页推荐、花呗分期、芝麻信用 | 微信 > 支付宝 |
-| 金融场景 | 一般（依赖服务号） | **强**（花呗 / 余额宝 / 借呗） | 支付宝 >> 微信 |
-| 信用体系 | 无 | **芝麻信用**（独有） | 支付宝独占 |
-| 生活号触达 | 服务号模板（需关注） | 生活号模板（需关注） | 等价 |
-| 跨境支付 | 仅 V3 接口 | **跨境汇款直接走支付宝国际** | 支付宝优势 |
+| 维度       | 微信小程序             | 支付宝小程序                       | 优先级         |
+| ---------- | ---------------------- | ---------------------------------- | -------------- |
+| 拉新主战场 | 社交分享、扫码、朋友圈 | 支付成功页推荐、花呗分期、芝麻信用 | 微信 > 支付宝  |
+| 金融场景   | 一般（依赖服务号）     | **强**（花呗 / 余额宝 / 借呗）     | 支付宝 >> 微信 |
+| 信用体系   | 无                     | **芝麻信用**（独有）               | 支付宝独占     |
+| 生活号触达 | 服务号模板（需关注）   | 生活号模板（需关注）               | 等价           |
+| 跨境支付   | 仅 V3 接口             | **跨境汇款直接走支付宝国际**       | 支付宝优势     |
 
 ---
 
 ## 2. 用户故事
 
-| # | 故事 | 与微信差异 |
-|---|---|---|
-| US-1 | 作为游客，我扫支付宝小程序码进入，看到 Discover 流 | 同微信 |
-| US-2 | 作为新用户，我点"支付宝一键登录"完成授权 + 手机号绑定 | **用 `my.getAuthCode` 而非 `wx.login`** |
-| US-3 | 作为高信用分用户，我授权芝麻信用，登录时自动跳过部分 KYC 步骤 | **支付宝独有** |
-| US-4 | 作为商家，我用花呗分期收款，T+0 到账 | **支付宝独有** |
-| US-5 | 作为老用户，我使用"吱口令"分享小程序给支付宝好友 | **替代微信"小程序码"** |
-| US-6 | 作为 DLC 4 用户，我通过生活号模板消息收到升级通知 | **生活号替代服务号** |
+| #    | 故事                                                          | 与微信差异                              |
+| ---- | ------------------------------------------------------------- | --------------------------------------- |
+| US-1 | 作为游客，我扫支付宝小程序码进入，看到 Discover 流            | 同微信                                  |
+| US-2 | 作为新用户，我点"支付宝一键登录"完成授权 + 手机号绑定         | **用 `my.getAuthCode` 而非 `wx.login`** |
+| US-3 | 作为高信用分用户，我授权芝麻信用，登录时自动跳过部分 KYC 步骤 | **支付宝独有**                          |
+| US-4 | 作为商家，我用花呗分期收款，T+0 到账                          | **支付宝独有**                          |
+| US-5 | 作为老用户，我使用"吱口令"分享小程序给支付宝好友              | **替代微信"小程序码"**                  |
+| US-6 | 作为 DLC 4 用户，我通过生活号模板消息收到升级通知             | **生活号替代服务号**                    |
 
 ---
 
@@ -59,29 +59,30 @@
 
 ### 3.2 改造部分（**前端 + 支付通道**）
 
-| 维度 | H5 | 微信小程序 | **支付宝小程序** | 改造点 |
-|---|---|---|---|---|
-| 框架 | Vite + React 19 | 微信原生 (WXML/WXSS/JS) | **支付宝原生 (AXML/ACSS/JS)** | 完全重写 |
-| 登录 | 手机号 + 密码 / OTP | `wx.login()` 拿 code | **`my.getAuthCode()`** 拿 authCode | 新增 `/api/h5/auth/alipay-login` |
-| 手机号授权 | 手动输入 | `getPhoneNumber` button | **`my.getPhoneNumber`** | — |
-| 实名认证 | 上传身份证 | 上传 + 活体 | **`my.checkAuth` + `my.userNameAuth`** | 走"支付宝账号授权" |
-| 支付 | Stripe / Alipay H5 | `wx.requestPayment()` | **`my.tradePay()`** | 新增 `AlipayTradePayController` |
-| 异步通知 | 同步回调 | `wxpay.notify_url` | **`alipay.notify_url` (V3)** | 后端加 `AlipayTradeCallback` |
-| 分享 | `navigator.share` | `onShareAppMessage` | **`my.ap.navigateToAlipayPage` + 吱口令** | 走"吱口令"+"小程序收藏" |
-| 推送 | Web Push / FCM | 微信订阅消息 + 服务号 | **生活号模板消息** | 长期触达 |
-| 信用体系 | 无 | 无 | **芝麻信用（独有）** | `my.getZMCreditScore` + 后端快照 |
-| 支付通道 | Stripe / Alipay H5 | 微信 V3 | **支付宝 V3**（公私钥模式） | — |
-| 域名 | `https://smy.app` | 微信公众平台白名单 | **支付宝开放平台白名单**（**不**需 ICP 备案） | — |
-| 摄像头扫码 | `getUserMedia` + jsQR | `wx.scanCode()` | **`my.scan`** | — |
-| 文件下载 | `<a download>` | `wx.downloadFile()` | **`my.downloadFile`** | — |
-| 缓存 | localStorage | `wx.setStorageSync` 10MB | **`my.setStorageSync` 10MB** | — |
-| HTTP 请求 | `fetch` | `wx.request` | **`my.httpRequest`** | — |
-| 后台保活 | — | 不需要 | 不需要 | — |
-| ICP 备案 | 必须 | 必须 | **不需要**（仅白名单） | 运维配置 |
+| 维度       | H5                    | 微信小程序               | **支付宝小程序**                              | 改造点                           |
+| ---------- | --------------------- | ------------------------ | --------------------------------------------- | -------------------------------- |
+| 框架       | Vite + React 19       | 微信原生 (WXML/WXSS/JS)  | **支付宝原生 (AXML/ACSS/JS)**                 | 完全重写                         |
+| 登录       | 手机号 + 密码 / OTP   | `wx.login()` 拿 code     | **`my.getAuthCode()`** 拿 authCode            | 新增 `/api/h5/auth/alipay-login` |
+| 手机号授权 | 手动输入              | `getPhoneNumber` button  | **`my.getPhoneNumber`**                       | —                                |
+| 实名认证   | 上传身份证            | 上传 + 活体              | **`my.checkAuth` + `my.userNameAuth`**        | 走"支付宝账号授权"               |
+| 支付       | Stripe / Alipay H5    | `wx.requestPayment()`    | **`my.tradePay()`**                           | 新增 `AlipayTradePayController`  |
+| 异步通知   | 同步回调              | `wxpay.notify_url`       | **`alipay.notify_url` (V3)**                  | 后端加 `AlipayTradeCallback`     |
+| 分享       | `navigator.share`     | `onShareAppMessage`      | **`my.ap.navigateToAlipayPage` + 吱口令**     | 走"吱口令"+"小程序收藏"          |
+| 推送       | Web Push / FCM        | 微信订阅消息 + 服务号    | **生活号模板消息**                            | 长期触达                         |
+| 信用体系   | 无                    | 无                       | **芝麻信用（独有）**                          | `my.getZMCreditScore` + 后端快照 |
+| 支付通道   | Stripe / Alipay H5    | 微信 V3                  | **支付宝 V3**（公私钥模式）                   | —                                |
+| 域名       | `https://smy.app`     | 微信公众平台白名单       | **支付宝开放平台白名单**（**不**需 ICP 备案） | —                                |
+| 摄像头扫码 | `getUserMedia` + jsQR | `wx.scanCode()`          | **`my.scan`**                                 | —                                |
+| 文件下载   | `<a download>`        | `wx.downloadFile()`      | **`my.downloadFile`**                         | —                                |
+| 缓存       | localStorage          | `wx.setStorageSync` 10MB | **`my.setStorageSync` 10MB**                  | —                                |
+| HTTP 请求  | `fetch`               | `wx.request`             | **`my.httpRequest`**                          | —                                |
+| 后台保活   | —                     | 不需要                   | 不需要                                        | —                                |
+| ICP 备案   | 必须                  | 必须                     | **不需要**（仅白名单）                        | 运维配置                         |
 
 ### 3.3 支付宝独有的能力
 
 #### 3.3.1 芝麻信用（**核心差异化**）
+
 - `my.getZMCreditScore()` 拿用户芝麻信用分（350-950）
 - 600+ 可作为"高级用户"标签，跳过部分 KYC
 - 650+ 可解锁"先享后付"
@@ -89,19 +90,23 @@
 - **后端必须**保存快照（`ZmcCreditSnapshot`），防客户端篡改
 
 #### 3.3.2 花呗分期
+
 - `my.tradePay({ ... })` 支付时，**用户主动选**花呗分期
 - 商家端承担 0.5%-1.5% 手续费（**不**转嫁给用户）
 - 后端用支付宝 `alipay.trade.create` + `extend_params.hb_fq_num` 指定期数
 
 #### 3.3.3 商家 T+0 结算
+
 - 商家入驻后开通"即时到账"，资金实时到银行卡
 - 仅企业 / 个体工商户可开通，个人主体**不支持**
 
 #### 3.3.4 支付宝国际（跨境汇款）
+
 - 单笔 5 万美元限额
 - 用于 H5"跨境汇款"菜单的"支付宝国际"通道
 
 #### 3.3.5 小程序收藏 + 添加到桌面
+
 - 用户主动收藏后，下次从"我的小程序"快速进入
 - "添加到桌面"等同于 PWA 安装，但**不**走浏览器
 
@@ -119,20 +124,20 @@
 
 ### 3.5 与微信小程序的 API 命名差异速查
 
-| 微信 | **支付宝** | 说明 |
-|---|---|---|
-| `wx.login()` | **`my.getAuthCode()`** | 拿临时凭证 |
-| `wx.getUserInfo()` | **`my.getOpenUserInfo()`** | 拿加密用户信息 |
-| `wx.getPhoneNumber()` | **`my.getPhoneNumber()`** | 手机号授权 |
-| `wx.requestPayment()` | **`my.tradePay()`** | 支付 |
-| `wx.requestSubscribeMessage()` | **`my.subscribe()`** + 生活号模板 | 订阅消息 |
-| `wx.request()` | **`my.httpRequest()`** | HTTP 请求 |
-| `wx.scanCode()` | **`my.scan()`** | 扫码 |
-| `wx.downloadFile()` | **`my.downloadFile()`** | 文件下载 |
-| `wx.setStorageSync()` | **`my.setStorageSync()`** | 同步存 |
-| `onShareAppMessage` | **`onShareAppMessage` (AXML `button open-type="share"`)** | 分享回调（语法**一致**！） |
-| `wx.checkSession()` | **`my.checkSession()`** | session 校验 |
-| `wx.login` 的 `code` | **`my.getAuthCode` 的 `authCode`** | 字段名不同 |
+| 微信                           | **支付宝**                                                | 说明                       |
+| ------------------------------ | --------------------------------------------------------- | -------------------------- |
+| `wx.login()`                   | **`my.getAuthCode()`**                                    | 拿临时凭证                 |
+| `wx.getUserInfo()`             | **`my.getOpenUserInfo()`**                                | 拿加密用户信息             |
+| `wx.getPhoneNumber()`          | **`my.getPhoneNumber()`**                                 | 手机号授权                 |
+| `wx.requestPayment()`          | **`my.tradePay()`**                                       | 支付                       |
+| `wx.requestSubscribeMessage()` | **`my.subscribe()`** + 生活号模板                         | 订阅消息                   |
+| `wx.request()`                 | **`my.httpRequest()`**                                    | HTTP 请求                  |
+| `wx.scanCode()`                | **`my.scan()`**                                           | 扫码                       |
+| `wx.downloadFile()`            | **`my.downloadFile()`**                                   | 文件下载                   |
+| `wx.setStorageSync()`          | **`my.setStorageSync()`**                                 | 同步存                     |
+| `onShareAppMessage`            | **`onShareAppMessage` (AXML `button open-type="share"`)** | 分享回调（语法**一致**！） |
+| `wx.checkSession()`            | **`my.checkSession()`**                                   | session 校验               |
+| `wx.login` 的 `code`           | **`my.getAuthCode` 的 `authCode`**                        | 字段名不同                 |
 
 ---
 
@@ -172,6 +177,7 @@
 ```
 
 **关键点**：
+
 - `my.getAuthCode()` 拿的是**临时** `authCode`（5 分钟有效），不是最终 token
 - 拿用户信息需用户**主动**点 `<button open-type="getUserInfo">` 触发 `my.getOpenUserInfo()`
 - 手机号需用户**主动**点 `<button open-type="getPhoneNumber">` 触发 `my.getPhoneNumber()`
@@ -194,6 +200,7 @@
 ```
 
 **关键点**：
+
 - 必须在 `my.tradePay` 前**先**调后端创建订单拿 `tradeStr`（**不能**前端本地算签名）
 - 异步通知可能 5s-30min 不等，前端不能**只**等异步，要 WebSocket 主动推
 - **退款**用 `alipay.trade.refund` API（独立接口，**不**走支付接口）
@@ -238,6 +245,7 @@ A 保存到相册 → 群发 → 其他人长按识别
 ```
 
 **关键点**：
+
 - 分享图必须**预生成**（CDN），不要 `canvas` 实时画（性能差 + 容易超时）
 - 分享文案要带"福利钩子"（如"扫码得 100 DVC + 1 次免费税务咨询"）
 - 邀请关系绑定有 7 天有效期（超时未注册不返利）
@@ -279,6 +287,7 @@ A 保存到相册 → 群发 → 其他人长按识别
 ```
 
 **关键点**：
+
 - 支付宝的"实名认证" = **公安二要素 + 活体**，比 H5 手动上传身份证 + 活体**可信度高**
 - 芝麻信用 600+ 可作为**补充 KYC**，但**不能完全替代**金融类 KYC
 - 涉及支付 / 提现的场景**仍需**走完整 `my.userNameAuth`
@@ -290,25 +299,25 @@ A 保存到相册 → 群发 → 其他人长按识别
 
 ### 5.1 AlipayUser（支付宝用户映射）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | UUID |
-| userId | String | ✓ | 关联 User.id（00-foundation §13 双身份允许） |
-| alipayUserId | String(20) | ✓ | 支付宝 user_id，唯一 |
-| alipayUnionId | String(40) | | 跨小程序 unionId（仅同主体） |
-| appid | String(40) | ✓ | 多小程序隔离 |
-| nickname | String | | 支付宝昵称（**不**用真名） |
-| avatarUrl | String | | |
-| phoneNumber | String | | 加密存储（00-foundation §11 KMS） |
-| phoneAuthorized | Boolean | | 是否授权过手机号 |
-| realNameStatus | String | | `none` / `partial` / `full` |
-| zmcAuthorized | Boolean | | 是否授权过芝麻信用 |
-| zmcLatestScore | Int | | 最新信用分（不存历史，仅最新） |
-| zmcLatestLevel | String | | `EXCELLENT` / `GREAT` / `GOOD` / `MEDIUM` / `BAD` |
-| lastLoginAt | DateTime | | |
-| lastShareAt | DateTime | | 上次分享时间（防刷） |
-| lastZmcQueryAt | DateTime | | 上次芝麻信用查询时间（**7 天一次**，避免骚扰） |
-| createdAt, updatedAt, deletedAt | | | 通用 |
+| 字段                            | 类型       | 必填 | 说明                                              |
+| ------------------------------- | ---------- | ---- | ------------------------------------------------- |
+| id                              | String     | ✓    | UUID                                              |
+| userId                          | String     | ✓    | 关联 User.id（00-foundation §13 双身份允许）      |
+| alipayUserId                    | String(20) | ✓    | 支付宝 user_id，唯一                              |
+| alipayUnionId                   | String(40) |      | 跨小程序 unionId（仅同主体）                      |
+| appid                           | String(40) | ✓    | 多小程序隔离                                      |
+| nickname                        | String     |      | 支付宝昵称（**不**用真名）                        |
+| avatarUrl                       | String     |      |                                                   |
+| phoneNumber                     | String     |      | 加密存储（00-foundation §11 KMS）                 |
+| phoneAuthorized                 | Boolean    |      | 是否授权过手机号                                  |
+| realNameStatus                  | String     |      | `none` / `partial` / `full`                       |
+| zmcAuthorized                   | Boolean    |      | 是否授权过芝麻信用                                |
+| zmcLatestScore                  | Int        |      | 最新信用分（不存历史，仅最新）                    |
+| zmcLatestLevel                  | String     |      | `EXCELLENT` / `GREAT` / `GOOD` / `MEDIUM` / `BAD` |
+| lastLoginAt                     | DateTime   |      |                                                   |
+| lastShareAt                     | DateTime   |      | 上次分享时间（防刷）                              |
+| lastZmcQueryAt                  | DateTime   |      | 上次芝麻信用查询时间（**7 天一次**，避免骚扰）    |
+| createdAt, updatedAt, deletedAt |            |      | 通用                                              |
 
 ```prisma
 model AlipayUser {
@@ -344,28 +353,29 @@ model AlipayUser {
 ```
 
 > **关键决策**：
+>
 > - `phoneNumber` 字段按 [00-foundation §11 KMS](../../admin-prd/00-foundation.md) 加密落库（EncryptedPayload 格式），**不**存明文
 > - 信用卡号、身份证号等同样强制 KMS 加密
 > - `zmcLatestScore` **不存历史**，历史走 `ZmcCreditSnapshot` 独立表
 
 ### 5.2 ZmcCreditSnapshot（芝麻信用分快照）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| alipayUserId | String | ✓ | 关联 AlipayUser.id（**不**是 userId） |
-| score | Int | ✓ | 信用分 350-950 |
-| level | String | ✓ | `EXCELLENT` / `GREAT` / `GOOD` / `MEDIUM` / `BAD` |
-| zmScoreGrade | String | | 支付宝返回的分级（A+/A/B/C/D） |
-| identityHash | String(64) | ✓ | 支付宝返回的"用户标识哈希"（SHA256） |
-| bizNo | String(40) | | 业务流水号（用于查证） |
-| queryReason | String | | 查询原因（KYC / 风控 / 营销） |
-| scene | String | ✓ | `kyc` / `risk` / `marketing` / `credit_check` |
-| isConsumed | Boolean | | 是否已用于某次判定（**防止重复判定**） |
-| consumedAt | DateTime | | |
-| consumedFor | String | | `kyc_basic` / `kyc_advance` / `risk_whitelist` / `credit_payment` |
-| expiresAt | DateTime | ✓ | 默认 +30 天（过期重查） |
-| createdAt | DateTime | | |
+| 字段         | 类型       | 必填 | 说明                                                              |
+| ------------ | ---------- | ---- | ----------------------------------------------------------------- |
+| id           | String     | ✓    |                                                                   |
+| alipayUserId | String     | ✓    | 关联 AlipayUser.id（**不**是 userId）                             |
+| score        | Int        | ✓    | 信用分 350-950                                                    |
+| level        | String     | ✓    | `EXCELLENT` / `GREAT` / `GOOD` / `MEDIUM` / `BAD`                 |
+| zmScoreGrade | String     |      | 支付宝返回的分级（A+/A/B/C/D）                                    |
+| identityHash | String(64) | ✓    | 支付宝返回的"用户标识哈希"（SHA256）                              |
+| bizNo        | String(40) |      | 业务流水号（用于查证）                                            |
+| queryReason  | String     |      | 查询原因（KYC / 风控 / 营销）                                     |
+| scene        | String     | ✓    | `kyc` / `risk` / `marketing` / `credit_check`                     |
+| isConsumed   | Boolean    |      | 是否已用于某次判定（**防止重复判定**）                            |
+| consumedAt   | DateTime   |      |                                                                   |
+| consumedFor  | String     |      | `kyc_basic` / `kyc_advance` / `risk_whitelist` / `credit_payment` |
+| expiresAt    | DateTime   | ✓    | 默认 +30 天（过期重查）                                           |
+| createdAt    | DateTime   |      |                                                                   |
 
 ```prisma
 model ZmcCreditSnapshot {
@@ -393,6 +403,7 @@ model ZmcCreditSnapshot {
 ```
 
 **关键约束**：
+
 - **每次查询写一条新快照**（防客户端 / 中间人篡改）
 - 同一 `alipayUserId + scene` 30 天内最多 1 条未消费的快照（防骚扰）
 - `isConsumed=true` 后**不**再用于判定，必须重查
@@ -416,6 +427,7 @@ draft → alipay_precreated → paid → processing → completed
 ```
 
 **触发条件**：
+
 - `draft → alipay_precreated`：后端调 `alipay.trade.create` 成功
 - `alipay_precreated → paid`：支付宝异步通知 `AlipayTradeCallback` 验签成功
 - `paid → alipay_refund_pending`：用户/客服发起退款
@@ -425,11 +437,11 @@ draft → alipay_precreated → paid → processing → completed
 
 **与微信支付订单的差异**：
 
-| 状态 | 微信 | **支付宝** | 备注 |
-|---|---|---|---|
-| 预付状态 | `wx_prepaid` | **`alipay_precreated`** | V3 接口命名 |
-| 退款失败 | `wx_refund_failed` | **`alipay_refund_failed`** | — |
-| 异步通知 | `WxPayCallback` | **`AlipayTradeCallback`** | 验签方式不同 |
+| 状态     | 微信               | **支付宝**                 | 备注         |
+| -------- | ------------------ | -------------------------- | ------------ |
+| 预付状态 | `wx_prepaid`       | **`alipay_precreated`**    | V3 接口命名  |
+| 退款失败 | `wx_refund_failed` | **`alipay_refund_failed`** | —            |
+| 异步通知 | `WxPayCallback`    | **`AlipayTradeCallback`**  | 验签方式不同 |
 
 ### 6.2 芝麻信用分等级
 
@@ -453,6 +465,7 @@ draft → alipay_precreated → paid → processing → completed
 ```
 
 **判定逻辑**（伪代码）：
+
 ```typescript
 function determineZmcLevel(score: number): string {
   if (score >= 950) return 'EXCELLENT';
@@ -464,6 +477,7 @@ function determineZmcLevel(score: number): string {
 ```
 
 **KYC 联动**：
+
 - `score >= 600` → 可跳过"基础 KYC"中的活体检测
 - `score >= 650` → 可解锁"先享后付"支付
 - `score >= 700` → 标记为"风控白名单"用户，简化后续审核
@@ -480,23 +494,23 @@ function determineZmcLevel(score: number): string {
 
 ### 7.1 认证
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/auth/alipay-login` | 公开 | 支付宝一键登录（`authCode` + `appid`） |
-| POST | `/api/h5/auth/alipay-phone` | 需登录 | 解密手机号（`my.getPhoneNumber` 回调） |
-| POST | `/api/h5/auth/alipay-bind-union` | 需登录 | 绑定 alipayUnionId（跨小程序） |
-| POST | `/api/h5/auth/alipay-realname-init` | 需登录 | 初始化实名认证（调 `alipay.user.certify.open.initialize`） |
-| POST | `/api/h5/auth/alipay-realname-query` | 需登录 | 轮询认证结果（`alipay.user.certify.open.query`） |
+| Method | Path                                 | 权限   | 说明                                                       |
+| ------ | ------------------------------------ | ------ | ---------------------------------------------------------- |
+| POST   | `/api/h5/auth/alipay-login`          | 公开   | 支付宝一键登录（`authCode` + `appid`）                     |
+| POST   | `/api/h5/auth/alipay-phone`          | 需登录 | 解密手机号（`my.getPhoneNumber` 回调）                     |
+| POST   | `/api/h5/auth/alipay-bind-union`     | 需登录 | 绑定 alipayUnionId（跨小程序）                             |
+| POST   | `/api/h5/auth/alipay-realname-init`  | 需登录 | 初始化实名认证（调 `alipay.user.certify.open.initialize`） |
+| POST   | `/api/h5/auth/alipay-realname-query` | 需登录 | 轮询认证结果（`alipay.user.certify.open.query`）           |
 
 ### 7.2 支付
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/payments/alipay-precreate` | 需登录 | 预创建交易，返回 `tradeStr` |
-| POST | `/api/h5/payments/alipay-callback` | 支付宝回调 | V3 公钥验签 + 写 `paid` 状态（**不**需 JWT） |
-| POST | `/api/h5/payments/alipay-refund` | 需登录 | 申请退款（调 `alipay.trade.refund`） |
-| POST | `/api/h5/payments/alipay-query` | 需登录 | 查询交易状态（`alipay.trade.query`） |
-| POST | `/api/h5/payments/alipay-close` | 需登录 | 关闭未支付订单（`alipay.trade.close`） |
+| Method | Path                                | 权限       | 说明                                         |
+| ------ | ----------------------------------- | ---------- | -------------------------------------------- |
+| POST   | `/api/h5/payments/alipay-precreate` | 需登录     | 预创建交易，返回 `tradeStr`                  |
+| POST   | `/api/h5/payments/alipay-callback`  | 支付宝回调 | V3 公钥验签 + 写 `paid` 状态（**不**需 JWT） |
+| POST   | `/api/h5/payments/alipay-refund`    | 需登录     | 申请退款（调 `alipay.trade.refund`）         |
+| POST   | `/api/h5/payments/alipay-query`     | 需登录     | 查询交易状态（`alipay.trade.query`）         |
+| POST   | `/api/h5/payments/alipay-close`     | 需登录     | 关闭未支付订单（`alipay.trade.close`）       |
 
 ### 7.3 邀请
 
@@ -504,38 +518,38 @@ function determineZmcLevel(score: number): string {
 
 ### 7.4 分享
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/share/track` | 需登录 | 记录分享行为（**与微信共用**，按 `clientType` 区分） |
-| GET | `/api/h5/share/poster` | 需登录 | 预生成分享海报 CDN URL |
-| POST | `/api/h5/share/zhikouling` | 需登录 | 生成吱口令文案（**支付宝独有**） |
-| POST | `/api/h5/share/alipay-qrcode` | 需登录 | 生成支付宝小程序码（调 `alipay.open.app.qrcode.create`） |
+| Method | Path                          | 权限   | 说明                                                     |
+| ------ | ----------------------------- | ------ | -------------------------------------------------------- |
+| POST   | `/api/h5/share/track`         | 需登录 | 记录分享行为（**与微信共用**，按 `clientType` 区分）     |
+| GET    | `/api/h5/share/poster`        | 需登录 | 预生成分享海报 CDN URL                                   |
+| POST   | `/api/h5/share/zhikouling`    | 需登录 | 生成吱口令文案（**支付宝独有**）                         |
+| POST   | `/api/h5/share/alipay-qrcode` | 需登录 | 生成支付宝小程序码（调 `alipay.open.app.qrcode.create`） |
 
 ### 7.5 芝麻信用（**支付宝独有**）
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/credit/zm-authorize` | 需登录 | 用户授权芝麻信用（`my.getZMCreditScore` 回调） |
-| GET | `/api/h5/credit/zm-score` | 需登录 | 查询当前用户最新信用分（用快照，不实时调） |
-| POST | `/api/h5/credit/zm-query` | 内部 cron / 后台 | 主动查询（**不**暴露给前端，防骚扰） |
-| GET | `/api/h5/credit/zm-snapshots` | 需登录 | 用户历史信用分趋势（近 90 天） |
-| POST | `/api/h5/credit/zm-verify-kyc` | 需登录 | 校验信用分是否满足 KYC 等级（`>= 600` 跳过活体） |
-| POST | `/api/h5/credit/zm-credit-pay` | 需登录 | "先享后付"支付资格校验（`>= 650`） |
+| Method | Path                           | 权限             | 说明                                             |
+| ------ | ------------------------------ | ---------------- | ------------------------------------------------ |
+| POST   | `/api/h5/credit/zm-authorize`  | 需登录           | 用户授权芝麻信用（`my.getZMCreditScore` 回调）   |
+| GET    | `/api/h5/credit/zm-score`      | 需登录           | 查询当前用户最新信用分（用快照，不实时调）       |
+| POST   | `/api/h5/credit/zm-query`      | 内部 cron / 后台 | 主动查询（**不**暴露给前端，防骚扰）             |
+| GET    | `/api/h5/credit/zm-snapshots`  | 需登录           | 用户历史信用分趋势（近 90 天）                   |
+| POST   | `/api/h5/credit/zm-verify-kyc` | 需登录           | 校验信用分是否满足 KYC 等级（`>= 600` 跳过活体） |
+| POST   | `/api/h5/credit/zm-credit-pay` | 需登录           | "先享后付"支付资格校验（`>= 650`）               |
 
 ### 7.6 实名认证
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/kyc/alipay-realname-init` | 需登录 | 初始化（调 `alipay.user.certify.open.initialize`） |
-| POST | `/api/h5/kyc/alipay-realname-query` | 需登录 | 轮询结果 |
-| GET | `/api/h5/kyc/me` | 需登录 | 查询当前 KYC 状态（多端共用） |
+| Method | Path                                | 权限   | 说明                                               |
+| ------ | ----------------------------------- | ------ | -------------------------------------------------- |
+| POST   | `/api/h5/kyc/alipay-realname-init`  | 需登录 | 初始化（调 `alipay.user.certify.open.initialize`） |
+| POST   | `/api/h5/kyc/alipay-realname-query` | 需登录 | 轮询结果                                           |
+| GET    | `/api/h5/kyc/me`                    | 需登录 | 查询当前 KYC 状态（多端共用）                      |
 
 ### 7.7 生活号（替代服务号）
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/notifications/alipay-template` | 内部 | 发送生活号模板消息 |
-| POST | `/api/h5/notifications/alipay-follow` | 需登录 | 记录用户关注生活号（用于后续触达） |
+| Method | Path                                    | 权限   | 说明                               |
+| ------ | --------------------------------------- | ------ | ---------------------------------- |
+| POST   | `/api/h5/notifications/alipay-template` | 内部   | 发送生活号模板消息                 |
+| POST   | `/api/h5/notifications/alipay-follow`   | 需登录 | 记录用户关注生活号（用于后续触达） |
 
 ---
 
@@ -628,6 +642,7 @@ alipay-miniprogram/
 ```
 
 **与微信 app.json 的关键差异**：
+
 - `selectedColor` 选支付宝品牌色 `#1677FF`（蓝色，区别于微信绿 `#10B981`）
 - `window.titleBarColor` 而非 `navigationBarBackgroundColor`
 - **没有** `lazyCodeLoading` 字段（支付宝自动优化）
@@ -658,7 +673,7 @@ async function httpRequest({ url, method = 'GET', data, header = {}, showLoading
       data,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : '',
         'X-Client': 'alipay-miniprogram',
         'X-Version': '1.0.0',
         ...header,
@@ -693,6 +708,7 @@ module.exports = { httpRequest, HttpError };
 ```
 
 **与微信 `wx.request` 的差异**：
+
 - `my.httpRequest` **没有** `data` 字段命名问题（参数同 `wx.request`）
 - 异步 API 走 **Promise / callback 双模式**（更老派）
 - `my.showLoading` 用 `content` 而非 `title`
@@ -830,7 +846,7 @@ Page({
     return {
       title: '我的 AI 名片，扫码加我好友',
       path: `pages/card/detail?id=${userId}&from=share&ref=${userId}`,
-      imageUrl: this.data.sharePosterUrl,  // 预生成的 CDN 海报
+      imageUrl: this.data.sharePosterUrl, // 预生成的 CDN 海报
     };
   },
 
@@ -972,6 +988,7 @@ module.exports = { t, I18N };
 ```
 
 > **关键决策**：i18n namespace 严格按 [00-foundation §5.5.1 速查表](../../admin-prd/00-foundation.md)：
+>
 > - `payment.txStatus.paid`（payment 单数）
 > - `credit.zmcScore.*`（**新增** `credit` namespace）
 > - `auth.realname.*` / `auth.zmcredit.*`（**新增** `auth` namespace）
@@ -1013,6 +1030,7 @@ module.exports = { t, I18N };
 ```
 
 **与微信 project.config.json 的差异**：
+
 - 字段名 `appid` 一致，但值是支付宝 appid
 - 支付宝没有 `useCompilerModule` / `babelSetting` 字段
 - 没有 `sitemap.json`（支付宝自动生成）
@@ -1022,14 +1040,15 @@ module.exports = { t, I18N };
 
 在 [支付宝开放平台](https://open.alipay.com) → 开发中心 → 小程序 → 设置 → 服务器域名白名单：
 
-| 类型 | 域名 |
-|---|---|
-| **request 合法域名** | `https://api.smy.app` |
-| **uploadFile 合法域名** | `https://api.smy.app` |
+| 类型                      | 域名                                         |
+| ------------------------- | -------------------------------------------- |
+| **request 合法域名**      | `https://api.smy.app`                        |
+| **uploadFile 合法域名**   | `https://api.smy.app`                        |
 | **downloadFile 合法域名** | `https://cdn.smy.app`, `https://api.smy.app` |
-| **socket 合法域名** | `wss://ws.smy.app` |
+| **socket 合法域名**       | `wss://ws.smy.app`                           |
 
 **关键**：
+
 - 必须是 HTTPS，且 SSL 证书要受信（推荐 Let's Encrypt / 阿里云）
 - **不**需 ICP 备案（**支付宝小程序免备案**）——仅服务器白名单
 - 小程序正式版必须配（开发版可勾"不校验合法域名"）
@@ -1037,6 +1056,7 @@ module.exports = { t, I18N };
 ### 10.3 业务域名（**仅限同主体**）
 
 配置后可用 `web-view` 组件跳转 H5 页面（**仅**同主体已认证的域名）：
+
 - `https://smy.app`
 - `https://admin.smy.app`
 
@@ -1108,7 +1128,7 @@ export class AlipayTradeService {
 
   async createTrade(params: {
     orderId: string;
-    amount: number;   // 单位：元
+    amount: number; // 单位：元
     subject: string;
     userId: string;
     enableHuabei?: boolean;
@@ -1118,11 +1138,11 @@ export class AlipayTradeService {
         out_trade_no: params.orderId,
         total_amount: params.amount,
         subject: params.subject,
-        buyer_id: params.userId,  // 支付宝 user_id（来自 AlipayUser.alipayUserId）
+        buyer_id: params.userId, // 支付宝 user_id（来自 AlipayUser.alipayUserId）
         notify_url: this.config.get('ALIPAY_NOTIFY_URL'),
         // 花呗分期（可选）
         extend_params: params.enableHuabei
-          ? { hb_fq_num: '3', hb_fq_seller_percent: '0' }  // 3 期，商家承担 0% 手续费
+          ? { hb_fq_num: '3', hb_fq_seller_percent: '0' } // 3 期，商家承担 0% 手续费
           : undefined,
       },
     });
@@ -1138,13 +1158,17 @@ export class AlipayTradeService {
     return {
       outTradeNo: params.out_trade_no,
       tradeNo: params.trade_no,
-      tradeStatus: params.trade_status,  // TRADE_SUCCESS / TRADE_FINISHED
+      tradeStatus: params.trade_status, // TRADE_SUCCESS / TRADE_FINISHED
       totalAmount: params.total_amount,
       gmtPayment: params.gmt_payment,
     };
   }
 
-  async refund(params: { orderId: string; amount: number; reason: string }): Promise<AlipayRefundResult> {
+  async refund(params: {
+    orderId: string;
+    amount: number;
+    reason: string;
+  }): Promise<AlipayRefundResult> {
     return this.sdk.exec('alipay.trade.refund', {
       bizContent: {
         out_trade_no: params.orderId,
@@ -1164,7 +1188,7 @@ export class AlipayTradeService {
 export class AlipayCallbackController {
   constructor(
     private alipayTrade: AlipayTradeService,
-    private orderService: OrderService,
+    private orderService: OrderService
   ) {}
 
   @Post()
@@ -1192,6 +1216,7 @@ export class AlipayCallbackController {
 ```
 
 **关键点**：
+
 - 验签失败 / 处理失败必须返回 `fail`，支付宝会按 4m / 10m / 10m / 1h / 2h / 6h / 15h 重试 7 次
 - 处理成功必须返回 `success`，否则会重复通知
 - V3 通知格式是 `application/x-www-form-urlencoded`，**不**是 JSON
@@ -1204,14 +1229,14 @@ export class AlipayCallbackController {
 
 ### 12.1 生活号 vs 服务号对照
 
-| 微信服务号 | **支付宝生活号** | 说明 |
-|---|---|---|
-| 服务号关注 | **生活号关注** | 等价 |
-| 模板消息 | **模板消息** | 语法类似 |
-| `mp.template.send` | **`alipay.open.public.message.custom.send`** | API 不同 |
-| `touser` | **`toUserId`** | 字段名不同 |
-| 服务号二维码 | **生活号关注二维码** | 同等作用 |
-| 客服消息 | **生活号 1v1 消息** | 等价 |
+| 微信服务号         | **支付宝生活号**                             | 说明       |
+| ------------------ | -------------------------------------------- | ---------- |
+| 服务号关注         | **生活号关注**                               | 等价       |
+| 模板消息           | **模板消息**                                 | 语法类似   |
+| `mp.template.send` | **`alipay.open.public.message.custom.send`** | API 不同   |
+| `touser`           | **`toUserId`**                               | 字段名不同 |
+| 服务号二维码       | **生活号关注二维码**                         | 同等作用   |
+| 客服消息           | **生活号 1v1 消息**                          | 等价       |
 
 ### 12.2 模板消息发送
 
@@ -1221,7 +1246,7 @@ export class AlipayCallbackController {
 export class AlipayLifeService {
   constructor(
     private config: ConfigService,
-    private alipaySdk: AlipaySdk,
+    private alipaySdk: AlipaySdk
   ) {}
 
   async sendTemplateMessage(params: {
@@ -1248,13 +1273,13 @@ export class AlipayLifeService {
 
 在 [支付宝生活号后台](https://life.alipay.com) → 模板消息 → 模板库 申请，每个业务场景单独申请：
 
-| 场景 | 模板标题 | 关键词 |
-|---|---|---|
-| DLC 升级 | 等级提升通知 | `{{level}}` 等级提升至 `{{newLevel}}` |
-| 支付成功 | 订单支付成功 | `{{orderName}}` 已支付 `{{amount}}` 元 |
-| 邀请成功 | 好友加入 | `{{nickname}}` 通过你的邀请加入 |
-| 凭证签发 | 凭证已签发 | `{{credentialName}}` 凭证已签发，点击查看 |
-| 信用提升 | 信用等级变化 | 您的芝麻信用等级已更新 |
+| 场景     | 模板标题     | 关键词                                    |
+| -------- | ------------ | ----------------------------------------- |
+| DLC 升级 | 等级提升通知 | `{{level}}` 等级提升至 `{{newLevel}}`     |
+| 支付成功 | 订单支付成功 | `{{orderName}}` 已支付 `{{amount}}` 元    |
+| 邀请成功 | 好友加入     | `{{nickname}}` 通过你的邀请加入           |
+| 凭证签发 | 凭证已签发   | `{{credentialName}}` 凭证已签发，点击查看 |
+| 信用提升 | 信用等级变化 | 您的芝麻信用等级已更新                    |
 
 ### 12.4 用户关注生活号引导
 
@@ -1269,11 +1294,16 @@ export class AlipayLifeService {
 ```
 
 跳转 API：
+
 ```javascript
 my.ap.navigateToAlipayPage({
   url: 'alipays://platformapi/startapp?appId=20000067&url=https%3A%2F%2Flife.alipay.com%2F...',
-  success: () => { /* 用户到达生活号 */ },
-  fail: () => { /* 跳转失败，可能未安装 */ },
+  success: () => {
+    /* 用户到达生活号 */
+  },
+  fail: () => {
+    /* 跳转失败，可能未安装 */
+  },
 });
 ```
 
@@ -1285,23 +1315,25 @@ my.ap.navigateToAlipayPage({
 
 ### 13.1 业务价值
 
-| 场景 | 信用分阈值 | 业务收益 |
-|---|---|---|
-| KYC 跳过活体 | ≥ 600 | 提升 KYC 通过率 30% |
-| 先享后付 | ≥ 650 | 提升付费转化 25% |
-| 风控白名单 | ≥ 700 | 减少人工审核 50% |
-| 高端用户标签 | ≥ 700 | DLC 等级 + 1 速 |
-| 信用支付 | ≥ 600 | 解锁"信用购" |
+| 场景         | 信用分阈值 | 业务收益            |
+| ------------ | ---------- | ------------------- |
+| KYC 跳过活体 | ≥ 600      | 提升 KYC 通过率 30% |
+| 先享后付     | ≥ 650      | 提升付费转化 25%    |
+| 风控白名单   | ≥ 700      | 减少人工审核 50%    |
+| 高端用户标签 | ≥ 700      | DLC 等级 + 1 速     |
+| 信用支付     | ≥ 600      | 解锁"信用购"        |
 
 ### 13.2 接入步骤
 
 #### 步骤 1：申请芝麻信用能力
+
 1. 在 [支付宝开放平台](https://open.alipay.com) → 应用 → 能力列表 → 申请"芝麻信用"
 2. 提交"使用场景说明"（KYC / 风控 / 营销）
 3. 审核 1-3 工作日，通过后获得 `ZM_SERVICE_ID`（服务 ID）
 4. 在生活号后台绑定 `ZM_SERVICE_ID`
 
 #### 步骤 2：前端授权
+
 ```xml
 <!-- pages/credit/authorize.axml -->
 <view class="zmcredit-page">
@@ -1343,16 +1375,20 @@ async onGetZMCreditScore() {
 ```
 
 #### 步骤 3：后端保存快照
+
 ```typescript
 // apps/api/src/modules/credit/zm-credit.service.ts
 @Injectable()
 export class ZmCreditService {
-  async saveSnapshot(alipayUserId: string, params: {
-    score: number;
-    grade: string;
-    bizNo: string;
-    scene: string;
-  }): Promise<ZmcCreditSnapshot> {
+  async saveSnapshot(
+    alipayUserId: string,
+    params: {
+      score: number;
+      grade: string;
+      bizNo: string;
+      scene: string;
+    }
+  ): Promise<ZmcCreditSnapshot> {
     return this.prisma.zmcCreditSnapshot.create({
       data: {
         alipayUserId,
@@ -1363,7 +1399,7 @@ export class ZmCreditService {
         identityHash: this.hashIdentity(alipayUserId, params.bizNo),
         scene: params.scene,
         queryReason: '用户主动授权',
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),  // 30 天
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 天
       },
     });
   }
@@ -1375,10 +1411,7 @@ export class ZmCreditService {
         score: { gte: required },
         expiresAt: { gt: new Date() },
         // 未消费或消费了但用于相同目的
-        OR: [
-          { isConsumed: false },
-          { consumedFor: 'kyc_basic' },
-        ],
+        OR: [{ isConsumed: false }, { consumedFor: 'kyc_basic' }],
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -1410,7 +1443,7 @@ export class ZmCreditService {
 export class RealnameService {
   constructor(
     private zmCredit: ZmCreditService,
-    private kycService: KycService,
+    private kycService: KycService
   ) {}
 
   async processAlipayRealname(alipayUserId: string) {
@@ -1431,12 +1464,12 @@ export class RealnameService {
 
 ### 13.3 反作弊与骚扰控制
 
-| 规则 | 阈值 | 动作 |
-|---|---|---|
-| 同一用户 7 天内查询次数 | ≤ 1 | 超限拒绝，提示"7 天后再试" |
-| 同一业务场景 30 天内未消费快照 | 1 条 | 重复查询**复用**快照，不调支付宝 |
-| 同一支付宝 user_id 1 小时查询次数 | ≤ 3 | 超限风控，写 AuditLog |
-| 业务侧"消费"信用分后 | 立即 isConsumed=true | 防重复使用 |
+| 规则                              | 阈值                 | 动作                             |
+| --------------------------------- | -------------------- | -------------------------------- |
+| 同一用户 7 天内查询次数           | ≤ 1                  | 超限拒绝，提示"7 天后再试"       |
+| 同一业务场景 30 天内未消费快照    | 1 条                 | 重复查询**复用**快照，不调支付宝 |
+| 同一支付宝 user_id 1 小时查询次数 | ≤ 3                  | 超限风控，写 AuditLog            |
+| 业务侧"消费"信用分后              | 立即 isConsumed=true | 防重复使用                       |
 
 ### 13.4 隐私与合规
 
@@ -1452,12 +1485,13 @@ export class RealnameService {
 
 按 [00-foundation §5.5.1 速查表](../../admin-prd/00-foundation.md) — 支付宝端 namespace 命名严格遵循。**新增 2 个 namespace**：
 
-| 模块 | namespace | 备注 |
-|---|---|---|
-| 信用 | **`credit`** | **新增**：`credit.zmcScore.*` / `credit.zmLevel.*` |
-| 认证 | **`auth`** | **新增**：`auth.alipayLogin.*` / `auth.realname.*` / `auth.zmcredit.*` |
+| 模块 | namespace    | 备注                                                                   |
+| ---- | ------------ | ---------------------------------------------------------------------- |
+| 信用 | **`credit`** | **新增**：`credit.zmcScore.*` / `credit.zmLevel.*`                     |
+| 认证 | **`auth`**   | **新增**：`auth.alipayLogin.*` / `auth.realname.*` / `auth.zmcredit.*` |
 
 支付宝端 4 语言切换（参考 [01-wechat-mini-program §13](./01-wechat-mini-program.md)），系统语言映射：
+
 - `zh_CN` → `zh-CN`
 - `en` → `en-US`
 - `ja` → `ja-JP`
@@ -1519,74 +1553,74 @@ export class RealnameService {
 
 ### 15.1 登录流程
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 首次 `my.getAuthCode` | 拿到 authCode，调后端拿 token + 跳转首页 |
-| 2 | 已登录用户再次进入 | 静默登录（用本地 token） |
-| 3 | 拒绝授权手机号 | 仅用 alipayUserId 建账号，profile 显示未绑定手机号 |
-| 4 | 拒绝授权芝麻信用 | zmcAuthorized=false，跳过芝麻信用相关功能 |
-| 5 | token 过期 | 自动跳登录页，重新 `my.getAuthCode` |
-| 6 | 同一支付宝换手机号 | 提示"该支付宝账号已绑定其他手机号" |
-| 7 | 未关注生活号 | 模板消息发送失败，后端降级为站内信 |
+| #   | 用例                  | 期望                                               |
+| --- | --------------------- | -------------------------------------------------- |
+| 1   | 首次 `my.getAuthCode` | 拿到 authCode，调后端拿 token + 跳转首页           |
+| 2   | 已登录用户再次进入    | 静默登录（用本地 token）                           |
+| 3   | 拒绝授权手机号        | 仅用 alipayUserId 建账号，profile 显示未绑定手机号 |
+| 4   | 拒绝授权芝麻信用      | zmcAuthorized=false，跳过芝麻信用相关功能          |
+| 5   | token 过期            | 自动跳登录页，重新 `my.getAuthCode`                |
+| 6   | 同一支付宝换手机号    | 提示"该支付宝账号已绑定其他手机号"                 |
+| 7   | 未关注生活号          | 模板消息发送失败，后端降级为站内信                 |
 
 ### 15.2 支付流程
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 下单 → `my.tradePay` | 成功，订单状态 `paid` |
-| 2 | 支付中途退出 | 订单停在 `alipay_precreated`，5 分钟后过期（close 接口） |
-| 3 | 花呗分期 | 收银台显示分期选项，用户选 3 期 / 6 期 / 12 期 |
-| 4 | 支付宝异步通知 | 验签成功 + 写 DB + WebSocket 推前端 |
-| 5 | 重复通知 | 幂等（订单已是 `paid` 直接返回 success） |
-| 6 | 签名错误 | 拒绝 + 写 AuditLog(severity=critical) |
-| 7 | 退款 30 天后 | 支付宝拒绝（订单超过 30 天不可退） |
-| 8 | 支付时余额不足 | 收银台自动跳转花呗/银行卡，无需手动切换 |
+| #   | 用例                 | 期望                                                     |
+| --- | -------------------- | -------------------------------------------------------- |
+| 1   | 下单 → `my.tradePay` | 成功，订单状态 `paid`                                    |
+| 2   | 支付中途退出         | 订单停在 `alipay_precreated`，5 分钟后过期（close 接口） |
+| 3   | 花呗分期             | 收银台显示分期选项，用户选 3 期 / 6 期 / 12 期           |
+| 4   | 支付宝异步通知       | 验签成功 + 写 DB + WebSocket 推前端                      |
+| 5   | 重复通知             | 幂等（订单已是 `paid` 直接返回 success）                 |
+| 6   | 签名错误             | 拒绝 + 写 AuditLog(severity=critical)                    |
+| 7   | 退款 30 天后         | 支付宝拒绝（订单超过 30 天不可退）                       |
+| 8   | 支付时余额不足       | 收银台自动跳转花呗/银行卡，无需手动切换                  |
 
 ### 15.3 分享裂变
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | A 分享给 B，B 首次进入 | query 带 `ref=A.id` |
-| 2 | A 生成吱口令并复制 | 吱口令文案含"海购星"+ 小程序链接 |
-| 3 | B 扫描吱口令 | 进入小程序，识别 A 为邀请人 |
-| 4 | B 完成注册 | 写 InvitationLog(source=zhikouling)，B 收 100 DVC，A 收 200 DVC |
-| 5 | A 生成小程序码 | 后端调 `alipay.open.app.qrcode.create` 成功 |
-| 6 | A 自我邀请 | 拒绝（`inviterId !== inviteeId`） |
-| 7 | 同一支付宝 1 分钟分享 100 次 | 防刷，触发黑名单 + 提示 |
+| #   | 用例                         | 期望                                                            |
+| --- | ---------------------------- | --------------------------------------------------------------- |
+| 1   | A 分享给 B，B 首次进入       | query 带 `ref=A.id`                                             |
+| 2   | A 生成吱口令并复制           | 吱口令文案含"海购星"+ 小程序链接                                |
+| 3   | B 扫描吱口令                 | 进入小程序，识别 A 为邀请人                                     |
+| 4   | B 完成注册                   | 写 InvitationLog(source=zhikouling)，B 收 100 DVC，A 收 200 DVC |
+| 5   | A 生成小程序码               | 后端调 `alipay.open.app.qrcode.create` 成功                     |
+| 6   | A 自我邀请                   | 拒绝（`inviterId !== inviteeId`）                               |
+| 7   | 同一支付宝 1 分钟分享 100 次 | 防刷，触发黑名单 + 提示                                         |
 
 ### 15.4 实名认证
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 信用分 700+ 用户授权芝麻 | 自动通过基础 KYC（跳过活体） |
-| 2 | 信用分 550 用户授权芝麻 | 仍需走 my.userNameAuth 活体 |
-| 3 | 走 my.userNameAuth 认证 | 调 `alipay.user.certify.open.initialize` 成功 |
-| 4 | 用户完成活体 | 后端轮询拿到 PASSED，写 KYC=approved |
-| 5 | 用户活体失败 | 后端轮询拿到 FAILED，提示用户重新认证 |
-| 6 | 用户撤回芝麻信用授权 | 业务侧立即删 zmcAuthorized，KYC 状态降级 |
+| #   | 用例                     | 期望                                          |
+| --- | ------------------------ | --------------------------------------------- |
+| 1   | 信用分 700+ 用户授权芝麻 | 自动通过基础 KYC（跳过活体）                  |
+| 2   | 信用分 550 用户授权芝麻  | 仍需走 my.userNameAuth 活体                   |
+| 3   | 走 my.userNameAuth 认证  | 调 `alipay.user.certify.open.initialize` 成功 |
+| 4   | 用户完成活体             | 后端轮询拿到 PASSED，写 KYC=approved          |
+| 5   | 用户活体失败             | 后端轮询拿到 FAILED，提示用户重新认证         |
+| 6   | 用户撤回芝麻信用授权     | 业务侧立即删 zmcAuthorized，KYC 状态降级      |
 
 ### 15.5 芝麻信用
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 用户授权，score=720 | 写 ZmcCreditSnapshot，level=GREAT |
-| 2 | 7 天内重复查询 | 复用最近未消费快照，不调支付宝 |
-| 3 | 7 天后再次查询 | 重新调支付宝，写新快照 |
-| 4 | 用于 KYC 后 | isConsumed=true，consumedFor=kyc_basic |
-| 5 | 30 天后快照过期 | 提示"请重新授权芝麻信用" |
-| 6 | 信用分 < 600 | 不允许跳过活体 |
+| #   | 用例                | 期望                                   |
+| --- | ------------------- | -------------------------------------- |
+| 1   | 用户授权，score=720 | 写 ZmcCreditSnapshot，level=GREAT      |
+| 2   | 7 天内重复查询      | 复用最近未消费快照，不调支付宝         |
+| 3   | 7 天后再次查询      | 重新调支付宝，写新快照                 |
+| 4   | 用于 KYC 后         | isConsumed=true，consumedFor=kyc_basic |
+| 5   | 30 天后快照过期     | 提示"请重新授权芝麻信用"               |
+| 6   | 信用分 < 600        | 不允许跳过活体                         |
 
 ### 15.6 上线审核
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 类目正确 | 商业服务 / 金融（如支付/银行/税务涉及金融） |
-| 2 | 用户协议 / 隐私政策 | 必须挂链接（`web-view` 跳 H5，仅同主体） |
-| 3 | 备案号 | **不**需 ICP 备案（仅服务白名单） |
-| 4 | 测试账号 | 提供给审核员的测试支付宝账号 + 密码 |
-| 5 | 关键词过滤 | 政治/色情/暴力/违禁品（金融类审核更严） |
-| 6 | 生活号关联 | 必须绑定生活号（用于模板消息） |
-| 7 | 芝麻信用能力 | 单独申请，单独审核 |
+| #   | 用例                | 期望                                        |
+| --- | ------------------- | ------------------------------------------- |
+| 1   | 类目正确            | 商业服务 / 金融（如支付/银行/税务涉及金融） |
+| 2   | 用户协议 / 隐私政策 | 必须挂链接（`web-view` 跳 H5，仅同主体）    |
+| 3   | 备案号              | **不**需 ICP 备案（仅服务白名单）           |
+| 4   | 测试账号            | 提供给审核员的测试支付宝账号 + 密码         |
+| 5   | 关键词过滤          | 政治/色情/暴力/违禁品（金融类审核更严）     |
+| 6   | 生活号关联          | 必须绑定生活号（用于模板消息）              |
+| 7   | 芝麻信用能力        | 单独申请，单独审核                          |
 
 ---
 
@@ -1656,16 +1690,16 @@ async prefetchCriticalData() {
 
 ### 17.2 类目选择（金融类必看）
 
-| 业务 | 支付宝类目 | 备注 |
-|---|---|---|
-| Discover / Services / AI | 商业服务 | 普通类目 |
-| 支付 / 充值 / 提现 | 金融 - 支付 | 需金融许可证 |
-| 银行贷款 | 金融 - 银行 | 需银行牌照 |
-| 保险 | 金融 - 保险 | 需保险牌照 |
-| 投资 / 理财 | 金融 - 理财 | 需金融许可证 |
-| 税务咨询 | 商业服务 - 咨询 | 普通类目 |
-| 公司注册 | 商业服务 - 工商 | 普通类目 |
-| 跨境汇款 | 金融 - 跨境 | 需跨境支付牌照 |
+| 业务                     | 支付宝类目      | 备注           |
+| ------------------------ | --------------- | -------------- |
+| Discover / Services / AI | 商业服务        | 普通类目       |
+| 支付 / 充值 / 提现       | 金融 - 支付     | 需金融许可证   |
+| 银行贷款                 | 金融 - 银行     | 需银行牌照     |
+| 保险                     | 金融 - 保险     | 需保险牌照     |
+| 投资 / 理财              | 金融 - 理财     | 需金融许可证   |
+| 税务咨询                 | 商业服务 - 咨询 | 普通类目       |
+| 公司注册                 | 商业服务 - 工商 | 普通类目       |
+| 跨境汇款                 | 金融 - 跨境     | 需跨境支付牌照 |
 
 ### 17.3 灰度发布
 

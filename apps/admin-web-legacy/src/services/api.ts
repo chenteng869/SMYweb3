@@ -131,10 +131,7 @@ export const auditLogApi = {
 
 // 仪表盘API
 export const dashboardApi = {
-  getStats: (params?: {
-    startDate?: string;
-    endDate?: string;
-  }): Promise<ApiResponse<any>> =>
+  getStats: (params?: { startDate?: string; endDate?: string }): Promise<ApiResponse<any>> =>
     api.get('/admin/dashboard/stats', { params }).then((res) => res.data),
   getRecentActivities: (params?: {
     startDate?: string;

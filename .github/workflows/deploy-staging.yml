@@ -1,0 +1,171 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  # ===== Step 1: 构建并推送 Docker 镜像 =====
+  build-and-push:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      api_image_tag: ${{ steps.meta-api.outputs.tags }}
+      admin_image_tag: ${{ steps.meta-admin.outputs.tags }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 提取元数据（标签、标注）
+      - name: Extract API metadata
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/smyweb3-api
+          tags: |
+            type=sha,prefix=
+            type=ref,event=branch
+            type=raw,value=staging-latest,enable={{is_default_branch}}
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./apps/api/Dockerfile
+          push: true
+          tags: ${{ steps.meta-api.outputs.labels }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Extract Admin Web metadata
+        id: meta-admin
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/smyweb3-admin
+          tags: |
+            type=sha,prefix=
+            type=ref,event=branch
+            type=raw,value=staging-latest,enable={{is_default_branch}}
+
+      - name: Build and push Admin Web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./apps/admin-web/Dockerfile
+          push: true
+          tags: ${{ steps.meta-admin.outputs.labels }}
+          labels: ${{ steps.meta-admin.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ===== Step 2: 部署到预发布环境 =====
+  deploy-staging:
+    name: Deploy to Staging Server
+    runs-on: ubuntu-latest
+    needs: [build-and-push]
+    environment:
+      name: staging
+      url: https://staging.smyweb3.com
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to staging server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            echo "🚀 开始部署到预发布环境..."
+            cd /opt/smyweb3
+
+            # 拉取最新镜像
+            docker compose -f docker-compose.staging.yml pull
+
+            # 滚动更新服务
+            docker compose -f docker-compose.staging.yml up -d --no-deps api
+            sleep 10
+
+            # 健康检查
+            echo "⏳ 等待服务启动..."
+            for i in $(seq 1 30); do
+              if curl -sf http://localhost:3001/health > /dev/null 2>&1; then
+                echo "✅ API 服务健康检查通过"
+                break
+              fi
+              if [ $i -eq 30 ]; then
+                echo "❌ API 服务健康检查超时"
+                docker compose -f docker-compose.staging.yml logs --tail=50 api
+                exit 1
+              fi
+              sleep 2
+            done
+
+            # 更新前端
+            docker compose -f docker-compose.staging.yml up -d --no-deps admin-web
+
+            echo "🎉 预发布部署完成！"
+
+      - name: Notify deployment result
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ 预发布部署成功: https://staging.smyweb3.com"
+          else
+            echo "❌ 预发布部署失败，请检查日志"
+          fi
+
+  # ===== Step 3: 部署后冒烟测试 =====
+  smoke-test:
+    name: Post-Deploy Smoke Tests
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: success()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install test dependencies
+        run: npm install -g newman
+
+      - name: Run API smoke tests
+        run: |
+          newman run tests/integration/api/smoke-collection.json \
+            --environment '{"baseUrl":"https://staging.smyweb3.com"}' \
+            --reporters cli,junit \
+            --reporter-junit-export smoke-test-results.xml
+        continue-on-error: true
+
+      - name: Upload smoke test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-results
+          path: smoke-test-results.xml
+          retention-days: 14

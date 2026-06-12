@@ -23,7 +23,8 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       default: 'bg-bg-card',
       elevated: 'bg-bg-card shadow-card-elevated',
       glass: 'glass border-white/[0.05]',
-      interactive: 'bg-bg-card cursor-pointer active:scale-[0.96] transition-transform duration-100',
+      interactive:
+        'bg-bg-card cursor-pointer active:scale-[0.96] transition-transform duration-100',
       featured: 'bg-gradient-to-b from-bg-card to-bg-dark border-l-[3px] border-l-coral',
     };
 
@@ -31,10 +32,14 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
       <motion.div
         ref={ref}
         className={cn(baseClasses, variantClasses[variant], paddingMap[padding], className)}
-        whileHover={variant === 'interactive' ? {
-          backgroundColor: 'rgba(26, 34, 53, 1)',
-          borderColor: 'rgba(246, 166, 35, 0.4)',
-        } : undefined}
+        whileHover={
+          variant === 'interactive'
+            ? {
+                backgroundColor: 'rgba(26, 34, 53, 1)',
+                borderColor: 'rgba(246, 166, 35, 0.4)',
+              }
+            : undefined
+        }
         transition={{ duration: 0.15 }}
         {...props}
       >

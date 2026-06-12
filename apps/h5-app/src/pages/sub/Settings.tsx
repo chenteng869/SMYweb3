@@ -2,10 +2,29 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft, User, Bell, Shield, Globe, Moon, ChevronRight,
-  LogOut, Smartphone, Languages, DollarSign, FileText, HelpCircle,
-  Mail, Phone, Edit3, Fingerprint, Lock, RefreshCw, MessageCircle,
-  Info, ExternalLink, ChevronDown
+  ArrowLeft,
+  User,
+  Bell,
+  Shield,
+  Globe,
+  Moon,
+  ChevronRight,
+  LogOut,
+  Smartphone,
+  Languages,
+  DollarSign,
+  FileText,
+  HelpCircle,
+  Mail,
+  Phone,
+  Edit3,
+  Fingerprint,
+  Lock,
+  RefreshCw,
+  MessageCircle,
+  Info,
+  ExternalLink,
+  ChevronDown,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -65,7 +84,16 @@ interface SettingsRowProps {
   delay?: number;
 }
 
-function SettingsRow({ icon, label, value, suffix, onClick, showArrow = true, danger = false, delay = 0 }: SettingsRowProps) {
+function SettingsRow({
+  icon,
+  label,
+  value,
+  suffix,
+  onClick,
+  showArrow = true,
+  danger = false,
+  delay = 0,
+}: SettingsRowProps) {
   return (
     <motion.button
       initial={{ opacity: 0, x: -10 }}
@@ -78,13 +106,8 @@ function SettingsRow({ icon, label, value, suffix, onClick, showArrow = true, da
         onClick && 'active:scale-[0.99]'
       )}
     >
-      <span className={cn('shrink-0', danger ? 'text-danger' : 'text-text-muted')}>
-        {icon}
-      </span>
-      <span className={cn(
-        'flex-1 text-body-sm',
-        danger ? 'text-danger' : 'text-text-primary'
-      )}>
+      <span className={cn('shrink-0', danger ? 'text-danger' : 'text-text-muted')}>{icon}</span>
+      <span className={cn('flex-1 text-body-sm', danger ? 'text-danger' : 'text-text-primary')}>
         {label}
       </span>
       {value && <span className="text-caption text-text-muted">{value}</span>}
@@ -123,9 +146,9 @@ function SettingsCard({ children, delay = 0 }: { children: React.ReactNode; dela
 export default function Settings() {
   usePageTitle('设置');
   const navigate = useNavigate();
-  const user = useAppStore(s => s.user);
-  const setAuthenticated = useAppStore(s => s.setAuthenticated);
-  const addToast = useAppStore(s => s.addToast);
+  const user = useAppStore((s) => s.user);
+  const setAuthenticated = useAppStore((s) => s.setAuthenticated);
+  const addToast = useAppStore((s) => s.addToast);
 
   // Loading state simulation
   const [isLoading] = useState(false);
@@ -210,10 +233,10 @@ export default function Settings() {
               </div>
               <div className="flex-1 min-w-0">
                 <h2 className="text-h4 text-text-primary">{user?.name || '陈董'}</h2>
-                <p className="text-body-sm text-text-secondary mt-0.5">{user?.email || 'chendong@taichu.com'}</p>
-                <p className="text-caption text-text-muted mt-0.5">
-                  DLC LV.{user?.dlcLevel || 6}
+                <p className="text-body-sm text-text-secondary mt-0.5">
+                  {user?.email || 'chendong@taichu.com'}
                 </p>
+                <p className="text-caption text-text-muted mt-0.5">DLC LV.{user?.dlcLevel || 6}</p>
               </div>
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -236,7 +259,10 @@ export default function Settings() {
               suffix={
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  onClick={(e) => { e.stopPropagation(); handleSettingClick('更换手机号'); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSettingClick('更换手机号');
+                  }}
                   className="text-caption text-coral px-2 py-0.5 rounded-full bg-coral/10"
                 >
                   更换
@@ -256,7 +282,10 @@ export default function Settings() {
               suffix={
                 <motion.button
                   whileTap={{ scale: 0.95 }}
-                  onClick={(e) => { e.stopPropagation(); handleSettingClick('绑定邮箱'); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSettingClick('绑定邮箱');
+                  }}
                   className="text-caption text-coral px-2 py-0.5 rounded-full bg-coral/10"
                 >
                   {user?.email ? '更换' : '绑定'}
@@ -307,7 +336,9 @@ export default function Settings() {
                 value={language}
                 delay={0.35}
                 showArrow={!showLangDropdown}
-                suffix={showLangDropdown ? <ChevronDown size={16} className="text-coral" /> : undefined}
+                suffix={
+                  showLangDropdown ? <ChevronDown size={16} className="text-coral" /> : undefined
+                }
                 onClick={() => setShowLangDropdown(!showLangDropdown)}
               />
               {showLangDropdown && (
@@ -320,10 +351,15 @@ export default function Settings() {
                   {['中文', 'English', '日本語'].map((lang) => (
                     <button
                       key={lang}
-                      onClick={() => { setLanguage(lang); setShowLangDropdown(false); }}
+                      onClick={() => {
+                        setLanguage(lang);
+                        setShowLangDropdown(false);
+                      }}
                       className={cn(
                         'w-full text-left px-4 py-2 rounded-md text-body-sm',
-                        language === lang ? 'text-coral bg-coral/10' : 'text-text-secondary hover:bg-white/[0.02]'
+                        language === lang
+                          ? 'text-coral bg-coral/10'
+                          : 'text-text-secondary hover:bg-white/[0.02]'
                       )}
                     >
                       {lang}
@@ -341,7 +377,11 @@ export default function Settings() {
                 value={currency}
                 delay={0.38}
                 showArrow={!showCurrencyDropdown}
-                suffix={showCurrencyDropdown ? <ChevronDown size={16} className="text-coral" /> : undefined}
+                suffix={
+                  showCurrencyDropdown ? (
+                    <ChevronDown size={16} className="text-coral" />
+                  ) : undefined
+                }
                 onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
               />
               {showCurrencyDropdown && (
@@ -354,10 +394,15 @@ export default function Settings() {
                   {['USD', 'CNY', 'EUR', 'SGD', 'HKD'].map((cur) => (
                     <button
                       key={cur}
-                      onClick={() => { setCurrency(cur); setShowCurrencyDropdown(false); }}
+                      onClick={() => {
+                        setCurrency(cur);
+                        setShowCurrencyDropdown(false);
+                      }}
                       className={cn(
                         'w-full text-left px-4 py-2 rounded-md text-body-sm',
-                        currency === cur ? 'text-coral bg-coral/10' : 'text-text-secondary hover:bg-white/[0.02]'
+                        currency === cur
+                          ? 'text-coral bg-coral/10'
+                          : 'text-text-secondary hover:bg-white/[0.02]'
                       )}
                     >
                       {cur}

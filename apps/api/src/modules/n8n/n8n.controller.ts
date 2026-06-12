@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { N8nService } from './n8n.service';
 import { CurrentUser } from '../../common/guards/jwt-auth.guard';
@@ -7,7 +18,10 @@ import { AuditService } from '../../common/audit.service';
 @ApiTags('⚡ N8N 工作流')
 @Controller('n8n')
 export class N8nController {
-  constructor(private svc: N8nService, private audit: AuditService) {}
+  constructor(
+    private svc: N8nService,
+    private audit: AuditService
+  ) {}
 
   // ========== 工作流编辑器 ==========
 
@@ -44,7 +58,12 @@ export class N8nController {
 
   @Put('workflows/:id')
   @ApiOperation({ summary: '更新工作流' })
-  async updateWorkflow(@Param('id', ParseIntPipe) id: number, @Body() body: any, @Req() req: any, @CurrentUser() user: any) {
+  async updateWorkflow(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.updateWorkflow(id, body);
     // TODO: 审计日志 - 更新工作流
     await this.audit.log(req, user.id, 'update_workflow', 'n8n', String(id), body);
@@ -53,7 +72,11 @@ export class N8nController {
 
   @Delete('workflows/:id')
   @ApiOperation({ summary: '删除工作流' })
-  async deleteWorkflow(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async deleteWorkflow(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.deleteWorkflow(id);
     // TODO: 审计日志 - 删除工作流
     await this.audit.log(req, user.id, 'delete_workflow', 'n8n', String(id));
@@ -62,10 +85,17 @@ export class N8nController {
 
   @Post('workflows/:id/duplicate')
   @ApiOperation({ summary: '复制工作流' })
-  async duplicateWorkflow(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async duplicateWorkflow(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.duplicateWorkflow(id);
     // TODO: 审计日志 - 复制工作流
-    await this.audit.log(req, user.id, 'duplicate_workflow', 'n8n', String(id), { sourceId: id, newId: r.id });
+    await this.audit.log(req, user.id, 'duplicate_workflow', 'n8n', String(id), {
+      sourceId: id,
+      newId: r.id,
+    });
     return r;
   }
 
@@ -99,7 +129,12 @@ export class N8nController {
 
   @Put('triggers/:id')
   @ApiOperation({ summary: '更新触发器' })
-  async updateTrigger(@Param('id', ParseIntPipe) id: number, @Body() body: any, @Req() req: any, @CurrentUser() user: any) {
+  async updateTrigger(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.updateTrigger(id, body);
     // TODO: 审计日志 - 更新触发器
     await this.audit.log(req, user.id, 'update_trigger', 'n8n', String(id), body);
@@ -108,7 +143,11 @@ export class N8nController {
 
   @Delete('triggers/:id')
   @ApiOperation({ summary: '删除触发器' })
-  async deleteTrigger(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async deleteTrigger(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.deleteTrigger(id);
     // TODO: 审计日志 - 删除触发器
     await this.audit.log(req, user.id, 'delete_trigger', 'n8n', String(id));
@@ -117,7 +156,12 @@ export class N8nController {
 
   @Put('triggers/:id/toggle')
   @ApiOperation({ summary: '切换触发器状态' })
-  async toggleTrigger(@Param('id', ParseIntPipe) id: number, @Body('isActive') isActive: boolean, @Req() req: any, @CurrentUser() user: any) {
+  async toggleTrigger(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('isActive') isActive: boolean,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.toggleTrigger(id, isActive);
     // TODO: 审计日志 - 切换触发器
     await this.audit.log(req, user.id, 'toggle_trigger', 'n8n', String(id), { isActive });
@@ -152,7 +196,11 @@ export class N8nController {
 
   @Put('executions/:id/cancel')
   @ApiOperation({ summary: '取消执行' })
-  async cancelExecution(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async cancelExecution(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.cancelExecution(id);
     // TODO: 审计日志 - 取消执行
     await this.audit.log(req, user.id, 'cancel_execution', 'n8n', String(id));
@@ -161,10 +209,16 @@ export class N8nController {
 
   @Post('executions/:id/retry')
   @ApiOperation({ summary: '重试执行' })
-  async retryExecution(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async retryExecution(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.retryExecution(id);
     // TODO: 审计日志 - 重试执行
-    await this.audit.log(req, user.id, 'retry_execution', 'n8n', String(id), { newExecutionId: r.id });
+    await this.audit.log(req, user.id, 'retry_execution', 'n8n', String(id), {
+      newExecutionId: r.id,
+    });
     return r;
   }
 
@@ -211,7 +265,12 @@ export class N8nController {
 
   @Put('templates/:id')
   @ApiOperation({ summary: '更新模板' })
-  async updateTemplate(@Param('id', ParseIntPipe) id: number, @Body() body: any, @Req() req: any, @CurrentUser() user: any) {
+  async updateTemplate(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.updateTemplate(id, body);
     // TODO: 审计日志 - 更新模板
     await this.audit.log(req, user.id, 'update_template', 'n8n', String(id), body);
@@ -220,7 +279,11 @@ export class N8nController {
 
   @Delete('templates/:id')
   @ApiOperation({ summary: '删除模板' })
-  async deleteTemplate(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async deleteTemplate(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.deleteTemplate(id);
     // TODO: 审计日志 - 删除模板
     await this.audit.log(req, user.id, 'delete_template', 'n8n', String(id));
@@ -229,10 +292,17 @@ export class N8nController {
 
   @Post('templates/:id/install')
   @ApiOperation({ summary: '安装模板为工作流' })
-  async installTemplate(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async installTemplate(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.installTemplate(id);
     // TODO: 审计日志 - 安装模板
-    await this.audit.log(req, user.id, 'install_template', 'n8n', String(id), { templateId: id, newWorkflowId: r.id });
+    await this.audit.log(req, user.id, 'install_template', 'n8n', String(id), {
+      templateId: id,
+      newWorkflowId: r.id,
+    });
     return r;
   }
 }

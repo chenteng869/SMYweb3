@@ -94,7 +94,7 @@ export function DataCard({
             suffix={suffix}
             valueStyle={{ fontSize: 28, fontWeight: 600, color: '#333' }}
           />
-          
+
           {trend !== 'none' && trendValue && (
             <div className="flex items-center mt-2">
               {getTrendIcon()}
@@ -110,12 +110,8 @@ export function DataCard({
               </span>
             </div>
           )}
-          
-          {description && (
-            <div className="text-gray-400 text-xs mt-2">
-              {description}
-            </div>
-          )}
+
+          {description && <div className="text-gray-400 text-xs mt-2">{description}</div>}
         </Col>
       </Row>
     </Card>
@@ -124,15 +120,7 @@ export function DataCard({
 
 // 预设数据卡片
 export function UserDataCard(props: Partial<DataCardProps>) {
-  return (
-    <DataCard
-      title="总用户数"
-      value={0}
-      icon={<UserOutlined />}
-      color="#1890ff"
-      {...props}
-    />
-  );
+  return <DataCard title="总用户数" value={0} icon={<UserOutlined />} color="#1890ff" {...props} />;
 }
 
 export function RevenueDataCard(props: Partial<DataCardProps>) {
@@ -150,25 +138,13 @@ export function RevenueDataCard(props: Partial<DataCardProps>) {
 
 export function TransactionDataCard(props: Partial<DataCardProps>) {
   return (
-    <DataCard
-      title="交易笔数"
-      value={0}
-      icon={<ShoppingOutlined />}
-      color="#722ed1"
-      {...props}
-    />
+    <DataCard title="交易笔数" value={0} icon={<ShoppingOutlined />} color="#722ed1" {...props} />
   );
 }
 
 export function NFTDataCard(props: Partial<DataCardProps>) {
   return (
-    <DataCard
-      title="NFT 铸造"
-      value={0}
-      icon={<HeartOutlined />}
-      color="#fa8c16"
-      {...props}
-    />
+    <DataCard title="NFT 铸造" value={0} icon={<HeartOutlined />} color="#fa8c16" {...props} />
   );
 }
 

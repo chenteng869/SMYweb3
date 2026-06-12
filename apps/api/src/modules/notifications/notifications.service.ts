@@ -12,7 +12,12 @@ export class NotificationsService {
     if (read !== undefined) where.read = read === 'true' || read === true;
     if (userId) where.userId = Number(userId);
     const [data, total] = await Promise.all([
-      this.prisma.notification.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' } }),
+      this.prisma.notification.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+      }),
       this.prisma.notification.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -25,7 +30,7 @@ export class NotificationsService {
   async broadcast(data: { title: string; message: string; type?: string; actionUrl?: string }) {
     // 群发:为所有用户创建通知
     const users = await this.prisma.user.findMany({ select: { id: true } });
-    const data2 = users.map(u => ({ ...data, type: data.type || 'info', userId: u.id }));
+    const data2 = users.map((u) => ({ ...data, type: data.type || 'info', userId: u.id }));
     return this.prisma.notification.createMany({ data: data2 });
   }
 

@@ -19,7 +19,8 @@ export class AiService {
   }
 
   async createAgent(data: any) {
-    if (data.capabilities && typeof data.capabilities !== 'string') data.capabilities = JSON.stringify(data.capabilities);
+    if (data.capabilities && typeof data.capabilities !== 'string')
+      data.capabilities = JSON.stringify(data.capabilities);
     return this.prisma.aiAgent.create({ data });
   }
 
@@ -39,7 +40,13 @@ export class AiService {
     if (userId) where.userId = Number(userId);
     if (search) where.OR = [{ content: { contains: search } }];
     const [data, total] = await Promise.all([
-      this.prisma.aiMessage.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { agent: true, user: true } }),
+      this.prisma.aiMessage.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { agent: true, user: true },
+      }),
       this.prisma.aiMessage.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -53,7 +60,11 @@ export class AiService {
     if (priority) where.priority = priority;
     if (agentId) where.agentId = Number(agentId);
     if (userId) where.userId = Number(userId);
-    return this.prisma.aiTodo.findMany({ where, orderBy: { createdAt: 'desc' }, include: { agent: true, user: true } });
+    return this.prisma.aiTodo.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      include: { agent: true, user: true },
+    });
   }
 
   // Knowledge

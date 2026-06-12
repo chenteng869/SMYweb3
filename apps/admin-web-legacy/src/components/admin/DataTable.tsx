@@ -116,16 +116,14 @@ export function DataTable({
   const renderActions = (record: any) => {
     if (actions.length === 0) return null;
 
-    const visibleActions = actions.filter(action => 
-      !action.hidden || !action.hidden(record)
-    );
+    const visibleActions = actions.filter((action) => !action.hidden || !action.hidden(record));
 
     if (visibleActions.length <= 3) {
       return (
         <Space size="small">
-          {visibleActions.map(action => {
+          {visibleActions.map((action) => {
             const isDisabled = action.disabled?.(record) || false;
-            
+
             if (action.confirm) {
               return (
                 <Popconfirm
@@ -169,7 +167,7 @@ export function DataTable({
     }
 
     // 更多操作使用下拉菜单
-    const menuItems = visibleActions.map(action => {
+    const menuItems = visibleActions.map((action) => {
       const isDisabled = action.disabled?.(record) || false;
       return {
         key: action.key,
@@ -212,7 +210,7 @@ export function DataTable({
       <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
         <div className="flex items-center gap-2 flex-1">
           {title && <h2 className="text-lg font-semibold m-0">{title}</h2>}
-          
+
           {showSearch && (
             <Input.Search
               placeholder={searchPlaceholder}
@@ -233,7 +231,7 @@ export function DataTable({
               value={filterValue || undefined}
               onChange={handleFilter}
             >
-              {filterOptions.map(option => (
+              {filterOptions.map((option) => (
                 <Option key={option.value} value={option.value}>
                   {option.label}
                 </Option>
@@ -244,20 +242,13 @@ export function DataTable({
 
         <Space>
           {onRefresh && (
-            <Button
-              icon={<ReloadOutlined />}
-              onClick={onRefresh}
-            >
+            <Button icon={<ReloadOutlined />} onClick={onRefresh}>
               刷新
             </Button>
           )}
-          
+
           {showAdd && onAdd && (
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={onAdd}
-            >
+            <Button type="primary" icon={<PlusOutlined />} onClick={onAdd}>
               {addButtonText}
             </Button>
           )}

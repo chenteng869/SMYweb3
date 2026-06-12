@@ -43,7 +43,11 @@ export class RegistrationController {
 
   @Get('domestic/registrations')
   @ApiOperation({ summary: '国内注册记录列表(分页)' })
-  @ApiQuery({ name: 'page', required: false }) @ApiQuery({ name: 'pageSize', required: false }) @ApiQuery({ name: 'status', required: false }) @ApiQuery({ name: 'userId', required: false }) @ApiQuery({ name: 'search', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'pageSize', required: false })
+  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'userId', required: false })
+  @ApiQuery({ name: 'search', required: false })
   getDomesticRegistrations(@Query() q: any) {
     return this.svc.getDomesticRegistrations(q);
   }
@@ -108,7 +112,12 @@ export class RegistrationController {
 
   @Get('overseas/registrations')
   @ApiOperation({ summary: '海外注册记录列表(分页)' })
-  @ApiQuery({ name: 'page', required: false }) @ApiQuery({ name: 'pageSize', required: false }) @ApiQuery({ name: 'status', required: false }) @ApiQuery({ name: 'jurisdictionId', required: false }) @ApiQuery({ name: 'userId', required: false }) @ApiQuery({ name: 'search', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'pageSize', required: false })
+  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'jurisdictionId', required: false })
+  @ApiQuery({ name: 'userId', required: false })
+  @ApiQuery({ name: 'search', required: false })
   getOverseasRegistrations(@Query() q: any) {
     return this.svc.getOverseasRegistrations(q);
   }
@@ -141,7 +150,11 @@ export class RegistrationController {
 
   @Get('privacy/items')
   @ApiOperation({ summary: '隐私合规项列表' })
-  @ApiQuery({ name: 'page', required: false }) @ApiQuery({ name: 'pageSize', required: false }) @ApiQuery({ name: 'region', required: false }) @ApiQuery({ name: 'status', required: false }) @ApiQuery({ name: 'category', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'pageSize', required: false })
+  @ApiQuery({ name: 'region', required: false })
+  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'category', required: false })
   getPrivacyItems(@Query() q: any) {
     return this.svc.getPrivacyItems(q);
   }
@@ -180,7 +193,8 @@ export class RegistrationController {
 
   @Get('contracts/templates')
   @ApiOperation({ summary: '合同模板列表' })
-  @ApiQuery({ name: 'type', required: false }) @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'type', required: false })
+  @ApiQuery({ name: 'status', required: false })
   getTemplates(@Query() q: any) {
     return this.svc.getTemplates(q);
   }
@@ -213,7 +227,11 @@ export class RegistrationController {
 
   @Get('contracts')
   @ApiOperation({ summary: '合同实例列表(分页)' })
-  @ApiQuery({ name: 'page', required: false }) @ApiQuery({ name: 'pageSize', required: false }) @ApiQuery({ name: 'registrationType', required: false }) @ApiQuery({ name: 'status', required: false }) @ApiQuery({ name: 'templateId', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'pageSize', required: false })
+  @ApiQuery({ name: 'registrationType', required: false })
+  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'templateId', required: false })
   getContracts(@Query() q: any) {
     return this.svc.getContracts(q);
   }

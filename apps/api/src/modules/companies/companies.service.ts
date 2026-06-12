@@ -8,12 +8,24 @@ export class CompaniesService {
   async list(query: any) {
     const { page = 1, pageSize = 20, search, type, status, userId } = query;
     const where: any = {};
-    if (search) where.OR = [{ name: { contains: search } }, { registrationNumber: { contains: search } }];
+    if (search)
+      where.OR = [{ name: { contains: search } }, { registrationNumber: { contains: search } }];
     if (type) where.type = type;
     if (status) where.status = status;
     if (userId) where.userId = Number(userId);
     const [data, total] = await Promise.all([
-      this.prisma.company.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: true, _count: { select: { directors: true, shareholders: true, documents: true, bankAccounts: true } } } }),
+      this.prisma.company.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: {
+          user: true,
+          _count: {
+            select: { directors: true, shareholders: true, documents: true, bankAccounts: true },
+          },
+        },
+      }),
       this.prisma.company.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -63,6 +75,11 @@ export class CompaniesService {
       this.prisma.company.count({ where: { status: 'pending' } }),
       this.prisma.company.groupBy({ by: ['type'], _count: { _all: true } }),
     ]);
-    return { total, active, pending, byType: byType.reduce((acc: any, x: any) => ({ ...acc, [x.type]: x._count._all }), {}) };
+    return {
+      total,
+      active,
+      pending,
+      byType: byType.reduce((acc: any, x: any) => ({ ...acc, [x.type]: x._count._all }), {}),
+    };
   }
 }

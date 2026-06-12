@@ -11,11 +11,23 @@ export interface GradientButtonProps extends Omit<HTMLMotionProps<'button'>, 're
 }
 
 const GradientButton = forwardRef<HTMLButtonElement, GradientButtonProps>(
-  ({ variant = 'primary', size = 'md', fullWidth = true, className, children, isLoading, disabled, ...props }, ref) => {
+  (
+    {
+      variant = 'primary',
+      size = 'md',
+      fullWidth = true,
+      className,
+      children,
+      isLoading,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
     const baseClasses = cn(
       'relative overflow-hidden rounded-md font-semibold flex items-center justify-center gap-2 transition-all duration-200',
       'disabled:opacity-50 disabled:cursor-not-allowed',
-      fullWidth && 'w-full',
+      fullWidth && 'w-full'
     );
 
     const sizeClasses = {

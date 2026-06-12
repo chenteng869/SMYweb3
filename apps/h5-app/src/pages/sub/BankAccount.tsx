@@ -1,9 +1,22 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Landmark, ArrowRight, CheckCircle, Clock, Globe, Building2,
-  ChevronRight, FileText, Star, ShieldCheck, Zap, Bot,
-  Upload, Download, ArrowLeft, Loader2
+  Landmark,
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  Globe,
+  Building2,
+  ChevronRight,
+  FileText,
+  Star,
+  ShieldCheck,
+  Zap,
+  Bot,
+  Upload,
+  Download,
+  ArrowLeft,
+  Loader2,
 } from 'lucide-react';
 import TopBar from '@/components/layout/TopBar';
 import Card from '@/components/shared/Card';
@@ -14,10 +27,50 @@ import { useAppStore } from '@/store';
 
 /* ─── Bank Partners with detailed data ─── */
 const BANK_PARTNERS = [
-  { name: '汇丰银行', currency: 'USD/HKD', countries: ['HK','SG','GB'], fee: 25, minDeposit: 10000, timeline: '2-3周', features: ['多币种账户','网银','信用卡'], icon: Landmark, color: '#F6A623' },
-  { name: '星展银行', currency: 'SGD/USD', countries: ['SG','HK'], fee: 0, minDeposit: 5000, timeline: '1-2周', features: ['数字银行','API对接','低费率'], icon: Landmark, color: '#CE1126' },
-  { name: '华侨银行', currency: 'SGD/USD', countries: ['SG'], fee: 15, minDeposit: 3000, timeline: '1-2周', features: ['中文服务','投资产品','保险'], icon: Landmark, color: '#3B82F6' },
-  { name: '渣打银行', currency: 'USD/GBP', countries: ['HK','SG','GB'], fee: 30, minDeposit: 20000, timeline: '2-4周', features: ['私人银行','全球网络','贵金属'], icon: Landmark, color: '#00D4AA' },
+  {
+    name: '汇丰银行',
+    currency: 'USD/HKD',
+    countries: ['HK', 'SG', 'GB'],
+    fee: 25,
+    minDeposit: 10000,
+    timeline: '2-3周',
+    features: ['多币种账户', '网银', '信用卡'],
+    icon: Landmark,
+    color: '#F6A623',
+  },
+  {
+    name: '星展银行',
+    currency: 'SGD/USD',
+    countries: ['SG', 'HK'],
+    fee: 0,
+    minDeposit: 5000,
+    timeline: '1-2周',
+    features: ['数字银行', 'API对接', '低费率'],
+    icon: Landmark,
+    color: '#CE1126',
+  },
+  {
+    name: '华侨银行',
+    currency: 'SGD/USD',
+    countries: ['SG'],
+    fee: 15,
+    minDeposit: 3000,
+    timeline: '1-2周',
+    features: ['中文服务', '投资产品', '保险'],
+    icon: Landmark,
+    color: '#3B82F6',
+  },
+  {
+    name: '渣打银行',
+    currency: 'USD/GBP',
+    countries: ['HK', 'SG', 'GB'],
+    fee: 30,
+    minDeposit: 20000,
+    timeline: '2-4周',
+    features: ['私人银行', '全球网络', '贵金属'],
+    icon: Landmark,
+    color: '#00D4AA',
+  },
 ];
 
 /* ─── Status Timeline ─── */
@@ -52,7 +105,7 @@ function cn(...classes: (string | undefined | false)[]) {
 
 export default function BankAccount() {
   usePageTitle('银行开户协同');
-  const companies = useAppStore(s => s.companies);
+  const companies = useAppStore((s) => s.companies);
 
   const [showApply, setShowApply] = useState(false);
   const [applyStep, setApplyStep] = useState(1);
@@ -62,12 +115,15 @@ export default function BankAccount() {
   const [applySuccess, setApplySuccess] = useState(false);
 
   const handleDocUpload = (id: string) => {
-    setDocs(prev => prev.map(d => d.id === id ? { ...d, uploaded: true } : d));
+    setDocs((prev) => prev.map((d) => (d.id === id ? { ...d, uploaded: true } : d)));
   };
 
   const handleApplySubmit = () => {
     setIsSubmitting(true);
-    setTimeout(() => { setIsSubmitting(false); setApplySuccess(true); }, 2000);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setApplySuccess(true);
+    }, 2000);
   };
 
   return (
@@ -76,15 +132,8 @@ export default function BankAccount() {
 
       <div className="px-4 pt-4 pb-6 space-y-5">
         {/* ═══════════ AI RECOMMENDATION CARD ═══════════ */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Card
-            variant="featured"
-            padding="lg"
-            className="relative overflow-hidden"
-          >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <Card variant="featured" padding="lg" className="relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[120px] h-[120px] opacity-10">
               <Bot size={120} className="text-accent" />
             </div>
@@ -104,7 +153,9 @@ export default function BankAccount() {
                 </p>
                 <div className="mt-3 flex items-center gap-2">
                   <Landmark size={14} className="text-accent" />
-                  <span className="text-body-sm font-medium text-accent">{AI_RECOMMENDATION.bank}</span>
+                  <span className="text-body-sm font-medium text-accent">
+                    {AI_RECOMMENDATION.bank}
+                  </span>
                 </div>
               </div>
             </div>
@@ -156,17 +207,25 @@ export default function BankAccount() {
 
                 {/* Step 1: Company & Director Info */}
                 {applyStep === 1 && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-3"
+                  >
                     <div>
                       <label className="text-caption text-text-muted mb-1 block">申请公司</label>
                       <select className="w-full h-12 px-4 rounded-xl bg-bg-input border border-white/[0.1] text-text-primary text-body-sm focus:outline-none focus:border-coral/40">
-                        {companies.map(c => (
-                          <option key={c.id} value={c.id}>{c.name}</option>
+                        {companies.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name}
+                          </option>
                         ))}
                       </select>
                     </div>
                     <div>
-                      <label className="text-caption text-text-muted mb-1 block">主申请人姓名</label>
+                      <label className="text-caption text-text-muted mb-1 block">
+                        主申请人姓名
+                      </label>
                       <input
                         type="text"
                         placeholder="如：陈董"
@@ -189,15 +248,28 @@ export default function BankAccount() {
 
                 {/* Step 2: Document Checklist */}
                 {applyStep === 2 && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-2">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-2"
+                  >
                     <p className="text-caption text-text-muted mb-2">请上传以下文件</p>
-                    {docs.map(doc => (
-                      <div key={doc.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-bg-card border border-white/[0.06]">
+                    {docs.map((doc) => (
+                      <div
+                        key={doc.id}
+                        className="flex items-center gap-3 p-2.5 rounded-lg bg-bg-card border border-white/[0.06]"
+                      >
                         <div className="w-8 h-8 rounded-lg bg-bg-elevated flex items-center justify-center shrink-0">
-                          {doc.uploaded ? <CheckCircle size={16} className="text-teal" /> : <FileText size={16} className="text-text-muted" />}
+                          {doc.uploaded ? (
+                            <CheckCircle size={16} className="text-teal" />
+                          ) : (
+                            <FileText size={16} className="text-text-muted" />
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className={`text-body-sm ${doc.uploaded ? 'text-text-primary' : 'text-text-secondary'}`}>
+                          <p
+                            className={`text-body-sm ${doc.uploaded ? 'text-text-primary' : 'text-text-secondary'}`}
+                          >
                             {doc.name}
                           </p>
                           {doc.required && <span className="text-[9px] text-danger">必需</span>}
@@ -216,7 +288,11 @@ export default function BankAccount() {
                       </div>
                     ))}
                     <div className="flex gap-2 pt-2">
-                      <GradientButton variant="ghost" onClick={() => setApplyStep(1)} className="flex-1">
+                      <GradientButton
+                        variant="ghost"
+                        onClick={() => setApplyStep(1)}
+                        className="flex-1"
+                      >
                         返回
                       </GradientButton>
                       <GradientButton onClick={() => setApplyStep(3)} className="flex-1">
@@ -228,11 +304,17 @@ export default function BankAccount() {
 
                 {/* Step 3: Review */}
                 {applyStep === 3 && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-3"
+                  >
                     <div className="bg-bg-card rounded-lg p-3 space-y-2">
                       <div className="flex justify-between">
                         <span className="text-caption text-text-muted">目标银行</span>
-                        <span className="text-body-sm text-text-primary">{selectedBank || AI_RECOMMENDATION.bank}</span>
+                        <span className="text-body-sm text-text-primary">
+                          {selectedBank || AI_RECOMMENDATION.bank}
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-caption text-text-muted">申请公司</span>
@@ -243,10 +325,18 @@ export default function BankAccount() {
                         <span className="text-body-sm text-text-primary">$0-50</span>
                       </div>
                     </div>
-                    <GradientButton onClick={handleApplySubmit} disabled={isSubmitting} className="w-full">
+                    <GradientButton
+                      onClick={handleApplySubmit}
+                      disabled={isSubmitting}
+                      className="w-full"
+                    >
                       {isSubmitting ? (
-                        <span className="flex items-center gap-2"><Loader2 size={16} className="animate-spin" /> 提交中...</span>
-                      ) : '提交申请'}
+                        <span className="flex items-center gap-2">
+                          <Loader2 size={16} className="animate-spin" /> 提交中...
+                        </span>
+                      ) : (
+                        '提交申请'
+                      )}
                     </GradientButton>
                   </motion.div>
                 )}
@@ -291,16 +381,23 @@ export default function BankAccount() {
                     transition={{ delay: 0.08 * i }}
                     className="flex items-start gap-3 relative"
                   >
-                    <div className={cn(
-                      'w-10 h-10 rounded-full flex items-center justify-center shrink-0 z-10 border-2',
-                      step.done
-                        ? 'bg-gradient-to-br from-teal to-emerald-500 border-teal text-bg-dark'
-                        : 'bg-bg-elevated border-white/[0.1] text-text-muted'
-                    )}>
+                    <div
+                      className={cn(
+                        'w-10 h-10 rounded-full flex items-center justify-center shrink-0 z-10 border-2',
+                        step.done
+                          ? 'bg-gradient-to-br from-teal to-emerald-500 border-teal text-bg-dark'
+                          : 'bg-bg-elevated border-white/[0.1] text-text-muted'
+                      )}
+                    >
                       {step.done ? <CheckCircle size={18} /> : <Clock size={18} />}
                     </div>
                     <div className="flex-1 pt-1">
-                      <p className={cn('text-body-sm', step.done ? 'text-text-primary font-medium' : 'text-text-muted')}>
+                      <p
+                        className={cn(
+                          'text-body-sm',
+                          step.done ? 'text-text-primary font-medium' : 'text-text-muted'
+                        )}
+                      >
                         {step.label}
                       </p>
                       <p className="text-[10px] text-text-muted mt-0.5">{step.date}</p>
@@ -331,29 +428,37 @@ export default function BankAccount() {
             我的账户
           </h2>
           <div className="space-y-2">
-            {companies.flatMap(c => c.bankAccounts || []).map((account, i) => (
-              <motion.div
-                key={account.id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.04 * i }}
-              >
-                <Card variant="interactive" padding="md">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-coral/15 flex items-center justify-center">
-                        <Landmark size={18} className="text-coral" />
+            {companies
+              .flatMap((c) => c.bankAccounts || [])
+              .map((account, i) => (
+                <motion.div
+                  key={account.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.04 * i }}
+                >
+                  <Card variant="interactive" padding="md">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-coral/15 flex items-center justify-center">
+                          <Landmark size={18} className="text-coral" />
+                        </div>
+                        <div>
+                          <p className="text-body-sm font-medium text-text-primary">
+                            {account.bankName}
+                          </p>
+                          <p className="text-caption text-text-muted">
+                            {account.accountNumber} · {account.currency}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-body-sm font-medium text-text-primary">{account.bankName}</p>
-                        <p className="text-caption text-text-muted">{account.accountNumber} · {account.currency}</p>
-                      </div>
+                      <StatusBadge status="success" size="sm">
+                        正常
+                      </StatusBadge>
                     </div>
-                    <StatusBadge status="success" size="sm">正常</StatusBadge>
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
+                  </Card>
+                </motion.div>
+              ))}
           </div>
         </motion.section>
 
@@ -388,11 +493,15 @@ export default function BankAccount() {
                     className="border-b border-white/[0.04]"
                   >
                     <td className="px-3 py-2.5">
-                      <span className="text-body-sm text-text-primary font-medium">{bank.name}</span>
+                      <span className="text-body-sm text-text-primary font-medium">
+                        {bank.name}
+                      </span>
                     </td>
                     <td className="px-3 py-2.5 text-caption text-text-muted">{bank.currency}</td>
                     <td className="px-3 py-2.5 text-caption text-text-muted">${bank.fee}</td>
-                    <td className="px-3 py-2.5 text-caption text-text-muted">${bank.minDeposit.toLocaleString()}</td>
+                    <td className="px-3 py-2.5 text-caption text-text-muted">
+                      ${bank.minDeposit.toLocaleString()}
+                    </td>
                     <td className="px-3 py-2.5">
                       <span className="text-caption text-teal">{bank.timeline}</span>
                     </td>
@@ -409,7 +518,13 @@ export default function BankAccount() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <GradientButton onClick={() => { setShowApply(true); setApplyStep(1); }} className="w-full">
+          <GradientButton
+            onClick={() => {
+              setShowApply(true);
+              setApplyStep(1);
+            }}
+            className="w-full"
+          >
             <FileText size={18} />
             申请新账户
           </GradientButton>

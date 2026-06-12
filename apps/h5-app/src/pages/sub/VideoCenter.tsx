@@ -1,8 +1,16 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Play, Clock, Eye, Heart, MessageCircle, Bookmark,
-  Search, ArrowLeft, TrendingUp, Star
+  Play,
+  Clock,
+  Eye,
+  Heart,
+  MessageCircle,
+  Bookmark,
+  Search,
+  ArrowLeft,
+  TrendingUp,
+  Star,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -39,14 +47,102 @@ const featuredVideo: VideoItem = {
 };
 
 const videos: VideoItem[] = [
-  { id: 'v1', title: '3分钟AI填单教程', duration: '08:20', views: 21000, comments: 120, likes: 890, bookmarks: 230, author: '太初国链官方', timeAgo: '3天前', category: 'AI工具' },
-  { id: 'v2', title: '税务计算器使用指南', duration: '15:45', views: 15000, comments: 85, likes: 620, bookmarks: 180, author: '智财管家AI', timeAgo: '4天前', category: '萨摩亚' },
-  { id: 'v3', title: '福建老酒出海案例', duration: '22:10', views: 8900, comments: 200, likes: 1500, bookmarks: 340, author: '出海助手AI', timeAgo: '5天前', category: '案例' },
-  { id: 'v4', title: '泰国市场爆品分析', duration: '05:30', views: 12000, comments: 95, likes: 540, bookmarks: 150, author: '市场洞察AI', timeAgo: '1周前', category: '出海教程' },
-  { id: 'v5', title: 'AI选品官实战演示', duration: '18:15', views: 6700, comments: 70, likes: 430, bookmarks: 120, author: '太初国链官方', timeAgo: '1周前', category: 'AI工具' },
-  { id: 'v6', title: '全球支付通道介绍', duration: '10:00', views: 4500, comments: 45, likes: 320, bookmarks: 95, author: '支付专家AI', timeAgo: '2周前', category: '出海教程' },
-  { id: 'v7', title: '月度卖家大会回放', duration: '45:00', views: 3200, comments: 180, likes: 780, bookmarks: 200, author: '太初国链官方', timeAgo: '2周前', category: '直播回放' },
-  { id: 'v8', title: '萨摩亚经济实质法解读', duration: '12:45', views: 2800, comments: 60, likes: 280, bookmarks: 80, author: '法务精灵AI', timeAgo: '3周前', category: '萨摩亚' },
+  {
+    id: 'v1',
+    title: '3分钟AI填单教程',
+    duration: '08:20',
+    views: 21000,
+    comments: 120,
+    likes: 890,
+    bookmarks: 230,
+    author: '太初国链官方',
+    timeAgo: '3天前',
+    category: 'AI工具',
+  },
+  {
+    id: 'v2',
+    title: '税务计算器使用指南',
+    duration: '15:45',
+    views: 15000,
+    comments: 85,
+    likes: 620,
+    bookmarks: 180,
+    author: '智财管家AI',
+    timeAgo: '4天前',
+    category: '萨摩亚',
+  },
+  {
+    id: 'v3',
+    title: '福建老酒出海案例',
+    duration: '22:10',
+    views: 8900,
+    comments: 200,
+    likes: 1500,
+    bookmarks: 340,
+    author: '出海助手AI',
+    timeAgo: '5天前',
+    category: '案例',
+  },
+  {
+    id: 'v4',
+    title: '泰国市场爆品分析',
+    duration: '05:30',
+    views: 12000,
+    comments: 95,
+    likes: 540,
+    bookmarks: 150,
+    author: '市场洞察AI',
+    timeAgo: '1周前',
+    category: '出海教程',
+  },
+  {
+    id: 'v5',
+    title: 'AI选品官实战演示',
+    duration: '18:15',
+    views: 6700,
+    comments: 70,
+    likes: 430,
+    bookmarks: 120,
+    author: '太初国链官方',
+    timeAgo: '1周前',
+    category: 'AI工具',
+  },
+  {
+    id: 'v6',
+    title: '全球支付通道介绍',
+    duration: '10:00',
+    views: 4500,
+    comments: 45,
+    likes: 320,
+    bookmarks: 95,
+    author: '支付专家AI',
+    timeAgo: '2周前',
+    category: '出海教程',
+  },
+  {
+    id: 'v7',
+    title: '月度卖家大会回放',
+    duration: '45:00',
+    views: 3200,
+    comments: 180,
+    likes: 780,
+    bookmarks: 200,
+    author: '太初国链官方',
+    timeAgo: '2周前',
+    category: '直播回放',
+  },
+  {
+    id: 'v8',
+    title: '萨摩亚经济实质法解读',
+    duration: '12:45',
+    views: 2800,
+    comments: 60,
+    likes: 280,
+    bookmarks: 80,
+    author: '法务精灵AI',
+    timeAgo: '3周前',
+    category: '萨摩亚',
+  },
 ];
 
 /* ── utilities ────────────────────────────────────── */
@@ -81,28 +177,31 @@ export default function VideoCenter() {
   const [searchQuery, setSearchQuery] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const filteredVideos = activeCategory === '全部'
-    ? videos
-    : videos.filter(v => v.category === activeCategory);
+  const filteredVideos =
+    activeCategory === '全部' ? videos : videos.filter((v) => v.category === activeCategory);
 
   const searchedVideos = searchQuery.trim()
-    ? filteredVideos.filter(v => v.title.includes(searchQuery))
+    ? filteredVideos.filter((v) => v.title.includes(searchQuery))
     : filteredVideos;
 
   return (
     <div className="min-h-screen bg-bg-dark">
       {/* Header */}
-      <TopBar title="太初视频" showBack rightAction={
-        <div className="flex items-center justify-end gap-1 w-20">
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setSearchMode(!searchMode)}
-            className="w-10 h-10 flex items-center justify-center text-text-primary"
-          >
-            <Search size={22} strokeWidth={1.5} />
-          </motion.button>
-        </div>
-      } />
+      <TopBar
+        title="太初视频"
+        showBack
+        rightAction={
+          <div className="flex items-center justify-end gap-1 w-20">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setSearchMode(!searchMode)}
+              className="w-10 h-10 flex items-center justify-center text-text-primary"
+            >
+              <Search size={22} strokeWidth={1.5} />
+            </motion.button>
+          </div>
+        }
+      />
 
       {/* Search Bar */}
       <AnimatePresence>
@@ -116,7 +215,10 @@ export default function VideoCenter() {
           >
             <div className="px-4 py-3">
               <div className="relative">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+                <Search
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
+                />
                 <input
                   autoFocus
                   type="text"
@@ -133,10 +235,7 @@ export default function VideoCenter() {
 
       {/* Category Tabs - Sticky */}
       <div className="sticky top-12 z-40 glass border-b border-white/[0.06]">
-        <div
-          ref={scrollRef}
-          className="flex gap-2 px-4 py-2 overflow-x-auto no-scrollbar"
-        >
+        <div ref={scrollRef} className="flex gap-2 px-4 py-2 overflow-x-auto no-scrollbar">
           {categories.map((cat) => (
             <motion.button
               key={cat}
@@ -213,7 +312,8 @@ export default function VideoCenter() {
                     {featuredVideo.title}
                   </h3>
                   <p className="text-[11px] text-white/60 mt-1">
-                    {featuredVideo.author} · {formatViews(featuredVideo.views)}次观看 · {featuredVideo.timeAgo}
+                    {featuredVideo.author} · {formatViews(featuredVideo.views)}次观看 ·{' '}
+                    {featuredVideo.timeAgo}
                   </p>
                   <div className="flex items-center gap-4 mt-2">
                     <span className="flex items-center gap-1 text-[11px] text-white/60">
@@ -250,7 +350,9 @@ export default function VideoCenter() {
                   <div className="bg-bg-card rounded-lg overflow-hidden border border-white/[0.06] active:border-coral/30 transition-colors">
                     {/* Thumbnail */}
                     <div className="relative aspect-[16/10] overflow-hidden">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${getGradientForIndex(i + 1)}`} />
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${getGradientForIndex(i + 1)}`}
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
                       {/* Play Icon */}
@@ -271,9 +373,7 @@ export default function VideoCenter() {
                       <h4 className="text-[12px] font-medium text-text-primary line-clamp-2 leading-4">
                         {video.title}
                       </h4>
-                      <p className="text-[10px] text-text-muted mt-1 truncate">
-                        {video.author}
-                      </p>
+                      <p className="text-[10px] text-text-muted mt-1 truncate">{video.author}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <span className="flex items-center gap-0.5 text-[10px] text-text-muted">
                           <Eye size={10} /> {formatViews(video.views)}

@@ -1,16 +1,50 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  PlusCircle, Layers, BarChart3, Users, FileText, Video,
-  Radio, Image, PenTool, TrendingUp, ChevronDown, Upload,
-  Sparkles, Check, Clock, Save, Send, Globe, Instagram,
-  Twitter, Linkedin, Youtube, CheckCircle2, PauseCircle,
-  Eye, ThumbsUp, Share2, ArrowUpRight, Download, Tag,
-  X, PlayCircle
+  PlusCircle,
+  Layers,
+  BarChart3,
+  Users,
+  FileText,
+  Video,
+  Radio,
+  Image,
+  PenTool,
+  TrendingUp,
+  ChevronDown,
+  Upload,
+  Sparkles,
+  Check,
+  Clock,
+  Save,
+  Send,
+  Globe,
+  Instagram,
+  Twitter,
+  Linkedin,
+  Youtube,
+  CheckCircle2,
+  PauseCircle,
+  Eye,
+  ThumbsUp,
+  Share2,
+  ArrowUpRight,
+  Download,
+  Tag,
+  X,
+  PlayCircle,
 } from 'lucide-react';
 import {
-  PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis,
-  CartesianGrid, Tooltip, ResponsiveContainer
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
 import TopBar from '@/components/layout/TopBar';
 import { usePageTitle } from '@/hooks/usePageTitle';
@@ -128,8 +162,8 @@ function getThumbnailGradient(type: string) {
     'gradient-1': 'from-[#0A2540] to-[#1A1035]',
     'gradient-2': 'from-[#1A1035] to-[#0A2540]',
     'gradient-3': 'from-[#0A2E2E] to-[#0A2540]',
-    'video': 'from-[#2E0A1A] to-[#1A1035]',
-    'article': 'from-[#25400A] to-[#0A2E2E]',
+    video: 'from-[#2E0A1A] to-[#1A1035]',
+    article: 'from-[#25400A] to-[#0A2E2E]',
   };
   return map[type] || map['gradient-1'];
 }
@@ -260,7 +294,13 @@ function MediaHomeTab() {
           {[
             { icon: Video, label: '视频', count: '42篇', color: 'text-coral', bg: 'bg-coral/10' },
             { icon: FileText, label: '文章', count: '89篇', color: 'text-teal', bg: 'bg-teal/10' },
-            { icon: Radio, label: '直播', count: '25场', color: 'text-blue-400', bg: 'bg-blue-400/10' },
+            {
+              icon: Radio,
+              label: '直播',
+              count: '25场',
+              color: 'text-blue-400',
+              bg: 'bg-blue-400/10',
+            },
           ].map((item) => (
             <motion.div
               key={item.label}
@@ -291,7 +331,9 @@ function MediaHomeTab() {
               className="bg-bg-card border border-white/[0.06] rounded-lg p-2.5 flex flex-col items-center"
             >
               <div className="relative">
-                <div className={`w-9 h-9 rounded-full ${p.connected ? 'bg-coral/10' : 'bg-bg-elevated'} flex items-center justify-center`}>
+                <div
+                  className={`w-9 h-9 rounded-full ${p.connected ? 'bg-coral/10' : 'bg-bg-elevated'} flex items-center justify-center`}
+                >
                   <p.icon size={16} className={p.connected ? 'text-coral' : 'text-text-muted'} />
                 </div>
                 {p.connected && (
@@ -327,7 +369,9 @@ function MediaHomeTab() {
               transition={{ delay: 0.05 * i }}
               className="bg-bg-card border border-white/[0.06] rounded-lg p-3 flex gap-3"
             >
-              <div className={`w-20 h-14 rounded bg-gradient-to-br ${getThumbnailGradient(post.thumbnail)} shrink-0 flex items-center justify-center`}>
+              <div
+                className={`w-20 h-14 rounded bg-gradient-to-br ${getThumbnailGradient(post.thumbnail)} shrink-0 flex items-center justify-center`}
+              >
                 {post.type === 'video' ? (
                   <PlayCircle size={20} className="text-white/60" />
                 ) : (
@@ -335,10 +379,15 @@ function MediaHomeTab() {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="text-[12px] font-medium text-text-primary line-clamp-1">{post.title}</h4>
+                <h4 className="text-[12px] font-medium text-text-primary line-clamp-1">
+                  {post.title}
+                </h4>
                 <div className="flex flex-wrap gap-1 mt-1">
                   {post.platforms.map((pl) => (
-                    <span key={pl} className="text-[9px] px-1.5 py-0.5 rounded-full bg-bg-elevated text-text-muted">
+                    <span
+                      key={pl}
+                      className="text-[9px] px-1.5 py-0.5 rounded-full bg-bg-elevated text-text-muted"
+                    >
                       {pl}
                     </span>
                   ))}
@@ -379,9 +428,7 @@ function MediaPublishTab() {
   };
 
   const togglePlatform = (name: string) => {
-    setPlatforms((prev) =>
-      prev.map((p) => (p.name === name ? { ...p, checked: !p.checked } : p))
-    );
+    setPlatforms((prev) => prev.map((p) => (p.name === name ? { ...p, checked: !p.checked } : p)));
   };
 
   return (
@@ -399,17 +446,22 @@ function MediaPublishTab() {
               whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedType(ct.key)}
               className={`bg-bg-card border rounded-lg p-4 flex flex-col items-center transition-colors ${
-                selectedType === ct.key
-                  ? 'border-coral/50 bg-coral/5'
-                  : 'border-white/[0.06]'
+                selectedType === ct.key ? 'border-coral/50 bg-coral/5' : 'border-white/[0.06]'
               }`}
             >
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                selectedType === ct.key ? 'bg-coral/20' : 'bg-bg-elevated'
-              }`}>
-                <ct.icon size={18} className={selectedType === ct.key ? 'text-coral' : 'text-text-muted'} />
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  selectedType === ct.key ? 'bg-coral/20' : 'bg-bg-elevated'
+                }`}
+              >
+                <ct.icon
+                  size={18}
+                  className={selectedType === ct.key ? 'text-coral' : 'text-text-muted'}
+                />
               </div>
-              <p className={`text-[13px] font-medium mt-2 ${selectedType === ct.key ? 'text-coral' : 'text-text-primary'}`}>
+              <p
+                className={`text-[13px] font-medium mt-2 ${selectedType === ct.key ? 'text-coral' : 'text-text-primary'}`}
+              >
                 {ct.label}
               </p>
               <p className="text-[10px] text-text-muted mt-0.5">{ct.desc}</p>
@@ -501,15 +553,20 @@ function MediaPublishTab() {
                     exit={{ opacity: 0, y: -5 }}
                     className="absolute top-full mt-1 left-0 bg-bg-card border border-white/[0.1] rounded-lg shadow-xl p-2 z-10 min-w-[140px]"
                   >
-                    {tagOptions.filter((t) => !selectedTags.includes(t)).map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => { toggleTag(t); setShowTagMenu(false); }}
-                        className="block w-full text-left px-3 py-1.5 text-[11px] text-text-secondary hover:text-coral hover:bg-bg-elevated rounded transition-colors"
-                      >
-                        #{t}
-                      </button>
-                    ))}
+                    {tagOptions
+                      .filter((t) => !selectedTags.includes(t))
+                      .map((t) => (
+                        <button
+                          key={t}
+                          onClick={() => {
+                            toggleTag(t);
+                            setShowTagMenu(false);
+                          }}
+                          className="block w-full text-left px-3 py-1.5 text-[11px] text-text-secondary hover:text-coral hover:bg-bg-elevated rounded transition-colors"
+                        >
+                          #{t}
+                        </button>
+                      ))}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -532,7 +589,11 @@ function MediaPublishTab() {
                     : 'border-white/[0.06] bg-bg-elevated text-text-muted'
                 }`}
               >
-                {p.checked ? <CheckCircle2 size={13} /> : <div className="w-3.5 h-3.5 rounded-full border border-text-muted" />}
+                {p.checked ? (
+                  <CheckCircle2 size={13} />
+                ) : (
+                  <div className="w-3.5 h-3.5 rounded-full border border-text-muted" />
+                )}
                 {p.name}
               </motion.button>
             ))}
@@ -601,9 +662,14 @@ function MediaDataTab() {
                 {timeOptions.map((opt) => (
                   <button
                     key={opt}
-                    onClick={() => { setTimeRange(opt); setShowTimeMenu(false); }}
+                    onClick={() => {
+                      setTimeRange(opt);
+                      setShowTimeMenu(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-[11px] whitespace-nowrap ${
-                      timeRange === opt ? 'text-coral bg-coral/10' : 'text-text-secondary hover:bg-bg-elevated'
+                      timeRange === opt
+                        ? 'text-coral bg-coral/10'
+                        : 'text-text-secondary hover:bg-bg-elevated'
                     }`}
                   >
                     {opt}
@@ -629,7 +695,9 @@ function MediaDataTab() {
         ].map((stat) => (
           <div key={stat.label} className="bg-bg-card border border-white/[0.06] rounded-lg p-3">
             <p className="text-[10px] text-text-muted">{stat.label}</p>
-            <p className="text-[16px] font-bold text-text-primary mt-1 font-display">{stat.value}</p>
+            <p className="text-[16px] font-bold text-text-primary mt-1 font-display">
+              {stat.value}
+            </p>
             <p className={`text-[10px] ${stat.color} mt-0.5`}>{stat.change}</p>
           </div>
         ))}
@@ -735,9 +803,11 @@ function MediaDataTab() {
               key={item.rank}
               className="flex items-center gap-3 py-2 border-b border-white/[0.04] last:border-0"
             >
-              <span className={`text-[14px] font-bold w-5 text-center ${
-                item.rank <= 3 ? 'text-coral' : 'text-text-muted'
-              }`}>
+              <span
+                className={`text-[14px] font-bold w-5 text-center ${
+                  item.rank <= 3 ? 'text-coral' : 'text-text-muted'
+                }`}
+              >
                 {item.rank}
               </span>
               <p className="flex-1 text-[12px] text-text-primary truncate">{item.title}</p>

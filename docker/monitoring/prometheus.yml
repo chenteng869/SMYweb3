@@ -1,0 +1,36 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # ===== NestJS API 指标 =====
+  - job_name: 'smyweb3-api'
+    metrics_path: '/health/metrics'
+    static_configs:
+      - targets: ['api:3001']
+    scrape_interval: 10s
+
+  # ===== Redis 指标 =====
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+
+  # ===== RabbitMQ 指标 =====
+  - job_name: 'rabbitmq'
+    metrics_path: '/api/metrics'
+    basic_auth:
+      username: ${RABBITMQ_USER:-smyweb3}
+      password: ${RABBITMQ_PASSWORD:-smyweb3_mq_dev_2026}
+    static_configs:
+      - targets: ['rabbitmq:15672']
+
+  # ===== Node Exporter (可选，主机指标) =====
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093

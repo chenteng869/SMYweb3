@@ -14,7 +14,13 @@ export class DocumentsService {
     if (userId) where.userId = Number(userId);
     if (search) where.OR = [{ name: { contains: search } }];
     const [data, total] = await Promise.all([
-      this.prisma.document.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: true } }),
+      this.prisma.document.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { user: true },
+      }),
       this.prisma.document.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -40,9 +46,22 @@ export class DocumentsService {
     const [total, expired, expiringSoon, byCategory] = await Promise.all([
       this.prisma.document.count(),
       this.prisma.document.count({ where: { status: 'expired' } }),
-      this.prisma.document.count({ where: { expiryDate: { lte: new Date(Date.now() + 30 * 24 * 3600 * 1000) }, status: { not: 'expired' } } }),
+      this.prisma.document.count({
+        where: {
+          expiryDate: { lte: new Date(Date.now() + 30 * 24 * 3600 * 1000) },
+          status: { not: 'expired' },
+        },
+      }),
       this.prisma.document.groupBy({ by: ['category'], _count: { _all: true } }),
     ]);
-    return { total, expired, expiringSoon, byCategory: byCategory.reduce((a: any, x: any) => ({ ...a, [x.category]: x._count._all }), {}) };
+    return {
+      total,
+      expired,
+      expiringSoon,
+      byCategory: byCategory.reduce(
+        (a: any, x: any) => ({ ...a, [x.category]: x._count._all }),
+        {}
+      ),
+    };
   }
 }

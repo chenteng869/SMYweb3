@@ -50,15 +50,18 @@ export class OpenClawService {
 
   async getAgentStats() {
     const [agents, typeStats, statusStats, runCountAgg] = await Promise.all([
-      this.prisma.openClawAgent.findMany({ select: { id: true, type: true, status: true, runCount: true, successRate: true } }),
+      this.prisma.openClawAgent.findMany({
+        select: { id: true, type: true, status: true, runCount: true, successRate: true },
+      }),
       this.prisma.openClawAgent.groupBy({ by: ['type'], _count: true }),
       this.prisma.openClawAgent.groupBy({ by: ['status'], _count: true }),
       this.prisma.openClawAgent.aggregate({ _sum: { runCount: true }, _count: true }),
     ]);
-    const validRates = agents.filter(a => a.successRate != null && a.successRate > 0);
-    const avgSuccessRate = validRates.length > 0
-      ? validRates.reduce((sum, a) => sum + Number(a.successRate), 0) / validRates.length
-      : 0;
+    const validRates = agents.filter((a) => a.successRate != null && a.successRate > 0);
+    const avgSuccessRate =
+      validRates.length > 0
+        ? validRates.reduce((sum, a) => sum + Number(a.successRate), 0) / validRates.length
+        : 0;
     return {
       totalAgents: agents.length,
       byType: typeStats.reduce((acc, item) => ({ ...acc, [item.type]: item._count }), {}),
@@ -111,13 +114,16 @@ export class OpenClawService {
       this.prisma.openClawMarketplaceItem.aggregate({ _sum: { downloadCount: true } }),
       this.prisma.openClawMarketplaceItem.findMany({ select: { price: true } }),
     ]);
-    const freeCount = items.filter(i => i.price === 0).length;
+    const freeCount = items.filter((i) => i.price === 0).length;
     const paidCount = items.length - freeCount;
     return {
-      categoryDistribution: categoryStats.reduce((acc, item) => ({ ...acc, [item.category]: item._count }), {}),
+      categoryDistribution: categoryStats.reduce(
+        (acc, item) => ({ ...acc, [item.category]: item._count }),
+        {}
+      ),
       totalDownloads: totalDownloads._sum.downloadCount || 0,
-      freeRatio: items.length > 0 ? Math.round(freeCount / items.length * 100) / 100 : 0,
-      paidRatio: items.length > 0 ? Math.round(paidCount / items.length * 100) / 100 : 0,
+      freeRatio: items.length > 0 ? Math.round((freeCount / items.length) * 100) / 100 : 0,
+      paidRatio: items.length > 0 ? Math.round((paidCount / items.length) * 100) / 100 : 0,
     };
   }
 
@@ -198,10 +204,11 @@ export class OpenClawService {
       }),
     ]);
 
-    const successRate = todayCalls > 0 ? Math.round(successLogs / todayCalls * 10000) / 100 : 0;
-    const avgLatency = allLogs.length > 0
-      ? Math.round(allLogs.reduce((sum, l) => sum + (l.latencyMs || 0), 0) / allLogs.length)
-      : 0;
+    const successRate = todayCalls > 0 ? Math.round((successLogs / todayCalls) * 10000) / 100 : 0;
+    const avgLatency =
+      allLogs.length > 0
+        ? Math.round(allLogs.reduce((sum, l) => sum + (l.latencyMs || 0), 0) / allLogs.length)
+        : 0;
     const totalTokens = allLogs.reduce((sum, l) => sum + (l.tokensUsed || 0), 0);
 
     // Token 用量趋势（按小时）
@@ -210,7 +217,9 @@ export class OpenClawService {
       hourStart.setHours(hour, 0, 0, 0);
       const hourEnd = new Date(hourStart);
       hourEnd.setHours(hour + 1, 0, 0, 0);
-      const count = allLogs.filter(l => l.createdAt >= hourStart && l.createdAt < hourEnd).reduce((s, l) => s + (l.tokensUsed || 0), 0);
+      const count = allLogs
+        .filter((l) => l.createdAt >= hourStart && l.createdAt < hourEnd)
+        .reduce((s, l) => s + (l.tokensUsed || 0), 0);
       return { hour, tokens: count };
     });
 
@@ -241,14 +250,19 @@ export class OpenClawService {
       select: { agentId: true, status: true },
     });
     const errorMap = new Map<number, { total: number; errors: number }>();
-    recentLogs.forEach(log => {
+    recentLogs.forEach((log) => {
       const entry = errorMap.get(log.agentId) || { total: 0, errors: 0 };
       entry.total++;
       if (log.status === 'error') entry.errors++;
       errorMap.set(log.agentId, entry);
     });
     const errorRanking = Array.from(errorMap.entries())
-      .map(([agentId, v]) => ({ agentId, total: v.total, errors: v.errors, errorRate: v.total > 0 ? Math.round(v.errors / v.total * 10000) / 100 : 0 }))
+      .map(([agentId, v]) => ({
+        agentId,
+        total: v.total,
+        errors: v.errors,
+        errorRate: v.total > 0 ? Math.round((v.errors / v.total) * 10000) / 100 : 0,
+      }))
       .sort((a, b) => b.errors - a.errors)
       .slice(0, 10);
 
@@ -258,7 +272,7 @@ export class OpenClawService {
       select: { latencyMs: true },
     });
     const latencyBuckets = { '0-100ms': 0, '100-500ms': 0, '500ms-1s': 0, '1-3s': 0, '>3s': 0 };
-    allRecentLogs.forEach(log => {
+    allRecentLogs.forEach((log) => {
       const ms = log.latencyMs || 0;
       if (ms < 100) latencyBuckets['0-100ms']++;
       else if (ms < 500) latencyBuckets['100-500ms']++;
@@ -266,7 +280,10 @@ export class OpenClawService {
       else if (ms < 3000) latencyBuckets['1-3s']++;
       else latencyBuckets['>3s']++;
     });
-    const latencyDistribution = Object.entries(latencyBuckets).map(([range, count]) => ({ range, count }));
+    const latencyDistribution = Object.entries(latencyBuckets).map(([range, count]) => ({
+      range,
+      count,
+    }));
 
     // 7日趋势
     const dailyTrend = [];
@@ -278,17 +295,19 @@ export class OpenClawService {
       nextDay.setDate(nextDay.getDate() + 1);
       const [calls, successes] = await Promise.all([
         this.prisma.openClawMonitorLog.count({ where: { createdAt: { gte: day, lt: nextDay } } }),
-        this.prisma.openClawMonitorLog.count({ where: { createdAt: { gte: day, lt: nextDay }, status: 'success' } }),
+        this.prisma.openClawMonitorLog.count({
+          where: { createdAt: { gte: day, lt: nextDay }, status: 'success' },
+        }),
       ]);
       dailyTrend.push({
         date: day.toISOString().split('T')[0],
         calls,
-        successRate: calls > 0 ? Math.round(successes / calls * 10000) / 100 : 0,
+        successRate: calls > 0 ? Math.round((successes / calls) * 10000) / 100 : 0,
       });
     }
 
     return {
-      topActiveAgents: topAgents.map(t => ({ agentId: t.agentId, callCount: t._count })),
+      topActiveAgents: topAgents.map((t) => ({ agentId: t.agentId, callCount: t._count })),
       errorRanking,
       latencyDistribution,
       dailyTrend,

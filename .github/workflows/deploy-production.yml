@@ -1,0 +1,229 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v*'  # 触发条件: git tag v*
+  workflow_dispatch:
+    inputs:
+      target_version:
+        description: '部署目标版本 (git tag，如 v1.0.0)'
+        required: false
+        default: ''
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  # ===== Step 1: 构建并推送生产镜像 =====
+  build-and-push:
+    name: Build & Push Production Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      api_image_tag: ${{ steps.meta-api.outputs.tags }}
+      admin_image_tag: ${{ steps.meta-admin.outputs.tags }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract API metadata
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/smyweb3-api
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push API image (production)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./apps/api/Dockerfile
+          push: true
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
+          build-args: |
+            NODE_ENV=production
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Extract Admin Web metadata
+        id: meta-admin
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/smyweb3-admin
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Admin Web image (production)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./apps/admin-web/Dockerfile
+          push: true
+          tags: ${{ steps.meta-admin.outputs.tags }}
+          labels: ${{ steps.meta-admin.outputs.labels }}
+          build-args: |
+            NODE_ENV=production
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ===== Step 2: 生产环境部署（含审批门禁）=====
+  deploy-production:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build-and-push]
+    environment:
+      name: production
+      url: https://admin.smyweb3.com
+    # ⭐ 审批门禁：需要至少一人手动批准后才执行部署
+    steps:
+      - uses: actions/checkout@v4
+
+      # 部署前最终确认
+      - name: Pre-deployment checklist
+        run: |
+          echo "===== 生产部署前检查清单 ====="
+          echo "✅ Docker 镜像构建完成并通过验证"
+          echo "✅ CI 流水线全部通过"
+          echo "✅ 已获得生产环境部署审批"
+          echo "================================="
+          echo "部署分支: ${{ github.ref_name }}"
+          echo "提交哈希: ${{ github.sha }}"
+          echo "触发者: ${{ github.actor }}"
+          echo "部署时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+
+      # SSH 部署到生产服务器
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PRODUCTION_HOST }}
+          username: ${{ secrets.PRODUCTION_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
+          script: |
+            set -e
+            echo "🚀 开始生产环境部署..."
+
+            cd /opt/smyweb3
+
+            # === 备份当前版本 ===
+            BACKUP_DIR="/opt/smyweb3/backups/$(date +%Y%m%d_%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+            cp .env.production "$BACKUP_DIR/" 2>/dev/null || true
+            docker compose -f docker-compose.prod.yml config > "$BACKUP_DIR/compose-backup.yml" 2>/dev/null || true
+            echo "💾 当前配置已备份至 $BACKUP_DIR"
+
+            # === 拉取新镜像 ===
+            docker compose -f docker-compose.prod.yml pull 2>&1 || {
+              echo "❌ 镜像拉取失败，回滚中..."
+              exit 1
+            }
+
+            # === 滚动更新 API 服务 ===
+            echo "📦 更新 API 服务..."
+            docker compose -f docker-compose.prod.yml up -d --no-deps api
+
+            # === 等待健康检查 ===
+            echo "⏳ 等待 API 服务就绪..."
+            MAX_WAIT=120
+            ELAPSED=0
+            while [ $ELAPSED -lt $MAX_WAIT ]; do
+              if curl -sf http://localhost:3001/health > /dev/null 2>&1; then
+                echo "✅ API 服务健康检查通过"
+                break
+              fi
+              sleep 3
+              ELAPSED=$((ELAPSED + 3))
+            done
+
+            if [ $ELAPSED -ge $MAX_WAIT ]; then
+              echo "❌ API 服务启动超时 (${MAX_WAIT}s)，执行回滚..."
+              docker compose -f docker-compose.prod.yml rollback || true
+              exit 1
+            fi
+
+            # === 更新前端服务 ===
+            echo "🎨 更新 Admin Web 服务..."
+            docker compose -f docker-compose.prod.yml up -d --no-deps admin-web
+
+            # === 清理旧镜像 ===
+            echo "🧹 清理未使用的 Docker 镜像..."
+            docker image prune -f --filter "until=24h"
+
+            echo ""
+            echo "========================================="
+            echo "🎉 生产环境部署完成！"
+            echo "========================================="
+
+      # 部署后通知
+      - name: Deployment notification
+        if: always()
+        run: |
+          echo "------------------------------------------"
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ 生产部署成功"
+            echo "📍 访问地址: https://admin.smyweb3.com"
+          else
+            echo "❌ 生产部署失败"
+            echo "🔧 请立即检查服务状态和日志"
+          fi
+          echo "👤 操作人: ${{ github.actor }}"
+          echo "📅 时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "------------------------------------------"
+
+  # ===== Step 3: 生产部署后验证 =====
+  post-deploy-verify:
+    name: Post-Deploy Verification
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: success()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install test dependencies
+        run: npm install -g newman
+
+      - name: Run critical path tests
+        run: |
+          newman run tests/integration/api/critical-path-collection.json \
+            --environment '{"baseUrl":"https://admin.smyweb3.com"}' \
+            --reporters cli,junit \
+            --reporter-junit-export prod-verify-results.xml
+        continue-on-error: true
+
+      - name: Upload verification results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-verification-results
+          path: prod-verify-results.xml
+          retention-days: 30

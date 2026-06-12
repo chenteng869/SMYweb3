@@ -12,14 +12,22 @@ export class VideosService {
     if (category) where.category = category;
     if (status) where.status = status;
     const [data, total] = await Promise.all([
-      this.prisma.video.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { publishedAt: 'desc' } }),
+      this.prisma.video.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { publishedAt: 'desc' },
+      }),
       this.prisma.video.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
   }
 
   async detail(id: number) {
-    const video = await this.prisma.video.findUnique({ where: { id }, include: { comments: { take: 20, orderBy: { createdAt: 'desc' } } } });
+    const video = await this.prisma.video.findUnique({
+      where: { id },
+      include: { comments: { take: 20, orderBy: { createdAt: 'desc' } } },
+    });
     if (!video) throw new Error('视频不存在');
     return video;
   }
@@ -38,7 +46,11 @@ export class VideosService {
   }
 
   async listComments(videoId: number) {
-    return this.prisma.videoComment.findMany({ where: { videoId }, orderBy: { createdAt: 'desc' }, take: 50 });
+    return this.prisma.videoComment.findMany({
+      where: { videoId },
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    });
   }
 
   async stats() {
@@ -48,6 +60,11 @@ export class VideosService {
       this.prisma.video.aggregate({ _sum: { likes: true } }),
       this.prisma.video.count({ where: { isFeatured: true } }),
     ]);
-    return { total, totalViews: totalViews._sum.views || 0, totalLikes: totalLikes._sum.likes || 0, featured };
+    return {
+      total,
+      totalViews: totalViews._sum.views || 0,
+      totalLikes: totalLikes._sum.likes || 0,
+      featured,
+    };
   }
 }

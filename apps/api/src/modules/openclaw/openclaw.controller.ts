@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { OpenClawService } from './openclaw.service';
 import { CurrentUser } from '../../common/guards/jwt-auth.guard';
@@ -7,7 +18,10 @@ import { AuditService } from '../../common/audit.service';
 @ApiTags('🦞 OpenClaw 智能体')
 @Controller('openclaw')
 export class OpenClawController {
-  constructor(private svc: OpenClawService, private audit: AuditService) {}
+  constructor(
+    private svc: OpenClawService,
+    private audit: AuditService
+  ) {}
 
   // ========== 智能体编排 ==========
 
@@ -44,7 +58,12 @@ export class OpenClawController {
 
   @Put('agents/:id')
   @ApiOperation({ summary: '更新智能体' })
-  async updateAgent(@Param('id', ParseIntPipe) id: number, @Body() body: any, @Req() req: any, @CurrentUser() user: any) {
+  async updateAgent(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.updateAgent(id, body);
     // TODO: 审计日志 - 更新智能体
     await this.audit.log(req, user.id, 'update_openclaw_agent', 'openclaw', String(id), body);
@@ -53,7 +72,11 @@ export class OpenClawController {
 
   @Delete('agents/:id')
   @ApiOperation({ summary: '删除智能体' })
-  async deleteAgent(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async deleteAgent(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.deleteAgent(id);
     // TODO: 审计日志 - 删除智能体
     await this.audit.log(req, user.id, 'delete_openclaw_agent', 'openclaw', String(id));
@@ -95,7 +118,12 @@ export class OpenClawController {
 
   @Put('marketplace/:id')
   @ApiOperation({ summary: '更新市场项' })
-  async updateMarketItem(@Param('id', ParseIntPipe) id: number, @Body() body: any, @Req() req: any, @CurrentUser() user: any) {
+  async updateMarketItem(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.updateMarketItem(id, body);
     // TODO: 审计日志 - 更新市场项
     await this.audit.log(req, user.id, 'update_market_item', 'openclaw', String(id), body);
@@ -104,7 +132,11 @@ export class OpenClawController {
 
   @Delete('marketplace/:id')
   @ApiOperation({ summary: '删除市场项' })
-  async deleteMarketItem(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async deleteMarketItem(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.deleteMarketItem(id);
     // TODO: 审计日志 - 删除市场项
     await this.audit.log(req, user.id, 'delete_market_item', 'openclaw', String(id));
@@ -140,7 +172,12 @@ export class OpenClawController {
 
   @Put('fine-tunes/:id')
   @ApiOperation({ summary: '更新微调任务' })
-  async updateFineTune(@Param('id', ParseIntPipe) id: number, @Body() body: any, @Req() req: any, @CurrentUser() user: any) {
+  async updateFineTune(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: any,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.updateFineTune(id, body);
     // TODO: 审计日志 - 更新微调任务
     await this.audit.log(req, user.id, 'update_finetune', 'openclaw', String(id), body);
@@ -149,7 +186,11 @@ export class OpenClawController {
 
   @Delete('fine-tunes/:id')
   @ApiOperation({ summary: '删除微调任务' })
-  async deleteFineTune(@Param('id', ParseIntPipe) id: number, @Req() req: any, @CurrentUser() user: any) {
+  async deleteFineTune(
+    @Param('id', ParseIntPipe) id: number,
+    @Req() req: any,
+    @CurrentUser() user: any
+  ) {
     const r = await this.svc.deleteFineTune(id);
     // TODO: 审计日志 - 删除微调任务
     await this.audit.log(req, user.id, 'delete_finetune', 'openclaw', String(id));

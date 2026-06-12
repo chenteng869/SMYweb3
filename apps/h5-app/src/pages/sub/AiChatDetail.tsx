@@ -2,9 +2,25 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowLeft, Send, Sparkles, User, Paperclip, Image, FileText,
-  TrendingUp, Shield, Building2, CreditCard, Package, DollarSign,
-  Scale, Receipt, Clock, ChevronRight, Zap, X
+  ArrowLeft,
+  Send,
+  Sparkles,
+  User,
+  Paperclip,
+  Image,
+  FileText,
+  TrendingUp,
+  Shield,
+  Building2,
+  CreditCard,
+  Package,
+  DollarSign,
+  Scale,
+  Receipt,
+  Clock,
+  ChevronRight,
+  Zap,
+  X,
 } from 'lucide-react';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { useAppStore } from '@/store';
@@ -32,44 +48,58 @@ interface ProductCard {
 // Mock Quick Replies by Agent
 // ============================
 const quickRepliesByAgent: Record<string, string[]> = {
-  'agent_003': ['东南亚', '中东', '拉美', '欧美'],
-  'agent_001': ['税务优化', '利润规划', '报表分析'],
-  'agent_002': ['合同审查', '合规检查', '风险评估'],
-  'agent_005': ['萨摩亚SPV', '新加坡公司', '香港公司'],
-  'agent_006': ['收款通道', '汇率优化', '资金管理'],
-  'default': ['帮我分析一下', '推荐方案', '具体操作'],
+  agent_003: ['东南亚', '中东', '拉美', '欧美'],
+  agent_001: ['税务优化', '利润规划', '报表分析'],
+  agent_002: ['合同审查', '合规检查', '风险评估'],
+  agent_005: ['萨摩亚SPV', '新加坡公司', '香港公司'],
+  agent_006: ['收款通道', '汇率优化', '资金管理'],
+  default: ['帮我分析一下', '推荐方案', '具体操作'],
 
-  'product': ['泰国市场', '中东市场', '拉美市场', '帮我选品'],
-  'pricing': ['自动定价', '竞品分析', '利润优化'],
-  'copy': ['产品文案', '多语言翻译', 'SEO优化'],
-  'service': ['自动回复', '工单处理', '客户分析'],
-  'compliance': ['法规检查', '合同审查', '风险评估'],
-  'logistics': ['运费优化', '仓储方案', '路径规划'],
-  'forex': ['汇率监控', '换汇提醒', '对冲策略'],
-  'ads': ['投放优化', 'ROI分析', '受众定位'],
-  'tax': ['税务规划', '节税方案', '申报提醒'],
-  'risk': ['欺诈检测', '信用评估', '交易监控'],
+  product: ['泰国市场', '中东市场', '拉美市场', '帮我选品'],
+  pricing: ['自动定价', '竞品分析', '利润优化'],
+  copy: ['产品文案', '多语言翻译', 'SEO优化'],
+  service: ['自动回复', '工单处理', '客户分析'],
+  compliance: ['法规检查', '合同审查', '风险评估'],
+  logistics: ['运费优化', '仓储方案', '路径规划'],
+  forex: ['汇率监控', '换汇提醒', '对冲策略'],
+  ads: ['投放优化', 'ROI分析', '受众定位'],
+  tax: ['税务规划', '节税方案', '申报提醒'],
+  risk: ['欺诈检测', '信用评估', '交易监控'],
 };
 // New agent ID mapping
 const agentNameMap: Record<string, string> = {
-  'product': 'AI选品官', 'pricing': 'AI定价师', 'copy': 'AI文案师',
-  'service': 'AI客服官', 'compliance': 'AI合规官', 'logistics': 'AI物流官',
-  'forex': 'AI汇率官', 'ads': 'AI广告官', 'tax': 'AI税务师', 'risk': 'AI风控官',
+  product: 'AI选品官',
+  pricing: 'AI定价师',
+  copy: 'AI文案师',
+  service: 'AI客服官',
+  compliance: 'AI合规官',
+  logistics: 'AI物流官',
+  forex: 'AI汇率官',
+  ads: 'AI广告官',
+  tax: 'AI税务师',
+  risk: 'AI风控官',
 };
 
 const agentRoleMap: Record<string, string> = {
-  'product': '智能选品与市场分析', 'pricing': '智能定价与竞品分析', 'copy': '多语言文案与SEO',
-  'service': '智能客服与工单处理', 'compliance': '法规合规与合同审查', 'logistics': '物流优化与仓储规划',
-  'forex': '汇率监控与对冲策略', 'ads': '广告投放与ROI优化', 'tax': '税务规划与节税方案', 'risk': '风控监测与欺诈检测',
+  product: '智能选品与市场分析',
+  pricing: '智能定价与竞品分析',
+  copy: '多语言文案与SEO',
+  service: '智能客服与工单处理',
+  compliance: '法规合规与合同审查',
+  logistics: '物流优化与仓储规划',
+  forex: '汇率监控与对冲策略',
+  ads: '广告投放与ROI优化',
+  tax: '税务规划与节税方案',
+  risk: '风控监测与欺诈检测',
 };
-
 
 // ============================
 // Mock Responses
 // ============================
 const mockResponses: Record<string, { content: string; productCard?: ProductCard }> = {
-  '帮我看看泰国市场有什么好卖的产品': {
-    content: '根据最新数据分析，泰国市场以下品类增长迅速：\n\n1. 🍵 中国茶叶（+180% YoY）\n2. 🍶 老酒/白酒（+150%）\n3. 🏠 智能家居小件（+120%）\n\n建议您考虑福建老酒，当前搜索量暴涨300%，竞争度低，预估利润率45%。',
+  帮我看看泰国市场有什么好卖的产品: {
+    content:
+      '根据最新数据分析，泰国市场以下品类增长迅速：\n\n1. 🍵 中国茶叶（+180% YoY）\n2. 🍶 老酒/白酒（+150%）\n3. 🏠 智能家居小件（+120%）\n\n建议您考虑福建老酒，当前搜索量暴涨300%，竞争度低，预估利润率45%。',
     productCard: {
       name: '福建老酒',
       profit: '45%',
@@ -77,17 +107,21 @@ const mockResponses: Record<string, { content: string; productCard?: ProductCard
       trend: '+300%',
     },
   },
-  '东南亚': {
-    content: '东南亚市场目前是中国出海最热门的目的地。2024年Q3数据：\n\n🇹🇭 泰国：白酒/茶叶增长最快\n🇻🇳 越南：智能家居需求旺盛\n🇮🇩 印尼：美妆护肤品类爆发\n🇲🇾 马来西亚：清真食品市场大\n\n您想深入了解哪个国家？',
+  东南亚: {
+    content:
+      '东南亚市场目前是中国出海最热门的目的地。2024年Q3数据：\n\n🇹🇭 泰国：白酒/茶叶增长最快\n🇻🇳 越南：智能家居需求旺盛\n🇮🇩 印尼：美妆护肤品类爆发\n🇲🇾 马来西亚：清真食品市场大\n\n您想深入了解哪个国家？',
   },
-  '中东': {
-    content: '中东市场（特别是阿联酋和沙特）消费能力强，客单价高：\n\n🎯 高潜力品类：\n• 智能家居（+200%）\n• 高端茶叶（+160%）\n• 健康食品（+140%）\n• 母婴用品（+120%）\n\n建议优先考虑迪拜自贸区注册，享0%个人所得税。',
+  中东: {
+    content:
+      '中东市场（特别是阿联酋和沙特）消费能力强，客单价高：\n\n🎯 高潜力品类：\n• 智能家居（+200%）\n• 高端茶叶（+160%）\n• 健康食品（+140%）\n• 母婴用品（+120%）\n\n建议优先考虑迪拜自贸区注册，享0%个人所得税。',
   },
-  '拉美': {
-    content: '拉美市场正在快速数字化，巴西和墨西哥领跑：\n\n📈 巴西（+85%电商增长）\n• 美妆护肤、消费电子最热\n• 本地支付方式Pix普及率90%\n\n📈 墨西哥（+70%）\n• 汽配、家居用品需求大\n\n需要我分析具体的入驻方案吗？',
+  拉美: {
+    content:
+      '拉美市场正在快速数字化，巴西和墨西哥领跑：\n\n📈 巴西（+85%电商增长）\n• 美妆护肤、消费电子最热\n• 本地支付方式Pix普及率90%\n\n📈 墨西哥（+70%）\n• 汽配、家居用品需求大\n\n需要我分析具体的入驻方案吗？',
   },
-  '欧美': {
-    content: '欧美市场成熟稳定，合规要求高但利润空间大：\n\n🇪🇺 欧洲：\n• 德国/法国：高品质消费品\n• 需VAT注册，GDPR合规\n\n🇺🇸 美国：\n• 最大电商市场\n• 需关注BOI报告义务\n\n建议先注册香港或新加坡公司作为控股主体。',
+  欧美: {
+    content:
+      '欧美市场成熟稳定，合规要求高但利润空间大：\n\n🇪🇺 欧洲：\n• 德国/法国：高品质消费品\n• 需VAT注册，GDPR合规\n\n🇺🇸 美国：\n• 最大电商市场\n• 需关注BOI报告义务\n\n建议先注册香港或新加坡公司作为控股主体。',
   },
 };
 
@@ -165,9 +199,7 @@ function ProductCardView({ card }: { card: ProductCard }) {
             <TrendingUp size={12} />
             利润{card.profit}
           </span>
-          <span className="text-caption text-text-secondary">
-            竞争度: {card.competition}
-          </span>
+          <span className="text-caption text-text-secondary">竞争度: {card.competition}</span>
           <span className="text-caption text-coral">{card.trend}</span>
         </div>
       </div>
@@ -187,12 +219,12 @@ export default function AiChatDetail() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const agents = useAppStore(s => s.activeAgents);
-  const aiMessages = useAppStore(s => s.aiMessages);
-  const addAiMessage = useAppStore(s => s.addAiMessage);
-  const setShowBottomNav = useAppStore(s => s.setShowBottomNav);
+  const agents = useAppStore((s) => s.activeAgents);
+  const aiMessages = useAppStore((s) => s.aiMessages);
+  const addAiMessage = useAppStore((s) => s.addAiMessage);
+  const setShowBottomNav = useAppStore((s) => s.setShowBottomNav);
 
-  let agent = agents.find(a => a.id === agentId);
+  let agent = agents.find((a) => a.id === agentId);
 
   // Fallback for new agent IDs not in store
   if (!agent && agentId && agentNameMap[agentId]) {
@@ -214,9 +246,10 @@ export default function AiChatDetail() {
   const initialMessages = agentId ? getInitialMessages(agentId, agent?.name || 'AI助手') : [];
 
   // Merge: show initial messages only if store is empty
-  const messages: Message[] = storeMessages.length === 0 && agentId && initialMessages.length > 0
-    ? initialMessages
-    : storeMessages;
+  const messages: Message[] =
+    storeMessages.length === 0 && agentId && initialMessages.length > 0
+      ? initialMessages
+      : storeMessages;
 
   usePageTitle(agent?.name || 'AI对话');
 
@@ -229,36 +262,46 @@ export default function AiChatDetail() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const quickReplies = agentId ? (quickRepliesByAgent[agentId] !== undefined ? quickRepliesByAgent[agentId] : quickRepliesByAgent.default) : [];
+  const quickReplies = agentId
+    ? quickRepliesByAgent[agentId] !== undefined
+      ? quickRepliesByAgent[agentId]
+      : quickRepliesByAgent.default
+    : [];
 
-  const handleSend = useCallback((text: string) => {
-    if (!text.trim() || !agentId) return;
+  const handleSend = useCallback(
+    (text: string) => {
+      if (!text.trim() || !agentId) return;
 
-    // Add user message
-    addAiMessage(agentId, { role: 'user', content: text });
-    setInputValue('');
-    setIsTyping(true);
+      // Add user message
+      addAiMessage(agentId, { role: 'user', content: text });
+      setInputValue('');
+      setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const mockResponse = mockResponses[text];
-      if (mockResponse) {
-        addAiMessage(agentId, { role: 'ai', content: mockResponse.content });
-      } else {
-        // Default agent-specific responses
-        const defaultResponses: Record<string, string> = {
-          'agent_001': `我是${agent?.name || '智财管家'}。根据您的财务数据，我建议将新加坡子公司的利润通过股息分配至萨摩亚SPV，这样可以利用萨摩亚的零税率优势。预计年度节税约$45,000。`,
-          'agent_002': `我是${agent?.name || '法务精灵'}，已完成对您的合同审查，发现2个风险条款：第3.2条的管辖权约定不明确，第5.1条的违约责任过轻。建议修改后再签署。`,
-          'agent_005': `我是${agent?.name || '注册专员'}。萨摩亚SPV注册需要以下材料：\n\n1. 董事/股东护照复印件\n2. 地址证明\n3. 银行推荐信\n\n处理时间约7-10个工作日。`,
-          'agent_006': `我是${agent?.name || '支付专家'}。根据您的业务覆盖区域，推荐同时接入GrabPay（东南亚）和Pix（巴西），并保留Visa作为全球通用通道。`,
-          'default': `收到您的消息："${text}"\n\n我是${agent?.name || 'AI助手'}，正在为您分析处理。如果需要更详细的方案，请告诉我您的具体需求。`,
-        };
-        const response = defaultResponses[agentId] || defaultResponses.default;
-        addAiMessage(agentId, { role: 'ai', content: response });
-      }
-      setIsTyping(false);
-    }, 1200 + Math.random() * 800);
-  }, [agentId, agent, addAiMessage]);
+      // Simulate AI response
+      setTimeout(
+        () => {
+          const mockResponse = mockResponses[text];
+          if (mockResponse) {
+            addAiMessage(agentId, { role: 'ai', content: mockResponse.content });
+          } else {
+            // Default agent-specific responses
+            const defaultResponses: Record<string, string> = {
+              agent_001: `我是${agent?.name || '智财管家'}。根据您的财务数据，我建议将新加坡子公司的利润通过股息分配至萨摩亚SPV，这样可以利用萨摩亚的零税率优势。预计年度节税约$45,000。`,
+              agent_002: `我是${agent?.name || '法务精灵'}，已完成对您的合同审查，发现2个风险条款：第3.2条的管辖权约定不明确，第5.1条的违约责任过轻。建议修改后再签署。`,
+              agent_005: `我是${agent?.name || '注册专员'}。萨摩亚SPV注册需要以下材料：\n\n1. 董事/股东护照复印件\n2. 地址证明\n3. 银行推荐信\n\n处理时间约7-10个工作日。`,
+              agent_006: `我是${agent?.name || '支付专家'}。根据您的业务覆盖区域，推荐同时接入GrabPay（东南亚）和Pix（巴西），并保留Visa作为全球通用通道。`,
+              default: `收到您的消息："${text}"\n\n我是${agent?.name || 'AI助手'}，正在为您分析处理。如果需要更详细的方案，请告诉我您的具体需求。`,
+            };
+            const response = defaultResponses[agentId] || defaultResponses.default;
+            addAiMessage(agentId, { role: 'ai', content: response });
+          }
+          setIsTyping(false);
+        },
+        1200 + Math.random() * 800
+      );
+    },
+    [agentId, agent, addAiMessage]
+  );
 
   const handleQuickReply = (reply: string) => {
     handleSend(reply);
@@ -266,10 +309,10 @@ export default function AiChatDetail() {
 
   const handleQuickAction = (action: string) => {
     const prompts: Record<string, string> = {
-      '选品': '帮我选品分析',
-      '定价': '帮我定价分析',
-      '合规': '帮我查合规',
-      '税务': '帮我算税负',
+      选品: '帮我选品分析',
+      定价: '帮我定价分析',
+      合规: '帮我查合规',
+      税务: '帮我算税负',
     };
     handleSend(prompts[action] || action);
   };
@@ -286,10 +329,7 @@ export default function AiChatDetail() {
             <Sparkles size={28} className="text-text-muted" />
           </div>
           <p className="text-text-muted text-body-sm">智能体未找到</p>
-          <button
-            onClick={() => navigate(-1)}
-            className="mt-4 text-coral text-caption"
-          >
+          <button onClick={() => navigate(-1)} className="mt-4 text-coral text-caption">
             返回上一页
           </button>
         </div>
@@ -325,11 +365,20 @@ export default function AiChatDetail() {
         <div className="flex-1 min-w-0">
           <h1 className="text-body-sm font-medium text-text-primary truncate">{agent.name}</h1>
           <div className="flex items-center gap-1.5">
-            <span className={cn(
-              'w-1.5 h-1.5 rounded-full',
-              agent.status === 'active' ? 'bg-teal' : agent.status === 'busy' ? 'bg-warning' : 'bg-text-muted'
-            )} />
-            <p className="text-[10px] text-text-muted">{agent.description || 'AI助手'} · {agent.status === 'active' ? '在线' : agent.status === 'busy' ? '忙碌' : '离线'}</p>
+            <span
+              className={cn(
+                'w-1.5 h-1.5 rounded-full',
+                agent.status === 'active'
+                  ? 'bg-teal'
+                  : agent.status === 'busy'
+                    ? 'bg-warning'
+                    : 'bg-text-muted'
+              )}
+            />
+            <p className="text-[10px] text-text-muted">
+              {agent.description || 'AI助手'} ·{' '}
+              {agent.status === 'active' ? '在线' : agent.status === 'busy' ? '忙碌' : '离线'}
+            </p>
           </div>
         </div>
       </div>
@@ -355,9 +404,11 @@ export default function AiChatDetail() {
                 <Sparkles size={28} style={{ color: agent.color }} />
               </motion.div>
               <h2 className="text-h3 text-text-primary mb-2">{agent.name}</h2>
-              <p className="text-body-sm text-text-secondary max-w-[260px] mx-auto">{agent.description}</p>
+              <p className="text-body-sm text-text-secondary max-w-[260px] mx-auto">
+                {agent.description}
+              </p>
               <div className="flex flex-wrap justify-center gap-2 mt-4 max-w-[320px] mx-auto">
-                {(agent.capabilities || []).slice(0, 3).map(cap => (
+                {(agent.capabilities || []).slice(0, 3).map((cap) => (
                   <motion.span
                     key={cap}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -382,10 +433,7 @@ export default function AiChatDetail() {
               }}
               animate={{ opacity: 1, x: 0, y: 0 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className={cn(
-                'flex gap-3',
-                msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-              )}
+              className={cn('flex gap-3', msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}
             >
               {/* Avatar */}
               <motion.div
@@ -405,10 +453,7 @@ export default function AiChatDetail() {
               </motion.div>
 
               {/* Bubble */}
-              <div className={cn(
-                'max-w-[78%]',
-                msg.role === 'user' ? 'items-end' : 'items-start'
-              )}>
+              <div className={cn('max-w-[78%]', msg.role === 'user' ? 'items-end' : 'items-start')}>
                 <div
                   className={cn(
                     'rounded-2xl px-4 py-2.5',
@@ -417,10 +462,12 @@ export default function AiChatDetail() {
                       : 'bg-bg-elevated text-text-primary rounded-bl-sm'
                   )}
                 >
-                  <p className={cn(
-                    'text-body-sm whitespace-pre-wrap leading-relaxed',
-                    msg.role === 'user' ? 'text-bg-dark' : 'text-text-primary'
-                  )}>
+                  <p
+                    className={cn(
+                      'text-body-sm whitespace-pre-wrap leading-relaxed',
+                      msg.role === 'user' ? 'text-bg-dark' : 'text-text-primary'
+                    )}
+                  >
                     {msg.content}
                   </p>
                 </div>
@@ -430,41 +477,47 @@ export default function AiChatDetail() {
                 )}
                 {/* Timestamp */}
                 <p className="text-[10px] text-text-muted mt-1 px-1">
-                  {new Date(msg.timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(msg.timestamp).toLocaleTimeString('zh-CN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </p>
               </div>
             </motion.div>
           ))}
 
           {/* Quick Reply Chips */}
-          {messages.length > 0 && messages.length <= 2 && !isTyping && messages[messages.length - 1].role === 'ai' && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-2 pl-11"
-            >
-              {quickReplies.map((reply, ri) => (
-                <motion.button
-                  key={reply}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 + ri * 0.08 }}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => handleQuickReply(reply)}
-                  className={cn(
-                    'px-3.5 py-2 rounded-full text-body-sm border',
-                    'bg-bg-elevated/60 border-coral/20 text-text-secondary',
-                    'hover:bg-coral/10 hover:border-coral/40 hover:text-text-primary',
-                    'transition-colors duration-200'
-                  )}
-                >
-                  {reply}
-                </motion.button>
-              ))}
-            </motion.div>
-          )}
+          {messages.length > 0 &&
+            messages.length <= 2 &&
+            !isTyping &&
+            messages[messages.length - 1].role === 'ai' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex flex-wrap gap-2 pl-11"
+              >
+                {quickReplies.map((reply, ri) => (
+                  <motion.button
+                    key={reply}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 + ri * 0.08 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => handleQuickReply(reply)}
+                    className={cn(
+                      'px-3.5 py-2 rounded-full text-body-sm border',
+                      'bg-bg-elevated/60 border-coral/20 text-text-secondary',
+                      'hover:bg-coral/10 hover:border-coral/40 hover:text-text-primary',
+                      'transition-colors duration-200'
+                    )}
+                  >
+                    {reply}
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
 
           {/* Typing Indicator */}
           {isTyping && <TypingIndicator />}

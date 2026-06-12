@@ -21,9 +21,11 @@
 ## 1. 系统概述
 
 ### 1.1 系统定位
+
 管理员后台系统是国学出海Web3 Dapp的核心管理平台，为运营团队提供内容管理、用户管理、交易监控、合规审核等全方位运营能力。
 
 ### 1.2 系统特点
+
 - **权限分级**: 多级管理员权限控制
 - **实时监控**: 交易数据、用户行为实时监控
 - **合规管理**: AML/KYC合规审核流程
@@ -31,6 +33,7 @@
 - **操作审计**: 所有管理操作可追溯
 
 ### 1.3 目标用户
+
 - 超级管理员（平台运营方）
 - 内容审核员
 - 合规专员
@@ -62,7 +65,9 @@
 ### 2.2 详细模块设计
 
 #### 2.2.1 仪表盘模块 (Dashboard)
+
 **功能列表**:
+
 - 核心数据概览
   - 总用户数、日活用户
   - 交易额、交易量
@@ -82,6 +87,7 @@
   - 异常交易预警
 
 **数据可视化组件**:
+
 - 折线图（趋势数据）
 - 柱状图（对比数据）
 - 饼图（分布数据）
@@ -89,7 +95,9 @@
 - 热力图（用户活跃度）
 
 #### 2.2.2 用户管理模块 (User Management)
+
 **功能列表**:
+
 - 用户列表与搜索
   - 分页列表展示
   - 多条件筛选（用户等级、地区、注册时间）
@@ -110,7 +118,9 @@
   - 权限配置
 
 #### 2.2.3 内容管理模块 (Content Management)
+
 **功能列表**:
+
 - 内容列表
   - 国学动漫、真人短剧、非遗内容分类展示
   - 内容状态筛选（草稿、待审核、已发布、已下架）
@@ -130,7 +140,9 @@
   - 分类排序
 
 #### 2.2.4 NFT管理模块 (NFT Management)
+
 **功能列表**:
+
 - NFT列表
   - 所有NFT展示
   - 按状态筛选（铸造中、已铸造、已交易、已下架）
@@ -151,7 +163,9 @@
   - 盲盒管理
 
 #### 2.2.5 交易管理模块 (Transaction Management)
+
 **功能列表**:
+
 - 交易列表
   - 所有交易记录
   - 按类型筛选（NFT交易、内容购买、充值提现）
@@ -170,7 +184,9 @@
   - 异常标记
 
 #### 2.2.6 合规审核模块 (Compliance Management)
+
 **功能列表**:
+
 - KYC审核
   - KYC申请列表
   - 证件资料查看
@@ -190,7 +206,9 @@
   - 人工复核
 
 #### 2.2.7 财务管理模块 (Finance Management)
+
 **功能列表**:
+
 - 资金概览
   - 各渠道收入统计
   - 平台手续费统计
@@ -209,7 +227,9 @@
   - 导出功能
 
 #### 2.2.8 系统设置模块 (System Settings)
+
 **功能列表**:
+
 - 管理员管理
   - 管理员账号创建/编辑
   - 角色权限配置
@@ -229,7 +249,9 @@
   - 备份恢复
 
 #### 2.2.9 操作日志模块 (Audit Log)
+
 **功能列表**:
+
 - 操作日志查询
   - 按操作人筛选
   - 按时间范围筛选
@@ -247,32 +269,34 @@
 ### 3.1 技术栈选择
 
 #### 前端技术栈
-| 类别 | 技术选型 | 说明 |
-|------|----------|------|
-| 框架 | Next.js 14 + React 18 | SSR/SSG，SEO友好 |
-| 语言 | TypeScript 5.0+ | 类型安全 |
-| UI组件库 | Ant Design 5.x | 企业级UI组件 |
-| 状态管理 | Zustand + React Query | 轻量高效 |
-| 路由 | Next.js App Router | 文件系统路由 |
-| 样式 | Tailwind CSS + Ant Design | 原子化CSS |
-| 图表库 | ECharts / Recharts | 数据可视化 |
-| Web3 | Wagmi + Viem | 钱包连接与合约交互 |
-| 表单 | React Hook Form + Zod | 表单验证 |
+
+| 类别     | 技术选型                  | 说明               |
+| -------- | ------------------------- | ------------------ |
+| 框架     | Next.js 14 + React 18     | SSR/SSG，SEO友好   |
+| 语言     | TypeScript 5.0+           | 类型安全           |
+| UI组件库 | Ant Design 5.x            | 企业级UI组件       |
+| 状态管理 | Zustand + React Query     | 轻量高效           |
+| 路由     | Next.js App Router        | 文件系统路由       |
+| 样式     | Tailwind CSS + Ant Design | 原子化CSS          |
+| 图表库   | ECharts / Recharts        | 数据可视化         |
+| Web3     | Wagmi + Viem              | 钱包连接与合约交互 |
+| 表单     | React Hook Form + Zod     | 表单验证           |
 
 #### 后端技术栈
-| 类别 | 技术选型 | 说明 |
-|------|----------|------|
-| 框架 | NestJS 10+ | 企业级Node.js框架 |
-| 语言 | TypeScript | 类型安全 |
-| ORM | Prisma | 类型安全的数据库操作 |
-| 数据库 | PostgreSQL | 主数据库 |
-| 缓存 | Redis | 会话、热点数据 |
-| 认证 | JWT + Passport | 身份认证 |
-| 权限 | Casbin | RBAC权限控制 |
-| API | RESTful + Swagger | 自动生成文档 |
-| Web3 | Ethers.js v6 | 区块链交互 |
-| 文件存储 | AWS S3 / IPFS | 文件与内容存储 |
-| 任务队列 | BullMQ | 异步任务处理 |
+
+| 类别     | 技术选型          | 说明                 |
+| -------- | ----------------- | -------------------- |
+| 框架     | NestJS 10+        | 企业级Node.js框架    |
+| 语言     | TypeScript        | 类型安全             |
+| ORM      | Prisma            | 类型安全的数据库操作 |
+| 数据库   | PostgreSQL        | 主数据库             |
+| 缓存     | Redis             | 会话、热点数据       |
+| 认证     | JWT + Passport    | 身份认证             |
+| 权限     | Casbin            | RBAC权限控制         |
+| API      | RESTful + Swagger | 自动生成文档         |
+| Web3     | Ethers.js v6      | 区块链交互           |
+| 文件存储 | AWS S3 / IPFS     | 文件与内容存储       |
+| 任务队列 | BullMQ            | 异步任务处理         |
 
 ### 3.2 系统架构图
 
@@ -320,6 +344,7 @@
 ### 3.3 目录结构
 
 #### 前端目录结构
+
 ```
 frontend/
 ├── app/                          # Next.js App Router
@@ -352,6 +377,7 @@ frontend/
 ```
 
 #### 后端目录结构
+
 ```
 backend/
 ├── src/
@@ -387,42 +413,46 @@ backend/
 ### 4.1 核心数据表设计
 
 #### 管理员表 (admin_users)
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | UUID | 主键 |
-| username | VARCHAR | 用户名 |
-| email | VARCHAR | 邮箱 |
-| password_hash | VARCHAR | 密码哈希 |
-| role_id | UUID | 角色ID |
-| is_active | BOOLEAN | 是否激活 |
+
+| 字段          | 类型      | 说明         |
+| ------------- | --------- | ------------ |
+| id            | UUID      | 主键         |
+| username      | VARCHAR   | 用户名       |
+| email         | VARCHAR   | 邮箱         |
+| password_hash | VARCHAR   | 密码哈希     |
+| role_id       | UUID      | 角色ID       |
+| is_active     | BOOLEAN   | 是否激活     |
 | last_login_at | TIMESTAMP | 最后登录时间 |
-| created_at | TIMESTAMP | 创建时间 |
-| updated_at | TIMESTAMP | 更新时间 |
+| created_at    | TIMESTAMP | 创建时间     |
+| updated_at    | TIMESTAMP | 更新时间     |
 
 #### 角色表 (admin_roles)
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | UUID | 主键 |
-| name | VARCHAR | 角色名称 |
-| description | TEXT | 角色描述 |
-| permissions | JSON | 权限列表 |
-| created_at | TIMESTAMP | 创建时间 |
+
+| 字段        | 类型      | 说明     |
+| ----------- | --------- | -------- |
+| id          | UUID      | 主键     |
+| name        | VARCHAR   | 角色名称 |
+| description | TEXT      | 角色描述 |
+| permissions | JSON      | 权限列表 |
+| created_at  | TIMESTAMP | 创建时间 |
 
 #### 操作日志表 (audit_logs)
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| id | UUID | 主键 |
-| admin_user_id | UUID | 操作人ID |
-| action | VARCHAR | 操作类型 |
-| module | VARCHAR | 模块 |
-| resource_id | VARCHAR | 资源ID |
-| old_values | JSON | 变更前数据 |
-| new_values | JSON | 变更后数据 |
-| ip_address | VARCHAR | IP地址 |
-| user_agent | VARCHAR | 用户代理 |
-| created_at | TIMESTAMP | 创建时间 |
+
+| 字段          | 类型      | 说明       |
+| ------------- | --------- | ---------- |
+| id            | UUID      | 主键       |
+| admin_user_id | UUID      | 操作人ID   |
+| action        | VARCHAR   | 操作类型   |
+| module        | VARCHAR   | 模块       |
+| resource_id   | VARCHAR   | 资源ID     |
+| old_values    | JSON      | 变更前数据 |
+| new_values    | JSON      | 变更后数据 |
+| ip_address    | VARCHAR   | IP地址     |
+| user_agent    | VARCHAR   | 用户代理   |
+| created_at    | TIMESTAMP | 创建时间   |
 
 #### 用户表 (users) - 继承Dapp用户表
+
 包含管理员后台需要查看和编辑的用户字段，参考技术白皮书DID体系。
 
 ---
@@ -430,6 +460,7 @@ backend/
 ## 5. API接口规范
 
 ### 5.1 RESTful API设计原则
+
 - 使用RESTful风格的URL
 - 统一使用JSON格式
 - 完整的错误处理
@@ -437,6 +468,7 @@ backend/
 - 接口版本控制
 
 ### 5.2 响应格式规范
+
 ```typescript
 // 成功响应
 {
@@ -472,12 +504,14 @@ backend/
 ### 5.3 核心API接口列表
 
 #### 认证相关
+
 - `POST /api/admin/auth/login` - 管理员登录
 - `POST /api/admin/auth/logout` - 退出登录
 - `GET /api/admin/auth/profile` - 获取当前管理员信息
 - `PUT /api/admin/auth/password` - 修改密码
 
 #### 用户管理
+
 - `GET /api/admin/users` - 获取用户列表
 - `GET /api/admin/users/:id` - 获取用户详情
 - `PUT /api/admin/users/:id/status` - 更新用户状态
@@ -485,22 +519,26 @@ backend/
 - `POST /api/admin/users/:id/message` - 发送消息
 
 #### 内容管理
+
 - `GET /api/admin/content` - 获取内容列表
 - `GET /api/admin/content/:id` - 获取内容详情
 - `PUT /api/admin/content/:id/status` - 更新内容状态
 - `POST /api/admin/content/:id/recommend` - 推荐内容
 
 #### NFT管理
+
 - `GET /api/admin/nfts` - 获取NFT列表
 - `GET /api/admin/nfts/:id` - 获取NFT详情
 - `PUT /api/admin/nfts/:id/status` - 更新NFT状态
 
 #### 交易管理
+
 - `GET /api/admin/transactions` - 获取交易列表
 - `GET /api/admin/transactions/:id` - 获取交易详情
 - `PUT /api/admin/transactions/:id/status` - 更新交易状态
 
 #### 合规管理
+
 - `GET /api/admin/compliance/kyc-applications` - KYC申请列表
 - `PUT /api/admin/compliance/kyc-applications/:id` - 审核KYC
 - `GET /api/admin/compliance/risk-alerts` - 风险预警列表
@@ -510,6 +548,7 @@ backend/
 ## 6. 用户界面设计
 
 ### 6.1 设计规范
+
 - **风格**: 简洁、专业、高效（企业级后台风格）
 - **主色调**: 深蓝色系（稳重、专业）
 - **布局**: 侧边栏导航 + 内容区域
@@ -571,18 +610,21 @@ backend/
 ### 6.3 核心页面设计
 
 #### 登录页
+
 - 简洁的登录表单
 - 用户名/密码登录
 - 记住我功能
 - 安全提示
 
 #### 仪表盘页
+
 - 顶部：关键数据卡片（4-6个）
 - 中部：趋势图表（用户增长、交易趋势）
 - 右侧：待办事项、实时监控
 - 底部：最近活动列表
 
 #### 列表页通用布局
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  搜索筛选区                                               │
@@ -601,6 +643,7 @@ backend/
 ```
 
 #### 详情页通用布局
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  标题              [返回] [编辑] [更多操作]              │
@@ -620,6 +663,7 @@ backend/
 ## 7. 安全设计
 
 ### 7.1 认证安全
+
 - 强密码策略（长度、复杂度、定期更换）
 - 登录失败次数限制
 - 双因素认证（2FA）支持
@@ -627,18 +671,21 @@ backend/
 - 异地登录提醒
 
 ### 7.2 权限控制
+
 - 基于角色的权限控制（RBAC）
 - 最小权限原则
 - 敏感操作二次确认
 - 数据范围权限控制
 
 ### 7.3 数据安全
+
 - 敏感数据加密存储
 - 传输加密（HTTPS）
 - 操作日志完整记录
 - 定期安全审计
 
 ### 7.4 API安全
+
 - JWT认证
 - API访问频率限制
 - 防SQL注入
@@ -650,6 +697,7 @@ backend/
 ## 附录
 
 ### 附录A: 参考文档
+
 - [国学出海Web3 Dapp - DAO备案档案V1.0](../国学出海Web3_Dapp独立站_DAO备案档案_V1.0.md)
 - [开发进度执行手册](../开发进度执行手册.md)
 - [Ant Design 文档](https://ant.design/)
@@ -657,4 +705,4 @@ backend/
 
 ---
 
-*文档结束*
+_文档结束_

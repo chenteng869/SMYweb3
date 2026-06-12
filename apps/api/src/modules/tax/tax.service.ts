@@ -19,7 +19,13 @@ export class TaxService {
   }
 
   async create(data: any) {
-    return this.prisma.taxRate.create({ data: { ...data, doubleTaxationTreaties: JSON.stringify(data.doubleTaxationTreaties || []), effectiveDate: data.effectiveDate || new Date() } });
+    return this.prisma.taxRate.create({
+      data: {
+        ...data,
+        doubleTaxationTreaties: JSON.stringify(data.doubleTaxationTreaties || []),
+        effectiveDate: data.effectiveDate || new Date(),
+      },
+    });
   }
 
   async update(id: number, data: any) {
@@ -34,7 +40,13 @@ export class TaxService {
   }
 
   // 税务计算:简单公式
-  calculate(body: { revenue: number; margin: number; structureType: string; countryCode: string; targetMarket?: string }) {
+  calculate(body: {
+    revenue: number;
+    margin: number;
+    structureType: string;
+    countryCode: string;
+    targetMarket?: string;
+  }) {
     const { revenue, margin, structureType, countryCode } = body;
     const rate = this.prisma.taxRate;
     // 实际查询可能异步,这里用静态映射
@@ -54,6 +66,16 @@ export class TaxService {
     const effectiveRate = revenue > 0 ? (totalTax / revenue) * 100 : 0;
     const baseline = revenue * 0.25; // 假设无优化时税负 25%
     const savings = Math.max(0, baseline - totalTax);
-    return { revenue, margin, structureType, countryCode, corporateTax, vat, totalTax, effectiveRate, savings };
+    return {
+      revenue,
+      margin,
+      structureType,
+      countryCode,
+      corporateTax,
+      vat,
+      totalTax,
+      effectiveRate,
+      savings,
+    };
   }
 }

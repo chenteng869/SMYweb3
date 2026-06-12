@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"], "@common/*": ["src/common/*"], "@modules/*": ["src/modules/*"] },
+    "types": ["jest", "node"]
+  },
+  "include": ["src/**/*.ts", "tests/**/*.spec.ts"]
+}

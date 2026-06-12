@@ -509,7 +509,7 @@ export const portalModulesOrder = [
 // 获取门户首页功能区域配置
 export function getPortalModuleConfig(sectionKey: string) {
   const groupMapping = adminMenuPortalMapping.mainGroups;
-  return Object.values(groupMapping).find(item => item.portalSection === sectionKey);
+  return Object.values(groupMapping).find((item) => item.portalSection === sectionKey);
 }
 
 // 管理员后台菜单分组列表

@@ -4,7 +4,11 @@ import { Home, Compass, Briefcase, Brain, User } from 'lucide-react';
 import { NAV_TABS } from '@/lib/constants';
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number }>> = {
-  Home, Compass, Briefcase, Brain, User,
+  Home,
+  Compass,
+  Briefcase,
+  Brain,
+  User,
 };
 
 export default function BottomNav() {
@@ -22,7 +26,11 @@ export default function BottomNav() {
               key={tab.id}
               onClick={() => navigate(tab.path)}
               className="flex flex-col items-center justify-center gap-0.5 w-16 h-full"
-              style={{ color: isActive ? '#F6A623' : '#6B7280', background: 'none', border: 'none' }}
+              style={{
+                color: isActive ? '#F6A623' : '#6B7280',
+                background: 'none',
+                border: 'none',
+              }}
               whileTap={{ scale: 0.9 }}
             >
               <motion.div animate={isActive ? { scale: 1.05 } : { scale: 1 }}>

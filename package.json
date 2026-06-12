@@ -25,7 +25,15 @@
     "test:api": "npm run test --workspace=api",
     "test:e2e:api": "npm run test:e2e --workspace=api",
     "clean": "node scripts/clean.js",
-    "install:all": "npm install --workspaces --include-workspace-root"
+    "install:all": "npm install --workspaces --include-workspace-root",
+    "lint": "eslint apps/api/src/**/*.ts --fix",
+    "lint:check": "eslint apps/api/src/**/*.ts",
+    "format": "prettier --write '**/*.{ts,tsx,json,md}'",
+    "format:check": "prettier --check '**/*.{ts,tsx,json,md}'",
+    "quality": "npm run lint:check && npm run format:check && npm run build:api && npm run test:unit",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "engines": {
     "node": ">=18.0.0",
@@ -43,6 +51,18 @@
   "author": "MSB-EXCHANGE Team",
   "license": "MIT",
   "devDependencies": {
-    "concurrently": "^10.0.3"
+    "@playwright/test": "^1.60.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "concurrently": "^10.0.3",
+    "eslint": "^8.57.0",
+    "playwright": "^1.60.0",
+    "prettier": "^3.2.0"
+  },
+  "optionalDependencies": {
+    "@nestjs/common": "^11.1.26",
+    "@nestjs/core": "^11.1.26",
+    "@nestjs/platform-express": "^11.1.26",
+    "@nestjs/swagger": "^11.4.4"
   }
 }

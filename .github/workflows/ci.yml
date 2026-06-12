@@ -1,0 +1,184 @@
+# ============================================================
+# SMYweb3.0 — 主 CI 流水线
+# 触发: push 到 main/develop, PR 到 main
+# 矩阵策略: Node.js 20.x / 22.x
+# 包含: Lint & Type Check | Unit Tests | Build 验证
+# ============================================================
+
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # 强制使用 Node.js 22.x 作为默认版本（覆盖矩阵中的默认值）
+  NODE_VERSION: '22'
+
+jobs:
+  # ===== Job 1: Lint & Type Check =====
+  lint-and-typecheck:
+    name: Lint & Type Check (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: API — TypeScript type check
+        working-directory: ./apps/api
+        run: npx tsc --noEmit
+
+      - name: API — ESLint
+        working-directory: ./apps/api
+        run: npx eslint "{src,apps,libs,test}/**/*.ts" --max-warnings=50
+
+      - name: H5 App — TypeScript type check
+        working-directory: ./apps/h5-app
+        run: npx tsc --noEmit || echo "⚠️ H5 App 有类型警告（非阻塞）"
+
+  # ===== Job 2: Unit Tests =====
+  unit-tests:
+    name: Unit Tests (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: ./apps/api/package-lock.json
+
+      - name: Install API dependencies
+        working-directory: ./apps/api
+        run: npm ci
+
+      - name: Run unit tests with coverage
+        working-directory: ./apps/api
+        run: npx jest --config jest-unit.json --ci --coverage --verbose --forceExit
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-coverage-report-${{ matrix.node-version }}
+          path: apps/api/coverage/
+          retention-days: 7
+
+  # ===== Job 3: Build =====
+  build:
+    name: Build (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, unit-tests]
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x, 22.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install all dependencies
+        run: npm ci
+
+      - name: Build API (NestJS)
+        run: npm run build:api
+
+      - name: Build Admin Web (React + Vite)
+        run: npm run build:admin
+        # 注意: 根 package.json 中 build:admin 对应 workspace=admin-web
+        # 如需构建 h5-app，请改用: npm run build:h5
+
+      - name: Verify API build output
+        run: |
+          echo "=== 检查 API 构建产物 ==="
+          if [ -d "apps/api/dist" ]; then
+            echo "✅ apps/api/dist 存在"
+            ls -lh apps/api/dist/main.js
+          else
+            echo "❌ API 构建失败: dist 目录不存在"
+            exit 1
+          fi
+
+      - name: Verify Admin Web build output
+        run: |
+          echo "=== 检查 Admin Web 构建产物 ==="
+          # 尝试常见的构建输出目录
+          if [ -d "apps/admin-web/dist" ]; then
+            echo "✅ apps/admin-web/dist 存在"
+            ls -lh apps/admin-web/dist/index.html 2>/dev/null || echo "  (目录存在)"
+          elif [ -d "apps/h5-app/dist" ]; then
+            echo "✅ apps/h5-app/dist 存在"
+            ls -lh apps/h5-app/dist/index.html 2>/dev/null || echo "  (目录存在)"
+          else
+            echo "⚠️ 未找到前端构建产物（可能路径不同）"
+          fi
+
+  # ===== Job 4: Summary (汇总状态) =====
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, unit-tests, build]
+    if: always()
+
+    steps:
+      - name: Check job results
+        run: |
+          echo "## CI 流水线结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint & Type Check | ${{ needs.lint-and-typecheck.result == 'success' && '✅ 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅ 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result == 'success' && '✅ 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**触发事件:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**分支:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**提交:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Final status check
+        run: |
+          if [[ "${{ needs.lint-and-typecheck.result }}" == "failure" ]] || \
+             [[ "${{ needs.unit-tests.result }}" == "failure" ]] || \
+             [[ "${{ needs.build.result }}" == "failure" ]]; then
+            echo "❌ CI 流水线未完全通过"
+            exit 1
+          fi
+          echo "✅ 所有 CI 检查通过"

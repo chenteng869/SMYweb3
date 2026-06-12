@@ -41,15 +41,24 @@ export class PaymentsService {
       ];
     }
     const [data, total] = await Promise.all([
-      this.prisma.paymentTransaction.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { channel: true, user: true } }),
+      this.prisma.paymentTransaction.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { channel: true, user: true },
+      }),
       this.prisma.paymentTransaction.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
   }
 
   async createTransaction(data: any) {
-    const ref = data.reference || `TXN-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-    return this.prisma.paymentTransaction.create({ data: { ...data, reference: ref, netAmount: data.amount - (data.fee || 0) } });
+    const ref =
+      data.reference || `TXN-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+    return this.prisma.paymentTransaction.create({
+      data: { ...data, reference: ref, netAmount: data.amount - (data.fee || 0) },
+    });
   }
 
   async updateTransaction(id: number, data: any) {
@@ -62,7 +71,10 @@ export class PaymentsService {
   }
 
   async updateRate(id: number, rate: number) {
-    return this.prisma.exchangeRate.update({ where: { id }, data: { rate, timestamp: new Date() } });
+    return this.prisma.exchangeRate.update({
+      where: { id },
+      data: { rate, timestamp: new Date() },
+    });
   }
 
   async createRate(data: any) {
@@ -78,9 +90,18 @@ export class PaymentsService {
     const [channelCount, txCount, totalIncoming, totalOutgoing, totalRevenue] = await Promise.all([
       this.prisma.paymentChannel.count({ where: { isActive: true } }),
       this.prisma.paymentTransaction.count(),
-      this.prisma.paymentTransaction.aggregate({ where: { type: 'incoming', status: 'completed' }, _sum: { amount: true } }),
-      this.prisma.paymentTransaction.aggregate({ where: { type: 'outgoing', status: 'completed' }, _sum: { amount: true } }),
-      this.prisma.paymentTransaction.aggregate({ where: { type: 'incoming', status: 'completed' }, _sum: { fee: true } }),
+      this.prisma.paymentTransaction.aggregate({
+        where: { type: 'incoming', status: 'completed' },
+        _sum: { amount: true },
+      }),
+      this.prisma.paymentTransaction.aggregate({
+        where: { type: 'outgoing', status: 'completed' },
+        _sum: { amount: true },
+      }),
+      this.prisma.paymentTransaction.aggregate({
+        where: { type: 'incoming', status: 'completed' },
+        _sum: { fee: true },
+      }),
     ]);
     return {
       channelCount,

@@ -36,15 +36,20 @@ export class AiTvService {
   }
 
   async createHuman(data: any) {
-    if (data.modelConfig && typeof data.modelConfig !== 'string') data.modelConfig = JSON.stringify(data.modelConfig);
-    if (data.ttsSettings && typeof data.ttsSettings !== 'string') data.ttsSettings = JSON.stringify(data.ttsSettings);
-    if (data.expressions && typeof data.expressions !== 'string') data.expressions = JSON.stringify(data.expressions);
+    if (data.modelConfig && typeof data.modelConfig !== 'string')
+      data.modelConfig = JSON.stringify(data.modelConfig);
+    if (data.ttsSettings && typeof data.ttsSettings !== 'string')
+      data.ttsSettings = JSON.stringify(data.ttsSettings);
+    if (data.expressions && typeof data.expressions !== 'string')
+      data.expressions = JSON.stringify(data.expressions);
     return this.prisma.aiTvDigitalHuman.create({ data });
   }
 
   async updateHuman(id: number, data: any) {
-    if (data.modelConfig && typeof data.modelConfig !== 'string') data.modelConfig = JSON.stringify(data.modelConfig);
-    if (data.ttsSettings && typeof data.ttsSettings !== 'string') data.ttsSettings = JSON.stringify(data.ttsSettings);
+    if (data.modelConfig && typeof data.modelConfig !== 'string')
+      data.modelConfig = JSON.stringify(data.modelConfig);
+    if (data.ttsSettings && typeof data.ttsSettings !== 'string')
+      data.ttsSettings = JSON.stringify(data.ttsSettings);
     return this.prisma.aiTvDigitalHuman.update({ where: { id }, data });
   }
 
@@ -58,7 +63,14 @@ export class AiTvService {
       this.prisma.aiTvDigitalHuman.count({ where: { status: 'active' } }),
       this.prisma.aiTvDigitalHuman.groupBy({ by: ['modelType'], _count: true }),
     ]);
-    return { total, active, byModelType: byModelType.reduce((acc, item) => ({ ...acc, [item.modelType]: item._count }), {}) };
+    return {
+      total,
+      active,
+      byModelType: byModelType.reduce(
+        (acc, item) => ({ ...acc, [item.modelType]: item._count }),
+        {}
+      ),
+    };
   }
 
   // ========== 资讯源管理 ==========
@@ -85,17 +97,22 @@ export class AiTvService {
   async getSource(id: number) {
     return this.prisma.aiTvNewsSource.findUnique({
       where: { id },
-      include: { _count: { select: { articles: true } }, articles: { take: 10, orderBy: { createdAt: 'desc' } } },
+      include: {
+        _count: { select: { articles: true } },
+        articles: { take: 10, orderBy: { createdAt: 'desc' } },
+      },
     });
   }
 
   async createSource(data: any) {
-    if (data.crawlRule && typeof data.crawlRule !== 'string') data.crawlRule = JSON.stringify(data.crawlRule);
+    if (data.crawlRule && typeof data.crawlRule !== 'string')
+      data.crawlRule = JSON.stringify(data.crawlRule);
     return this.prisma.aiTvNewsSource.create({ data });
   }
 
   async updateSource(id: number, data: any) {
-    if (data.crawlRule && typeof data.crawlRule !== 'string') data.crawlRule = JSON.stringify(data.crawlRule);
+    if (data.crawlRule && typeof data.crawlRule !== 'string')
+      data.crawlRule = JSON.stringify(data.crawlRule);
     return this.prisma.aiTvNewsSource.update({ where: { id }, data });
   }
 
@@ -111,7 +128,12 @@ export class AiTvService {
       where: { id },
       data: { lastFetchedAt: new Date(), fetchCount: { increment: 1 } },
     });
-    return { success: true, message: `已触发抓取: ${source.name}`, fetchedAt: new Date(), newArticles: Math.floor(Math.random() * 20) + 5 };
+    return {
+      success: true,
+      message: `已触发抓取: ${source.name}`,
+      fetchedAt: new Date(),
+      newArticles: Math.floor(Math.random() * 20) + 5,
+    };
   }
 
   async getSourceStats() {
@@ -143,7 +165,7 @@ export class AiTvService {
       this.prisma.aiTvArticle.count({ where }),
     ]);
     // 序列化 BigInt 字段
-    const serializedData = data.map(item => ({
+    const serializedData = data.map((item) => ({
       ...item,
     }));
     return { data: serializedData, total, page: Number(page), pageSize: Number(pageSize) };
@@ -152,19 +174,26 @@ export class AiTvService {
   async getArticle(id: number) {
     return this.prisma.aiTvArticle.findUnique({
       where: { id },
-      include: { source: true, human: true, scheduleItems: true, broadcasts: { take: 5, orderBy: { startedAt: 'desc' } } },
+      include: {
+        source: true,
+        human: true,
+        scheduleItems: true,
+        broadcasts: { take: 5, orderBy: { startedAt: 'desc' } },
+      },
     });
   }
 
   async createArticle(data: any) {
     if (data.tags && typeof data.tags !== 'string') data.tags = JSON.stringify(data.tags);
-    if (data.attachments && typeof data.attachments !== 'string') data.attachments = JSON.stringify(data.attachments);
+    if (data.attachments && typeof data.attachments !== 'string')
+      data.attachments = JSON.stringify(data.attachments);
     return this.prisma.aiTvArticle.create({ data });
   }
 
   async updateArticle(id: number, data: any) {
     if (data.tags && typeof data.tags !== 'string') data.tags = JSON.stringify(data.tags);
-    if (data.attachments && typeof data.attachments !== 'string') data.attachments = JSON.stringify(data.attachments);
+    if (data.attachments && typeof data.attachments !== 'string')
+      data.attachments = JSON.stringify(data.attachments);
     return this.prisma.aiTvArticle.update({ where: { id }, data });
   }
 
@@ -193,7 +222,11 @@ export class AiTvService {
     const draftContent = `【AI改写稿】${article.originalContent?.substring(0, 100) || ''}...(AI已根据口播风格改写)`;
     const updated = await this.prisma.aiTvArticle.update({
       where: { id },
-      data: { draftContent, aiModel: 'qwen-plus', wordCount: Math.floor(Math.random() * 300) + 200 },
+      data: {
+        draftContent,
+        aiModel: 'qwen-plus',
+        wordCount: Math.floor(Math.random() * 300) + 200,
+      },
     });
     return updated;
   }
@@ -203,7 +236,10 @@ export class AiTvService {
       this.prisma.aiTvArticle.count(),
       this.prisma.aiTvArticle.groupBy({ by: ['status'], _count: true }),
     ]);
-    return { total, byStatus: byStatus.reduce((acc, item) => ({ ...acc, [item.status]: item._count }), {}) };
+    return {
+      total,
+      byStatus: byStatus.reduce((acc, item) => ({ ...acc, [item.status]: item._count }), {}),
+    };
   }
 
   // ========== 排班管理 ==========
@@ -280,7 +316,11 @@ export class AiTvService {
       this.prisma.aiTvSchedule.groupBy({ by: ['status'], _count: true }),
       this.prisma.aiTvSchedule.groupBy({ by: ['programSlot'], _count: true }),
     ]);
-    return { total, byStatus: byStatus.reduce((acc, item) => ({ ...acc, [item.status]: item._count }), {}), bySlot: bySlot.reduce((acc, item) => ({ ...acc, [item.programSlot]: item._count }), {}) };
+    return {
+      total,
+      byStatus: byStatus.reduce((acc, item) => ({ ...acc, [item.status]: item._count }), {}),
+      bySlot: bySlot.reduce((acc, item) => ({ ...acc, [item.programSlot]: item._count }), {}),
+    };
   }
 
   // ========== TTS语音 ==========
@@ -336,7 +376,10 @@ export class AiTvService {
       this.prisma.aiTvTtsConfig.count(),
       this.prisma.aiTvTtsConfig.groupBy({ by: ['engine'], _count: true }),
     ]);
-    return { total, byEngine: byEngine.reduce((acc, item) => ({ ...acc, [item.engine]: item._count }), {}) };
+    return {
+      total,
+      byEngine: byEngine.reduce((acc, item) => ({ ...acc, [item.engine]: item._count }), {}),
+    };
   }
 
   // ========== 推流管理 ==========
@@ -355,7 +398,7 @@ export class AiTvService {
       this.prisma.aiTvStreamPush.count({ where }),
     ]);
     // 序列化 BigInt
-    const serializedData = data.map(item => ({
+    const serializedData = data.map((item) => ({
       ...item,
       totalPushBytes: Number(item.totalPushBytes),
     }));
@@ -374,12 +417,14 @@ export class AiTvService {
   }
 
   async createPush(data: any) {
-    if (data.targetPlatforms && typeof data.targetPlatforms !== 'string') data.targetPlatforms = JSON.stringify(data.targetPlatforms);
+    if (data.targetPlatforms && typeof data.targetPlatforms !== 'string')
+      data.targetPlatforms = JSON.stringify(data.targetPlatforms);
     return this.prisma.aiTvStreamPush.create({ data });
   }
 
   async updatePush(id: number, data: any) {
-    if (data.targetPlatforms && typeof data.targetPlatforms !== 'string') data.targetPlatforms = JSON.stringify(data.targetPlatforms);
+    if (data.targetPlatforms && typeof data.targetPlatforms !== 'string')
+      data.targetPlatforms = JSON.stringify(data.targetPlatforms);
     return this.prisma.aiTvStreamPush.update({ where: { id }, data });
   }
 
@@ -395,8 +440,13 @@ export class AiTvService {
   }
 
   async stopPush(id: number) {
-    const push = await this.prisma.aiTvStreamPush.findUnique({ where: { id }, select: { startedAt: true } });
-    const uptime = push?.startedAt ? Math.floor((Date.now() - new Date(push.startedAt).getTime()) / 1000) : 0;
+    const push = await this.prisma.aiTvStreamPush.findUnique({
+      where: { id },
+      select: { startedAt: true },
+    });
+    const uptime = push?.startedAt
+      ? Math.floor((Date.now() - new Date(push.startedAt).getTime()) / 1000)
+      : 0;
     return this.prisma.aiTvStreamPush.update({
       where: { id },
       data: { status: 'stopped', uptimeSec: uptime },
@@ -474,7 +524,12 @@ export class AiTvService {
       this.prisma.aiTvMediaAsset.count({ where: { assetType: 'video' } }),
       this.prisma.aiTvMediaAsset.count({ where: { assetType: 'image' } }),
     ]);
-    return { total, byType: byType.reduce((acc, item) => ({ ...acc, [item.assetType]: item._count }), {}), videos, images };
+    return {
+      total,
+      byType: byType.reduce((acc, item) => ({ ...acc, [item.assetType]: item._count }), {}),
+      videos,
+      images,
+    };
   }
 
   // ========== 播出日志与数据 ==========
@@ -509,22 +564,43 @@ export class AiTvService {
   async getDashboard() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const [todayBroadcasts, avgDuration, successRate, totalViewers, activeHumans, activePushes, pendingArticles] = await Promise.all([
+    const [
+      todayBroadcasts,
+      avgDuration,
+      successRate,
+      totalViewers,
+      activeHumans,
+      activePushes,
+      pendingArticles,
+    ] = await Promise.all([
       this.prisma.aiTvBroadcastLog.count({ where: { startedAt: { gte: today } } }),
-      this.prisma.aiTvBroadcastLog.aggregate({ _avg: { durationSec: true }, where: { startedAt: { gte: today }, durationSec: { gt: 0 } } }),
-      this.prisma.aiTvBroadcastLog.aggregate({ where: { startedAt: { gte: today } }, _count: true }),
-      this.prisma.aiTvBroadcastLog.aggregate({ _sum: { viewerPeak: true }, where: { startedAt: { gte: today } } }),
+      this.prisma.aiTvBroadcastLog.aggregate({
+        _avg: { durationSec: true },
+        where: { startedAt: { gte: today }, durationSec: { gt: 0 } },
+      }),
+      this.prisma.aiTvBroadcastLog.aggregate({
+        where: { startedAt: { gte: today } },
+        _count: true,
+      }),
+      this.prisma.aiTvBroadcastLog.aggregate({
+        _sum: { viewerPeak: true },
+        where: { startedAt: { gte: today } },
+      }),
       this.prisma.aiTvDigitalHuman.count({ where: { status: 'active' } }),
       this.prisma.aiTvStreamPush.count({ where: { status: 'pushing' } }),
       this.prisma.aiTvArticle.count({ where: { status: { in: ['approved', 'scheduled'] } } }),
     ]);
-    const successLogs = await this.prisma.aiTvBroadcastLog.count({ where: { startedAt: { gte: today }, status: 'success' } });
-    const totalLogs = await this.prisma.aiTvBroadcastLog.count({ where: { startedAt: { gte: today } } });
+    const successLogs = await this.prisma.aiTvBroadcastLog.count({
+      where: { startedAt: { gte: today }, status: 'success' },
+    });
+    const totalLogs = await this.prisma.aiTvBroadcastLog.count({
+      where: { startedAt: { gte: today } },
+    });
     return {
       todayBroadcasts: todayBroadcasts,
       avgDuration: Math.round(avgDuration._avg.durationSec || 0),
       totalViewers: totalViewers._sum.viewerPeak || 0,
-      successRate: totalLogs > 0 ? Math.round(successLogs / totalLogs * 10000) / 100 : 0,
+      successRate: totalLogs > 0 ? Math.round((successLogs / totalLogs) * 10000) / 100 : 0,
       activeHumans,
       activePushes,
       pendingArticles,
@@ -546,7 +622,9 @@ export class AiTvService {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const dayStr = d.toISOString().split('T')[0];
-      const dayLogs = logs.filter(l => l.startedAt instanceof Date && l.startedAt.toISOString().startsWith(dayStr));
+      const dayLogs = logs.filter(
+        (l) => l.startedAt instanceof Date && l.startedAt.toISOString().startsWith(dayStr)
+      );
       trend.push({
         date: dayStr,
         count: dayLogs.reduce((s, l) => s + l._count, 0),
@@ -562,10 +640,23 @@ export class AiTvService {
       this.prisma.aiTvDigitalHuman.findUnique({ where: { id: humanId } }),
       this.prisma.aiTvBroadcastLog.count({ where: { humanId } }),
       this.prisma.aiTvBroadcastLog.aggregate({ where: { humanId }, _sum: { durationSec: true } }),
-      this.prisma.aiTvBroadcastLog.aggregate({ where: { humanId, durationSec: { gt: 0 } }, _avg: { viewerAvg: true } }),
-      this.prisma.aiTvBroadcastLog.findMany({ where: { humanId }, take: 10, orderBy: { startedAt: 'desc' } }),
+      this.prisma.aiTvBroadcastLog.aggregate({
+        where: { humanId, durationSec: { gt: 0 } },
+        _avg: { viewerAvg: true },
+      }),
+      this.prisma.aiTvBroadcastLog.findMany({
+        where: { humanId },
+        take: 10,
+        orderBy: { startedAt: 'desc' },
+      }),
     ]);
-    return { human, broadcastCount, totalDuration: totalDuration._sum.durationSec || 0, avgViewers: Math.round(avgViewers._avg.viewerAvg || 0), recentLogs };
+    return {
+      human,
+      broadcastCount,
+      totalDuration: totalDuration._sum.durationSec || 0,
+      avgViewers: Math.round(avgViewers._avg.viewerAvg || 0),
+      recentLogs,
+    };
   }
 
   async getContentStats() {

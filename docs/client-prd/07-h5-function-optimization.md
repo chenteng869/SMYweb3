@@ -3,14 +3,15 @@
 > **对应项目**：`apps/h5-app/`（Vite 7 + React 19 + Zustand 5 + React Router 6 + TailwindCSS 3 + shadcn/ui + framer-motion 12）
 > **核心目标**：在**不改动 UI 界面结构**（布局 / 组件 / 路由 / 视觉）的前提下，**优化性能、用户体验、转化率、留存、可访问性**。
 > **约束红线**：
->   1. ❌ 不改路由表（`App.tsx` 中的 `<Route>`）
->   2. ❌ 不改组件树结构（`MobileLayout` / `BottomNav` / `TopBar` 内部层级）
->   3. ❌ 不改 Tailwind class 编排与视觉色板（仅可新增/调整 CSS 变量与运行时状态）
->   4. ❌ 不改 i18n 字典 key 命名（必须严格按 [00-foundation §5.5.1](../../admin-prd/00-foundation.md) 速查表）
->   5. ❌ 不改状态色彩（严格按 [00-foundation §8.3.1](../../admin-prd/00-foundation.md) 扩展色彩表）
->   6. ✅ 可做：性能优化（懒加载 / 缓存 / 预取 / 监控）、交互增强（Skeleton / 加载态 / 错误态）、数据获取策略（React Query / SWR）、A/B 测试、i18n 文案打磨、A11y、SEO/PWA、可观测性
-> **后端**：与 H5 复用 `apps/api` NestJS 服务，**所有数据**通过 `/api/h5/*` 获取
-> **跨文件一致性**：i18n 命名 / 状态色彩 / 状态日志模式严格按 `docs/admin-prd/00-foundation.md` 强约束
+>
+> 1. ❌ 不改路由表（`App.tsx` 中的 `<Route>`）
+> 2. ❌ 不改组件树结构（`MobileLayout` / `BottomNav` / `TopBar` 内部层级）
+> 3. ❌ 不改 Tailwind class 编排与视觉色板（仅可新增/调整 CSS 变量与运行时状态）
+> 4. ❌ 不改 i18n 字典 key 命名（必须严格按 [00-foundation §5.5.1](../../admin-prd/00-foundation.md) 速查表）
+> 5. ❌ 不改状态色彩（严格按 [00-foundation §8.3.1](../../admin-prd/00-foundation.md) 扩展色彩表）
+> 6. ✅ 可做：性能优化（懒加载 / 缓存 / 预取 / 监控）、交互增强（Skeleton / 加载态 / 错误态）、数据获取策略（React Query / SWR）、A/B 测试、i18n 文案打磨、A11y、SEO/PWA、可观测性
+>    **后端**：与 H5 复用 `apps/api` NestJS 服务，**所有数据**通过 `/api/h5/*` 获取
+>    **跨文件一致性**：i18n 命名 / 状态色彩 / 状态日志模式严格按 `docs/admin-prd/00-foundation.md` 强约束
 
 ---
 
@@ -28,51 +29,52 @@
 ---
 
 <a id="1-总论"></a>
+
 ## 1. 总论
 
 **为什么需要这章**：H5 端已实现 20 个菜单，但**首屏慢、列表卡顿、错误易丢、转化漏斗不清、留存指标缺失**。本章定义"不动 UI 也能做"的所有优化范畴、指标基线、度量体系与 A/B 测试框架，作为后续 19 章的纲领。
 
 ### 1.1 优化原则（4 条不可妥协）
 
-| # | 原则 | 反例 |
-|---|---|---|
-| 1 | **UI 不动**——不改 `<MobileLayout>` / `<BottomNav>` / `<TopBar>` / 任何菜单组件的 JSX 结构 | 把 `<div>` 换成 `<section>`、加 `data-testid` 属性 |
-| 2 | **数据驱动**——所有优化均通过数据指标提升（LCP/CLS/INP、CTR、转化率、7 日留存） | 加个漂亮的 loading 动画，没指标 |
-| 3 | **渐进增强**——优先做 P0 性能与错误处理，**P2 的高级动效/A11y 必须排在 P0/P1 之后** | 一上来就做 PWA / Service Worker |
-| 4 | **可回滚**——所有改动以 feature flag 包裹，单开关 5 分钟内可关 | 改主流程核心路径，无 fallback |
+| #   | 原则                                                                                      | 反例                                               |
+| --- | ----------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| 1   | **UI 不动**——不改 `<MobileLayout>` / `<BottomNav>` / `<TopBar>` / 任何菜单组件的 JSX 结构 | 把 `<div>` 换成 `<section>`、加 `data-testid` 属性 |
+| 2   | **数据驱动**——所有优化均通过数据指标提升（LCP/CLS/INP、CTR、转化率、7 日留存）            | 加个漂亮的 loading 动画，没指标                    |
+| 3   | **渐进增强**——优先做 P0 性能与错误处理，**P2 的高级动效/A11y 必须排在 P0/P1 之后**        | 一上来就做 PWA / Service Worker                    |
+| 4   | **可回滚**——所有改动以 feature flag 包裹，单开关 5 分钟内可关                             | 改主流程核心路径，无 fallback                      |
 
 ### 1.2 优化分类（5 大范畴）
 
-| 范畴 | 主要手段 | 受益指标 |
-|---|---|---|
-| **性能** | 路由懒加载 / 预取 / 缓存 / 资源压缩 / Web Vitals 优化 | LCP / FCP / TTI / TBT / 流量 |
-| **体验** | Skeleton / Shimmer / 错误边界 / 离线降级 / Toast 队列 | 跳出率 / 平均停留 / 错误率 |
-| **转化** | CTA 位置 A/B / 漏斗埋点 / 智能推荐 / 防流失 | 订阅转化率 / 支付成功率 / DLC 升级率 |
-| **留存** | 推送召回 / 智能预加载 / 离线收藏 / 复访激励 | 7 日留存 / 30 日留存 / DAU/MAU |
-| **可访问性** | 键盘导航 / ARIA / 屏幕阅读器 / 动效减弱 | A11y 评分 / Lighthouse Score |
+| 范畴         | 主要手段                                              | 受益指标                             |
+| ------------ | ----------------------------------------------------- | ------------------------------------ |
+| **性能**     | 路由懒加载 / 预取 / 缓存 / 资源压缩 / Web Vitals 优化 | LCP / FCP / TTI / TBT / 流量         |
+| **体验**     | Skeleton / Shimmer / 错误边界 / 离线降级 / Toast 队列 | 跳出率 / 平均停留 / 错误率           |
+| **转化**     | CTA 位置 A/B / 漏斗埋点 / 智能推荐 / 防流失           | 订阅转化率 / 支付成功率 / DLC 升级率 |
+| **留存**     | 推送召回 / 智能预加载 / 离线收藏 / 复访激励           | 7 日留存 / 30 日留存 / DAU/MAU       |
+| **可访问性** | 键盘导航 / ARIA / 屏幕阅读器 / 动效减弱               | A11y 评分 / Lighthouse Score         |
 
 ### 1.3 优化基线（当前指标 vs 目标指标）
 
 > 以下数据基于现有 H5 端 Lighthouse 测评（移动端 4G Slow 模拟），目标值在 **2 个 sprint（4 周）** 内达成。
 
-| 指标 | 当前 | 目标 | 提升 |
-|---|---|---|---|
-| **FCP**（First Contentful Paint） | 2.8s | ≤ 1.5s | -46% |
-| **LCP**（Largest Contentful Paint） | 4.2s | ≤ 2.5s | -40% |
-| **TBT**（Total Blocking Time） | 850ms | ≤ 200ms | -76% |
-| **CLS**（Cumulative Layout Shift） | 0.18 | ≤ 0.1 | -44% |
-| **INP**（Interaction to Next Paint） | 380ms | ≤ 200ms | -47% |
-| **TTI**（Time to Interactive） | 5.6s | ≤ 3.5s | -38% |
-| **首屏 JS 体积** | 480KB（gzipped） | ≤ 250KB | -48% |
-| **首屏 LCP 元素** | Discover Banner 大图 | 渐变背景 + 延迟加载图 | — |
-| **路由切换耗时** | 600ms | ≤ 200ms | -67% |
-| **错误率**（JS 异常/接口失败） | 2.1% | ≤ 0.5% | -76% |
-| **Discover CTR** | 6.2% | ≥ 9% | +45% |
-| **AI 大脑点击 → 发起对话率** | 12% | ≥ 20% | +67% |
-| **服务订阅转化率** | 3.8% | ≥ 6% | +58% |
-| **7 日留存** | 22% | ≥ 30% | +36% |
-| **DLC 等级升级转化** | 8% | ≥ 13% | +63% |
-| **AI 名片分享率** | 4.5% | ≥ 7% | +56% |
+| 指标                                 | 当前                 | 目标                  | 提升 |
+| ------------------------------------ | -------------------- | --------------------- | ---- |
+| **FCP**（First Contentful Paint）    | 2.8s                 | ≤ 1.5s                | -46% |
+| **LCP**（Largest Contentful Paint）  | 4.2s                 | ≤ 2.5s                | -40% |
+| **TBT**（Total Blocking Time）       | 850ms                | ≤ 200ms               | -76% |
+| **CLS**（Cumulative Layout Shift）   | 0.18                 | ≤ 0.1                 | -44% |
+| **INP**（Interaction to Next Paint） | 380ms                | ≤ 200ms               | -47% |
+| **TTI**（Time to Interactive）       | 5.6s                 | ≤ 3.5s                | -38% |
+| **首屏 JS 体积**                     | 480KB（gzipped）     | ≤ 250KB               | -48% |
+| **首屏 LCP 元素**                    | Discover Banner 大图 | 渐变背景 + 延迟加载图 | —    |
+| **路由切换耗时**                     | 600ms                | ≤ 200ms               | -67% |
+| **错误率**（JS 异常/接口失败）       | 2.1%                 | ≤ 0.5%                | -76% |
+| **Discover CTR**                     | 6.2%                 | ≥ 9%                  | +45% |
+| **AI 大脑点击 → 发起对话率**         | 12%                  | ≥ 20%                 | +67% |
+| **服务订阅转化率**                   | 3.8%                 | ≥ 6%                  | +58% |
+| **7 日留存**                         | 22%                  | ≥ 30%                 | +36% |
+| **DLC 等级升级转化**                 | 8%                   | ≥ 13%                 | +63% |
+| **AI 名片分享率**                    | 4.5%                 | ≥ 7%                  | +56% |
 
 ### 1.4 度量体系（3 层）
 
@@ -85,15 +87,18 @@ import { onLCP, onINP, onCLS, onFCP, onTTFB } from 'web-vitals';
 export function reportVitals() {
   const send = (metric: any) => {
     // 上报到自建 metrics 服务
-    navigator.sendBeacon('/api/h5/metrics', JSON.stringify({
-      name: metric.name,
-      value: metric.value,
-      rating: metric.rating,  // 'good' | 'needs-improvement' | 'poor'
-      delta: metric.delta,
-      id: metric.id,
-      page: location.pathname,
-      ts: Date.now(),
-    }));
+    navigator.sendBeacon(
+      '/api/h5/metrics',
+      JSON.stringify({
+        name: metric.name,
+        value: metric.value,
+        rating: metric.rating, // 'good' | 'needs-improvement' | 'poor'
+        delta: metric.delta,
+        id: metric.id,
+        page: location.pathname,
+        ts: Date.now(),
+      })
+    );
   };
   onLCP(send);
   onINP(send);
@@ -111,14 +116,17 @@ type FunnelStep = 'view' | 'click' | 'intent' | 'submit' | 'success';
 
 export const trackFunnel = (funnelName: string, step: FunnelStep, meta?: Record<string, any>) => {
   // 统一上报到 /api/h5/track
-  navigator.sendBeacon('/api/h5/track', JSON.stringify({
-    type: 'funnel',
-    funnel: funnelName,
-    step,
-    meta,
-    page: location.pathname,
-    ts: Date.now(),
-  }));
+  navigator.sendBeacon(
+    '/api/h5/track',
+    JSON.stringify({
+      type: 'funnel',
+      funnel: funnelName,
+      step,
+      meta,
+      page: location.pathname,
+      ts: Date.now(),
+    })
+  );
 };
 
 // 用法示例
@@ -146,17 +154,21 @@ trackFunnel('service_subscribe', 'success', { serviceId: 'svc_123', orderId: 'or
 export const trackRetention = (event: string, meta?: any) => {
   // 关键事件：login / view_menu / action_done / share / pay / upgrade
   // 后端做 cohort 分析（按注册周分群）
-  navigator.sendBeacon('/api/h5/track', JSON.stringify({
-    type: 'retention',
-    event,
-    meta,
-    userId: getUserId(),
-    ts: Date.now(),
-  }));
+  navigator.sendBeacon(
+    '/api/h5/track',
+    JSON.stringify({
+      type: 'retention',
+      event,
+      meta,
+      userId: getUserId(),
+      ts: Date.now(),
+    })
+  );
 };
 ```
 
 **核心指标**：
+
 - **DAU / WAU / MAU**（按日 / 周 / 月活）
 - **新用户 7 日留存曲线**（D1 / D3 / D7）
 - **菜单访问频次 TOP10**（驱动预加载策略）
@@ -204,6 +216,7 @@ export function useExperiment(key: Experiment): { variant: 'A' | 'B'; track: (ev
 ```
 
 **A/B 测试流程**：
+
 1. **定义假设**：例"Discover 首页第 2 屏改为横滑卡片比竖列列表 CTR +20%"
 2. **设计变体**：A = 当前 UI / B = 新 UI（**保持 layout 不变，仅改 props**）
 3. **流量分配**：5% 灰度 → 20% → 50% → 100%
@@ -212,6 +225,7 @@ export function useExperiment(key: Experiment): { variant: 'A' | 'B'; track: (ev
 6. **保留期**：实验持续 ≥ 7 天（覆盖工作日 + 周末）
 
 **关键原则**：
+
 - ❌ 不在同一实验里测两个变量（多变量 = 难归因）
 - ✅ 单变量 + 单指标 + 最小样本
 - ✅ 失败的实验也要发"复盘"邮件给产品
@@ -219,6 +233,7 @@ export function useExperiment(key: Experiment): { variant: 'A' | 'B'; track: (ev
 ---
 
 <a id="2-h5-全局优化横切关注点"></a>
+
 ## 2. H5 全局优化（横切关注点）
 
 **为什么需要这章**：性能 / 缓存 / 错误处理 / 主题 / 字体 / 图片 / 代码分割 / PWA / 监控 这些**横切关注点**会影响所有 20 个菜单，单点优化无法解决系统性问题。本章给出**全局方案**，每节给出**真实可落地的代码**。
@@ -228,6 +243,7 @@ export function useExperiment(key: Experiment): { variant: 'A' | 'B'; track: (ev
 **现状问题**：`App.tsx` 一次性 import 全部 20 个页面（Home/Discover/.../AiBusinessCard），首次进入首屏需加载 ~480KB JS。
 
 **优化方案**（**不**改 UI 与路由）：
+
 - ✅ 用 `React.lazy` + `Suspense` 拆分（**不**动 `App.tsx` JSX 结构，只把 import 改为 lazy）
 - ✅ 用 `<link rel="modulepreload">` 预加载 Top 5 高频页面
 - ✅ 用 `IntersectionObserver` 监听用户 hover Tab 立即 prefetch
@@ -270,6 +286,7 @@ export default function App() {
 | 路由切换 | 600ms | **120ms**（命中 cache） |
 
 **Vite 配置**（自动分 chunk）：
+
 ```typescript
 // apps/h5-app/vite.config.ts
 import { defineConfig } from 'vite';
@@ -298,6 +315,7 @@ export default defineConfig({
 ```
 
 **Prefetch 策略**：
+
 ```typescript
 // apps/h5-app/src/lib/prefetch.ts
 import { useEffect } from 'react';
@@ -345,6 +363,7 @@ export function usePrefetchOnVisible() {
 **现状**：`apps/h5-app/src/store/index.ts` 用了 Zustand，但**所有数据塞在一个 store**（mockData 内嵌），实际生产数据要从 `/api/h5/*` 拉取。
 
 **优化方案**：
+
 - ✅ **数据 store**（user / wallet / companies / agents...）— 从 API 拉
 - ✅ **UI store**（toast / modal / bottomSheet）— 纯本地
 - ✅ **持久化 store**（locale / theme / abAssignment）— `persist` 中间件
@@ -375,18 +394,20 @@ export const useUIStore = create<UIStore>((set) => ({
 }));
 
 // ✅ 方式 2：服务端数据 — React Query（不塞进 Zustand）
-export const useUser = () => useQuery({
-  queryKey: ['user', 'me'],
-  queryFn: () => api.get('/api/h5/user/me'),
-  staleTime: 5 * 60 * 1000,  // 5 min fresh
-  gcTime: 30 * 60 * 1000,     // 30 min cache
-});
+export const useUser = () =>
+  useQuery({
+    queryKey: ['user', 'me'],
+    queryFn: () => api.get('/api/h5/user/me'),
+    staleTime: 5 * 60 * 1000, // 5 min fresh
+    gcTime: 30 * 60 * 1000, // 30 min cache
+  });
 
-export const useCompanies = () => useQuery({
-  queryKey: ['companies'],
-  queryFn: () => api.get('/api/h5/companies'),
-  staleTime: 1 * 60 * 1000,
-});
+export const useCompanies = () =>
+  useQuery({
+    queryKey: ['companies'],
+    queryFn: () => api.get('/api/h5/companies'),
+    staleTime: 1 * 60 * 1000,
+  });
 
 // ✅ 方式 3：用户偏好 — Zustand persist
 interface PrefStore {
@@ -394,7 +415,7 @@ interface PrefStore {
   setLocale: (l: PrefStore['locale']) => void;
   theme: 'light' | 'dark' | 'auto';
   setTheme: (t: PrefStore['theme']) => void;
-  recentlyViewed: string[];  // 最近访问菜单 id 数组
+  recentlyViewed: string[]; // 最近访问菜单 id 数组
   addRecent: (id: string) => void;
 }
 
@@ -406,9 +427,10 @@ export const usePrefStore = create<PrefStore>()(
       theme: 'auto',
       setTheme: (theme) => set({ theme }),
       recentlyViewed: [],
-      addRecent: (id) => set((s) => ({
-        recentlyViewed: [id, ...s.recentlyViewed.filter((x) => x !== id)].slice(0, 10),
-      })),
+      addRecent: (id) =>
+        set((s) => ({
+          recentlyViewed: [id, ...s.recentlyViewed.filter((x) => x !== id)].slice(0, 10),
+        })),
     }),
     {
       name: 'smy-h5-pref',
@@ -419,6 +441,7 @@ export const usePrefStore = create<PrefStore>()(
 ```
 
 **关键决策**：
+
 - ❌ **不**把所有数据塞进 Zustand（重新发明 React Query）
 - ✅ Zustand 仅管 UI 状态 + 用户偏好
 - ✅ 服务端数据走 React Query（自动 stale / cache / refetch / 乐观更新）
@@ -429,6 +452,7 @@ export const usePrefStore = create<PrefStore>()(
 **现状**：`App.tsx` 已有 `<ErrorBoundary>`，但**粒度太粗**（整个 App 崩溃才捕获），**无上报**、**无降级 UI**。
 
 **优化方案**：
+
 - ✅ **3 级 ErrorBoundary**：全局 → 页面级 → 区块级
 - ✅ 接入 Sentry（前端 SDK）
 - ✅ 降级 UI（不白屏）
@@ -508,11 +532,13 @@ export default function Discover() {
 ```
 
 **降级 UI 三态**：
+
 - **页面级 fallback**：显示骨架 + "返回首页"按钮
 - **区块级 fallback**：显示 "该模块暂时不可用" + 重试按钮
 - **白屏兜底**：Sentry 弹 toast "页面异常，请截图反馈"
 
 **验收**：
+
 - 故意 throw error → 触发 boundary → Sentry 收到 → 降级 UI 出现 → 不影响其他区块
 
 ### 2.4 全局 Loading 状态
@@ -520,6 +546,7 @@ export default function Discover() {
 **现状**：每个页面自己处理 loading，**风格不统一**，无统一 Spinner 规范。
 
 **优化方案**（**不动**组件 JSX，仅优化策略）：
+
 - ✅ 引入 **Skeleton 优先**（不用 Spinner）—— 感知更快
 - ✅ 列表用 `react-virtuoso`（虚拟滚动 + 无限加载 + 骨架）
 - ✅ 全屏 Loading 用 `nprogress`（顶部进度条）
@@ -542,6 +569,7 @@ export default function Discover() {
 ```
 
 **`nprogress` 顶部进度条**（仅在 API 调用时显示）：
+
 ```typescript
 // apps/h5-app/src/lib/axios-interceptor.ts
 import NProgress from 'nprogress';
@@ -553,12 +581,19 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (res) => { NProgress.done(); return res; },
-  (err) => { NProgress.done(); throw err; }
+  (res) => {
+    NProgress.done();
+    return res;
+  },
+  (err) => {
+    NProgress.done();
+    throw err;
+  }
 );
 ```
 
 **关键原则**：
+
 - **< 200ms**：不显示 loading（**FEP < 200ms 用户无感**）
 - **200ms - 1s**：Skeleton 渐显
 - **1s - 5s**：Skeleton + "加载中" 文字 + 可取消
@@ -582,24 +617,25 @@ import { ThemeProvider } from 'next-themes';
 ```css
 /* src/index.css —— 已有 CSS 变量层，仅扩展支持 system */
 :root {
-  --bg-primary: #0A0E1A;  /* dark default */
+  --bg-primary: #0a0e1a; /* dark default */
   --bg-surface: #131826;
-  --text-primary: #FFFFFF;
+  --text-primary: #ffffff;
 }
 :root.light {
-  --bg-primary: #F9FAFB;
-  --bg-surface: #FFFFFF;
+  --bg-primary: #f9fafb;
+  --bg-surface: #ffffff;
   --text-primary: #111827;
 }
 @media (prefers-color-scheme: light) {
   :root:not(.dark) {
-    --bg-primary: #F9FAFB;
+    --bg-primary: #f9fafb;
     /* ... */
   }
 }
 ```
 
 **关键**：
+
 - ❌ **不**改 `bg-bg-dark` 这种 Tailwind class
 - ✅ 通过 CSS 变量覆盖实现系统暗色 → 浅色
 - ✅ 用户偏好存 `localStorage.theme`（`auto`/`light`/`dark`）
@@ -609,13 +645,20 @@ import { ThemeProvider } from 'next-themes';
 **现状**：`index.html` 默认系统字体，**未做字体子集化**。
 
 **优化方案**（**不**改 UI）：
+
 - ✅ 用 `font-display: swap`（已有）
 - ✅ 4 语言**子集化**（中/英/日/韩 → ~30-50KB / 语言）
 - ✅ Variable Font（思源黑体 1 个文件搞定所有字重）
 
 ```html
 <!-- index.html -->
-<link rel="preload" href="/fonts/SourceHanSansSC-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link
+  rel="preload"
+  href="/fonts/SourceHanSansSC-VF.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
 <style>
   @font-face {
     font-family: 'SourceHanSans';
@@ -627,6 +670,7 @@ import { ThemeProvider } from 'next-themes';
 ```
 
 **性能影响**：
+
 - 字体子集化后，**首屏字体体积从 ~800KB 降至 ~120KB**
 - LCP **降低 200-400ms**（不再等字体下载）
 
@@ -635,6 +679,7 @@ import { ThemeProvider } from 'next-themes';
 **现状**：H5 端有大量图片（Banner / 头像 / 视频封面 / 名片背景），**未做格式优化 + 响应式**。
 
 **优化方案**：
+
 - ✅ **WebP** / **AVIF**（CDN 自动转换）
 - ✅ **响应式 srcset**（移动端 1x/2x/3x）
 - ✅ **lazy loading**（`loading="lazy"` + IntersectionObserver）
@@ -645,18 +690,12 @@ import { ThemeProvider } from 'next-themes';
 <picture>
   <source
     type="image/avif"
-    srcset="
-      https://cdn.smy.app/cover-640.avif 640w,
-      https://cdn.smy.app/cover-1280.avif 1280w
-    "
+    srcset="https://cdn.smy.app/cover-640.avif 640w, https://cdn.smy.app/cover-1280.avif 1280w"
     sizes="(max-width: 640px) 100vw, 640px"
   />
   <source
     type="image/webp"
-    srcset="
-      https://cdn.smy.app/cover-640.webp 640w,
-      https://cdn.smy.app/cover-1280.webp 1280w
-    "
+    srcset="https://cdn.smy.app/cover-640.webp 640w, https://cdn.smy.app/cover-1280.webp 1280w"
     sizes="(max-width: 640px) 100vw, 640px"
   />
   <img
@@ -670,6 +709,7 @@ import { ThemeProvider } from 'next-themes';
 ```
 
 **性能影响**：
+
 - WebP 比 JPEG **小 25-35%**
 - AVIF 比 WebP **再小 20-30%**（兼容性 OK 后切换）
 - 首屏 LCP 图片从 200KB → 60KB
@@ -699,16 +739,21 @@ async function uploadImage(file: File) {
 
 ```typescript
 // ✅ 重组件 lazy（不影响首屏）
-const RechartsChart = lazy(() => import('recharts').then(m => ({ default: m.ResponsiveContainer })));
+const RechartsChart = lazy(() =>
+  import('recharts').then((m) => ({ default: m.ResponsiveContainer }))
+);
 
 // ✅ 重弹窗 lazy
 const RichTextEditor = lazy(() => import('@/components/RichTextEditor'));
 
 // ✅ 大表单 lazy
-const CompanyRegisterForm = lazy(() => import('@/pages/sub/CompanyRegister').then(m => ({ default: m.CompanyRegisterForm })));
+const CompanyRegisterForm = lazy(() =>
+  import('@/pages/sub/CompanyRegister').then((m) => ({ default: m.CompanyRegisterForm }))
+);
 ```
 
 **Vite 报告**（`vite-bundle-visualizer` 验证）：
+
 - 首屏 chunk ≤ 250KB
 - 单个 lazy chunk ≤ 80KB
 - vendor-react 不变（仅拆分 radix / utils）
@@ -748,7 +793,7 @@ plugins: [
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'api-cache',
-            expiration: { maxAgeSeconds: 60 * 60 * 24 },  // 1 天
+            expiration: { maxAgeSeconds: 60 * 60 * 24 }, // 1 天
           },
         },
         {
@@ -757,22 +802,24 @@ plugins: [
           handler: 'CacheFirst',
           options: {
             cacheName: 'cdn-images',
-            expiration: { maxAgeSeconds: 60 * 60 * 24 * 30 },  // 30 天
+            expiration: { maxAgeSeconds: 60 * 60 * 24 * 30 }, // 30 天
           },
         },
       ],
     },
   }),
-]
+];
 ```
 
 **离线策略**：
+
 - **App Shell**：HTML / CSS / JS（CacheFirst）
 - **API GET**：StaleWhileRevalidate（**关键**：让"上次看过"的内容可离线访问）
 - **图片**：CacheFirst（30 天）
 - **POST / 支付 / 写操作**：NetworkOnly（**不**缓存）
 
 **添加到主屏**（PWA install prompt）：
+
 ```typescript
 // apps/h5-app/src/lib/pwa-install.ts
 let deferredPrompt: any;
@@ -794,6 +841,7 @@ export async function installPwa() {
 ```
 
 **离线降级**：
+
 - **首屏可显示**（已 cache 的 App Shell）
 - **数据不可拉**：toast "您当前处于离线模式，部分功能不可用"
 - **写操作**：toast "操作将在恢复网络后重试"
@@ -838,6 +886,7 @@ jobs:
 ```
 
 **`lighthouse-budget.json`**（性能预算）：
+
 ```json
 [
   {
@@ -857,6 +906,7 @@ jobs:
 ```
 
 **RUM（Real User Monitoring）**：
+
 - 上报：FCP / LCP / INP / CLS / TTFB（按页面、按时段、按设备）
 - 看板：Grafana / 自建
 - 告警：P95 LCP > 3s 自动告警
@@ -864,6 +914,7 @@ jobs:
 ---
 
 <a id="3-h5-通用组件库优化"></a>
+
 ## 3. H5 通用组件库优化
 
 **为什么需要这章**：H5 现有 20 个菜单共用一批通用组件（ListView / Form / Modal / Toast / DatePicker / Search...），但**性能瓶颈集中在通用组件**——一次列表卡顿，10 个菜单受影响。本章逐组件给出**性能 / 体验 / A11y** 三维优化方案。
@@ -873,6 +924,7 @@ jobs:
 **现状**：用 `<ul>` + 全部渲染，**1000 条就卡顿**。
 
 **优化方案**：
+
 - ✅ `react-virtuoso`（虚拟滚动，仅渲染可视区）
 - ✅ IntersectionObserver 实现无限加载
 - ✅ Skeleton 占位
@@ -944,6 +996,7 @@ export function ListView<T>({ queryKey, queryFn, renderItem, emptyText, pageSize
 **现状**：`@hookform/resolvers` + `react-hook-form` + `zod` 已在依赖（**未**统一使用）。
 
 **优化方案**：
+
 - ✅ 全部表单走 RHF + Zod（**统一** schema）
 - ✅ 字段级 debounce 校验
 - ✅ 服务端错误回填（422 → field errors）
@@ -965,13 +1018,14 @@ type FormData = z.infer<typeof schema>;
 export function useLoginForm() {
   return useForm<FormData>({
     resolver: zodResolver(schema),
-    mode: 'onBlur',  // 失焦校验（不比 onChange 烦人）
+    mode: 'onBlur', // 失焦校验（不比 onChange 烦人）
     defaultValues: { email: '', phone: '', password: '' },
   });
 }
 ```
 
 **统一错误提示**（i18n 字典）：
+
 ```typescript
 // src/lib/zod-i18n.ts
 import { z } from 'zod';
@@ -984,6 +1038,7 @@ z.setErrorMap(errorMap);
 ```
 
 **好处**：
+
 - 校验逻辑 100% 在 schema 里（前后端共用）
 - 字段错自动回填（422 → `setError('email', ...)`）
 - A11y：`aria-invalid` + `aria-describedby` 自动关联
@@ -993,6 +1048,7 @@ z.setErrorMap(errorMap);
 **现状**：Modal / Drawer 用 shadcn/ui（**已** Portal 化）。
 
 **优化方案**：
+
 - ✅ **重 Modal 懒加载**（如 RichTextEditor Modal）
 - ✅ **多 Modal 串行管理**（栈式 + ESC 关栈顶）
 - ✅ **背景滚动锁定**（`overflow: hidden` on body）
@@ -1051,6 +1107,7 @@ export function ModalStack() {
 **现状**：`sonner` 已装（**未**统一使用）。
 
 **优化方案**：
+
 - ✅ 用 `sonner` 统一（`toast.success / error / warning / info`）
 - ✅ 队列管理（最多 3 个同时，超过排队）
 - ✅ 位置：底部居上（移动端友好）
@@ -1071,20 +1128,21 @@ import { Toaster } from 'sonner';
 ```
 
 **i18n 错误码**（API 错误 → i18n key）：
+
 ```typescript
 // src/lib/toast.ts
 import { toast } from 'sonner';
 import { t } from 'i18next';
 
 const ERROR_I18N_MAP: Record<string, string> = {
-  'AUTH_001': 'auth.error.tokenExpired',
-  'PAY_001': 'payment.error.insufficient',
+  AUTH_001: 'auth.error.tokenExpired',
+  PAY_001: 'payment.error.insufficient',
   // ...
 };
 
 export function toastError(code: string, fallback?: string) {
   const key = ERROR_I18N_MAP[code];
-  toast.error(key ? t(key) : (fallback || code));
+  toast.error(key ? t(key) : fallback || code);
 }
 ```
 
@@ -1093,6 +1151,7 @@ export function toastError(code: string, fallback?: string) {
 **现状**：`react-day-picker` 已装（**未**统一）。
 
 **优化方案**：
+
 - ✅ 用 `react-day-picker`（已支持 mobile）
 - ✅ 懒加载（按需打开弹窗才 import）
 - ✅ 内存化 locale 字典
@@ -1114,15 +1173,17 @@ const DayPicker = lazy(() => import('react-day-picker').then(m => ({ default: m.
 **现状**：未统一。
 
 **优化方案**：
+
 - ✅ 用 `tiptap`（10x React 友好，**轻**）
 - ✅ 懒加载（仅 AI Chat / 公司注册介绍需要时加载）
 
 ```typescript
 // 懒加载（仅在富文本编辑时）
-const Editor = lazy(() => import('@tiptap/react').then(m => ({ default: m.useEditor })));
+const Editor = lazy(() => import('@tiptap/react').then((m) => ({ default: m.useEditor })));
 ```
 
 **好处**：
+
 - 首屏**不打包** tiptap（节省 ~120KB）
 - AI Chat 切换到富文本模式时才下载
 
@@ -1131,6 +1192,7 @@ const Editor = lazy(() => import('@tiptap/react').then(m => ({ default: m.useEdi
 **现状**：`<StatusBadge />` 组件已在 `components/shared/`。
 
 **优化方案**（**不**改 UI）：
+
 - ✅ 严格按 00-foundation §8.3.1 扩展色彩表映射
 - ✅ 颜色 + 文字双标识（A11y 必需）
 - ✅ 暗色模式自动调整（CSS 变量）
@@ -1221,6 +1283,7 @@ export function LoadingState({ count = 3 }: { count?: number }) {
 **现状**：未统一。
 
 **优化方案**：
+
 - ✅ **300ms debounce**（用户停止输入 300ms 才请求）
 - ✅ **联想词**（前端预计算 + 后端返回）
 - ✅ **高亮匹配**（`<mark>`）
@@ -1230,22 +1293,16 @@ export function LoadingState({ count = 3 }: { count?: number }) {
 ```typescript
 // apps/h5-app/src/hooks/useSearch.ts
 import { useState, useMemo, useEffect } from 'react';
-import { useDebounce } from 'use-debounce';  // 或自写
+import { useDebounce } from 'use-debounce'; // 或自写
 
-export function useSearch<T>(
-  source: T[],
-  fields: (keyof T)[],
-  initial: string = ''
-) {
+export function useSearch<T>(source: T[], fields: (keyof T)[], initial: string = '') {
   const [query, setQuery] = useState(initial);
   const [debouncedQuery] = useDebounce(query, 300);
 
   const results = useMemo(() => {
     if (!debouncedQuery.trim()) return source;
     const q = debouncedQuery.toLowerCase();
-    return source.filter((item) =>
-      fields.some((f) => String(item[f]).toLowerCase().includes(q))
-    );
+    return source.filter((item) => fields.some((f) => String(item[f]).toLowerCase().includes(q)));
   }, [source, fields, debouncedQuery]);
 
   return { query, setQuery, results, isSearching: query !== debouncedQuery };
@@ -1253,6 +1310,7 @@ export function useSearch<T>(
 ```
 
 **性能**：
+
 - 1000 条数据本地搜索：**< 5ms**
 - 远程 API 搜索：debounce 300ms 后只发 1 次
 
@@ -1261,6 +1319,7 @@ export function useSearch<T>(
 **现状**：筛选条件存组件 state，**刷新丢失**。
 
 **优化方案**：
+
 - ✅ **URL 同步**（`?status=active&sort=-createdAt`）— 刷新不丢、可分享、可书签
 - ✅ **后端分页**（不一次性拉全部）
 - ✅ **筛选项预加载**（打开页面时 idle 拉筛选项字典）
@@ -1269,24 +1328,25 @@ export function useSearch<T>(
 // apps/h5-app/src/hooks/useUrlState.ts
 import { useSearchParams } from 'react-router-dom';
 
-export function useUrlState<T extends string>(
-  key: string,
-  defaultValue: T
-): [T, (v: T) => void] {
+export function useUrlState<T extends string>(key: string, defaultValue: T): [T, (v: T) => void] {
   const [params, setParams] = useSearchParams();
   const value = (params.get(key) as T) || defaultValue;
   const setValue = (v: T) => {
-    setParams((p) => {
-      if (v === defaultValue) p.delete(key);
-      else p.set(key, v);
-      return p;
-    }, { replace: true });
+    setParams(
+      (p) => {
+        if (v === defaultValue) p.delete(key);
+        else p.set(key, v);
+        return p;
+      },
+      { replace: true }
+    );
   };
   return [value, setValue];
 }
 ```
 
 **好处**：
+
 - 复制 URL 给同事，状态完整还原
 - 浏览器前进/后退正常
 - SEO 友好（爬虫可抓筛选后的页面）
@@ -1294,6 +1354,7 @@ export function useUrlState<T extends string>(
 ---
 
 <a id="4-逐菜单优化20-个菜单逐一覆盖"></a>
+
 ## 4. 逐菜单优化（20 个菜单逐一覆盖）
 
 **为什么需要这章**：通用优化解决"系统级"问题，但**每个菜单的"业务瓶颈"不同**——Discover 是首屏 LCP 大图、Services 是 CTA 转化漏斗、AI Chat 是打字流畅度、AI Brain 是智能推荐。本章对 **20 个菜单逐一给出 6-8 项优化建议**，每节指出"现有 UI 是什么 + 不改 UI 的前提下能优化什么"。
@@ -1301,6 +1362,7 @@ export function useUrlState<T extends string>(
 ---
 
 <a id="4-1-discover-首页"></a>
+
 ### 4.1 `/` — Discover 首页（推荐流）
 
 > **对应 PRD**：[docs/admin-prd/02-discover.md](../../admin-prd/02-discover.md)
@@ -1311,6 +1373,7 @@ export function useUrlState<T extends string>(
 
 **现状问题**：Hero Banner 是张大图（1920x1080 原图，~400KB），移动端加载 1.5s+。
 **不改 UI 的优化**：
+
 - ✅ **LCP 元素替换**：把"首屏 LCP 元素"从"图片"换成"渐变 + 标题文字"（CSS 渐变 0ms 渲染）
 - ✅ Banner 图片 `loading="eager"` + `fetchpriority="high"`
 - ✅ 用 AVIF + 移动端尺寸（640w 而非 1920w）
@@ -1327,12 +1390,14 @@ export function useUrlState<T extends string>(
 #### 4.1.2 智能预加载
 
 **不改 UI 的优化**：
+
 - ✅ 用户悬停 5 个快捷入口时，**立即 prefetch** 对应 chunk
 - ✅ 滚动到第 3 屏时 prefetch AI 大脑 / 服务市场
 
 #### 4.1.3 个性化推荐（提升 CTR）
 
 **不改 UI 的优化**：
+
 - ✅ **第 2 屏**根据用户 DLC 等级 / 浏览历史智能推荐（后端算，前端渲染）
 - ✅ **第 4 屏**"你可能感兴趣"——AI 协同过滤 + 内容标签
 - ✅ **A/B 测试**第 1 屏 Banner 是"渐变"还是"图片"
@@ -1342,6 +1407,7 @@ export function useUrlState<T extends string>(
 #### 4.1.4 转化漏斗埋点
 
 **埋点**：
+
 ```typescript
 useEffect(() => {
   trackFunnel('home_view', 'view');
@@ -1386,6 +1452,7 @@ const onShortcutClick = (id: string) => {
 ---
 
 <a id="4-2-discover"></a>
+
 ### 4.2 `/discover` — 发现（Banner / 推荐位 / 分类）
 
 > **对应 PRD**：[docs/admin-prd/02-discover.md](../../admin-prd/02-discover.md)
@@ -1396,6 +1463,7 @@ const onShortcutClick = (id: string) => {
 
 **现状问题**：一次性渲染 50 张卡片，**滚动 30 张就卡**。
 **不改 UI 的优化**：
+
 - ✅ `react-virtuoso` 虚拟滚动（**结构不变**）
 - ✅ 图片 IntersectionObserver lazy load
 - ✅ 滚动到 80% 触发"加载更多"（与 `fetchNextPage`）
@@ -1405,6 +1473,7 @@ const onShortcutClick = (id: string) => {
 #### 4.2.2 视频卡片自动播放（H5 端可选）
 
 **不改 UI 的优化**：
+
 - ✅ 进入视口的视频 muted + autoplay
 - ✅ 离开视口立即 `pause()`（省电省流量）
 - ✅ 用 `<video preload="metadata">` 不预加载全片
@@ -1412,6 +1481,7 @@ const onShortcutClick = (id: string) => {
 #### 4.2.3 智能分类（AI 打标）
 
 **后端**已 AI 打标，前端仅做：
+
 - ✅ 顶部 Tab 加"智能分类"（AI 自动归类到 8 个主题）
 - ✅ 卡片角标显示分类 chip（点击筛选同分类）
 
@@ -1433,12 +1503,14 @@ const onFollow = (id: string) => {
 #### 4.2.5 Tab 切换性能
 
 **不改 UI 的优化**：
+
 - ✅ Tab 内容**缓存**（已加载过的 Tab 不重新 fetch）
 - ✅ 切换 Tab 加 transition 动画（已有 framer-motion）
 
 #### 4.2.6 浮窗性能
 
 **右侧浮窗**（"联系客服 / 回到顶部"）**不改 UI**：
+
 - ✅ 默认隐藏，滚动 500px 后 fade in
 - ✅ 点击"回到顶部"用 `window.scrollTo({ behavior: 'smooth' })`
 
@@ -1456,6 +1528,7 @@ const onFollow = (id: string) => {
 ---
 
 <a id="4-3-services"></a>
+
 ### 4.3 `/services` — 服务市场（订阅 / 商品）
 
 > **对应 PRD**：[docs/admin-prd/03-services.md](../../admin-prd/03-services.md)
@@ -1465,6 +1538,7 @@ const onFollow = (id: string) => {
 #### 4.3.1 商品卡片优化（提升 CTR）
 
 **不改 UI 的优化**：
+
 - ✅ 卡片加 **"热门" / "新品" / "限时" 角标**（按 00-foundation §8.3.1 颜色）
 - ✅ 价格区域加"原价 ~~划线~~ / 折后价"
 - ✅ 加 "已售 N 件" 社会认同
@@ -1473,26 +1547,29 @@ const onFollow = (id: string) => {
 
 ```typescript
 const onServiceClick = (id: string) => trackFunnel('service_view', 'view', { serviceId: id });
-const onSubscribeClick = (id: string, plan: string) => trackFunnel('service_subscribe', 'click', { serviceId: id, plan });
+const onSubscribeClick = (id: string, plan: string) =>
+  trackFunnel('service_subscribe', 'click', { serviceId: id, plan });
 const onPayClick = (id: string) => trackFunnel('service_pay', 'intent', { serviceId: id });
-const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay', 'success', { serviceId: id, orderId });
+const onPaySuccess = (id: string, orderId: string) =>
+  trackFunnel('service_pay', 'success', { serviceId: id, orderId });
 ```
 
 **漏斗看板**（按服务 / 按 plan / 按用户分群）：
 
-| 阶段 | 转化率 | 优化点 |
-|---|---|---|
-| 服务市场 view | 100% | — |
-| 商品详情 view | 35% | 卡片吸引力（首图 + 价格） |
-| 选 plan | 22% | Plan 描述 + 利益可视化 |
-| 提交订单 | 18% | 支付流程简化 |
-| 支付成功 | 14% | 支付通道稳定性 |
+| 阶段          | 转化率 | 优化点                    |
+| ------------- | ------ | ------------------------- |
+| 服务市场 view | 100%   | —                         |
+| 商品详情 view | 35%    | 卡片吸引力（首图 + 价格） |
+| 选 plan       | 22%    | Plan 描述 + 利益可视化    |
+| 提交订单      | 18%    | 支付流程简化              |
+| 支付成功      | 14%    | 支付通道稳定性            |
 
 **目标**：从 3.8% → 6%+
 
 #### 4.3.3 个性化推荐（提升 AOV）
 
 **不改 UI 的优化**：
+
 - ✅ **"你可能还需要"** 区（基于浏览历史）
 - ✅ **"X 用户也买了"**（社会认同）
 - ✅ **捆绑套餐**（"订阅 X + Y 立省 30%"）
@@ -1500,6 +1577,7 @@ const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay',
 #### 4.3.4 CTA 位置 A/B 测试
 
 **A/B 实验**（不改 UI 布局）：
+
 - **变体 A**：CTA 在卡片底部（当前）
 - **变体 B**：CTA 改为整张卡片可点（hover 浮出"立即订阅"按钮）
 
@@ -1508,10 +1586,12 @@ const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay',
 #### 4.3.5 防流失
 
 **用户停留 > 30s 未下单**：
+
 - ✅ 弹 Toast"限时优惠：现在订阅立减 10%"
 - ✅ 卡片"降价提醒"按钮
 
 **加购物车未支付 > 1h**：
+
 - ✅ 推送提醒"您的 X 还未支付"（带 DVC 优惠）
 
 #### 4.3.6 支付优化
@@ -1523,6 +1603,7 @@ const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay',
 #### 4.3.7 退款流程优化
 
 **用户在 7 天内**：
+
 - ✅ "7 天无理由退款"标识
 - ✅ 一键退款按钮（**不**走客服）
 
@@ -1534,6 +1615,7 @@ const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay',
 ---
 
 <a id="4-4-ai"></a>
+
 ### 4.4 `/ai` — AI 大脑（智能体 / Todo / 知识库）
 
 > **对应 PRD**：[docs/admin-prd/04-ai-brain.md](../../admin-prd/04-ai-brain.md)
@@ -1543,6 +1625,7 @@ const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay',
 #### 4.4.1 智能体推荐（提升对话发起率）
 
 **不改 UI 的优化**：
+
 - ✅ "猜你想用" 智能体（基于用户最近 7 天行为）
 - ✅ "今日热门" 智能体（基于平台 Top 10）
 - ✅ "你的 Agent" 已订阅的优先展示
@@ -1558,6 +1641,7 @@ const onPaySuccess = (id: string, orderId: string) => trackFunnel('service_pay',
 #### 4.4.3 Todo 智能拆解
 
 **不改 UI 的优化**：
+
 - ✅ 自然语言输入"我要注册公司" → AI 自动拆为 5 个 Todo
 - ✅ Todo 完成后自动 push 下一步
 - ✅ 与「服务市场」联动（Todo 可一键转服务订单）
@@ -1596,6 +1680,7 @@ const on7DayReturn = (id: string) => trackFunnel('agent_chat', 'success', { agen
 ---
 
 <a id="4-5-profile"></a>
+
 ### 4.5 `/profile` — 我的（用户中心 / KYC / 资料）
 
 > **对应 PRD**：[docs/admin-prd/05-profile.md](../../admin-prd/05-profile.md)
@@ -1605,6 +1690,7 @@ const on7DayReturn = (id: string) => trackFunnel('agent_chat', 'success', { agen
 #### 4.5.1 KYC 引导优化
 
 **不改 UI 的优化**：
+
 - ✅ **KYC 状态可视化**（"已完成 60%，再填 X 即得 $20 奖励"）
 - ✅ **分步引导**（1 / 3 / 5 步进度条）
 - ✅ **激励提示**（"完成 KYC 解锁所有服务"）
@@ -1652,6 +1738,7 @@ const on7DayReturn = (id: string) => trackFunnel('agent_chat', 'success', { agen
 ---
 
 <a id="4-6-tax-calculator"></a>
+
 ### 4.6 `/tax-calculator` — 税务计算器
 
 > **对应 PRD**：[docs/admin-prd/06-tax-calculator.md](../../admin-prd/06-tax-calculator.md)
@@ -1662,6 +1749,7 @@ const on7DayReturn = (id: string) => trackFunnel('agent_chat', 'success', { agen
 
 **现状**：用户输完点"计算"才出结果，**反应慢**。
 **不改 UI 的优化**：
+
 - ✅ `useDebounce` 300ms 自动计算（**不**用 onChange 同步，避免卡顿）
 - ✅ 数字格式化实时（`1234567` → `1,234,567`）
 - ✅ 输入校验实时（红色边框 + 错误提示）
@@ -1711,6 +1799,7 @@ const formatMoney = (amount: number, currency = 'USD', locale: string) =>
 ---
 
 <a id="4-7-legal-hub"></a>
+
 ### 4.7 `/legal-hub` — 法务中台（合规法规 / 合同）
 
 > **对应 PRD**：[docs/admin-prd/07-legal-hub.md](../../admin-prd/07-legal-hub.md)
@@ -1720,6 +1809,7 @@ const formatMoney = (amount: number, currency = 'USD', locale: string) =>
 #### 4.7.1 文档搜索性能
 
 **不改 UI 的优化**：
+
 - ✅ **client-side 全文搜索**（FlexSearch / MiniSearch，~10ms 1000 文档）
 - ✅ **搜索高亮**（`<mark>`）
 - ✅ **分面搜索**（左侧"国家/类型/年份"二次筛选）
@@ -1766,6 +1856,7 @@ const onSubscribeLegal = () => trackFunnel('legal_subscribe', 'click');
 ---
 
 <a id="4-8-video-center"></a>
+
 ### 4.8 `/video-center` — 视频中心
 
 > **对应 PRD**：[docs/admin-prd/08-video-center.md](../../admin-prd/08-video-center.md)
@@ -1775,6 +1866,7 @@ const onSubscribeLegal = () => trackFunnel('legal_subscribe', 'click');
 #### 4.8.1 视频懒加载
 
 **不改 UI 的优化**：
+
 - ✅ 进入视口前**不加载**视频（仅显示封面）
 - ✅ 进入视口时**仅加载 metadata**（不下载全片）
 - ✅ 用户点击播放才下载 / 缓冲
@@ -1820,6 +1912,7 @@ const onSubscribeLegal = () => trackFunnel('legal_subscribe', 'click');
 ---
 
 <a id="4-9-media-center"></a>
+
 ### 4.9 `/media-center` — 自媒体中心
 
 > **对应 PRD**：[docs/admin-prd/09-media-center.md](../../admin-prd/09-media-center.md)
@@ -1829,6 +1922,7 @@ const onSubscribeLegal = () => trackFunnel('legal_subscribe', 'click');
 #### 4.9.1 平台账号引导绑定
 
 **不改 UI 的优化**：
+
 - ✅ **未绑定平台**加红色"+"角标
 - ✅ **绑定教程**（首次绑定时弹 3 步引导）
 - ✅ **绑定奖励**（"绑定 Facebook 得 50 DVC"）
@@ -1869,6 +1963,7 @@ const onSubscribeLegal = () => trackFunnel('legal_subscribe', 'click');
 ---
 
 <a id="4-10-ai-chat"></a>
+
 ### 4.10 `/ai-chat/:agentId` — AI 对话
 
 > **对应 PRD**：[docs/admin-prd/10-ai-chat.md](../../admin-prd/10-ai-chat.md)
@@ -1879,6 +1974,7 @@ const onSubscribeLegal = () => trackFunnel('legal_subscribe', 'click');
 
 **现状问题**：等 AI 完全生成再一次性渲染，**用户感知慢 5-10s**。
 **不改 UI 的优化**：
+
 - ✅ **流式输出**（OpenAI SSE / WebSocket）— 第一个字 < 1s
 - ✅ **打字机效果**（逐字渲染）
 - ✅ **可中断**（用户输入时 cancel 旧 stream）
@@ -1905,7 +2001,7 @@ async function* streamChat(messages: Message[]): AsyncGenerator<string> {
 // 组件内
 const [text, setText] = useState('');
 for await (const delta of streamChat(messages)) {
-  setText((t) => t + delta);  // 逐字更新
+  setText((t) => t + delta); // 逐字更新
 }
 ```
 
@@ -1955,6 +2051,7 @@ for await (const delta of streamChat(messages)) {
 ---
 
 <a id="4-11-company-register"></a>
+
 ### 4.11 `/company-register` — 公司注册
 
 > **对应 PRD**：[docs/admin-prd/11-company-register.md](../../admin-prd/11-company-register.md)
@@ -1964,6 +2061,7 @@ for await (const delta of streamChat(messages)) {
 #### 4.11.1 多步表单优化
 
 **不改 UI 的优化**：
+
 - ✅ **自动保存草稿**（每 10s + 失焦时）
 - ✅ **步骤恢复**（用户离开 → 再进来**自动到上次步骤**）
 - ✅ **进度可视化**（"已完成 60%"）
@@ -2008,6 +2106,7 @@ for await (const delta of streamChat(messages)) {
 #### 4.11.8 状态日志
 
 **业务状态变更**按 00-foundation §4.3 走：
+
 - ✅ `CompanyStatusLog` 表（独立）
 - ✅ 状态：`draft` / `submitted` / `kyc_pending` / `kyc_approved` / `kyc_rejected` / `supplementing` / `completed` / `cancelled` / `failed`
 - ✅ 颜色按 00-foundation §8.3.1 映射（**不**自创颜色）
@@ -2015,6 +2114,7 @@ for await (const delta of streamChat(messages)) {
 ---
 
 <a id="4-12-payment-console"></a>
+
 ### 4.12 `/payment-console` — 全球收款
 
 > **对应 PRD**：[docs/admin-prd/12-payment-console.md](../../admin-prd/12-payment-console.md)
@@ -2024,6 +2124,7 @@ for await (const delta of streamChat(messages)) {
 #### 4.12.1 实时数据刷新
 
 **不改 UI 的优化**：
+
 - ✅ **统计卡 5s 轮询**（WebSocket 优先）
 - ✅ **流水 30s 轮询**
 - ✅ **新交易**顶部插入 + 闪光动画
@@ -2069,6 +2170,7 @@ for await (const delta of streamChat(messages)) {
 ---
 
 <a id="4-13-bank-account"></a>
+
 ### 4.13 `/bank-account` — 银行开户
 
 > **对应 PRD**：[docs/admin-prd/13-bank-account.md](../../admin-prd/13-bank-account.md)
@@ -2078,6 +2180,7 @@ for await (const delta of streamChat(messages)) {
 #### 4.13.1 银行对比
 
 **不改 UI 的优化**：
+
 - ✅ **银行对比表**（最低存款 / 审批时长 / 月费 / 国家）
 - ✅ **智能推荐**（基于公司注册地 / 行业）
 - ✅ **"X 用户本月选了 X 银行"** 社会认同
@@ -2106,6 +2209,7 @@ for await (const delta of streamChat(messages)) {
 #### 4.13.6 状态日志
 
 **业务状态变更**按 00-foundation §4.3：
+
 - ✅ 独立 `BankOrderStatusLog` 表（**本轮修复**：原 `statusLogs String?` JSON 改独立表）
 - ✅ 状态：`draft` / `submitted` / `kyc_pending` / `kyc_approved` / `kyc_rejected` / `bank_reviewing` / `bank_approved` / `bank_rejected` / `account_opening` / `completed` / `failed`
 - ✅ 颜色按 00-foundation §8.3.1
@@ -2123,6 +2227,7 @@ for await (const delta of streamChat(messages)) {
 ---
 
 <a id="4-14-dlc-level"></a>
+
 ### 4.14 `/dlc-level` — DLC 等级
 
 > **对应 PRD**：[docs/admin-prd/14-dlc-level.md](../../admin-prd/14-dlc-level.md)
@@ -2132,6 +2237,7 @@ for await (const delta of streamChat(messages)) {
 #### 4.14.1 升级进度可视化
 
 **不改 UI 的优化**：
+
 - ✅ **进度环**（SVG 动画，0-100%）
 - ✅ **"距下一级还差 X 经验"**
 - ✅ **等级横幅**（恭喜动画，仅首次升级时）
@@ -2169,6 +2275,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.14.6 状态日志
 
 按 00-foundation §4.3：
+
 - ✅ 独立 `DlcUpgradeLog` 表（**已有**）
 - ✅ 状态：`PENDING` / `APPROVED` / `REJECTED`
 - ✅ 颜色按 00-foundation §8.3.1
@@ -2181,6 +2288,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 ---
 
 <a id="4-15-documents"></a>
+
 ### 4.15 `/documents` — 文档中心
 
 > **对应 PRD**：[docs/admin-prd/15-documents.md](../../admin-prd/15-documents.md)
@@ -2190,6 +2298,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.15.1 资源级权限（accessLevel）
 
 **不改 UI 的优化**：
+
 - ✅ 按 00-foundation §3.5 资源级权限判定
 - ✅ 文档列表**前端不显示** 403 资源（避免暴露存在性）
 - ✅ 锁定文档显示"解锁需要 DLC X 级"
@@ -2235,6 +2344,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 ---
 
 <a id="4-16-settings"></a>
+
 ### 4.16 `/settings` — 设置
 
 > **对应 PRD**：[docs/admin-prd/16-settings.md](../../admin-prd/16-settings.md)
@@ -2244,6 +2354,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.16.1 设置项搜索
 
 **不改 UI 的优化**：
+
 - ✅ **顶部搜索框**（"通知" → 跳通知设置）
 - ✅ **快速跳**（减少滚动）
 
@@ -2291,6 +2402,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 ---
 
 <a id="4-17-notifications"></a>
+
 ### 4.17 `/notifications` — 消息通知
 
 > **对应 PRD**：[docs/admin-prd/17-notifications.md](../../admin-prd/17-notifications.md)
@@ -2300,6 +2412,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.17.1 实时推送（WebSocket）
 
 **不改 UI 的优化**：
+
 - ✅ **WebSocket** 实时收通知（**不**用轮询）
 - ✅ **断线重连**（指数退避）
 - ✅ **离线缓存**（断网期间的通知排队）
@@ -2341,12 +2454,14 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.17.8 状态日志
 
 按 00-foundation §4.3 + 8.3.1：
+
 - ✅ 通知状态：`pending` / `sent` / `delivered` / `read` / `failed`
 - ✅ 颜色严格按色彩表
 
 ---
 
 <a id="4-18-did-identity"></a>
+
 ### 4.18 `/did-identity` — DID 身份
 
 > **对应 PRD**：[docs/admin-prd/18-did-identity.md](../../admin-prd/18-did-identity.md)
@@ -2356,6 +2471,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.18.1 DID 显示优化
 
 **不改 UI 的优化**：
+
 - ✅ **DID 完整显示**（hover 复制 + 二维码）
 - ✅ **"什么是 DID"** 引导（首次访问 3 步引导）
 - ✅ **DID 状态**（active / deactivated / rotated）
@@ -2403,6 +2519,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 ---
 
 <a id="4-19-ai-business-card"></a>
+
 ### 4.19 `/ai-business-card` — AI 名片
 
 > **对应 PRD**：[docs/admin-prd/19-ai-business-card.md](../../admin-prd/19-ai-business-card.md)
@@ -2412,6 +2529,7 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.19.1 名片模板
 
 **不改 UI 的优化**：
+
 - ✅ **5 套模板**（经典 / 商务 / 创意 / 极简 / 科技）
 - ✅ **实时预览**（切换模板立即看到效果）
 - ✅ **AI 智能推荐模板**（基于行业）
@@ -2455,12 +2573,14 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 #### 4.19.8 状态日志
 
 按 00-foundation §4.3：
+
 - ✅ 独立 `AiCardStatusLog` 表（**本轮新增**）
 - ✅ 状态：`active` / `paused` / `archived`
 
 ---
 
 <a id="5-优化排期与影响评估"></a>
+
 ## 5. 优化排期与影响评估
 
 **为什么需要这章**：20 个菜单的优化**不能一口气全做**——P0 性能 / 错误处理 优先，P1 缓存 / 转化 次之，P2 A11y / PWA 最后。本章给出**优先级矩阵**、**工作量估算**、**影响评估**、**回滚预案**。
@@ -2469,22 +2589,23 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 
 > **目标**：首屏 LCP ≤ 2.5s、错误率 ≤ 0.5%、路由切换 ≤ 200ms
 
-| # | 优化项 | 影响范围 | 工作量 | 风险 | 验收指标 |
-|---|---|---|---|---|---|
-| 1 | 路由懒加载（§2.1） | 20 菜单 | 3 天 | 低 | 首屏 JS ≤ 250KB |
-| 2 | Skeleton 统一（§2.4） | 20 菜单 | 2 天 | 低 | 跳出率 -10% |
-| 3 | 3 级 ErrorBoundary（§2.3） | 20 菜单 | 1 天 | 低 | 错误率 -76% |
-| 4 | 列表虚拟滚动（§3.1） | 8 菜单 | 3 天 | 中 | 1000 条不卡 |
-| 5 | 图片 WebP/AVIF（§2.7） | 12 菜单 | 2 天 | 中 | LCP -30% |
-| 6 | 字体子集化（§2.6） | 全局 | 1 天 | 低 | LCP -200ms |
-| 7 | 错误降级 UI（§1.4 + 各菜单 §4.x.8） | 20 菜单 | 3 天 | 中 | 错误时**不**白屏 |
-| 8 | 性能监控（§2.10） | 全局 | 1 天 | 低 | 数据上送**不**丢 |
-| 9 | StatusBadge 颜色统一（§3.7） | 20 菜单 | 1 天 | 极低 | CI 校验 |
-| 10 | React Query 接入（§2.2） | 20 菜单 | 5 天 | 中 | 数据 stale 5 min |
+| #   | 优化项                              | 影响范围 | 工作量 | 风险 | 验收指标         |
+| --- | ----------------------------------- | -------- | ------ | ---- | ---------------- |
+| 1   | 路由懒加载（§2.1）                  | 20 菜单  | 3 天   | 低   | 首屏 JS ≤ 250KB  |
+| 2   | Skeleton 统一（§2.4）               | 20 菜单  | 2 天   | 低   | 跳出率 -10%      |
+| 3   | 3 级 ErrorBoundary（§2.3）          | 20 菜单  | 1 天   | 低   | 错误率 -76%      |
+| 4   | 列表虚拟滚动（§3.1）                | 8 菜单   | 3 天   | 中   | 1000 条不卡      |
+| 5   | 图片 WebP/AVIF（§2.7）              | 12 菜单  | 2 天   | 中   | LCP -30%         |
+| 6   | 字体子集化（§2.6）                  | 全局     | 1 天   | 低   | LCP -200ms       |
+| 7   | 错误降级 UI（§1.4 + 各菜单 §4.x.8） | 20 菜单  | 3 天   | 中   | 错误时**不**白屏 |
+| 8   | 性能监控（§2.10）                   | 全局     | 1 天   | 低   | 数据上送**不**丢 |
+| 9   | StatusBadge 颜色统一（§3.7）        | 20 菜单  | 1 天   | 极低 | CI 校验          |
+| 10  | React Query 接入（§2.2）            | 20 菜单  | 5 天   | 中   | 数据 stale 5 min |
 
 **P0 合计**：~22 人天（2.5 周）
 
 **P0 业务指标**：
+
 - LCP 4.2s → 2.5s（-40%）
 - 错误率 2.1% → 0.5%（-76%）
 - 跳出率 -15%
@@ -2493,25 +2614,26 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 
 > **目标**：CTR +45%、订阅转化 +58%、7 日留存 +36%
 
-| # | 优化项 | 影响范围 | 工作量 | 风险 | 验收指标 |
-|---|---|---|---|---|---|
-| 1 | 漏斗埋点（§1.4.2） | 7 核心漏斗 | 3 天 | 低 | 漏斗看板上线 |
-| 2 | 转化引导（各菜单 §4.x 转化） | 12 菜单 | 5 天 | 中 | 转化率 +20% |
-| 3 | CTA 位置 A/B（§1.5） | 5 菜单 | 3 天 | 中 | 胜出组 CTR +20% |
-| 4 | 个性化推荐（Discover / AI / Services） | 3 菜单 | 5 天 | 中 | CTR +30% |
-| 5 | 缓存策略（§2.1 + §3.1） | 15 菜单 | 3 天 | 中 | 二进 0 数据 |
-| 6 | 预加载策略（§2.1） | 10 菜单 | 2 天 | 低 | 路由切换 -50% |
-| 7 | 防流失（Services / DLC） | 3 菜单 | 3 天 | 中 | D+7 留存 +10% |
-| 8 | 推送召回（§1.4.3） | 全局 | 3 天 | 中 | D+1/D+7/D+30 召回 |
-| 9 | 搜索防抖 + 高亮（§3.9） | 5 菜单 | 2 天 | 低 | 搜索体验 +50% |
-| 10 | i18n 文案打磨（§1.1 + 各菜单 §4.x.7） | 4 语言 | 5 天 | 低 | 4 语言对齐 |
-| 11 | 数字 / 日期本地化（§4.6.6） | 6 菜单 | 2 天 | 极低 | 4 locale 校验 |
-| 12 | 状态日志独立表（00-foundation §4.3） | 8 模块 | 3 天 | 中 | CI 校验外键 |
-| 13 | DID / 名片 / 服务订单 离线缓存 | 3 菜单 | 3 天 | 中 | 离线可看 |
+| #   | 优化项                                 | 影响范围   | 工作量 | 风险 | 验收指标          |
+| --- | -------------------------------------- | ---------- | ------ | ---- | ----------------- |
+| 1   | 漏斗埋点（§1.4.2）                     | 7 核心漏斗 | 3 天   | 低   | 漏斗看板上线      |
+| 2   | 转化引导（各菜单 §4.x 转化）           | 12 菜单    | 5 天   | 中   | 转化率 +20%       |
+| 3   | CTA 位置 A/B（§1.5）                   | 5 菜单     | 3 天   | 中   | 胜出组 CTR +20%   |
+| 4   | 个性化推荐（Discover / AI / Services） | 3 菜单     | 5 天   | 中   | CTR +30%          |
+| 5   | 缓存策略（§2.1 + §3.1）                | 15 菜单    | 3 天   | 中   | 二进 0 数据       |
+| 6   | 预加载策略（§2.1）                     | 10 菜单    | 2 天   | 低   | 路由切换 -50%     |
+| 7   | 防流失（Services / DLC）               | 3 菜单     | 3 天   | 中   | D+7 留存 +10%     |
+| 8   | 推送召回（§1.4.3）                     | 全局       | 3 天   | 中   | D+1/D+7/D+30 召回 |
+| 9   | 搜索防抖 + 高亮（§3.9）                | 5 菜单     | 2 天   | 低   | 搜索体验 +50%     |
+| 10  | i18n 文案打磨（§1.1 + 各菜单 §4.x.7）  | 4 语言     | 5 天   | 低   | 4 语言对齐        |
+| 11  | 数字 / 日期本地化（§4.6.6）            | 6 菜单     | 2 天   | 极低 | 4 locale 校验     |
+| 12  | 状态日志独立表（00-foundation §4.3）   | 8 模块     | 3 天   | 中   | CI 校验外键       |
+| 13  | DID / 名片 / 服务订单 离线缓存         | 3 菜单     | 3 天   | 中   | 离线可看          |
 
 **P1 合计**：~42 人天（5 周）
 
 **P1 业务指标**：
+
 - Discover CTR 6.2% → 9%+
 - 订阅转化 3.8% → 6%+
 - 7 日留存 22% → 30%+
@@ -2520,74 +2642,76 @@ const onUpgradeSuccess = (level: number) => trackFunnel('dlc_upgrade', 'success'
 
 > **目标**：Lighthouse Score ≥ 90、A11y WCAG 2.1 AA、PWA install rate ≥ 5%
 
-| # | 优化项 | 影响范围 | 工作量 | 风险 | 验收指标 |
-|---|---|---|---|---|---|
-| 1 | PWA（§2.9） | 全局 | 5 天 | 中 | 添加到主屏可用 |
-| 2 | A11y 全量（§1.2 + 各菜单 §4.x.6） | 20 菜单 | 10 天 | 低 | Lighthouse A11y ≥ 90 |
-| 3 | 高级动效（视差 / 渐显） | 5 菜单 | 3 天 | 中 | 流畅 60 FPS |
-| 4 | 实时协作（AI Chat / 名片编辑） | 2 菜单 | 5 天 | 中 | WebRTC 接入 |
-| 5 | 国际化扩展（5+ 语言） | 全局 | 5 天 | 低 | 字典对齐 |
-| 6 | AR / VR（视频中心 / 名片） | 1 菜单 | 10 天 | 高 | 探索性 |
-| 7 | Web Bluetooth / NFC（DID） | 1 菜单 | 5 天 | 高 | 兼容性 |
-| 8 | 智能客服（替代 IM 入口） | 全局 | 5 天 | 中 | 转人工率 < 20% |
+| #   | 优化项                            | 影响范围 | 工作量 | 风险 | 验收指标             |
+| --- | --------------------------------- | -------- | ------ | ---- | -------------------- |
+| 1   | PWA（§2.9）                       | 全局     | 5 天   | 中   | 添加到主屏可用       |
+| 2   | A11y 全量（§1.2 + 各菜单 §4.x.6） | 20 菜单  | 10 天  | 低   | Lighthouse A11y ≥ 90 |
+| 3   | 高级动效（视差 / 渐显）           | 5 菜单   | 3 天   | 中   | 流畅 60 FPS          |
+| 4   | 实时协作（AI Chat / 名片编辑）    | 2 菜单   | 5 天   | 中   | WebRTC 接入          |
+| 5   | 国际化扩展（5+ 语言）             | 全局     | 5 天   | 低   | 字典对齐             |
+| 6   | AR / VR（视频中心 / 名片）        | 1 菜单   | 10 天  | 高   | 探索性               |
+| 7   | Web Bluetooth / NFC（DID）        | 1 菜单   | 5 天   | 高   | 兼容性               |
+| 8   | 智能客服（替代 IM 入口）          | 全局     | 5 天   | 中   | 转人工率 < 20%       |
 
 **P2 合计**：~48 人天（6 周）
 
 ### 5.4 总工作量与人月
 
-| 阶段 | 工作量 | 周期 | 团队 |
-|---|---|---|---|
-| P0 | 22 人天 | 2.5 周 | 2 前端 |
-| P1 | 42 人天 | 5 周 | 2 前端 + 1 后端（埋点） |
-| P2 | 48 人天 | 6 周 | 2 前端 + 1 设计（A11y） |
-| **合计** | **~112 人天** | **~14 周（3.5 月）** | |
+| 阶段     | 工作量        | 周期                 | 团队                    |
+| -------- | ------------- | -------------------- | ----------------------- |
+| P0       | 22 人天       | 2.5 周               | 2 前端                  |
+| P1       | 42 人天       | 5 周                 | 2 前端 + 1 后端（埋点） |
+| P2       | 48 人天       | 6 周                 | 2 前端 + 1 设计（A11y） |
+| **合计** | **~112 人天** | **~14 周（3.5 月）** |                         |
 
 ### 5.5 影响评估（按业务指标）
 
-| 业务指标 | 当前 | P0 后 | P1 后 | P2 后 | 总提升 |
-|---|---|---|---|---|---|
-| **LCP** | 4.2s | 2.5s | 2.2s | 1.8s | -57% |
-| **跳出率** | 48% | 41% | 36% | 32% | -33% |
-| **Discover CTR** | 6.2% | — | 9% | 10% | +61% |
-| **订阅转化** | 3.8% | — | 6% | 7% | +84% |
-| **DLC 升级** | 8% | — | 13% | 15% | +88% |
-| **AI 名片分享** | 4.5% | — | 7% | 9% | +100% |
-| **7 日留存** | 22% | — | 30% | 33% | +50% |
-| **Lighthouse Score** | 62 | 78 | 85 | 92 | +48% |
-| **错误率** | 2.1% | 0.5% | 0.3% | 0.2% | -90% |
-| **PWA install rate** | 0% | — | — | 8% | — |
+| 业务指标             | 当前 | P0 后 | P1 后 | P2 后 | 总提升 |
+| -------------------- | ---- | ----- | ----- | ----- | ------ |
+| **LCP**              | 4.2s | 2.5s  | 2.2s  | 1.8s  | -57%   |
+| **跳出率**           | 48%  | 41%   | 36%   | 32%   | -33%   |
+| **Discover CTR**     | 6.2% | —     | 9%    | 10%   | +61%   |
+| **订阅转化**         | 3.8% | —     | 6%    | 7%    | +84%   |
+| **DLC 升级**         | 8%   | —     | 13%   | 15%   | +88%   |
+| **AI 名片分享**      | 4.5% | —     | 7%    | 9%    | +100%  |
+| **7 日留存**         | 22%  | —     | 30%   | 33%   | +50%   |
+| **Lighthouse Score** | 62   | 78    | 85    | 92    | +48%   |
+| **错误率**           | 2.1% | 0.5%  | 0.3%  | 0.2%  | -90%   |
+| **PWA install rate** | 0%   | —     | —     | 8%    | —      |
 
 ---
 
 <a id="6-跨文件一致性检查"></a>
+
 ## 6. 跨文件一致性检查
 
 **为什么需要这章**：20 个菜单的优化涉及 i18n / 状态色彩 / 状态日志 / 字段命名 / 跨表外键等多个**全局约束**，缺一不可。本章给出**逐项检查清单**，与 `00-foundation.md` 强对齐。
 
 ### 6.1 i18n 命名空间（严格按 00-foundation §5.5.1）
 
-| 菜单 | namespace | 必查 |
-|---|---|---|
-| Discover | `discover` | ☐ `t('discover.banner.title')` 命中 |
-| Services | `services` | ☐ `t('services.subscription.yearly')` 命中 |
-| AI Brain | `ai` | ☐ `t('ai.agentStatus.online')` 命中 |
-| Profile | `profile` | ☐ `t('profile.kycStatus.approved')` 命中 |
-| Tax Calculator | `tax` | ☐ `t('tax.regime.samoa')` 命中 |
-| Legal Hub | `legal` | ☐ `t('legal.docType.contract')` 命中 |
-| Video Center | `video` | ☐ `t('video.status.online')` 命中 |
-| Media Center | `media` | ☐ `t('media.platform.facebook')` 命中 |
-| AI Chat | `aiChat` | ☐ `t('aiChat.sessionStatus.ongoing')` 命中（**驼峰**） |
-| Company Register | `company` | ☐ `t('company.orderStatus.submitted')` 命中 |
-| Payment Console | `payment` | ☐ `t('payment.txStatus.paid')` 命中 |
-| Bank Account | `bank` | ☐ `t('bank.orderStatus.kycPending')` 命中 |
-| DLC Level | `dlc` | ☐ `t('dlc.level.bronze')` 命中（**禁纯数字**） |
-| Documents | `document` | ☐ `t('document.category.legal')` 命中 |
-| Settings | `settings` | ☐ `t('settings.locale.zhCN')` 命中 |
-| Notifications | `notification` | ☐ `t('notification.channel.inapp')` 命中 |
-| DID Identity | `did` | ☐ `t('did.vcType.KYC')` 命中 |
-| AI Business Card | `aiCard` | ☐ `t('aiCard.layout.classic')` 命中（**驼峰**） |
+| 菜单             | namespace      | 必查                                                   |
+| ---------------- | -------------- | ------------------------------------------------------ |
+| Discover         | `discover`     | ☐ `t('discover.banner.title')` 命中                    |
+| Services         | `services`     | ☐ `t('services.subscription.yearly')` 命中             |
+| AI Brain         | `ai`           | ☐ `t('ai.agentStatus.online')` 命中                    |
+| Profile          | `profile`      | ☐ `t('profile.kycStatus.approved')` 命中               |
+| Tax Calculator   | `tax`          | ☐ `t('tax.regime.samoa')` 命中                         |
+| Legal Hub        | `legal`        | ☐ `t('legal.docType.contract')` 命中                   |
+| Video Center     | `video`        | ☐ `t('video.status.online')` 命中                      |
+| Media Center     | `media`        | ☐ `t('media.platform.facebook')` 命中                  |
+| AI Chat          | `aiChat`       | ☐ `t('aiChat.sessionStatus.ongoing')` 命中（**驼峰**） |
+| Company Register | `company`      | ☐ `t('company.orderStatus.submitted')` 命中            |
+| Payment Console  | `payment`      | ☐ `t('payment.txStatus.paid')` 命中                    |
+| Bank Account     | `bank`         | ☐ `t('bank.orderStatus.kycPending')` 命中              |
+| DLC Level        | `dlc`          | ☐ `t('dlc.level.bronze')` 命中（**禁纯数字**）         |
+| Documents        | `document`     | ☐ `t('document.category.legal')` 命中                  |
+| Settings         | `settings`     | ☐ `t('settings.locale.zhCN')` 命中                     |
+| Notifications    | `notification` | ☐ `t('notification.channel.inapp')` 命中               |
+| DID Identity     | `did`          | ☐ `t('did.vcType.KYC')` 命中                           |
+| AI Business Card | `aiCard`       | ☐ `t('aiCard.layout.classic')` 命中（**驼峰**）        |
 
 **CI 校验**：
+
 ```bash
 # 校验 i18n key 命名
 node scripts/check-i18n-namespace.js
@@ -2596,40 +2720,41 @@ node scripts/check-i18n-namespace.js
 
 ### 6.2 状态色彩（严格按 00-foundation §8.3.1）
 
-| 状态值 | 期望颜色 | 实际颜色 | 是否一致 |
-|---|---|---|---|
-| PENDING | `#F6A623` |  | ☐ |
-| PROCESSING | `#3B82F6` |  | ☐ |
-| REVIEWING | `#8B5CF6` |  | ☐ |
-| APPROVED | `#10B981` |  | ☐ |
-| REJECTED | `#EF4444` |  | ☐ |
-| DISABLED | `#6B7280` |  | ☐ |
-| submitted（公司订单） | `#3B82F6` |  | ☐ |
-| supplementing | `#F59E0B` |  | ☐ |
-| kyc_pending（银行） | `#8B5CF6` |  | ☐ |
-| kyc_approved | `#10B981` |  | ☐ |
-| kyc_rejected | `#EF4444` |  | ☐ |
-| past_due（订阅） | `#F59E0B` |  | ☐ |
-| partial_refunded | `#F59E0B` |  | ☐ |
-| online（AI Agent） | `#10B981` |  | ☐ |
-| offline | `#6B7280` |  | ☐ |
-| maintenance | `#F59E0B` |  | ☐ |
-| pending（DLC） | `#F6A623` |  | ☐ |
-| scheduled（Discover） | `#3B82F6` |  | ☐ |
-| pending（视频） | `#F6A623` |  | ☐ |
-| online（视频） | `#10B981` |  | ☐ |
-| banned | `#7F1D1D` |  | ☐ |
-| ongoing（AI Chat） | `#3B82F6` |  | ☐ |
-| taken_over | `#8B5CF6` |  | ☐ |
-| flagged | `#F59E0B` |  | ☐ |
-| issued（VC） | `#10B981` |  | ☐ |
-| revoked | `#EF4444` |  | ☐ |
-| suspended | `#F59E0B` |  | ☐ |
-| active（DID） | `#10B981` |  | ☐ |
-| deactivated | `#6B7280` |  | ☐ |
-| rotated | `#3B82F6` |  | ☐ |
+| 状态值                | 期望颜色  | 实际颜色 | 是否一致 |
+| --------------------- | --------- | -------- | -------- |
+| PENDING               | `#F6A623` |          | ☐        |
+| PROCESSING            | `#3B82F6` |          | ☐        |
+| REVIEWING             | `#8B5CF6` |          | ☐        |
+| APPROVED              | `#10B981` |          | ☐        |
+| REJECTED              | `#EF4444` |          | ☐        |
+| DISABLED              | `#6B7280` |          | ☐        |
+| submitted（公司订单） | `#3B82F6` |          | ☐        |
+| supplementing         | `#F59E0B` |          | ☐        |
+| kyc_pending（银行）   | `#8B5CF6` |          | ☐        |
+| kyc_approved          | `#10B981` |          | ☐        |
+| kyc_rejected          | `#EF4444` |          | ☐        |
+| past_due（订阅）      | `#F59E0B` |          | ☐        |
+| partial_refunded      | `#F59E0B` |          | ☐        |
+| online（AI Agent）    | `#10B981` |          | ☐        |
+| offline               | `#6B7280` |          | ☐        |
+| maintenance           | `#F59E0B` |          | ☐        |
+| pending（DLC）        | `#F6A623` |          | ☐        |
+| scheduled（Discover） | `#3B82F6` |          | ☐        |
+| pending（视频）       | `#F6A623` |          | ☐        |
+| online（视频）        | `#10B981` |          | ☐        |
+| banned                | `#7F1D1D` |          | ☐        |
+| ongoing（AI Chat）    | `#3B82F6` |          | ☐        |
+| taken_over            | `#8B5CF6` |          | ☐        |
+| flagged               | `#F59E0B` |          | ☐        |
+| issued（VC）          | `#10B981` |          | ☐        |
+| revoked               | `#EF4444` |          | ☐        |
+| suspended             | `#F59E0B` |          | ☐        |
+| active（DID）         | `#10B981` |          | ☐        |
+| deactivated           | `#6B7280` |          | ☐        |
+| rotated               | `#3B82F6` |          | ☐        |
 
 **CI 校验**：
+
 ```bash
 node scripts/check-status-colors.js
 # 扫描所有 <StatusBadge status="xxx" /> 调用
@@ -2638,18 +2763,19 @@ node scripts/check-status-colors.js
 
 ### 6.3 业务状态日志独立表（按 00-foundation §4.3）
 
-| 模块 | 应有表 | 实际 | 状态 |
-|---|---|---|---|
-| 公司订单 | `CompanyStatusLog` | 已有 | ☐ |
-| 银行账户订单 | `BankOrderStatusLog` | **本轮修复**：从 JSON 改独立表 | ☐ |
-| 服务订阅 | `ServiceOrderStatusLog` | **本轮新增** | ☐ |
-| DLC 升级 | `DlcUpgradeLog` | 已有 | ☐ |
-| AI 名片 | `AiCardStatusLog` | **本轮新增** | ☐ |
-| 退款 | `RefundStatusLog` | **本轮新增** | ☐ |
-| AI Agent | `AiAgentStatusLog` | **本轮新增** | ☐ |
-| DID 凭证 | （用 `VerifiableCredential.status` 字段变化即可） | OK | ☐ |
+| 模块         | 应有表                                            | 实际                           | 状态 |
+| ------------ | ------------------------------------------------- | ------------------------------ | ---- |
+| 公司订单     | `CompanyStatusLog`                                | 已有                           | ☐    |
+| 银行账户订单 | `BankOrderStatusLog`                              | **本轮修复**：从 JSON 改独立表 | ☐    |
+| 服务订阅     | `ServiceOrderStatusLog`                           | **本轮新增**                   | ☐    |
+| DLC 升级     | `DlcUpgradeLog`                                   | 已有                           | ☐    |
+| AI 名片      | `AiCardStatusLog`                                 | **本轮新增**                   | ☐    |
+| 退款         | `RefundStatusLog`                                 | **本轮新增**                   | ☐    |
+| AI Agent     | `AiAgentStatusLog`                                | **本轮新增**                   | ☐    |
+| DID 凭证     | （用 `VerifiableCredential.status` 字段变化即可） | OK                             | ☐    |
 
 **CI 校验**：
+
 ```bash
 node scripts/check-status-logs.js
 # 扫描所有 *.ts / *.tsx / schema.prisma
@@ -2659,46 +2785,47 @@ node scripts/check-status-logs.js
 
 ### 6.4 `*UserId` 外键（按 00-foundation §12）
 
-| 字段 | 期望 | 实际 | 状态 |
-|---|---|---|---|
-| `CompanyOrder.assignedTo` | `@relation("Name") onDelete: Restrict` |  | ☐ |
-| `CompanyOrder.approvedBy` | 同上 |  | ☐ |
-| `BankOrder.assignedTo` | 同上 |  | ☐ |
-| `ServiceOrder.approvedBy` | 同上 |  | ☐ |
-| `Refund.requestedBy` | 同上 |  | ☐ |
-| `DlcUpgradeLog.operatorId` | 同上 |  | ☐ |
-| `KYC.userId` | `@relation onDelete: Restrict` |  | ☐ |
-| `Transaction.userId` | 同上 |  | ☐ |
-| `BusinessCard.userId` | 同上 |  | ☐ |
-| `VerifiableCredential.userId` | 同上 |  | ☐ |
+| 字段                          | 期望                                   | 实际 | 状态 |
+| ----------------------------- | -------------------------------------- | ---- | ---- |
+| `CompanyOrder.assignedTo`     | `@relation("Name") onDelete: Restrict` |      | ☐    |
+| `CompanyOrder.approvedBy`     | 同上                                   |      | ☐    |
+| `BankOrder.assignedTo`        | 同上                                   |      | ☐    |
+| `ServiceOrder.approvedBy`     | 同上                                   |      | ☐    |
+| `Refund.requestedBy`          | 同上                                   |      | ☐    |
+| `DlcUpgradeLog.operatorId`    | 同上                                   |      | ☐    |
+| `KYC.userId`                  | `@relation onDelete: Restrict`         |      | ☐    |
+| `Transaction.userId`          | 同上                                   |      | ☐    |
+| `BusinessCard.userId`         | 同上                                   |      | ☐    |
+| `VerifiableCredential.userId` | 同上                                   |      | ☐    |
 
 ### 6.5 资源级权限（按 00-foundation §3.5）
 
-| accessLevel | 判定逻辑 | 验证 |
-|---|---|---|
-| `public` | 永远通过 | ☐ |
-| `login` | `req.user != null` | ☐ |
-| `kyc` | `req.user.kycStatus === 'approved'` | ☐ |
-| `dlc3` | `req.user.userLevel >= 3` | ☐ |
-| `dlc5` | `req.user.userLevel >= 5` | ☐ |
-| `internal` | H5 端 404（不暴露存在性） | ☐ |
+| accessLevel | 判定逻辑                            | 验证 |
+| ----------- | ----------------------------------- | ---- |
+| `public`    | 永远通过                            | ☐    |
+| `login`     | `req.user != null`                  | ☐    |
+| `kyc`       | `req.user.kycStatus === 'approved'` | ☐    |
+| `dlc3`      | `req.user.userLevel >= 3`           | ☐    |
+| `dlc5`      | `req.user.userLevel >= 5`           | ☐    |
+| `internal`  | H5 端 404（不暴露存在性）           | ☐    |
 
 **H5 端关键场景**：
+
 - ☐ Documents 页 dlc3 资源：H5 端 **不显示** 403，仅 DLC ≥ 3 用户可点
 - ☐ internal 资源 H5 端**永远 404**
 - ☐ 后台 admin 可绕过（`req.adminUser`）
 
 ### 6.6 退款统一约定（按 00-foundation §7.5）
 
-| 场景 | 验证 |
-|---|---|
-| 全退 | ☐ `refundStatus=full`, `refundedAmount=amount` |
-| 部分退 1 次 | ☐ `refundStatus=partial`, `refundedAmount=30` |
-| 部分退累计达 100% | ☐ 第 3 次 `refundStatus=full` |
-| 超额退 | ☐ 抛 REFUND_EXCEED，事务回滚 |
-| 并发退 2 次 | ☐ 一笔成功一笔 CONCURRENT_REFUND_CONFLICT |
-| `Transaction.refundedAmount` 累加 | ☐ 用 `version` 乐观锁 |
-| 跨模块查询退款 | ☐ 12-payment-console / 03-services / 13-bank-account 共享 `GET /api/admin/refunds` |
+| 场景                              | 验证                                                                               |
+| --------------------------------- | ---------------------------------------------------------------------------------- |
+| 全退                              | ☐ `refundStatus=full`, `refundedAmount=amount`                                     |
+| 部分退 1 次                       | ☐ `refundStatus=partial`, `refundedAmount=30`                                      |
+| 部分退累计达 100%                 | ☐ 第 3 次 `refundStatus=full`                                                      |
+| 超额退                            | ☐ 抛 REFUND_EXCEED，事务回滚                                                       |
+| 并发退 2 次                       | ☐ 一笔成功一笔 CONCURRENT_REFUND_CONFLICT                                          |
+| `Transaction.refundedAmount` 累加 | ☐ 用 `version` 乐观锁                                                              |
+| 跨模块查询退款                    | ☐ 12-payment-console / 03-services / 13-bank-account 共享 `GET /api/admin/refunds` |
 
 ### 6.7 跨 admin-prd 链接
 
@@ -2726,108 +2853,110 @@ node scripts/check-status-logs.js
 
 ### 6.8 端一致矩阵（H5 ↔ admin-web ↔ 小程序）
 
-| 维度 | H5 | admin-web | 小程序 | 一致性 |
-|---|---|---|---|---|
-| i18n namespace | `discover` | `discover` | `discover` | ☐ |
-| 状态色 `#10B981` | APPROVED | APPROVED | APPROVED | ☐ |
-| 状态日志表 | `CompanyStatusLog` | 共享 | 共享 | ☐ |
-| 退款路由 | `/api/h5/refunds` | `/api/admin/refunds` | `/api/h5/refunds` | ☐ |
-| 资源级权限 | `dlc3` 不可见 | 后台可见 | `dlc3` 不可见 | ☐ |
+| 维度             | H5                 | admin-web            | 小程序            | 一致性 |
+| ---------------- | ------------------ | -------------------- | ----------------- | ------ |
+| i18n namespace   | `discover`         | `discover`           | `discover`        | ☐      |
+| 状态色 `#10B981` | APPROVED           | APPROVED             | APPROVED          | ☐      |
+| 状态日志表       | `CompanyStatusLog` | 共享                 | 共享              | ☐      |
+| 退款路由         | `/api/h5/refunds`  | `/api/admin/refunds` | `/api/h5/refunds` | ☐      |
+| 资源级权限       | `dlc3` 不可见      | 后台可见             | `dlc3` 不可见     | ☐      |
 
 ---
 
 <a id="7-验收用例汇总"></a>
+
 ## 7. 验收用例（汇总）
 
 ### 7.1 性能
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | Lighthouse 移动端 4G Slow `/` | Performance ≥ 85, LCP ≤ 2.5s, TBT ≤ 200ms |
-| 2 | 首屏 JS 体积 | ≤ 250KB（gzipped） |
-| 3 | 路由切换耗时 | ≤ 200ms（命中 cache） |
-| 4 | 1000 条列表滚动 | 60 FPS（Chrome DevTools Performance） |
-| 5 | Web Vitals 上送成功率 | ≥ 99% |
-| 6 | Lighthouse CI 在 PR 阻断 | 任一指标超 budget → 阻断合并 |
+| #   | 用例                          | 期望                                      |
+| --- | ----------------------------- | ----------------------------------------- |
+| 1   | Lighthouse 移动端 4G Slow `/` | Performance ≥ 85, LCP ≤ 2.5s, TBT ≤ 200ms |
+| 2   | 首屏 JS 体积                  | ≤ 250KB（gzipped）                        |
+| 3   | 路由切换耗时                  | ≤ 200ms（命中 cache）                     |
+| 4   | 1000 条列表滚动               | 60 FPS（Chrome DevTools Performance）     |
+| 5   | Web Vitals 上送成功率         | ≥ 99%                                     |
+| 6   | Lighthouse CI 在 PR 阻断      | 任一指标超 budget → 阻断合并              |
 
 ### 7.2 体验
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 任意 API 失败 | 显示 ErrorState + 重试按钮（**不**白屏） |
-| 2 | 路由切换 | 显示 Skeleton ≥ 200ms |
-| 3 | 离线断网 | toast"您当前处于离线模式" + 已缓存数据可访问 |
-| 4 | PWA install 弹窗 | "添加到主屏"按钮可点，安装成功 |
-| 5 | 错误边界触发 | 降级 UI 出现 + Sentry 上报 + 不影响其他区块 |
+| #   | 用例             | 期望                                         |
+| --- | ---------------- | -------------------------------------------- |
+| 1   | 任意 API 失败    | 显示 ErrorState + 重试按钮（**不**白屏）     |
+| 2   | 路由切换         | 显示 Skeleton ≥ 200ms                        |
+| 3   | 离线断网         | toast"您当前处于离线模式" + 已缓存数据可访问 |
+| 4   | PWA install 弹窗 | "添加到主屏"按钮可点，安装成功               |
+| 5   | 错误边界触发     | 降级 UI 出现 + Sentry 上报 + 不影响其他区块  |
 
 ### 7.3 转化
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | Discover CTR | 6.2% → ≥ 9% |
-| 2 | 订阅转化 | 3.8% → ≥ 6% |
-| 3 | DLC 升级 | 8% → ≥ 13% |
-| 4 | AI 名片分享 | 4.5% → ≥ 7% |
-| 5 | 漏斗埋点完整性 | 7 核心漏斗全部埋点 |
-| 6 | A/B 实验显著性 | p < 0.05 才全量 |
+| #   | 用例           | 期望               |
+| --- | -------------- | ------------------ |
+| 1   | Discover CTR   | 6.2% → ≥ 9%        |
+| 2   | 订阅转化       | 3.8% → ≥ 6%        |
+| 3   | DLC 升级       | 8% → ≥ 13%         |
+| 4   | AI 名片分享    | 4.5% → ≥ 7%        |
+| 5   | 漏斗埋点完整性 | 7 核心漏斗全部埋点 |
+| 6   | A/B 实验显著性 | p < 0.05 才全量    |
 
 ### 7.4 留存
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 7 日留存 | 22% → ≥ 30% |
-| 2 | D+1 推送到达率 | ≥ 80% |
-| 3 | D+7 召回点击率 | ≥ 8% |
-| 4 | 离线复访率 | ≥ 5% |
+| #   | 用例           | 期望        |
+| --- | -------------- | ----------- |
+| 1   | 7 日留存       | 22% → ≥ 30% |
+| 2   | D+1 推送到达率 | ≥ 80%       |
+| 3   | D+7 召回点击率 | ≥ 8%        |
+| 4   | 离线复访率     | ≥ 5%        |
 
 ### 7.5 可访问性
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | Lighthouse A11y | ≥ 90 |
-| 2 | 键盘可访问性 | 全部菜单 Tab 可达，Enter 可激活 |
-| 3 | 屏幕阅读器 | VoiceOver / NVDA 正常播报 |
-| 4 | 颜色对比度 | WCAG 2.1 AA（4.5:1 正文，3:1 大字） |
-| 5 | 减少动效 | `prefers-reduced-motion` 时关闭 framer-motion |
-| 6 | ARIA 标签 | 全部交互元素有 `aria-label` |
+| #   | 用例            | 期望                                          |
+| --- | --------------- | --------------------------------------------- |
+| 1   | Lighthouse A11y | ≥ 90                                          |
+| 2   | 键盘可访问性    | 全部菜单 Tab 可达，Enter 可激活               |
+| 3   | 屏幕阅读器      | VoiceOver / NVDA 正常播报                     |
+| 4   | 颜色对比度      | WCAG 2.1 AA（4.5:1 正文，3:1 大字）           |
+| 5   | 减少动效        | `prefers-reduced-motion` 时关闭 framer-motion |
+| 6   | ARIA 标签       | 全部交互元素有 `aria-label`                   |
 
 ### 7.6 i18n
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 4 语言切换 | 所有菜单 / 按钮 / 状态 / 错误显示对应语言 |
-| 2 | CI 字典对齐 | zh-CN / en-US / ja-JP / ko-KR 4 文件 key 完全一致 |
-| 3 | 数字 / 日期格式 | `Intl.NumberFormat` / `Intl.DateTimeFormat` 按 locale |
-| 4 | 货币符号 | 按国家自动（USD / EUR / JPY / KRW） |
-| 5 | 命名空间严格 | 所有 t('namespace.key') 命中 00-foundation §5.5.1 |
+| #   | 用例            | 期望                                                  |
+| --- | --------------- | ----------------------------------------------------- |
+| 1   | 4 语言切换      | 所有菜单 / 按钮 / 状态 / 错误显示对应语言             |
+| 2   | CI 字典对齐     | zh-CN / en-US / ja-JP / ko-KR 4 文件 key 完全一致     |
+| 3   | 数字 / 日期格式 | `Intl.NumberFormat` / `Intl.DateTimeFormat` 按 locale |
+| 4   | 货币符号        | 按国家自动（USD / EUR / JPY / KRW）                   |
+| 5   | 命名空间严格    | 所有 t('namespace.key') 命中 00-foundation §5.5.1     |
 
 ### 7.7 跨文件一致性
 
-| # | 用例 | 期望 |
-|---|---|---|
-| 1 | 状态色 | 所有 <StatusBadge status="x" /> 颜色在 00-foundation §8.3.1 表中 |
-| 2 | 状态日志 | 所有 Entity 有独立 <Entity>StatusLog 表 |
-| 3 | 外键 | 所有 *UserId 字段有 @relation onDelete: Restrict |
-| 4 | 资源级权限 | dlc3 / dlc5 阈值正确，internal H5 端 404 |
-| 5 | 退款统一 | 跨模块共享 GET /api/admin/refunds |
+| #   | 用例       | 期望                                                             |
+| --- | ---------- | ---------------------------------------------------------------- |
+| 1   | 状态色     | 所有 <StatusBadge status="x" /> 颜色在 00-foundation §8.3.1 表中 |
+| 2   | 状态日志   | 所有 Entity 有独立 <Entity>StatusLog 表                          |
+| 3   | 外键       | 所有 \*UserId 字段有 @relation onDelete: Restrict                |
+| 4   | 资源级权限 | dlc3 / dlc5 阈值正确，internal H5 端 404                         |
+| 5   | 退款统一   | 跨模块共享 GET /api/admin/refunds                                |
 
 ---
 
 <a id="8-风险与回滚预案"></a>
+
 ## 8. 风险与回滚预案
 
 ### 8.1 风险矩阵
 
-| 风险 | 等级 | 触发场景 | 缓解措施 | 回滚方案 |
-|---|---|---|---|---|
-| 路由懒加载导致白屏 | 高 | chunk 加载失败 | Suspense fallback = skeleton | 关闭 lazy，恢复同步 import（5 分钟） |
-| Service Worker 缓存陈旧 | 中 | 后端 API 变更 | StaleWhileRevalidate + 7 天 maxAge | 推送 SW 更新（`skipWaiting`） |
-| A/B 实验误判 | 中 | 流量分配不均 | 后端决定分桶 + 同 userId 同组 | feature flag 一键关 |
-| 推送召回过度 | 中 | 用户投诉骚扰 | 频控（每周 ≤ 3 条） + 退订按钮 | 立即关停 campaign |
-| 性能监控 SDK 拖慢 | 低 | 弱网 | 异步 + beacon | 关闭 SDK |
-| PWA 缓存敏感数据 | 中 | 用户退出后 | 退出时清 SW cache | 监听事件清 |
-| 离线模式误用 | 中 | 写操作未拦截 | NetworkOnly 写操作 | 强制 NetworkOnly |
-| 主题切换闪烁 | 低 | 首屏暗 → 浅 | 阻塞 script 设 data-theme | 关闭跟随系统 |
+| 风险                    | 等级 | 触发场景       | 缓解措施                           | 回滚方案                             |
+| ----------------------- | ---- | -------------- | ---------------------------------- | ------------------------------------ |
+| 路由懒加载导致白屏      | 高   | chunk 加载失败 | Suspense fallback = skeleton       | 关闭 lazy，恢复同步 import（5 分钟） |
+| Service Worker 缓存陈旧 | 中   | 后端 API 变更  | StaleWhileRevalidate + 7 天 maxAge | 推送 SW 更新（`skipWaiting`）        |
+| A/B 实验误判            | 中   | 流量分配不均   | 后端决定分桶 + 同 userId 同组      | feature flag 一键关                  |
+| 推送召回过度            | 中   | 用户投诉骚扰   | 频控（每周 ≤ 3 条） + 退订按钮     | 立即关停 campaign                    |
+| 性能监控 SDK 拖慢       | 低   | 弱网           | 异步 + beacon                      | 关闭 SDK                             |
+| PWA 缓存敏感数据        | 中   | 用户退出后     | 退出时清 SW cache                  | 监听事件清                           |
+| 离线模式误用            | 中   | 写操作未拦截   | NetworkOnly 写操作                 | 强制 NetworkOnly                     |
+| 主题切换闪烁            | 低   | 首屏暗 → 浅    | 阻塞 script 设 data-theme          | 关闭跟随系统                         |
 
 ### 8.2 灰度发布策略
 
@@ -2849,13 +2978,13 @@ P2 PWA / A11y：
 
 ### 8.3 监控告警
 
-| 指标 | 阈值 | 告警 |
-|---|---|---|
-| LCP P95 | > 3s | 企业微信 + 邮件 |
-| 错误率 | > 1% | 短信 + 电话 |
-| 转化率 | 跌幅 > 20% | 企业微信 |
-| 7 日留存 | 跌幅 > 10% | 邮件 + 复盘 |
-| 推送到达率 | < 70% | 企业微信 |
+| 指标       | 阈值       | 告警            |
+| ---------- | ---------- | --------------- |
+| LCP P95    | > 3s       | 企业微信 + 邮件 |
+| 错误率     | > 1%       | 短信 + 电话     |
+| 转化率     | 跌幅 > 20% | 企业微信        |
+| 7 日留存   | 跌幅 > 10% | 邮件 + 复盘     |
+| 推送到达率 | < 70%      | 企业微信        |
 
 ### 8.4 紧急回滚 Runbook
 
@@ -3107,6 +3236,7 @@ git push
 > **审核**：产品 / 设计 / 后端
 > **版本**：v1.0.0
 > **配套文档**：
+>
 > - [00-foundation.md](../../admin-prd/00-foundation.md)（基础）
 > - [02-discover.md ~ 19-ai-business-card.md](../../admin-prd/)（21 个后台 PRD）
 > - [01-wechat-mini-program.md](../01-wechat-mini-program.md)（微信小程序）

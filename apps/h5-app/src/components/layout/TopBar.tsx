@@ -22,8 +22,8 @@ export default function TopBar({
   transparent = false,
 }: TopBarProps) {
   const navigate = useNavigate();
-  const notifications = useAppStore(s => s.notifications);
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const notifications = useAppStore((s) => s.notifications);
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const handleBack = () => {
     if (onBack) {
@@ -45,9 +45,7 @@ export default function TopBar({
     <motion.header
       className={cn(
         'sticky top-0 z-50 h-12 flex items-center px-4',
-        transparent
-          ? 'bg-transparent'
-          : 'glass-light border-b border-white/[0.06]',
+        transparent ? 'bg-transparent' : 'glass-light border-b border-white/[0.06]',
         className
       )}
       initial={{ opacity: 0, y: -10 }}

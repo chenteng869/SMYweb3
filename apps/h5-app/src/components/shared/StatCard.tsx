@@ -72,10 +72,7 @@ export default function StatCard({
   return (
     <motion.div
       ref={ref}
-      className={cn(
-        'bg-bg-card border border-white/[0.08] rounded-md p-4',
-        className
-      )}
+      className={cn('bg-bg-card border border-white/[0.08] rounded-md p-4', className)}
       initial={{ opacity: 0, y: 20 }}
       animate={hasAnimated ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.4, delay: delay * 0.06, ease: [0.16, 1, 0.3, 1] }}
@@ -86,7 +83,9 @@ export default function StatCard({
       </div>
 
       <div className="font-display text-h1 text-gradient-kpi mb-1">
-        {prefix}{formatNumber(displayValue, decimals)}{suffix}
+        {prefix}
+        {formatNumber(displayValue, decimals)}
+        {suffix}
       </div>
 
       {trend !== undefined && (
@@ -94,17 +93,18 @@ export default function StatCard({
           {trendUp && <TrendingUp size={14} className="text-teal" />}
           {trendDown && <TrendingDown size={14} className="text-red-500" />}
           {trendNeutral && <Minus size={14} className="text-text-muted" />}
-          <span className={cn(
-            'text-caption font-medium',
-            trendUp && 'text-teal',
-            trendDown && 'text-red-500',
-            trendNeutral && 'text-text-muted'
-          )}>
-            {trend > 0 ? '+' : ''}{trend}%
+          <span
+            className={cn(
+              'text-caption font-medium',
+              trendUp && 'text-teal',
+              trendDown && 'text-red-500',
+              trendNeutral && 'text-text-muted'
+            )}
+          >
+            {trend > 0 ? '+' : ''}
+            {trend}%
           </span>
-          {trendLabel && (
-            <span className="text-caption text-text-muted ml-1">{trendLabel}</span>
-          )}
+          {trendLabel && <span className="text-caption text-text-muted ml-1">{trendLabel}</span>}
         </div>
       )}
     </motion.div>

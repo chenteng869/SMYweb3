@@ -1,0 +1,212 @@
+# Prometheus 告警规则配置
+# SMYWeb3 核心业务监控告警规则集
+#
+# 规则分组:
+#   - smyweb3-api:       API 层面告警（错误率、延迟、可用性）
+#   - smyweb3-agent:     Agent 平台告警（任务失败、会话僵死）
+#   - smyweb3-blockchain: 区块链存证告警（上链失败、确认超时）
+#   - smyweb3-infra:     基础设施告警（Redis/RabbitMQ/数据库）
+#
+# 使用方式:
+#   在 prometheus.yml 中引用此文件:
+#     rule_files:
+#       - '/etc/prometheus/rules/smyweb3-alert-rules.yml'
+
+groups:
+  # ==================== API 层告警规则 ====================
+  - name: smyweb3-api
+    interval: 15s
+    rules:
+      # ---- Rule 1: API 错误率过高 (>5% in 5min) ----
+      # 触发条件: 5分钟内 5xx 错误占比超过 5%
+      # 影响: 用户体验严重下降，可能导致业务损失
+      # 处置: 检查服务日志、排查异常根因、必要时扩容或回滚
+      - alert: ApiHighErrorRate
+        expr: |
+          sum(rate(smyweb3_http_requests_total{status_code=~"5.."}[5m]))
+          /
+          sum(rate(smyweb3_http_requests_total[5m])) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          team: backend
+          runbook_url: "https://wiki.smyweb3.com/runbooks/api-errors"
+        annotations:
+          summary: "API 错误率超过 5%"
+          description: |
+            当前错误率: {{ $value | humanizePercentage }}
+            阈值: 5%
+            时间范围: 最近 5 分钟
+            影响: 大量用户请求失败
+          runbook_url: "https://wiki.smyweb3.com/runbooks/api-errors"
+
+      # ---- Rule 2: API P99 响应延迟过高 (>3s) ----
+      # 触发条件: P99 延迟持续超过 3 秒达 5 分钟
+      # 影响: 用户感知到明显卡顿，影响转化率
+      # 处置: 排查慢接口、优化查询、增加缓存
+      - alert: ApiHighLatencyP99
+        expr: histogram_quantile(0.99, sum(rate(smyweb3_http_request_duration_ms_bucket[5m])) by (le)) > 3000
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "API P99 延迟超过 3秒"
+          description: "当前 P99 延迟: {{ $value }}ms，持续超过 5 分钟"
+          runbook_url: "https://wiki.smyweb3.com/runbooks/api-latency"
+
+      # ---- Rule 2b: API P95 延迟过高 (>2s) ----
+      - alert: ApiHighLatencyP95
+        expr: histogram_quantile(0.95, sum(rate(smyweb3_http_request_duration_ms_bucket[5m])) by (le)) > 2000
+        for: 10m
+        labels:
+          severity: info
+          team: backend
+        annotations:
+          summary: "API P95 延迟超过 2秒"
+          description: "当前 P95 延迟: {{ $value }}ms"
+
+  # ==================== Agent 平台告警规则 ====================
+  - name: smyweb3-agent
+    interval: 15s
+    rules:
+      # ---- Rule 3: Agent 任务失败率过高 (>10%) ----
+      # 触发条件: 15分钟内 Agent 任务失败率超过 10%
+      # 影响: 数据采集/内容生成/分析任务大量失败
+      # 处置: 检查 Agent Pool 健康、审查任务策略配置
+      - alert: AgentHighFailureRate
+        expr: |
+          sum(rate(smyweb3_agent_tasks_total{success="false"}[15m]))
+          /
+          sum(rate(smyweb3_agent_tasks_total[15m])) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+          team: ai-platform
+        annotations:
+          summary: "Agent 任务失败率超过 10%"
+          description: |
+            当前失败率: {{ $value | humanizePercentage }}
+            阈值: 10%
+            时间范围: 最近 15 分钟
+            建议: 检查 Agent Pool 和策略配置
+
+      # ---- Rule 4: Agent 会话僵死 (>5min 无心跳) ----
+      # 触发条件: 存在活跃标记但超过5分钟未收到心跳的会话
+      # 影响: 占用资源但不产出结果，可能造成任务积压
+      # 处置: 自动回收僵死会话或人工干预
+      - alert: AgentStaleSessions
+        expr: |
+          count(smyweb3_agent_sessions_active == 1 
+            AND (time() - smyweb3_agent_last_heartbeat_timestamp) > 300)
+        for: 3m
+        labels:
+          severity: warning
+          team: ai-platform
+        annotations:
+          summary: "存在 {{ $value }} 个僵死 Agent 会话"
+          description: "超过 5 分钟未收到心跳的会话需要自动恢复或人工处理"
+
+      # ---- Rule 4b: Agent 会话数接近上限 ----
+      - alert: AgentPoolNearCapacity
+        expr: smyweb3_agent_sessions_active / 50 > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          team: ai-platform
+        annotations:
+          summary: "Agent 池使用率超过 90%"
+          description: "当前活跃会话: {{ $value }}，最大容量: 50"
+
+  # ==================== 区块链存证告警规则 ====================
+  - name: smyweb3-blockchain
+    interval: 15s
+    rules:
+      # ---- Rule 5: 区块链存证验证失败率过高 (>5%) ----
+      # 触发条件: 10分钟内存证验证失败率超过 5%
+      # 影响: 用户无法获得可信的区块链存证凭证
+      # 处置: 检查 RPC 节点状态、网络连通性、Gas 费余额
+      - alert: BlockchainHighFailureRate
+        expr: |
+          sum(rate(smyweb3_blockchain_verify_failures_total[10m]))
+          /
+          sum(rate(smyweb3_blockchain_verify_total[10m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          team: blockchain
+        annotations:
+          summary: "区块链存证验证失败率超过 5%"
+          description: "当前失败率: {{ $value | humanizePercentage }}"
+          runbook_url: "https://wiki.smyweb3.com/runbooks/blockchain-failures"
+
+      # ---- Rule 5b: 存证上链延迟过高 (>30s) ----
+      - alert: BlockchainEvidenceSlowConfirmation
+        expr: histogram_quantile(0.95, sum(rate(smyweb3_blockchain_evidence_duration_ms_bucket[5m])) by (le)) > 30000
+        for: 5m
+        labels:
+          severity: warning
+          team: blockchain
+        annotations:
+          summary: "区块链存证 P95 确认时间超过 30 秒"
+          description: "当前 P95 确认时间: {{ $value }}ms"
+
+  # ==================== 基础设施告警规则 ====================
+  - name: smyweb3-infra
+    interval: 15s
+    rules:
+      # ---- Rule 6: Redis 内存使用率 >85% ----
+      # 触发条件: Redis 实际内存使用量占最大内存比例超过 85%
+      # 影响: 可能触发 Redis 内存淘汰策略，导致缓存命中率下降
+      # 处置: 清理无用 Key、增加内存、优化数据结构
+      - alert: RedisHighMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          team: infra
+        annotations:
+          summary: "Redis 内存使用率超过 85%"
+          description: "当前使用率: {{ $value | humanizePercentage }}"
+          runbook_url: "https://wiki.smyweb3.com/runbooks/redis-memory"
+
+      # ---- Rule 7: RabbitMQ 队列积压 (>1000 messages) ----
+      # 触发条件: 任意队列积压消息数超过 1000 条
+      # 影响: 消息处理滞后，可能导致业务流程阻塞
+      # 处置: 增加 Consumer 数量、排查 Consumer 处理瓶颈
+      - alert: RabbitMQQueueBacklog
+        expr: smyweb3_rabbitmq_queue_depth > 1000
+        for: 5m
+        labels:
+          severity: warning
+          team: infra
+        annotations:
+          summary: "RabbitMQ 队列积压超过 {{ $value }} 条消息"
+          description: "队列深度已超过安全阈值 1000，请检查 Consumer 处理能力"
+          runbook_url: "https://wiki.smyweb3.com/runbooks/rabbitmq-backlog"
+
+      # ---- Rule 8: 数据库连接池使用率 >80% ----
+      # 触发条件: 活跃连接数占最大连接数比例超过 80%
+      # 影响: 新请求可能因无法获取连接而超时或排队
+      # 处置: 扩大连接池、优化慢查询、增加只读副本
+      - alert: DbConnectionPoolExhaustion
+        expr: smyweb3_db_connections_active / smyweb3_db_connections_max > 0.8
+        for: 3m
+        labels:
+          severity: critical
+          team: infra
+        annotations:
+          summary: "数据库连接池使用率超过 80%"
+          description: "当前活跃连接数占最大连接数的 {{ $value | humanizePercentage }}"
+          runbook_url: "https://wiki.smyweb3.com/runbooks/db-connections"
+
+      # ---- Rule 8b: 服务实例宕机检测 ----
+      - alert: ServiceDown
+        expr: up{job=~"smyweb3.*"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: infra
+        annotations:
+          summary: "服务实例 {{ $labels.instance }} ({{ $labels.job }}) 宕机"
+          description: "该服务实例已连续 1 分钟无心跳上报"

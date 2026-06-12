@@ -412,7 +412,10 @@ export class AiTvController {
   }
 
   @Get('dashboard/trend')
-  @ApiOperation({ summary: '播出趋势(近N天)', description: '获取最近N天的播出量、时长、观看数据趋势' })
+  @ApiOperation({
+    summary: '播出趋势(近N天)',
+    description: '获取最近N天的播出量、时长、观看数据趋势',
+  })
   @ApiQuery({ name: 'days', required: false, type: Number })
   async getBroadcastTrend(@Query('days') days?: string) {
     return this.aiTvService.getBroadcastTrend(Number(days) || 7);

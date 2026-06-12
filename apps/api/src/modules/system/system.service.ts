@@ -10,7 +10,10 @@ export class SystemService {
   async listConfigs(group?: string) {
     const where: any = {};
     if (group) where.group = group;
-    return this.prisma.systemConfig.findMany({ where, orderBy: [{ group: 'asc' }, { key: 'asc' }] });
+    return this.prisma.systemConfig.findMany({
+      where,
+      orderBy: [{ group: 'asc' }, { key: 'asc' }],
+    });
   }
 
   async updateConfig(id: number, value: string) {
@@ -39,7 +42,13 @@ export class SystemService {
       if (endDate) where.createdAt.lte = new Date(endDate);
     }
     const [data, total] = await Promise.all([
-      this.prisma.auditLog.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: { select: { id: true, username: true, name: true } } } }),
+      this.prisma.auditLog.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { user: { select: { id: true, username: true, name: true } } },
+      }),
       this.prisma.auditLog.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -49,15 +58,31 @@ export class SystemService {
   async listAdmins(query: any) {
     const { page = 1, pageSize = 20, search, roleId, isActive } = query;
     const where: any = {};
-    if (search) where.OR = [{ username: { contains: search } }, { name: { contains: search } }, { email: { contains: search } }];
+    if (search)
+      where.OR = [
+        { username: { contains: search } },
+        { name: { contains: search } },
+        { email: { contains: search } },
+      ];
     if (roleId) where.roleId = Number(roleId);
     if (isActive !== undefined) where.isActive = isActive === 'true' || isActive === true;
     const [data, total] = await Promise.all([
-      this.prisma.adminUser.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { role: true } }),
+      this.prisma.adminUser.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { role: true },
+      }),
       this.prisma.adminUser.count({ where }),
     ]);
     // 移除密码
-    return { data: data.map(d => ({ ...d, password: undefined })), total, page: Number(page), pageSize: Number(pageSize) };
+    return {
+      data: data.map((d) => ({ ...d, password: undefined })),
+      total,
+      page: Number(page),
+      pageSize: Number(pageSize),
+    };
   }
 
   async createAdmin(data: any) {
@@ -82,12 +107,14 @@ export class SystemService {
   }
 
   async createRole(data: any) {
-    if (data.permissions && typeof data.permissions !== 'string') data.permissions = JSON.stringify(data.permissions);
+    if (data.permissions && typeof data.permissions !== 'string')
+      data.permissions = JSON.stringify(data.permissions);
     return this.prisma.adminRole.create({ data });
   }
 
   async updateRole(id: number, data: any) {
-    if (data.permissions && typeof data.permissions !== 'string') data.permissions = JSON.stringify(data.permissions);
+    if (data.permissions && typeof data.permissions !== 'string')
+      data.permissions = JSON.stringify(data.permissions);
     return this.prisma.adminRole.update({ where: { id }, data });
   }
 

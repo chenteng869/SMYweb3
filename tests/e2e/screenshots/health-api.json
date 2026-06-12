@@ -1,0 +1,62 @@
+[
+  {
+    "endpoint": "DID统计",
+    "method": "GET",
+    "path": "/did/stats",
+    "status_code": 200,
+    "has_data": true,
+    "success": true,
+    "response_keys": ["success", "data"],
+    "size": 136
+  },
+  {
+    "endpoint": "DID列表",
+    "method": "GET",
+    "path": "/did?page=1&pageSize=10",
+    "status_code": 200,
+    "has_data": true,
+    "success": true,
+    "response_keys": ["success", "data"],
+    "size": 5247
+  },
+  {
+    "endpoint": "SBT类型",
+    "method": "GET",
+    "path": "/did/sbt/types",
+    "status_code": 200,
+    "has_data": true,
+    "success": true,
+    "response_keys": ["success", "data"],
+    "size": 739
+  },
+  {
+    "endpoint": "钱包Nonce",
+    "method": "GET",
+    "path": "/did/wallets/nonce?walletAddress=0x1234",
+    "status_code": 200,
+    "has_data": true,
+    "success": true,
+    "response_keys": ["success", "data"],
+    "size": 151
+  },
+  {
+    "endpoint": "KYC队列",
+    "method": "GET",
+    "path": "/did/kyc/queue?page=1&pageSize=10",
+    "status_code": 200,
+    "has_data": true,
+    "success": true,
+    "response_keys": ["success", "data"],
+    "size": 2111
+  },
+  {
+    "endpoint": "DID注册(测试)",
+    "method": "POST",
+    "path": "/did/register",
+    "status_code": 500,
+    "has_data": false,
+    "success": false,
+    "response_keys": ["statusCode", "message"],
+    "size": 55
+  }
+]

@@ -14,7 +14,13 @@ export class OrdersService {
     if (userId) where.userId = Number(userId);
     if (search) where.OR = [{ orderNo: { contains: search } }, { title: { contains: search } }];
     const [data, total] = await Promise.all([
-      this.prisma.order.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: true, company: true } }),
+      this.prisma.order.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { user: true, company: true },
+      }),
       this.prisma.order.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -25,8 +31,10 @@ export class OrdersService {
   }
 
   async create(data: any) {
-    if (!data.orderNo) data.orderNo = `WO-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
-    if (data.attachments && typeof data.attachments !== 'string') data.attachments = JSON.stringify(data.attachments);
+    if (!data.orderNo)
+      data.orderNo = `WO-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
+    if (data.attachments && typeof data.attachments !== 'string')
+      data.attachments = JSON.stringify(data.attachments);
     return this.prisma.order.create({ data });
   }
 

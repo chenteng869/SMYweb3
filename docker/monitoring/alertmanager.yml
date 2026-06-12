@@ -1,0 +1,101 @@
+# Alertmanager 告警路由与通知配置
+# SMYWeb3 监控告警系统核心配置文件
+#
+# 通知渠道:
+#   - 钉钉 (DingTalk): 主要通知渠道，支持富文本消息卡片
+#   - 邮件 (Email): 备用通知渠道，用于详细告警信息
+#   - 短信 (SMS): 仅 Critical 级别使用，用于紧急唤醒
+#
+# 路由策略:
+#   - Critical → 钉钉 + 短信 + 邮件 (三通道同时通知)
+#   - Warning  → 钉钉 + 邮件
+#   - Info     → 仅钉钉
+
+global:
+  # 告警解决后的静默时间，避免重复通知已恢复的告警
+  resolve_timeout: 5m
+
+  # SMTP 邮件服务器配置（需替换为实际配置）
+  smtp_smarthost: 'smtp.example.com:587'
+  smtp_from: 'alert@smyweb3.com'
+  smtp_auth_identity: 'alert@smyweb3.com'
+  # smtp_auth_password: 'your-smtp-password'  # 生产环境建议使用密钥管理
+
+# ===== 告警路由树 =====
+route:
+  # 默认接收器: 所有未匹配的告警走此通道
+  receiver: 'default-receiver'
+
+  # 分组策略: 按告警名称和严重级别分组，避免同类告警风暴
+  group_by: ['alertname', 'severity']
+
+  # 分组等待时间: 同一组内的新告警等待30秒后一起发送（聚合通知）
+  group_wait: 30s
+
+  # 分组间隔: 同一组告警的后续通知间隔5分钟
+  group_interval: 5m
+
+  # 重复通知间隔: 已解决的告警若再次触发，至少等待4小时才重新通知
+  repeat_interval: 4h
+
+  # 子路由规则
+  routes:
+    # Critical 级别告警 → 三通道通知（钉钉 + 短信 + 邮件）
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      continue: true  # 继续匹配其他路由（确保不遗漏）
+
+    # Warning 级别告警 → 双通道通知（钉钉 + 邮件）
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+
+    # Info 级别告警 → 仅钉钉通知
+    - match:
+        severity: info
+      receiver: 'default-receiver'
+
+# ===== 接收器定义 =====
+receivers:
+
+  # 默认接收器: 钉钉机器人 Webhook
+  - name: 'default-receiver'
+    webhook_configs:
+      - url: 'http://dingtalk-webhook:8060/alert'
+        send_resolved: true  # 告警恢复时也发送通知
+
+  # Critical 级别接收器: 钉钉 + 邮件 + 短信
+  - name: 'critical-alerts'
+    webhook_configs:
+      - url: 'http://dingtalk-webhook:8060/alert'
+        send_resolved: true
+    email_configs:
+      - to: 'oncall@smyweb3.com'
+        send_resolved: true
+        headers:
+          Subject: '[CRITICAL] SMYWeb3 告警: {{ .GroupLabels.alertname }}'
+    # SMS 通过自定义网关发送
+    webhook_configs:
+      - url: 'http://sms-gateway:8080/send'
+        send_resolved: false  # 短信不发送恢复通知（节省成本）
+
+  # Warning 级别接收器: 钉钉 + 邮件
+  - name: 'warning-alerts'
+    webhook_configs:
+      - url: 'http://dingtalk-webhook:8060/alert'
+        send_resolved: true
+    email_configs:
+      - to: 'devops@smyweb3.com'
+        send_resolved: true
+        headers:
+          Subject: '[WARNING] SMYWeb3 告警: {{ .GroupLabels.alertname }}'
+
+# ===== 抑制规则 =====
+inhibit_rules:
+  # 维护窗口期间抑制非关键告警，避免告警噪音
+  - target_match:
+      severity: warning
+    source_match:
+      alertname: ScheduledMaintenance
+    equal: ['maintained']

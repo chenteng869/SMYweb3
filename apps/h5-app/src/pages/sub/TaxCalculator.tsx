@@ -1,11 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Calculator, TrendingUp, BarChart3,
-  FileText, ChevronRight, CheckCircle,
-  Sparkles, Building2, Wallet,
-  Landmark, Route, Lightbulb, BookOpen,
-  Layers, ArrowLeft
+  Calculator,
+  TrendingUp,
+  BarChart3,
+  FileText,
+  ChevronRight,
+  CheckCircle,
+  Sparkles,
+  Building2,
+  Wallet,
+  Landmark,
+  Route,
+  Lightbulb,
+  BookOpen,
+  Layers,
+  ArrowLeft,
 } from 'lucide-react';
 import TopBar from '@/components/layout/TopBar';
 import Card from '@/components/shared/Card';
@@ -42,7 +52,14 @@ const TAX_BREAKDOWN_DATA: TaxBreakdownRow[] = [
 const STRUCTURE_RESULTS: StructureResult[] = [
   { name: '纯内地架构', key: 'mainland', tax: 95000, color: '#EF4444', rate: '有效税率 19.0%' },
   { name: '海南架构', key: 'hainan', tax: 75000, color: '#60A5FA', rate: '有效税率 15.0%' },
-  { name: '海南+萨摩亚', key: 'hainanSamoa', tax: 45000, color: '#00D4AA', rate: '有效税率 9.0%', featured: true },
+  {
+    name: '海南+萨摩亚',
+    key: 'hainanSamoa',
+    tax: 45000,
+    color: '#00D4AA',
+    rate: '有效税率 9.0%',
+    featured: true,
+  },
   { name: '纯离岸', key: 'offshore', tax: 42000, color: '#A78BFA', rate: '有效税率 8.4%' },
 ];
 
@@ -81,7 +98,15 @@ const STRUCTURE_OPTIONS = [
 ];
 
 // ─── CountUp Component ───────────────────────────────
-function AnimatedNumber({ value, duration, start }: { value: number; duration: number; start: boolean }) {
+function AnimatedNumber({
+  value,
+  duration,
+  start,
+}: {
+  value: number;
+  duration: number;
+  start: boolean;
+}) {
   const [display, setDisplay] = useState(0);
   const hasAnimated = useRef(false);
 
@@ -135,7 +160,7 @@ export default function TaxCalculator() {
   const savingsAmount = 50000;
   const savingsRate = 52.6;
 
-  const chartData = STRUCTURE_RESULTS.map(s => ({
+  const chartData = STRUCTURE_RESULTS.map((s) => ({
     name: s.name,
     tax: s.tax,
     color: s.color,
@@ -182,10 +207,18 @@ export default function TaxCalculator() {
 
             <div className="space-y-4">
               {/* Revenue */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-                <label className="text-body-sm text-text-secondary mb-1.5 block">您的年营收（美元）</label>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <label className="text-body-sm text-text-secondary mb-1.5 block">
+                  您的年营收（美元）
+                </label>
                 <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-lg">$</span>
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-lg">
+                    $
+                  </span>
                   <input
                     type="number"
                     value={revenue}
@@ -197,7 +230,11 @@ export default function TaxCalculator() {
               </motion.div>
 
               {/* Margin with Slider */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.38 }}
+              >
                 <label className="text-body-sm text-text-secondary mb-1.5 block">毛利率</label>
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-display text-xl text-coral">{margin}%</span>
@@ -228,7 +265,11 @@ export default function TaxCalculator() {
               </motion.div>
 
               {/* Target Market */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.46 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.46 }}
+              >
                 <label className="text-body-sm text-text-secondary mb-1.5 block">目标市场</label>
                 <select
                   value={targetMarket}
@@ -245,7 +286,11 @@ export default function TaxCalculator() {
               </motion.div>
 
               {/* Current Structure */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.54 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.54 }}
+              >
                 <label className="text-body-sm text-text-secondary mb-1.5 block">当前架构</label>
                 <select
                   value={structure}
@@ -253,13 +298,19 @@ export default function TaxCalculator() {
                   className="w-full h-[52px] px-4 rounded-md bg-bg-input border border-white/[0.1] text-text-primary text-body focus:outline-none focus:border-coral/40 transition-all"
                 >
                   {STRUCTURE_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
                   ))}
                 </select>
               </motion.div>
 
               {/* Employees */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.62 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.62 }}
+              >
                 <label className="text-body-sm text-text-secondary mb-1.5 block">员工人数</label>
                 <input
                   type="number"
@@ -312,9 +363,7 @@ export default function TaxCalculator() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 * i, duration: 0.4 }}
                       className={`flex items-center gap-3 p-3 rounded-md ${
-                        item.featured
-                          ? 'bg-teal/5 border border-teal/20'
-                          : 'bg-bg-elevated/50'
+                        item.featured ? 'bg-teal/5 border border-teal/20' : 'bg-bg-elevated/50'
                       }`}
                     >
                       {/* Color strip */}
@@ -324,7 +373,9 @@ export default function TaxCalculator() {
                       />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-body font-medium text-text-primary">{item.name}</span>
+                          <span className="text-body font-medium text-text-primary">
+                            {item.name}
+                          </span>
                           {item.featured && (
                             <span className="px-2 py-0.5 rounded-full bg-teal/15 text-teal text-[11px] font-medium">
                               最优
@@ -342,12 +393,13 @@ export default function TaxCalculator() {
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="font-display text-body font-semibold" style={{ color: item.color }}>
+                        <p
+                          className="font-display text-body font-semibold"
+                          style={{ color: item.color }}
+                        >
                           ${item.tax.toLocaleString()}
                         </p>
-                        <p className="text-caption text-text-muted">
-                          {STRUCTURE_RESULTS[i]?.rate}
-                        </p>
+                        <p className="text-caption text-text-muted">{STRUCTURE_RESULTS[i]?.rate}</p>
                       </div>
                       <ChevronRight size={16} className="text-text-muted shrink-0" />
                     </motion.div>
@@ -363,9 +415,7 @@ export default function TaxCalculator() {
                 className="mb-5 rounded-xl p-6 bg-gradient-to-r from-coral to-[hsl(38,80%,45%)] text-center"
               >
                 <p className="text-[14px] font-medium text-bg-dark/70">采用推荐架构，每年节省</p>
-                <motion.p
-                  className="font-display text-[36px] font-bold text-bg-dark mt-2"
-                >
+                <motion.p className="font-display text-[36px] font-bold text-bg-dark mt-2">
                   $<AnimatedNumber value={savingsAmount} duration={1200} start={showResults} />
                 </motion.p>
                 <p className="text-[14px] text-bg-dark/70 mt-1">节省率：{savingsRate}%</p>
@@ -445,8 +495,12 @@ export default function TaxCalculator() {
                                   <th className="text-left py-2 px-2 font-medium">税种</th>
                                   <th className="text-right py-2 px-2 font-medium">纯内地</th>
                                   <th className="text-right py-2 px-2 font-medium">海南</th>
-                                  <th className="text-right py-2 px-2 font-medium text-teal">海南+萨摩亚</th>
-                                  <th className="text-right py-2 px-2 font-medium text-coral">节省</th>
+                                  <th className="text-right py-2 px-2 font-medium text-teal">
+                                    海南+萨摩亚
+                                  </th>
+                                  <th className="text-right py-2 px-2 font-medium text-coral">
+                                    节省
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -459,10 +513,18 @@ export default function TaxCalculator() {
                                     className="border-b border-white/[0.04] last:border-0"
                                   >
                                     <td className="py-2.5 px-2 text-text-primary">{row.taxType}</td>
-                                    <td className="py-2.5 px-2 text-right text-text-secondary">${row.mainland.toLocaleString()}</td>
-                                    <td className="py-2.5 px-2 text-right text-text-secondary">${row.hainan.toLocaleString()}</td>
-                                    <td className="py-2.5 px-2 text-right text-teal font-medium">${row.hainanSamoa.toLocaleString()}</td>
-                                    <td className="py-2.5 px-2 text-right text-coral font-medium">${row.savings.toLocaleString()}</td>
+                                    <td className="py-2.5 px-2 text-right text-text-secondary">
+                                      ${row.mainland.toLocaleString()}
+                                    </td>
+                                    <td className="py-2.5 px-2 text-right text-text-secondary">
+                                      ${row.hainan.toLocaleString()}
+                                    </td>
+                                    <td className="py-2.5 px-2 text-right text-teal font-medium">
+                                      ${row.hainanSamoa.toLocaleString()}
+                                    </td>
+                                    <td className="py-2.5 px-2 text-right text-coral font-medium">
+                                      ${row.savings.toLocaleString()}
+                                    </td>
                                   </motion.tr>
                                 ))}
                               </tbody>
@@ -493,9 +555,13 @@ export default function TaxCalculator() {
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <span className="text-body-sm font-medium text-text-primary">{step.from}</span>
+                                  <span className="text-body-sm font-medium text-text-primary">
+                                    {step.from}
+                                  </span>
                                   <ArrowLeft size={12} className="text-text-muted rotate-180" />
-                                  <span className="text-body-sm font-medium text-coral">{step.to}</span>
+                                  <span className="text-body-sm font-medium text-coral">
+                                    {step.to}
+                                  </span>
                                 </div>
                                 <p className="text-caption text-text-muted mt-0.5">{step.desc}</p>
                               </div>
@@ -520,7 +586,9 @@ export default function TaxCalculator() {
                         >
                           <div className="flex items-center gap-2 mb-3">
                             <Sparkles size={16} className="text-coral" />
-                            <span className="text-body-sm font-medium text-text-primary">AI 智能税务建议</span>
+                            <span className="text-body-sm font-medium text-text-primary">
+                              AI 智能税务建议
+                            </span>
                           </div>
                           {AI_ADVICE.map((advice, idx) => (
                             <motion.div
@@ -531,7 +599,9 @@ export default function TaxCalculator() {
                               className="flex items-start gap-2.5"
                             >
                               <CheckCircle size={14} className="text-teal mt-0.5 shrink-0" />
-                              <p className="text-[13px] text-text-secondary leading-relaxed">{advice}</p>
+                              <p className="text-[13px] text-text-secondary leading-relaxed">
+                                {advice}
+                              </p>
                             </motion.div>
                           ))}
                         </motion.div>
@@ -548,7 +618,9 @@ export default function TaxCalculator() {
                         >
                           <div className="flex items-center gap-2 mb-3">
                             <BookOpen size={16} className="text-coral" />
-                            <span className="text-body-sm font-medium text-text-primary">法规数据来源 (RAG)</span>
+                            <span className="text-body-sm font-medium text-text-primary">
+                              法规数据来源 (RAG)
+                            </span>
                           </div>
                           {REGULATION_SOURCES.map((src, idx) => (
                             <motion.div
@@ -561,7 +633,9 @@ export default function TaxCalculator() {
                               <div className="w-5 h-5 rounded-full bg-coral/15 flex items-center justify-center shrink-0 mt-0.5">
                                 <span className="text-[10px] text-coral font-bold">{idx + 1}</span>
                               </div>
-                              <p className="text-[13px] text-text-secondary leading-relaxed">{src}</p>
+                              <p className="text-[13px] text-text-secondary leading-relaxed">
+                                {src}
+                              </p>
                             </motion.div>
                           ))}
                           <p className="text-[11px] text-text-muted mt-2 flex items-center gap-1.5">

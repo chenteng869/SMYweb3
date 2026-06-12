@@ -112,7 +112,14 @@ export interface CompanyBankAccount {
   status: 'active' | 'pending' | 'closed';
 }
 
-export type CompanyType = 'samoa_spv' | 'hong_kong' | 'singapore' | 'bvi' | 'cayman' | 'delaware' | 'seychelles';
+export type CompanyType =
+  | 'samoa_spv'
+  | 'hong_kong'
+  | 'singapore'
+  | 'bvi'
+  | 'cayman'
+  | 'delaware'
+  | 'seychelles';
 
 export type CompanyStatus = 'active' | 'pending' | 'suspended' | 'dissolved';
 

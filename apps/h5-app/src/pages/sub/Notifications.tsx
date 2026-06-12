@@ -2,9 +2,20 @@ import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import {
-  Bell, CheckCircle, AlertTriangle, Info, ChevronRight,
-  CheckCheck, Archive, Sparkles, ShoppingBag, Shield,
-  TrendingUp, Award, X, RefreshCw
+  Bell,
+  CheckCircle,
+  AlertTriangle,
+  Info,
+  ChevronRight,
+  CheckCheck,
+  Archive,
+  Sparkles,
+  ShoppingBag,
+  Shield,
+  TrendingUp,
+  Award,
+  X,
+  RefreshCw,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/components/layout/TopBar';
@@ -56,44 +67,88 @@ const filterTabs = [
 // ============================
 const mockEnhancedNotifications: EnhancedNotification[] = [
   {
-    id: 'notif_001', title: '萨摩亚公司年审提醒', message: '太初国际（萨摩亚）有限公司年度申报将于7天后到期，请及时处理。',
-    type: 'warning', read: false, timestamp: '2024-12-19T10:30:00', actionUrl: '/documents',
-    category: 'system', time: '10:30',
+    id: 'notif_001',
+    title: '萨摩亚公司年审提醒',
+    message: '太初国际（萨摩亚）有限公司年度申报将于7天后到期，请及时处理。',
+    type: 'warning',
+    read: false,
+    timestamp: '2024-12-19T10:30:00',
+    actionUrl: '/documents',
+    category: 'system',
+    time: '10:30',
   },
   {
-    id: 'notif_002', title: '巴西买家发起退换货申请', message: '订单 #RMA-2026-001 买家要求退换货，请尽快处理。',
-    type: 'warning', read: false, timestamp: '2024-12-19T09:15:00',
-    category: 'business', time: '09:15',
+    id: 'notif_002',
+    title: '巴西买家发起退换货申请',
+    message: '订单 #RMA-2026-001 买家要求退换货，请尽快处理。',
+    type: 'warning',
+    read: false,
+    timestamp: '2024-12-19T09:15:00',
+    category: 'business',
+    time: '09:15',
   },
   {
-    id: 'notif_003', title: 'AI汇率官：USD/CNY触及7.20', message: '当前汇率7.1956，接近您的设定阈值7.20，建议关注换汇时机。',
-    type: 'info', read: false, timestamp: '2024-12-19T08:00:00',
-    category: 'ai', time: '08:00',
+    id: 'notif_003',
+    title: 'AI汇率官：USD/CNY触及7.20',
+    message: '当前汇率7.1956，接近您的设定阈值7.20，建议关注换汇时机。',
+    type: 'info',
+    read: false,
+    timestamp: '2024-12-19T08:00:00',
+    category: 'ai',
+    time: '08:00',
   },
   {
-    id: 'notif_004', title: '香港银行账户开户申请已提交', message: '您的香港汇丰银行账户开户申请已提交审核，预计3-5个工作日完成。',
-    type: 'success', read: true, timestamp: '2024-12-18T16:45:00',
-    category: 'system', time: '16:45',
+    id: 'notif_004',
+    title: '香港银行账户开户申请已提交',
+    message: '您的香港汇丰银行账户开户申请已提交审核，预计3-5个工作日完成。',
+    type: 'success',
+    read: true,
+    timestamp: '2024-12-18T16:45:00',
+    category: 'system',
+    time: '16:45',
   },
   {
-    id: 'notif_005', title: 'AI选品官发现3个潜力爆品', message: '泰国市场智能家居品类发现3个高增长潜力产品，预估利润率35-50%。',
-    type: 'info', read: true, timestamp: '2024-12-18T14:20:00', actionUrl: '/ai-chat/agent_003',
-    category: 'ai', time: '14:20',
+    id: 'notif_005',
+    title: 'AI选品官发现3个潜力爆品',
+    message: '泰国市场智能家居品类发现3个高增长潜力产品，预估利润率35-50%。',
+    type: 'info',
+    read: true,
+    timestamp: '2024-12-18T14:20:00',
+    actionUrl: '/ai-chat/agent_003',
+    category: 'ai',
+    time: '14:20',
   },
   {
-    id: 'notif_006', title: 'DLC等级已提升至L6大师', message: '恭喜！您的DLC等级已提升至「L6大师」，解锁全部专属权益。',
-    type: 'success', read: true, timestamp: '2024-12-15T09:00:00', actionUrl: '/dlc-level',
-    category: 'system', time: '3天前',
+    id: 'notif_006',
+    title: 'DLC等级已提升至L6大师',
+    message: '恭喜！您的DLC等级已提升至「L6大师」，解锁全部专属权益。',
+    type: 'success',
+    read: true,
+    timestamp: '2024-12-15T09:00:00',
+    actionUrl: '/dlc-level',
+    category: 'system',
+    time: '3天前',
   },
   {
-    id: 'notif_007', title: 'Stripe费率调整通知', message: 'Stripe欧洲卡组织费率将于明年1月上调0.3%，建议提前评估。',
-    type: 'warning', read: true, timestamp: '2024-12-12T11:00:00',
-    category: 'business', time: '7天前',
+    id: 'notif_007',
+    title: 'Stripe费率调整通知',
+    message: 'Stripe欧洲卡组织费率将于明年1月上调0.3%，建议提前评估。',
+    type: 'warning',
+    read: true,
+    timestamp: '2024-12-12T11:00:00',
+    category: 'business',
+    time: '7天前',
   },
   {
-    id: 'notif_008', title: 'AI法务精灵完成合同审查', message: '您的供应商合同已审查完毕，发现1个中风险条款建议修改。',
-    type: 'info', read: false, timestamp: '2024-12-19T07:30:00', actionUrl: '/ai-chat/agent_002',
-    category: 'ai', time: '07:30',
+    id: 'notif_008',
+    title: 'AI法务精灵完成合同审查',
+    message: '您的供应商合同已审查完毕，发现1个中风险条款建议修改。',
+    type: 'info',
+    read: false,
+    timestamp: '2024-12-19T07:30:00',
+    actionUrl: '/ai-chat/agent_002',
+    category: 'ai',
+    time: '07:30',
   },
 ];
 
@@ -153,7 +208,9 @@ function SwipeableNotificationItem({ notification, index, onDismiss, onRead }: S
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.15}
         onDragEnd={handleDragEnd}
-        onDrag={(_, info) => { x.current = info.offset.x; }}
+        onDrag={(_, info) => {
+          x.current = info.offset.x;
+        }}
         style={{ x: 0 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onRead(notification.id)}
@@ -166,20 +223,33 @@ function SwipeableNotificationItem({ notification, index, onDismiss, onRead }: S
         >
           <div className="flex items-start gap-3">
             {/* Icon */}
-            <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center shrink-0', typeConf.bg)}>
+            <div
+              className={cn(
+                'w-9 h-9 rounded-lg flex items-center justify-center shrink-0',
+                typeConf.bg
+              )}
+            >
               <Icon size={18} className={typeConf.color} />
             </div>
             {/* Content */}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 {/* Category Badge */}
-                <span className={cn('text-[9px] px-1.5 py-0.5 rounded-sm font-medium', catConf.bg, catConf.color)}>
+                <span
+                  className={cn(
+                    'text-[9px] px-1.5 py-0.5 rounded-sm font-medium',
+                    catConf.bg,
+                    catConf.color
+                  )}
+                >
                   {catConf.label}
                 </span>
-                <h3 className={cn(
-                  'text-body-sm truncate',
-                  notification.read ? 'text-text-secondary' : 'text-text-primary font-medium'
-                )}>
+                <h3
+                  className={cn(
+                    'text-body-sm truncate',
+                    notification.read ? 'text-text-secondary' : 'text-text-primary font-medium'
+                  )}
+                >
                   {notification.title}
                 </h3>
                 {!notification.read && (
@@ -190,7 +260,9 @@ function SwipeableNotificationItem({ notification, index, onDismiss, onRead }: S
                   />
                 )}
               </div>
-              <p className="text-caption text-text-muted mt-1 line-clamp-2">{notification.message}</p>
+              <p className="text-caption text-text-muted mt-1 line-clamp-2">
+                {notification.message}
+              </p>
               <p className="text-[10px] text-text-muted mt-1.5">{notification.time}</p>
             </div>
           </div>
@@ -234,24 +306,24 @@ export default function Notifications() {
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const notifications = useAppStore(s => s.notifications);
-  const markNotificationRead = useAppStore(s => s.markNotificationRead);
-  const setNotifications = useAppStore(s => s.setNotifications);
+  const notifications = useAppStore((s) => s.notifications);
+  const markNotificationRead = useAppStore((s) => s.markNotificationRead);
+  const setNotifications = useAppStore((s) => s.setNotifications);
 
   // Merge store notifications with enhanced mock data
-  const allNotifications: EnhancedNotification[] = mockEnhancedNotifications.map(n => ({
+  const allNotifications: EnhancedNotification[] = mockEnhancedNotifications.map((n) => ({
     ...n,
-    read: notifications.find(sn => sn.id === n.id)?.read ?? n.read,
+    read: notifications.find((sn) => sn.id === n.id)?.read ?? n.read,
   }));
 
   // Filter
-  const filteredNotifications = allNotifications.filter(n => {
+  const filteredNotifications = allNotifications.filter((n) => {
     if (dismissedIds.has(n.id)) return false;
     if (activeFilter === 'all') return true;
     return n.category === activeFilter;
   });
 
-  const unreadCount = filteredNotifications.filter(n => !n.read).length;
+  const unreadCount = filteredNotifications.filter((n) => !n.read).length;
 
   // Group by date
   const grouped = filteredNotifications.reduce<Record<string, EnhancedNotification[]>>((acc, n) => {
@@ -264,15 +336,18 @@ export default function Notifications() {
   const dateGroups = Object.entries(grouped);
 
   const handleDismiss = useCallback((id: string) => {
-    setDismissedIds(prev => new Set(prev).add(id));
+    setDismissedIds((prev) => new Set(prev).add(id));
   }, []);
 
-  const handleMarkRead = useCallback((id: string) => {
-    markNotificationRead(id);
-  }, [markNotificationRead]);
+  const handleMarkRead = useCallback(
+    (id: string) => {
+      markNotificationRead(id);
+    },
+    [markNotificationRead]
+  );
 
   const handleMarkAllRead = useCallback(() => {
-    filteredNotifications.forEach(n => {
+    filteredNotifications.forEach((n) => {
       if (!n.read) markNotificationRead(n.id);
     });
   }, [filteredNotifications, markNotificationRead]);
@@ -334,9 +409,10 @@ export default function Notifications() {
         <div className="flex items-center gap-1 p-1 bg-bg-card rounded-md border border-white/[0.06]">
           {filterTabs.map((tab) => {
             const isActive = activeFilter === tab.id;
-            const count = tab.id === 'all'
-              ? allNotifications.filter(n => !n.read).length
-              : allNotifications.filter(n => n.category === tab.id && !n.read).length;
+            const count =
+              tab.id === 'all'
+                ? allNotifications.filter((n) => !n.read).length
+                : allNotifications.filter((n) => n.category === tab.id && !n.read).length;
 
             return (
               <motion.button
@@ -345,7 +421,9 @@ export default function Notifications() {
                 onClick={() => setActiveFilter(tab.id)}
                 className={cn(
                   'relative flex-1 flex items-center justify-center gap-1 py-2 rounded-sm text-body-sm transition-colors',
-                  isActive ? 'text-text-primary font-medium' : 'text-text-muted hover:text-text-secondary'
+                  isActive
+                    ? 'text-text-primary font-medium'
+                    : 'text-text-muted hover:text-text-secondary'
                 )}
               >
                 {isActive && (

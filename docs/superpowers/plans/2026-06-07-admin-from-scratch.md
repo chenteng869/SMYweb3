@@ -9,6 +9,7 @@
 **Goal:** 从零独立开发一套 **WOPC 创业家** 管理员后台,严格匹配 H5 业务(萨摩亚SPV、海购星Dapp、AI 大脑、直播/短视频、DAO、跨境支付、税务、DLC 等级),10 大模块 30+ 页面,API + 路由 + 数据库 + AI 全部严格到位。
 
 **Architecture:**
+
 - `apps/admin-app/`(新建) — **管理后台前端**,Vite 7 + React 19 + shadcn/ui + Tailwind 3.4 + Zustand 5 + React Router 6.28 + recharts + axios + zod
 - `apps/admin-api/`(新建) — **管理后台后端**,NestJS 10 + Prisma 5 + PostgreSQL 16 + Redis 7 + JWT 鉴权 + RBAC + Swagger
 - **完全独立**于 h5-app(独立端口、独立包、独立鉴权)
@@ -17,24 +18,25 @@
 - 数据:后端就绪后,admin 调真实 API;开发期用 Prisma + seed 脚本初始化 mock 数据
 
 **Tech Stack(选定):**
+
 - 前端:React 19.2 + TypeScript 5.9 + Vite 7.3 + Tailwind 3.4 + shadcn/ui + Zustand 5 + React Router 6.28 + recharts + axios + zod + sonner
 - 后端:NestJS 10 + Prisma 5 + PostgreSQL 16 + Redis 7 + JWT(@nestjs/jwt) + bcrypt + Swagger + class-validator + class-transformer
 - 工具:pnpm monorepo + turbo / npm workspaces
 
 **10 大模块清单:**
 
-| # | 模块 | 路由 | 核心实体 |
-|---|---|---|---|
-| 1 | **Dashboard 总览** | `/admin/dashboard` | KPI 卡片 / 趋势图 / 流水表 |
-| 2 | **用户管理** | `/admin/users` | `User`(含 H5 端同步)、KYC、邀请层级 |
-| 3 | **公司管理** | `/admin/companies` | `Company`(萨摩亚SPV/香港/新加坡/BVI/开曼)、订单 |
-| 4 | **AI 智能体** | `/admin/ai-agents` | `AiAgent` 10 个、知识库、调用日志 |
-| 5 | **跨境支付** | `/admin/payments` | `PaymentOrder`、汇率、银行通道 |
-| 6 | **直播管理** | `/admin/livestreams` | `Livestream` 房间、PK 记录、礼物流水 |
-| 7 | **短视频/UGC** | `/admin/short-videos` | `ShortVideo`、审核、举报处理 |
-| 8 | **DAO 社区** | `/admin/dao` | `DaoProposal`、投票、奖励发放 |
-| 9 | **税务数据库** | `/admin/taxes` | `TaxRate`(国家/地区)、DVSF 分红池 |
-| 10 | **DLC 等级 & 系统设置** | `/admin/dlc`、`/admin/settings` | `DlcLevel` 配置、Admin 账号、审计日志、服务器状态 |
+| #   | 模块                    | 路由                            | 核心实体                                          |
+| --- | ----------------------- | ------------------------------- | ------------------------------------------------- |
+| 1   | **Dashboard 总览**      | `/admin/dashboard`              | KPI 卡片 / 趋势图 / 流水表                        |
+| 2   | **用户管理**            | `/admin/users`                  | `User`(含 H5 端同步)、KYC、邀请层级               |
+| 3   | **公司管理**            | `/admin/companies`              | `Company`(萨摩亚SPV/香港/新加坡/BVI/开曼)、订单   |
+| 4   | **AI 智能体**           | `/admin/ai-agents`              | `AiAgent` 10 个、知识库、调用日志                 |
+| 5   | **跨境支付**            | `/admin/payments`               | `PaymentOrder`、汇率、银行通道                    |
+| 6   | **直播管理**            | `/admin/livestreams`            | `Livestream` 房间、PK 记录、礼物流水              |
+| 7   | **短视频/UGC**          | `/admin/short-videos`           | `ShortVideo`、审核、举报处理                      |
+| 8   | **DAO 社区**            | `/admin/dao`                    | `DaoProposal`、投票、奖励发放                     |
+| 9   | **税务数据库**          | `/admin/taxes`                  | `TaxRate`(国家/地区)、DVSF 分红池                 |
+| 10  | **DLC 等级 & 系统设置** | `/admin/dlc`、`/admin/settings` | `DlcLevel` 配置、Admin 账号、审计日志、服务器状态 |
 
 ---
 
@@ -127,29 +129,29 @@ SMYweb3.020260527/
 
 ## 🎯 用户决策摘要(已确认)
 
-| 决策点 | 选择 |
-|---|---|
-| 代码位置 | **新建独立 admin-app**(与 h5-app 平行,不耦合) |
-| 后端 | **同时开发后端**(本计划) — NestJS + Prisma + PostgreSQL + Redis |
-| 鉴权 | **admin 独立 JWT**(独立表/secret/login) |
-| 菜单范围 | **10 大模块** |
-| 测试 | **不引入 Vitest(黄区警告)**,用 `tsc --noEmit` + `nest build` + `tsc --noEmit` + 后端集成 curl |
+| 决策点   | 选择                                                                                          |
+| -------- | --------------------------------------------------------------------------------------------- |
+| 代码位置 | **新建独立 admin-app**(与 h5-app 平行,不耦合)                                                 |
+| 后端     | **同时开发后端**(本计划) — NestJS + Prisma + PostgreSQL + Redis                               |
+| 鉴权     | **admin 独立 JWT**(独立表/secret/login)                                                       |
+| 菜单范围 | **10 大模块**                                                                                 |
+| 测试     | **不引入 Vitest(黄区警告)**,用 `tsc --noEmit` + `nest build` + `tsc --noEmit` + 后端集成 curl |
 
 ---
 
 ## 📋 17 个 Phase × ~50 个 Task 总览
 
-| Phase | 内容 | Tasks |
-|---|---|---|
-| **Phase 0** | Monorepo 脚手架 | 3 |
-| **Phase 1** | admin-api 基础(NestJS + Prisma + JWT + RBAC) | 6 |
-| **Phase 2** | admin-app 脚手架(Vite + React 19 + shadcn/ui) | 5 |
-| **Phase 3** | admin-app 鉴权(Login + AuthGuard + 路由) | 4 |
-| **Phase 4** | AdminLayout 桌面布局(Sidebar + Header + Content) | 3 |
-| **Phase 5** | Dashboard 总览 | 2 |
-| **Phase 6-15** | 10 大模块各 1 个 Phase(Schema + API + 页面) | 每个 Phase 3-4 tasks |
-| **Phase 16** | 集成验证 | 2 |
-| **总计** | | ~50 |
+| Phase          | 内容                                             | Tasks                |
+| -------------- | ------------------------------------------------ | -------------------- |
+| **Phase 0**    | Monorepo 脚手架                                  | 3                    |
+| **Phase 1**    | admin-api 基础(NestJS + Prisma + JWT + RBAC)     | 6                    |
+| **Phase 2**    | admin-app 脚手架(Vite + React 19 + shadcn/ui)    | 5                    |
+| **Phase 3**    | admin-app 鉴权(Login + AuthGuard + 路由)         | 4                    |
+| **Phase 4**    | AdminLayout 桌面布局(Sidebar + Header + Content) | 3                    |
+| **Phase 5**    | Dashboard 总览                                   | 2                    |
+| **Phase 6-15** | 10 大模块各 1 个 Phase(Schema + API + 页面)      | 每个 Phase 3-4 tasks |
+| **Phase 16**   | 集成验证                                         | 2                    |
+| **总计**       |                                                  | ~50                  |
 
 ---
 
@@ -158,10 +160,12 @@ SMYweb3.020260527/
 ### T0.1: 在 monorepo 根配置 workspaces
 
 **Files:**
+
 - Modify: `package.json`(根)
 - Create: `pnpm-workspace.yaml`
 
 - [ ] **Step 1: 读根 package.json**
+
 ```bash
 cat package.json
 ```
@@ -169,6 +173,7 @@ cat package.json
 - [ ] **Step 2: 决定用 npm 还是 pnpm**
 - 默认用 **npm workspaces**(无需额外安装)
 - 在 `package.json` 根加:
+
 ```json
 {
   "workspaces": ["apps/*"]
@@ -176,6 +181,7 @@ cat package.json
 ```
 
 - [ ] **Step 3: 验证**
+
 ```bash
 npm ls --workspaces --depth=0
 # 期望:列出 h5-app, admin-web-legacy(若 workspaces 已含)
@@ -188,6 +194,7 @@ npm ls --workspaces --depth=0
 ### T0.2: 创建 admin-app 包结构
 
 **Files:**
+
 - Create: `apps/admin-app/package.json`
 - Create: `apps/admin-app/tsconfig.json`
 - Create: `apps/admin-app/tsconfig.node.json`
@@ -196,11 +203,13 @@ npm ls --workspaces --depth=0
 - Create: `apps/admin-app/.env.example`
 
 - [ ] **Step 1: 创建目录**
+
 ```bash
 mkdir -p apps/admin-app/src
 ```
 
 - [ ] **Step 2: package.json**(用与 h5-app 相同核心栈)
+
 ```json
 {
   "name": "@wopc/admin-app",
@@ -254,6 +263,7 @@ mkdir -p apps/admin-app/src
 ```
 
 - [ ] **Step 3: tsconfig.json**
+
 ```json
 {
   "compilerOptions": {
@@ -281,6 +291,7 @@ mkdir -p apps/admin-app/src
 ```
 
 - [ ] **Step 4: vite.config.ts**
+
 ```typescript
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -302,6 +313,7 @@ export default defineConfig({
 ```
 
 - [ ] **Step 5: index.html + tailwind/postcss + .env.example**
+
 ```html
 <!-- index.html -->
 <!doctype html>
@@ -324,12 +336,14 @@ VITE_API_BASE_URL=http://localhost:4000/api
 ```
 
 - [ ] **Step 6: 安装依赖**
+
 ```bash
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527"
 npm install
 ```
 
 - [ ] **Step 7: 验证**
+
 ```bash
 cd apps/admin-app
 npx tsc --noEmit
@@ -343,17 +357,20 @@ npx tsc --noEmit
 ### T0.3: 创建 admin-api 包结构
 
 **Files:**
+
 - Create: `apps/admin-api/package.json`
 - Create: `apps/admin-api/tsconfig.json`
 - Create: `apps/admin-api/nest-cli.json`
 - Create: `apps/admin-api/.env.example`
 
 - [ ] **Step 1: 创建目录**
+
 ```bash
 mkdir -p apps/admin-api/src apps/admin-api/prisma
 ```
 
 - [ ] **Step 2: package.json**
+
 ```json
 {
   "name": "@wopc/admin-api",
@@ -402,6 +419,7 @@ mkdir -p apps/admin-api/src apps/admin-api/prisma
 ```
 
 - [ ] **Step 3: tsconfig.json + nest-cli.json + .env.example**
+
 ```json
 // tsconfig.json
 {
@@ -447,12 +465,14 @@ PORT=4000
 ```
 
 - [ ] **Step 4: 安装依赖**
+
 ```bash
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527"
 npm install
 ```
 
 - [ ] **Step 5: 验证**
+
 ```bash
 cd apps/admin-api
 npx tsc --noEmit
@@ -468,9 +488,11 @@ npx tsc --noEmit
 ### T1.1: Prisma schema 完整设计(所有 10 大模块的表)
 
 **Files:**
+
 - Create: `apps/admin-api/prisma/schema.prisma`
 
 - [ ] **Step 1: 设计 Admin 主表 + Auth**
+
 ```prisma
 generator client {
   provider = "prisma-client-js"
@@ -521,6 +543,7 @@ model AdminSession {
 ```
 
 - [ ] **Step 2: 加业务表(User、Company、Payment、Livestream、ShortVideo、Dao、Tax、DLC、AiAgent)**
+
 ```prisma
 // 完整 schema, 包含 10 大模块所有表
 // User / Company / PaymentOrder / AiAgent / AiAgentCall / Livestream / ShortVideo /
@@ -549,6 +572,7 @@ enum ReportStatus { PENDING RESOLVED REJECTED }
   - Step 8: DaoProposal + DaoVote + TaxRate + DlcLevel + Setting + AuditLog
 
 - [ ] **Step 9: 生成 Prisma Client**
+
 ```bash
 cd apps/admin-api
 npx prisma generate
@@ -556,6 +580,7 @@ npx prisma generate
 ```
 
 - [ ] **Step 10: 验证编译**
+
 ```bash
 npx tsc --noEmit
 # 期望:无 error
@@ -568,22 +593,29 @@ npx tsc --noEmit
 ### T1.2: PrismaService + 全局模块
 
 **Files:**
+
 - Create: `apps/admin-api/src/prisma/prisma.module.ts`
 - Create: `apps/admin-api/src/prisma/prisma.service.ts`
 
 - [ ] **Step 1: PrismaService**
+
 ```typescript
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-  async onModuleInit() { await this.$connect(); }
-  async onModuleDestroy() { await this.$disconnect(); }
+  async onModuleInit() {
+    await this.$connect();
+  }
+  async onModuleDestroy() {
+    await this.$disconnect();
+  }
 }
 ```
 
 - [ ] **Step 2: PrismaModule**
+
 ```typescript
 import { Global, Module } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
@@ -603,12 +635,14 @@ export class PrismaModule {}
 ### T1.3: Auth 模块(JWT 登录/刷新/登出)
 
 **Files:**
+
 - Create: `apps/admin-api/src/modules/auth/*`(controller / service / dto / strategy)
 - Create: `apps/admin-api/src/common/guards/jwt-auth.guard.ts`
 - Create: `apps/admin-api/src/common/decorators/roles.decorator.ts`
 - Create: `apps/admin-api/src/common/guards/roles.guard.ts`
 
 - [ ] **Step 1: Auth DTO**
+
 ```typescript
 // auth/dto/login.dto.ts
 import { IsString, MinLength } from 'class-validator';
@@ -619,6 +653,7 @@ export class LoginDto {
 ```
 
 - [ ] **Step 2: AuthService**(登录校验 + bcrypt + 生成 token)
+
 ```typescript
 // auth/auth.service.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -629,19 +664,26 @@ import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private jwt: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService
+  ) {}
 
   async login(dto: LoginDto) {
     const admin = await this.prisma.admin.findUnique({ where: { username: dto.username } });
     if (!admin || !admin.isActive) throw new UnauthorizedException('账号不存在或已停用');
-    if (!await bcrypt.compare(dto.password, admin.passwordHash)) {
+    if (!(await bcrypt.compare(dto.password, admin.passwordHash))) {
       throw new UnauthorizedException('密码错误');
     }
     const token = this.jwt.sign({ sub: admin.id, role: admin.role, username: admin.username });
     const expiresAt = new Date(Date.now() + 7 * 24 * 3600 * 1000);
     await this.prisma.adminSession.create({ data: { adminId: admin.id, token, expiresAt } });
     await this.prisma.admin.update({ where: { id: admin.id }, data: { lastLoginAt: new Date() } });
-    return { token, expiresAt, admin: { id: admin.id, username: admin.username, fullName: admin.fullName, role: admin.role } };
+    return {
+      token,
+      expiresAt,
+      admin: { id: admin.id, username: admin.username, fullName: admin.fullName, role: admin.role },
+    };
   }
 
   async logout(token: string) {
@@ -652,18 +694,27 @@ export class AuthService {
   async me(adminId: string) {
     return this.prisma.admin.findUnique({
       where: { id: adminId },
-      select: { id: true, username: true, email: true, fullName: true, role: true, lastLoginAt: true },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        fullName: true,
+        role: true,
+        lastLoginAt: true,
+      },
     });
   }
 }
 ```
 
 - [ ] **Step 3: JwtAuthGuard + RolesGuard + decorators**
+
 ```typescript
 // common/guards/jwt-auth.guard.ts
 import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-@Injectable() export class JwtAuthGuard extends AuthGuard('jwt') {}
+@Injectable()
+export class JwtAuthGuard extends AuthGuard('jwt') {}
 
 // common/guards/roles.guard.ts
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
@@ -673,7 +724,10 @@ import { AdminRole } from '@prisma/client';
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
   canActivate(ctx: ExecutionContext): boolean {
-    const required = this.reflector.getAllAndOverride<AdminRole[]>('roles', [ctx.getHandler(), ctx.getClass()]);
+    const required = this.reflector.getAllAndOverride<AdminRole[]>('roles', [
+      ctx.getHandler(),
+      ctx.getClass(),
+    ]);
     if (!required?.length) return true;
     const { user } = ctx.switchToHttp().getRequest();
     return required.includes(user.role);
@@ -687,10 +741,13 @@ export const Roles = (...roles: AdminRole[]) => SetMetadata('roles', roles);
 
 // common/decorators/current-admin.decorator.ts
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-export const CurrentAdmin = createParamDecorator((_, ctx: ExecutionContext) => ctx.switchToHttp().getRequest().user);
+export const CurrentAdmin = createParamDecorator(
+  (_, ctx: ExecutionContext) => ctx.switchToHttp().getRequest().user
+);
 ```
 
 - [ ] **Step 4: JwtStrategy**
+
 ```typescript
 // auth/jwt.strategy.ts
 import { Injectable } from '@nestjs/common';
@@ -698,12 +755,20 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() { super({ jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_SECRET! }); }
-  async validate(payload: any) { return { id: payload.sub, role: payload.role, username: payload.username }; }
+  constructor() {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: process.env.JWT_SECRET!,
+    });
+  }
+  async validate(payload: any) {
+    return { id: payload.sub, role: payload.role, username: payload.username };
+  }
 }
 ```
 
 - [ ] **Step 5: AuthController**
+
 ```typescript
 // auth/auth.controller.ts
 import { Body, Controller, Get, Headers, Post, UseGuards } from '@nestjs/common';
@@ -717,11 +782,15 @@ export class AuthController {
   constructor(private auth: AuthService) {}
 
   @Post('login')
-  async login(@Body() dto: LoginDto) { return this.auth.login(dto); }
+  async login(@Body() dto: LoginDto) {
+    return this.auth.login(dto);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async me(@CurrentAdmin() admin: any) { return this.auth.me(admin.id); }
+  async me(@CurrentAdmin() admin: any) {
+    return this.auth.me(admin.id);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
@@ -733,6 +802,7 @@ export class AuthController {
 ```
 
 - [ ] **Step 6: 验证编译**
+
 ```bash
 cd apps/admin-api
 npx tsc --noEmit
@@ -746,9 +816,11 @@ npx tsc --noEmit
 ### T1.4: Seed 脚本(初始化超级管理员 + 各模块 mock 数据)
 
 **Files:**
+
 - Create: `apps/admin-api/prisma/seed.ts`
 
 - [ ] **Step 1: 写 seed 脚本**
+
 ```typescript
 import { PrismaClient, AdminRole, DlcLevel, CompanyType } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -761,7 +833,13 @@ async function main() {
   await prisma.admin.upsert({
     where: { username: 'admin' },
     update: {},
-    create: { username: 'admin', email: 'admin@wopc.io', passwordHash, fullName: '系统管理员', role: AdminRole.SUPER_ADMIN },
+    create: {
+      username: 'admin',
+      email: 'admin@wopc.io',
+      passwordHash,
+      fullName: '系统管理员',
+      role: AdminRole.SUPER_ADMIN,
+    },
   });
 
   // 2. 10 个 DLC 等级
@@ -772,7 +850,11 @@ async function main() {
     { level: 6, name: '钻石', minDvc: 50000, color: '#B9F2FF', multiplier: 2.5 },
   ];
   for (const l of levels) {
-    await prisma.dlcLevel.upsert({ where: { id: `dlc-${l.level}` }, update: l, create: { id: `dlc-${l.level}`, ...l } });
+    await prisma.dlcLevel.upsert({
+      where: { id: `dlc-${l.level}` },
+      update: l,
+      create: { id: `dlc-${l.level}`, ...l },
+    });
   }
 
   // 3. 各模块 mock 数据(50 个用户 / 30 家公司 / 20 笔支付 / 5 个 AI 智能体 / 10 场直播 / 50 短视频 / 10 提案)
@@ -781,10 +863,16 @@ async function main() {
   console.log('Seed completed');
 }
 
-main().catch((e) => { console.error(e); process.exit(1); }).finally(() => prisma.$disconnect());
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());
 ```
 
 - [ ] **Step 2: 跑 seed**
+
 ```bash
 cd apps/admin-api
 npx ts-node prisma/seed.ts
@@ -798,10 +886,12 @@ npx ts-node prisma/seed.ts
 ### T1.5: 公共响应拦截器 + 全局异常过滤器
 
 **Files:**
+
 - Create: `apps/admin-api/src/common/interceptors/response.interceptor.ts`
 - Create: `apps/admin-api/src/common/filters/all-exceptions.filter.ts`
 
 - [ ] **Step 1: 统一响应格式**
+
 ```typescript
 // response.interceptor.ts
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
@@ -815,19 +905,35 @@ export class ResponseInterceptor implements NestInterceptor {
 ```
 
 - [ ] **Step 2: 全局异常过滤器**
+
 ```typescript
 // all-exceptions.filter.ts
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpException,
+  HttpStatus,
+  Logger,
+} from '@nestjs/common';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse();
-    const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-    const message = exception instanceof HttpException ? exception.getResponse() : 'Internal Server Error';
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+    const message =
+      exception instanceof HttpException ? exception.getResponse() : 'Internal Server Error';
     if (status >= 500) this.logger.error(exception);
-    res.status(status).json({ code: status, message: typeof message === 'string' ? message : (message as any).message ?? 'Error', data: null });
+    res
+      .status(status)
+      .json({
+        code: status,
+        message: typeof message === 'string' ? message : ((message as any).message ?? 'Error'),
+        data: null,
+      });
   }
 }
 ```
@@ -839,10 +945,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
 ### T1.6: AppModule + main.ts
 
 **Files:**
+
 - Create: `apps/admin-api/src/app.module.ts`
 - Create: `apps/admin-api/src/main.ts`
 
 - [ ] **Step 1: AppModule**
+
 ```typescript
 // app.module.ts
 import { Module } from '@nestjs/common';
@@ -862,6 +970,7 @@ export class AppModule {}
 ```
 
 - [ ] **Step 2: main.ts**
+
 ```typescript
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
@@ -877,7 +986,11 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.enableCors({ origin: ['http://localhost:4001'], credentials: true });
 
-  const config = new DocumentBuilder().setTitle('WOPC Admin API').setVersion('1.0').addBearerAuth().build();
+  const config = new DocumentBuilder()
+    .setTitle('WOPC Admin API')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
   SwaggerModule.setup('api/docs', app, () => SwaggerModule.createDocument(app, config));
 
   await app.listen(process.env.PORT ?? 4000);
@@ -888,6 +1001,7 @@ bootstrap();
 ```
 
 - [ ] **Step 3: 启动 + 验证**
+
 ```bash
 cd apps/admin-api
 # (需要先启动 PostgreSQL + Redis,见后续)
@@ -934,8 +1048,11 @@ curl -X POST http://localhost:4000/api/auth/login -H "Content-Type: application/
 # Phase 3: 鉴权 (4 tasks)
 
 ### T3.1: Login 页面(shadcn Form + 暗色风格)
+
 ### T3.2: AuthGuard 组件(JWT 过期跳登录)
+
 ### T3.3: Logout(清 storage + 跳登录)
+
 ### T3.4: 路由守卫整合
 
 ---
@@ -943,6 +1060,7 @@ curl -X POST http://localhost:4000/api/auth/login -H "Content-Type: application/
 # Phase 4: AdminLayout 桌面布局 (3 tasks)
 
 ### T4.1: AdminLayout(侧边栏 + 顶部 + 内容)
+
 - 侧边栏 256px 可折叠到 64px
 - 顶部 56px(用户菜单 + 主题切换 + 通知)
 - 内容区自适应
@@ -956,11 +1074,13 @@ curl -X POST http://localhost:4000/api/auth/login -H "Content-Type: application/
 # Phase 5: Dashboard 总览 (2 tasks)
 
 ### T5.1: Dashboard API(/api/dashboard/stats)
+
 - 返回:用户总数、公司总数、今日支付、活跃直播
 - 趋势数据(7/30/90 天)
 - Top 列表(交易/直播/AI 调用)
 
 ### T5.2: Dashboard 页面
+
 - 4 个 KPI 卡片
 - 趋势折线图(recharts)
 - 占比饼图
@@ -970,20 +1090,21 @@ curl -X POST http://localhost:4000/api/auth/login -H "Content-Type: application/
 
 # Phase 6-15: 10 大模块各 1 个 Phase(每个 Phase 3-4 tasks,共 ~35 tasks)
 
-| Phase | 模块 | Tasks |
-|---|---|---|
-| **P6** | 用户管理 | T6.1 用户 API / T6.2 用户列表页 / T6.3 用户详情 / T6.4 KYC 审核 |
-| **P7** | 公司管理 | T7.1 公司 API / T7.2 公司列表 / T7.3 公司详情 / T7.4 订单管理 |
-| **P8** | AI 智能体 | T8.1 AI API / T8.2 智能体列表 / T8.3 智能体详情 + 知识库 / T8.4 调用日志 |
-| **P9** | 跨境支付 | T9.1 支付 API / T9.2 支付列表 / T9.3 支付详情 / T9.4 汇率 + 通道管理 |
-| **P10** | 直播管理 | T10.1 直播 API / T10.2 直播列表 / T10.3 直播详情 + 礼物流水 |
-| **P11** | 短视频/UGC | T11.1 视频 API / T11.2 视频列表 / T11.3 视频审核 / T11.4 举报处理 |
-| **P12** | DAO 社区 | T12.1 DAO API / T12.2 提案列表 / T12.3 提案详情 + 投票 / T12.4 奖励发放 |
-| **P13** | 税务数据库 | T13.1 税率 API / T13.2 税率列表(国家) / T13.3 DVSF 分红池 |
-| **P14** | DLC 等级 | T14.1 DLC API / T14.2 等级配置 / T14.3 等级变更历史 |
-| **P15** | 系统设置 | T15.1 管理员 API / T15.2 管理员列表 / T15.3 角色权限 / T15.4 审计日志 / T15.5 服务器状态 |
+| Phase   | 模块       | Tasks                                                                                    |
+| ------- | ---------- | ---------------------------------------------------------------------------------------- |
+| **P6**  | 用户管理   | T6.1 用户 API / T6.2 用户列表页 / T6.3 用户详情 / T6.4 KYC 审核                          |
+| **P7**  | 公司管理   | T7.1 公司 API / T7.2 公司列表 / T7.3 公司详情 / T7.4 订单管理                            |
+| **P8**  | AI 智能体  | T8.1 AI API / T8.2 智能体列表 / T8.3 智能体详情 + 知识库 / T8.4 调用日志                 |
+| **P9**  | 跨境支付   | T9.1 支付 API / T9.2 支付列表 / T9.3 支付详情 / T9.4 汇率 + 通道管理                     |
+| **P10** | 直播管理   | T10.1 直播 API / T10.2 直播列表 / T10.3 直播详情 + 礼物流水                              |
+| **P11** | 短视频/UGC | T11.1 视频 API / T11.2 视频列表 / T11.3 视频审核 / T11.4 举报处理                        |
+| **P12** | DAO 社区   | T12.1 DAO API / T12.2 提案列表 / T12.3 提案详情 + 投票 / T12.4 奖励发放                  |
+| **P13** | 税务数据库 | T13.1 税率 API / T13.2 税率列表(国家) / T13.3 DVSF 分红池                                |
+| **P14** | DLC 等级   | T14.1 DLC API / T14.2 等级配置 / T14.3 等级变更历史                                      |
+| **P15** | 系统设置   | T15.1 管理员 API / T15.2 管理员列表 / T15.3 角色权限 / T15.4 审计日志 / T15.5 服务器状态 |
 
 **每个 Task 的标准步骤:**
+
 1. Schema(若新增表)
 2. API Controller / Service
 3. 前端 API 客户端
@@ -995,7 +1116,9 @@ curl -X POST http://localhost:4000/api/auth/login -H "Content-Type: application/
 # Phase 16: 集成验证 (2 tasks)
 
 ### T16.1: 启动 PostgreSQL + Redis + 跑迁移 + seed
+
 ### T16.2: 启动 admin-api + admin-app + E2E 验证
+
 - 登录 → Dashboard → 切菜单 → 各模块页面渲染 → 退出
 
 ---
@@ -1012,9 +1135,10 @@ curl -X POST http://localhost:4000/api/auth/login -H "Content-Type: application/
 
 ## 📝 修订记录
 
-| 版本 | 日期 | 变更 |
-|---|---|---|
+| 版本 | 日期       | 变更                             |
+| ---- | ---------- | -------------------------------- |
 | v0.1 | 2026-06-07 | 初稿(替代 admin-web-legacy 计划) |
 
 ---
-*维护者:AI Dev Team | 项目:SMYweb3.020260527 | admin-app:4001 admin-api:4000*
+
+_维护者:AI Dev Team | 项目:SMYweb3.020260527 | admin-app:4001 admin-api:4000_

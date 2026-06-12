@@ -1,1 +1,13 @@
-{"compilerOptions": {"target": "ESNext", "module": "ESNext", "strict": true, "jsx": "preserve", "moduleResolution": "bundler", "allowImportingExtensions": true, "resolveJsonModule": true, "types": ["@dcloudio/types"]}, "include": ["**/*.ts", "**/*.vue"]}
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
+    "allowImportingExtensions": true,
+    "resolveJsonModule": true,
+    "types": ["@dcloudio/types"]
+  },
+  "include": ["**/*.ts", "**/*.vue"]
+}

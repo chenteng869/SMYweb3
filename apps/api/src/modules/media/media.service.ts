@@ -12,7 +12,13 @@ export class MediaService {
     if (status) where.status = status;
     if (search) where.OR = [{ title: { contains: search } }, { content: { contains: search } }];
     const [data, total] = await Promise.all([
-      this.prisma.mediaPost.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { user: true } }),
+      this.prisma.mediaPost.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { user: true },
+      }),
       this.prisma.mediaPost.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };
@@ -23,7 +29,8 @@ export class MediaService {
   }
 
   async create(data: any) {
-    if (data.imageUrls && typeof data.imageUrls !== 'string') data.imageUrls = JSON.stringify(data.imageUrls);
+    if (data.imageUrls && typeof data.imageUrls !== 'string')
+      data.imageUrls = JSON.stringify(data.imageUrls);
     return this.prisma.mediaPost.create({ data });
   }
 
@@ -41,7 +48,11 @@ export class MediaService {
       this.prisma.mediaPost.count({ where: { status: 'published' } }),
       this.prisma.mediaPost.count({ where: { status: 'draft' } }),
       this.prisma.mediaPost.count({ where: { status: 'scheduled' } }),
-      this.prisma.mediaPost.groupBy({ by: ['platform'], _count: { _all: true }, _sum: { impressions: true, likes: true } }),
+      this.prisma.mediaPost.groupBy({
+        by: ['platform'],
+        _count: { _all: true },
+        _sum: { impressions: true, likes: true },
+      }),
     ]);
     return { total, published, draft, scheduled, byPlatform: platformStats };
   }

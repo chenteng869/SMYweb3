@@ -300,9 +300,7 @@ function CredentialCard({
                 {credential.status}
               </StatusBadge>
             </div>
-            <p className="text-caption text-text-muted mt-0.5">
-              {credential.issuer}
-            </p>
+            <p className="text-caption text-text-muted mt-0.5">{credential.issuer}</p>
 
             <AnimatePresence>
               {expanded && (
@@ -355,13 +353,7 @@ function CredentialCard({
 // ============================
 // Activity Log Item Component
 // ============================
-function ActivityItem({
-  log,
-  index,
-}: {
-  log: (typeof ACTIVITY_LOGS)[0];
-  index: number;
-}) {
+function ActivityItem({ log, index }: { log: (typeof ACTIVITY_LOGS)[0]; index: number }) {
   const isSuccess = log.status === 'success';
 
   return (
@@ -380,10 +372,7 @@ function ActivityItem({
           isSuccess ? 'bg-teal/15' : 'bg-warning/15'
         }`}
       >
-        <Activity
-          size={14}
-          className={isSuccess ? 'text-teal' : 'text-warning'}
-        />
+        <Activity size={14} className={isSuccess ? 'text-teal' : 'text-warning'} />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-body-sm text-text-primary">{log.action}</p>
@@ -392,9 +381,7 @@ function ActivityItem({
         </p>
       </div>
       <div
-        className={`w-1.5 h-1.5 rounded-full shrink-0 mt-2 ${
-          isSuccess ? 'bg-teal' : 'bg-warning'
-        }`}
+        className={`w-1.5 h-1.5 rounded-full shrink-0 mt-2 ${isSuccess ? 'bg-teal' : 'bg-warning'}`}
       />
     </motion.div>
   );
@@ -499,12 +486,8 @@ export default function DidIdentity() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal" />
           </span>
-          <span className="text-caption text-teal font-medium">
-            {DID_DATA.blockchain} 已连接
-          </span>
-          <span className="text-caption text-text-muted">
-            · {DID_DATA.encryption}
-          </span>
+          <span className="text-caption text-teal font-medium">{DID_DATA.blockchain} 已连接</span>
+          <span className="text-caption text-text-muted">· {DID_DATA.encryption}</span>
         </motion.div>
 
         {/* DID Identity Card */}
@@ -536,9 +519,7 @@ export default function DidIdentity() {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-teal" />
-                  <span className="text-[10px] text-teal font-medium">
-                    {DID_DATA.authStatus}
-                  </span>
+                  <span className="text-[10px] text-teal font-medium">{DID_DATA.authStatus}</span>
                 </div>
               </div>
 
@@ -591,10 +572,7 @@ export default function DidIdentity() {
                   disabled={isRefreshing}
                   className="flex-1 flex items-center justify-center gap-1.5 h-9 rounded bg-white/[0.06] border border-white/[0.08] text-caption text-text-secondary hover:border-coral/30 transition-colors disabled:opacity-50"
                 >
-                  <RefreshCw
-                    size={13}
-                    className={isRefreshing ? 'animate-spin' : ''}
-                  />
+                  <RefreshCw size={13} className={isRefreshing ? 'animate-spin' : ''} />
                   刷新状态
                 </motion.button>
               </div>
@@ -663,7 +641,8 @@ export default function DidIdentity() {
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-h4 text-text-primary">数字凭证 (VC)</h3>
             <span className="text-caption text-text-muted">
-              {VC_CREDENTIALS.filter((c) => c.status === '已签发').length}/{VC_CREDENTIALS.length} 已签发
+              {VC_CREDENTIALS.filter((c) => c.status === '已签发').length}/{VC_CREDENTIALS.length}{' '}
+              已签发
             </span>
           </div>
           <div className="space-y-2.5">
@@ -720,7 +699,8 @@ export default function DidIdentity() {
         >
           <Lock size={13} className="text-text-muted shrink-0 mt-0.5" />
           <p className="text-[11px] text-text-muted leading-relaxed">
-            您的DID数据存储在FISCO BCOS区块链上，只有您持有私钥。太初国链不存储任何私钥信息，请妥善保管您的助记词。
+            您的DID数据存储在FISCO
+            BCOS区块链上，只有您持有私钥。太初国链不存储任何私钥信息，请妥善保管您的助记词。
           </p>
         </motion.div>
       </div>

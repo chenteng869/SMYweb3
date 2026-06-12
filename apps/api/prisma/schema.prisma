@@ -95,13 +95,20 @@ model User {
   paymentTxns     PaymentTransaction[]
   orders          Order[]
   dvcTransactions DvcTransaction[]
-  didIdentities   DidIdentity[]
-  businessCards   BusinessCard[]
-  documents       Document[]
-  videoComments   VideoComment[]
-  mediaPosts      MediaPost[]
-  aiMessages      AiMessage[]
-  aiTodos         AiTodo[]
+  didIdentities     DidIdentity[]
+  walletAccounts    WalletAccount[]
+  kycRecords        KycRecord[]
+  sbtCredentials    SbtCredential[]
+  platformPermissions PlatformPermission[]
+  businessCards     BusinessCard[]
+  documents         Document[]
+  videoComments     VideoComment[]
+  mediaPosts        MediaPost[]
+  aiMessages        AiMessage[]
+  fileStorages      FileStorage[]
+  agentSessions     AgentSession[]
+  llmCallLogs       LlmCallLog[]
+  aiTodos           AiTodo[]
   contracts       Contract[]
   notifications   Notification[]
 }
@@ -517,23 +524,186 @@ model Document {
   expiryDate DateTime?
   uploadedAt DateTime  @default(now())
   createdAt  DateTime  @default(now())
+
+  fileStorage    FileStorage[] @relation("DocumentFiles")
+  evidences      BlockchainEvidence[] @relation("DocumentEvidences")
+  eSignature     ESignature?
 }
 
 // ============================================================
-// 13. DID 数字身份 (DID Identity)
+// 13. DID 数字身份 (DID Identity) - 8 tables
 // ============================================================
 model DidIdentity {
-  id          Int       @id @default(autoincrement())
-  userId      Int       @unique
-  user        User      @relation(fields: [userId], references: [id])
-  did         String    @unique // did:wopc:xxxx
-  publicKey   String
-  blockchain  String    @default("wopc-chain")
-  status      String    @default("active") // active/revoked
-  issuedAt    DateTime  @default(now())
-  expiresAt   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id              Int       @id @default(autoincrement())
+  userId          Int       @unique
+  user            User      @relation(fields: [userId], references: [id])
+  did             String    @unique                // did:zsdt:U202600000001
+  didMethod       String    @default("zsdt")
+  status          String    @default("pending")    // pending/created/kyc_pending/verified/active/restricted/frozen/revoked/deactivated
+  kycStatus       String    @default("unverified") // unverified/pending/verified/rejected
+  amlStatus       String    @default("unchecked")  // unchecked/pending/cleared/suspicious
+  riskLevel       String    @default("low")        // low/medium/high/critical
+  memberLevel     String    @default("standard")   // standard/gold/platinum/diamond
+  primaryWallet   String?
+  credentialHash  String?
+  chainTxHash     String?
+  activatedAt     DateTime?
+  frozenAt        DateTime?
+  revokedAt       DateTime?
+  issuedAt        DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  wallets         WalletAccount[]
+  kycRecords      KycRecord[]
+  credentials     SbtCredential[]
+  permissions     PlatformPermission[]
+  auditLogs       DidAuditLog[]
+
+  @@index([status])
+  @@index([kycStatus])
+  @@map("did_identities")
+
+  blockchainEvidences BlockchainEvidence[]
+  eSignatures         ESignature[]     // 作为签名者
+}
+
+model WalletAccount {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  didId           Int?
+  did             DidIdentity? @relation(fields: [didId], references: [id])
+  walletAddress   String
+  chainId         String    @default("1")          // 1=ETH, 56=BSC
+  walletType      String?                          // metamask/okx/binance
+  isPrimary       Boolean   @default(false)
+  role            String    @default("primary")    // primary/backup/payment/exchange/ecommerce/gaming
+  riskStatus      String    @default("normal")     // normal/suspicious/blocked
+  lastLoginAt     DateTime?
+  linkedAt        DateTime  @default(now())
+  unlinkedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([walletAddress, chainId])
+  @@index([userId])
+  @@index([didId])
+  @@map("wallet_accounts")
+}
+
+model WalletNonce {
+  id              Int       @id @default(autoincrement())
+  walletAddress   String
+  nonce           String    @unique
+  purpose         String    @default("login")      // login/bind/unbind
+  expiredAt       DateTime
+  used            Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+
+  @@index([walletAddress])
+  @@index([expiredAt])
+  @@map("wallet_nonces")
+}
+
+model KycRecord {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  user                User      @relation(fields: [userId], references: [id])
+  didId               Int?
+  did                 DidIdentity? @relation(fields: [didId], references: [id])
+  provider            String    @default("manual") // manual/onfido/sumsub
+  kycStatus           String    @default("pending") // pending/reviewing/approved/rejected/expired
+  fullNameEncrypted   String?   @map("full_name_encrypted")
+  documentType        String?   @map("document_type")
+  documentNoEncrypted String?   @map("document_no_encrypted")
+  country             String?
+  verificationResult  String?   @map("verification_result") // JSON
+  resultHash          String?   @map("result_hash")
+  rejectionReason     String?   @map("rejection_reason")
+  reviewedBy          Int?
+  reviewedAt          DateTime? @map("reviewed_at")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([didId])
+  @@index([kycStatus])
+  @@map("kyc_records")
+}
+
+model SbtCredential {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  didId             Int?
+  did               DidIdentity? @relation(fields: [didId], references: [id])
+  walletAddress     String
+  contractAddress   String?   @map("contract_address")
+  tokenId           String?   @map("token_id")
+  credentialType    String    @map("credential_type")  // KYC_VERIFIED/MEMBER/VIP/MERCHANT/...
+  credentialLevel   String?   @map("credential_level") // standard/gold/platinum
+  chainId           String?
+  status            String    @default("active")       // active/revoked/expired
+  txHash            String?   @map("tx_hash")
+  metadataUri       String?   @map("metadata_uri")
+  issuedBy          Int?      @map("issued_by")
+  issuedAt          DateTime  @default(now()) @map("issued_at")
+  revokedBy         Int?      @map("revoked_by")
+  revokedAt         DateTime? @map("revoked_at")
+  revokeReason      String?   @map("revoke_reason")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([didId])
+  @@index([credentialType])
+  @@index([status])
+  @@map("sbt_credentials")
+}
+
+model PlatformPermission {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  didId             Int?
+  did               DidIdentity? @relation(fields: [didId], references: [id])
+  platform          String    // portal/ecommerce/exchange/gaming
+  allowed           Boolean   @default(false)
+  permissionStatus  String    @default("pending") @map("permission_status") // pending/approved/denied/revoked
+  reason            String?
+  updatedBy         Int?      @map("updated_by")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@unique([didId, platform])
+  @@index([platform])
+  @@map("did_platform_permissions")
+}
+
+model DidAuditLog {
+  id              Int       @id @default(autoincrement())
+  userId          Int?
+  didId           Int?
+  did             DidIdentity? @relation(fields: [didId], references: [id])
+  adminId         Int?
+  action          String    // did:create/wallet:bind/kyc:verify/sbt:issue/...
+  module          String?   // did/wallets/kyc/sbt/platform-access
+  targetType      String?   @map("target_type")
+  targetId        String?   @map("target_id")
+  beforeData      String?   @map("before_data") // JSON
+  afterData       String?   @map("after_data")  // JSON
+  reason          String?
+  ip              String?
+  userAgent       String?   @map("user_agent")
+  dataHash        String?   @map("data_hash")
+  createdAt       DateTime  @default(now())
+
+  @@index([didId])
+  @@index([action])
+  @@index([module])
+  @@index([createdAt])
+  @@map("did_audit_logs")
 }
 
 // ============================================================
@@ -634,6 +804,7 @@ model OpenClawAgent {
   updatedAt     DateTime  @updatedAt
   fineTunes     OpenClawFineTune[]
   monitorLogs   OpenClawMonitorLog[]
+  agentSessions AgentSession[]
 }
 
 model OpenClawMarketplaceItem {
@@ -918,6 +1089,7 @@ model AiModelInstance {
   updatedAt     DateTime  @updatedAt
   recognitions   AiSmartRecognition[]
   recommendations AiRecommendation[]
+  llmCallLogs   LlmCallLog[]
 }
 
 model AiSmartRecognition {
@@ -1957,4 +2129,191 @@ model LoginHistory {
   @@index([status])
   @@index([ipAddress])
   @@index([createdAt])
+}
+
+// ============================================================
+// AI 自动化解决方案 — 新增模型 (Phase 1 P1-04)
+// 文件存储 / 区块链存证 / 电子签名 / Agent 会话与任务 / LLM 调用日志 / 通知规则
+// ============================================================
+
+/// 文件存储记录 — 管理上传至 MinIO 的所有文件元数据
+model FileStorage {
+  id            Int       @id @default(autoincrement())
+  fileName      String    // 原始文件名
+  originalName  String    @map("original_name")
+  mimeType      String    // MIME 类型 (application/pdf, image/png 等)
+  sizeBytes     BigInt    @map("size_bytes")           // 文件大小（字节）
+  storagePath   String    @map("storage_path")        // MinIO 对象路径
+  hashSha256    String    @unique @map("hash_sha256") // SHA-256 哈希（用于去重和存证）
+  bucket        String    @default("smyweb3-files")   // MinIO Bucket 名称
+  uploadedBy    Int?      @map("uploaded_by")
+  user          User?     @relation(fields: [uploadedBy], references: [id])
+  documents     Document[] @relation("DocumentFiles")
+  evidences     BlockchainEvidence[] @relation("EvidenceFiles")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  @@index([bucket])
+  @@index([uploadedBy])
+  @@index([createdAt])
+  @@map("file_storages")
+}
+
+/// 区块链存证记录 — 记录文件/数据的链上存证信息
+model BlockchainEvidence {
+  id              Int       @id @default(autoincrement())
+  fileId          Int       @map("file_id")
+  file            FileStorage @relation("EvidenceFiles", fields: [fileId], references: [id])
+  fileHash        String    @map("file_hash")            // SHA-256 哈希
+  txHash          String    @unique @map("tx_hash")       // 链上交易哈希
+  blockNumber     BigInt    @map("block_number")          // 区块号
+  contractAddress String    @map("contract_address")     // 合约地址
+  chainId         Int       @map("chain_id")             // 链 ID (1=以太坊主网, 137=Polygon, 56=BSC)
+  didId           Int?      @map("did_id")
+  did             DidIdentity? @relation(fields: [didId], references: [id])
+  documents       Document[]  @relation("DocumentEvidences")
+  evidenceType    String    @map("evidence_type")        // 'document' | 'signature' | 'report'
+  metadata        String?   @map("metadata")             // 额外元数据 (JSON string)
+  isVerified      Boolean   @default(false) @map("is_verified")
+  verifiedAt      DateTime? @map("verified_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([fileId])
+  @@index([didId])
+  @@index([evidenceType])
+  @@index([txHash])
+  @@map("blockchain_evidences")
+}
+
+/// 电子签名记录 — 管理文档的数字签名
+model ESignature {
+  id              Int       @id @default(autoincrement())
+  documentId      Int       @unique @map("document_id")
+  document        Document  @relation(fields: [documentId], references: [id])
+  signerDid       Int       @map("signer_did")
+  signer          DidIdentity @relation(fields: [signerDid], references: [id])
+  signatureValue  String    @map("signature_value")     // Base64 编码签名值
+  publicKey       String    @map("public_key")          // 签名者公钥
+  algorithm       String    @default("ECDSA") @map("algorithm") // 'ECDSA' | 'RSA' | 'EdDSA' | 'SM2'
+  signedAt        DateTime  @default(now()) @map("signed_at")
+  ipAddress       String?   @map("ip_address")
+  userAgent       String?   @map("user_agent")
+  isValid         Boolean   @default(true) @map("is_valid")
+  revokedAt       DateTime? @map("revoked_at")
+  revokeReason    String?   @map("revoke_reason")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([documentId])
+  @@index([signerDid])
+  @@index([isValid])
+  @@map("e_signatures")
+}
+
+/// Agent 会话 — 管理 OpenClaw 智能体的运行会话
+model AgentSession {
+  id              Int       @id @default(autoincrement())
+  configId        Int       @map("config_id")
+  config          OpenClawAgent @relation(fields: [configId], references: [id])
+  userId          Int?      @map("user_id")
+  user            User?     @relation(fields: [userId], references: [id])
+  status          String    @default("idle") @map("status") // 'idle' | 'running' | 'paused' | 'completed' | 'error'
+  currentTask     String?   @map("current_task")
+  totalTasks      Int       @default(0) @map("total_tasks")
+  completedTasks  Int       @default(0) @map("completed_tasks")
+  failedTasks     Int       @default(0) @map("failed_tasks")
+  context         String?   @map("context")              // Agent 上下文/记忆 (JSON string)
+  startedAt       DateTime? @map("started_at")
+  completedAt     DateTime? @map("completed_at")
+  lastHeartbeatAt DateTime  @default(now()) @map("last_heartbeat_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  tasks           AgentTask[]
+  llmCallLogs     LlmCallLog[]
+
+  @@index([status])
+  @@index([configId])
+  @@index([userId])
+  @@map("agent_sessions")
+}
+
+/// Agent 任务 — 管理 Agent 的具体执行任务
+model AgentTask {
+  id              Int       @id @default(autoincrement())
+  sessionId       Int       @map("session_id")
+  session         AgentSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type            String    @map("type")                // 'acquisition' | 'content' | 'analysis' | 'evidence' | 'kyc_review'
+  status          String    @default("queued") @map("status") // 'queued' | 'running' | 'success' | 'failed' | 'retrying' | 'cancelled'
+  priority        Int       @default(5) @map("priority")  // 1=最高优先级, 10=最低
+  payload         String    @map("payload")             // 任务参数 (JSON string)
+  result          String?   @map("result")              // 执行结果 (JSON string)
+  errorMessage    String?   @map("error_message")
+  retryCount      Int       @default(0) @map("retry_count")
+  maxRetries      Int       @default(3) @map("max_retries")
+  queuedAt        DateTime  @default(now()) @map("queued_at")
+  startedAt       DateTime? @map("started_at")
+  completedAt     DateTime? @map("completed_at")
+  bpmInstanceId   Int?      @map("bpm_instance_id")    // 关联 BPM 流程实例
+  createdBy       Int?      @map("created_by")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([sessionId, status])
+  @@index([type, status])
+  @@index([status])
+  @@map("agent_tasks")
+}
+
+/// LLM 调用日志 — 记录每次大模型调用的详细信息（用于成本追踪和性能分析）
+model LlmCallLog {
+  id              Int       @id @default(autoincrement())
+  instanceId      Int       @map("instance_id")
+  instance        AiModelInstance @relation(fields: [instanceId], references: [id])
+  provider        String    @map("provider")             // 'openai' | 'anthropic' | 'qwen' | 'deepseek'
+  model           String    @map("model")               // 'gpt-4o' | 'claude-3.5-sonnet' | 'qwen-max' 等
+  promptTokens    Int       @map("prompt_tokens")
+  completionTokens Int      @map("completion_tokens")
+  latencyMs       Int       @map("latency_ms")          // 响应延迟（毫秒）
+  totalCost       Float     @default(0) @map("total_cost") // 本次调用费用（USD）
+  success         Boolean   @default(true) @map("success")
+  errorCode       String?   @map("error_code")
+  errorMessage    String?   @map("error_message")
+  cacheHit        Boolean   @default(false) @map("cache_hit")  // 是否命中语义缓存
+  userId          Int?      @map("user_id")
+  user            User?     @relation(fields: [userId], references: [id])
+  sessionId       Int?      @map("session_id")           // 关联 AgentSession
+  session         AgentSession? @relation(fields: [sessionId], references: [id])
+  requestHash     String?   @map("request_hash")         // 请求内容哈希（用于缓存 key）
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@index([instanceId])
+  @@index([provider])
+  @@index([model])
+  @@index([createdAt])
+  @@index([success])
+  @@map("llm_call_logs")
+}
+
+/// 通知告警规则 — 定义系统监控告警的通知配置
+model NotificationRule {
+  id              Int       @id @default(autoincrement())
+  name            String                              // 规则名称
+  metricName      String    @map("metric_name")         // 监控指标名称
+  condition       String                             // 触发条件表达式 ('>100', '<10', '==0')
+  thresholdValue  Float     @map("threshold_value")      // 阈值
+  // 严重级别: info=信息, warning=警告, critical=严重
+  severity        String    @default("warning") @map("severity")
+  enabled         Boolean   @default(true) @map("enabled")
+  // 通知渠道 (JSON 数组): dingtalk/email/sms/webhook
+  channels        String    @default("[\"dingtalk\"]") @map("channels")
+  webhookUrl      String?   @map("webhook_url")         // Webhook 回调地址
+  // 冷却时间（分钟，防止告警风暴）
+  cooldownMinutes Int       @default(30) @map("cooldown_minutes")
+  lastTriggeredAt DateTime? @map("last_triggered_at")
+  triggerCount    Int       @default(0) @map("trigger_count")
+  createdBy       Int       @map("created_by")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@index([metricName])
+  @@index([enabled])
+  @@index([severity])
+  @@map("notification_rules")
 }

@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
         roleName: '超级管理员',
         isActive: true,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       },
       isAuthenticated: true,
       login: (token: string, user: AdminUser) => {

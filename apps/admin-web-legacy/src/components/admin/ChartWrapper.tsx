@@ -13,7 +13,7 @@ export const ChartWrapper: React.FC<ChartWrapperProps> = ({
   title,
   height = 300,
   children,
-  fallback
+  fallback,
 }) => {
   const [hasError, setHasError] = React.useState(false);
 
@@ -24,20 +24,22 @@ export const ChartWrapper: React.FC<ChartWrapperProps> = ({
   }, []);
 
   if (hasError || !children) {
-    return fallback || (
-      <div
-        style={{
-          height: typeof height === 'number' ? `${height}px` : height,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
-          borderRadius: '4px',
-          color: '#999'
-        }}
-      >
-        {title ? `${title} (开发中)` : '图表功能开发中'}
-      </div>
+    return (
+      fallback || (
+        <div
+          style={{
+            height: typeof height === 'number' ? `${height}px` : height,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f5f5f5',
+            borderRadius: '4px',
+            color: '#999',
+          }}
+        >
+          {title ? `${title} (开发中)` : '图表功能开发中'}
+        </div>
+      )
     );
   }
 

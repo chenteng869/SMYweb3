@@ -9,20 +9,21 @@
 
 ## 1. 文档清单
 
-| # | 文件 | 行数 | 核心内容 |
-|---|---|---|---|
-| 01 | [01-wechat-mini-program.md](./01-wechat-mini-program.md) | ~830 | 微信小程序（拉新裂变主战场，复用 H5 后端 `/api/h5/*`） |
-| 02 | [02-alipay-mini-program.md](./02-alipay-mini-program.md) | 1524 | 支付宝小程序（金融/税务/银行专属，含芝麻信用集成） |
-| 03 | [03-douyin-mini-program.md](./03-douyin-mini-program.md) | 1977 | 抖音/字节小程序（视频挂载 + 直播小黄车 + AI 审核三层） |
-| 04 | [04-mobile-app.md](./04-mobile-app.md) | 3445 | 移动 APP（React Native，含 5 大海外社交平台集成） |
-| 05 | [05-official-website.md](./05-official-website.md) | 2387 | 官网（Next.js 14 + ISR + SEO + GA4 + A/B 测试） |
-| 06 | [06-overseas-platforms.md](./06-overseas-platforms.md) | 2255 | 5 大海外平台（Facebook / LinkedIn / Google / WhatsApp / TikTok） |
-| 07 | [07-h5-function-optimization.md](./07-h5-function-optimization.md) | 2092 | H5 20 菜单逐项打磨（**不改 UI**） |
-| 08 | [08-infrastructure-architecture.md](./08-infrastructure-architecture.md) | 3000+ | 8 大基础设施（技术/API/数据库/云原生/支付/AI/萨摩亚/VIE+ODI） |
-| 09 | [09-dev-process-toolkit.md](./09-dev-process-toolkit.md) | 2023 | Skills / MCPs / 上下文优化 / Token 节省 |
-| **合计** | | **~21,500** | |
+| #        | 文件                                                                     | 行数        | 核心内容                                                         |
+| -------- | ------------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------- |
+| 01       | [01-wechat-mini-program.md](./01-wechat-mini-program.md)                 | ~830        | 微信小程序（拉新裂变主战场，复用 H5 后端 `/api/h5/*`）           |
+| 02       | [02-alipay-mini-program.md](./02-alipay-mini-program.md)                 | 1524        | 支付宝小程序（金融/税务/银行专属，含芝麻信用集成）               |
+| 03       | [03-douyin-mini-program.md](./03-douyin-mini-program.md)                 | 1977        | 抖音/字节小程序（视频挂载 + 直播小黄车 + AI 审核三层）           |
+| 04       | [04-mobile-app.md](./04-mobile-app.md)                                   | 3445        | 移动 APP（React Native，含 5 大海外社交平台集成）                |
+| 05       | [05-official-website.md](./05-official-website.md)                       | 2387        | 官网（Next.js 14 + ISR + SEO + GA4 + A/B 测试）                  |
+| 06       | [06-overseas-platforms.md](./06-overseas-platforms.md)                   | 2255        | 5 大海外平台（Facebook / LinkedIn / Google / WhatsApp / TikTok） |
+| 07       | [07-h5-function-optimization.md](./07-h5-function-optimization.md)       | 2092        | H5 20 菜单逐项打磨（**不改 UI**）                                |
+| 08       | [08-infrastructure-architecture.md](./08-infrastructure-architecture.md) | 3000+       | 8 大基础设施（技术/API/数据库/云原生/支付/AI/萨摩亚/VIE+ODI）    |
+| 09       | [09-dev-process-toolkit.md](./09-dev-process-toolkit.md)                 | 2023        | Skills / MCPs / 上下文优化 / Token 节省                          |
+| **合计** |                                                                          | **~21,500** |                                                                  |
 
 > **配套文档**（不在本目录）：
+>
 > - [admin-prd/](../admin-prd/README.md) — 后台 21 篇 PRD（基础规范来源）
 > - [ops-manual/00-production-readiness.md](../ops-manual/00-production-readiness.md) — 生产标准手册（部署/监控/灾备/应急/合规/性能/成本）
 
@@ -71,20 +72,20 @@ admin-prd/01~19 各模块 PRD
 
 > **基础速查表见** [00-foundation §5.5.1](../admin-prd/00-foundation.md)。本表记录**新增**的 namespace。
 
-| Namespace | 引入文档 | 用途 | 状态 |
-|---|---|---|---|
-| `credit` | 02-alipay-mini-program.md | 芝麻信用分等级 / 信用授权 | ✅ 已加 |
-| `auth` | 02-alipay-mini-program.md | 支付宝账号授权 / 实名认证 | ✅ 已加 |
-| `video` | 03-douyin-mini-program.md | 抖音视频状态 / 挂载点 | ✅ 已加 |
-| `media` | 03-douyin-mini-program.md | 抖音图文 / 直播 | ✅ 已加 |
-| `liveRoom` | 03-douyin-mini-program.md | 直播间状态 | ✅ 已加 |
-| `mount` | 03-douyin-mini-program.md | 视频挂载点 | ✅ 已加 |
-| `creator` | 03-douyin-mini-program.md | 创作者中心 | ✅ 已加 |
-| `marketing` | 05-official-website.md + 06-overseas-platforms.md | 落地页 / CTA / 营销文案 | ✅ 已加 |
-| `forms` | 05-official-website.md | 官网表单 | ✅ 已加 |
-| `seo` | 05-official-website.md | 官网 SEO 元数据 | ✅ 已加 |
-| `social` | 06-overseas-platforms.md + 04-mobile-app.md | 海外社交分享 / 绑定 | ✅ 已加 |
-| `oauth` | 06-overseas-platforms.md | OAuth 2.0 通用流程 | ✅ 已加 |
+| Namespace   | 引入文档                                          | 用途                      | 状态    |
+| ----------- | ------------------------------------------------- | ------------------------- | ------- |
+| `credit`    | 02-alipay-mini-program.md                         | 芝麻信用分等级 / 信用授权 | ✅ 已加 |
+| `auth`      | 02-alipay-mini-program.md                         | 支付宝账号授权 / 实名认证 | ✅ 已加 |
+| `video`     | 03-douyin-mini-program.md                         | 抖音视频状态 / 挂载点     | ✅ 已加 |
+| `media`     | 03-douyin-mini-program.md                         | 抖音图文 / 直播           | ✅ 已加 |
+| `liveRoom`  | 03-douyin-mini-program.md                         | 直播间状态                | ✅ 已加 |
+| `mount`     | 03-douyin-mini-program.md                         | 视频挂载点                | ✅ 已加 |
+| `creator`   | 03-douyin-mini-program.md                         | 创作者中心                | ✅ 已加 |
+| `marketing` | 05-official-website.md + 06-overseas-platforms.md | 落地页 / CTA / 营销文案   | ✅ 已加 |
+| `forms`     | 05-official-website.md                            | 官网表单                  | ✅ 已加 |
+| `seo`       | 05-official-website.md                            | 官网 SEO 元数据           | ✅ 已加 |
+| `social`    | 06-overseas-platforms.md + 04-mobile-app.md       | 海外社交分享 / 绑定       | ✅ 已加 |
+| `oauth`     | 06-overseas-platforms.md                          | OAuth 2.0 通用流程        | ✅ 已加 |
 
 > **新增 namespace 流程**：在文档内提出 → 在本表登记 → 在 admin-prd §5.5.1 速查表登记（提 PR）
 
@@ -93,6 +94,7 @@ admin-prd/01~19 各模块 PRD
 ## 5. 端到端用户旅程示例
 
 ### 5.1 拉新转化旅程（FB → H5 → 微信小程序）
+
 ```
 [FB 广告] → 用户点广告 → 跳 H5 注册页（5-official-website.md）
   ↓ 填写手机号 + OTP
@@ -106,6 +108,7 @@ admin-prd/01~19 各模块 PRD
 ```
 
 ### 5.2 跨境支付旅程（移动 APP → Stripe → 萨摩亚银行）
+
 ```
 [APP 用户] → 在 4-mobile-app.md 选服务 → Apple Pay / Google Pay
   ↓ 后端调 Stripe（8-infrastructure-architecture.md §5）
@@ -117,6 +120,7 @@ admin-prd/01~19 各模块 PRD
 ```
 
 ### 5.3 DID 链上签发旅程（移动 APP → MetaMask → Polygon）
+
 ```
 [APP 用户] → 在 18-did-identity.md 申请 KYC 凭证
   ↓ KYC 通过（admin-prd/05-profile.md）
@@ -164,12 +168,12 @@ Sprint 5（合规 + 生产标准化）
 
 ## 7. Reader Testing 历史
 
-| 轮次 | 日期 | 发现 | 修复 |
-|---|---|---|---|
-| R1 | 2026-06-06 | 5 🔴 关键 | ✅ 5/5 |
-| R2 | 2026-06-06 | 3 🟡 小问题 | ✅ 3/3 |
-| R3 | 2026-06-06 | 10 个新盲点（6 🔴 + 4 🟡） | ✅ 10/10 |
-| R4 | （待跑） | client-prd 9 篇 + ops-manual 1 篇 | — |
+| 轮次 | 日期       | 发现                              | 修复     |
+| ---- | ---------- | --------------------------------- | -------- |
+| R1   | 2026-06-06 | 5 🔴 关键                         | ✅ 5/5   |
+| R2   | 2026-06-06 | 3 🟡 小问题                       | ✅ 3/3   |
+| R3   | 2026-06-06 | 10 个新盲点（6 🔴 + 4 🟡）        | ✅ 10/10 |
+| R4   | （待跑）   | client-prd 9 篇 + ops-manual 1 篇 | —        |
 
 ---
 
@@ -182,6 +186,7 @@ Sprint 5（合规 + 生产标准化）
 ---
 
 **下一步**：
+
 - (A) 跑 Round 4 Reader Testing 验证 10 篇新文档
 - (B) 补 i18n 字典 4 语言 JSON 样例
 - (C) 进入开发（Sprint 1 基础设施 + KMS）

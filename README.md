@@ -38,12 +38,12 @@ SMYweb3.020260527/
 
 ## 🚀 四个子项目一览
 
-| 子项目 | 路径 | 技术栈 | 端口 | 说明 |
-|---|---|---|---|---|
-| **api** | [apps/api](./apps/api) | NestJS 10 + Prisma 5 + PostgreSQL | `3001` | 后端 API 服务 |
-| **admin-web** | [apps/admin-web](./apps/admin-web) | Vite + React 19 + shadcn/ui | `5173` | 管理后台（新版） |
-| **admin-web-legacy** | [apps/admin-web-legacy](./apps/admin-web-legacy) | Next.js 14 + Ant Design 5 | `3000` | 管理后台（Next.js 版，并行保留） |
-| **h5-app** | [apps/h5-app](./apps/h5-app) | Vite + React 19 + shadcn/ui | `5174` | H5 移动端 |
+| 子项目               | 路径                                             | 技术栈                            | 端口   | 说明                             |
+| -------------------- | ------------------------------------------------ | --------------------------------- | ------ | -------------------------------- |
+| **api**              | [apps/api](./apps/api)                           | NestJS 10 + Prisma 5 + PostgreSQL | `3001` | 后端 API 服务                    |
+| **admin-web**        | [apps/admin-web](./apps/admin-web)               | Vite + React 19 + shadcn/ui       | `5173` | 管理后台（新版）                 |
+| **admin-web-legacy** | [apps/admin-web-legacy](./apps/admin-web-legacy) | Next.js 14 + Ant Design 5         | `3000` | 管理后台（Next.js 版，并行保留） |
+| **h5-app**           | [apps/h5-app](./apps/h5-app)                     | Vite + React 19 + shadcn/ui       | `5174` | H5 移动端                        |
 
 > ⚠️ `admin-web` 和 `admin-web-legacy` 是**两套并存的管理后台实现**，根据团队演进择一迁移。
 
@@ -80,13 +80,13 @@ npm run dev:h5
 npm run dev:all
 ```
 
-| 启动后访问 | URL |
-|---|---|
-| 管理后台（新） | http://localhost:5173 |
-| 管理后台（旧） | http://localhost:3000 |
-| H5 移动端 | http://localhost:5174 |
-| 后端 API | http://localhost:3001 |
-| Swagger 文档 | http://localhost:3001/api/docs |
+| 启动后访问     | URL                            |
+| -------------- | ------------------------------ |
+| 管理后台（新） | http://localhost:5173          |
+| 管理后台（旧） | http://localhost:3000          |
+| H5 移动端      | http://localhost:5174          |
+| 后端 API       | http://localhost:3001          |
+| Swagger 文档   | http://localhost:3001/api/docs |
 
 ### 构建生产产物
 
@@ -102,6 +102,7 @@ npm run build:all
 ```
 
 构建完成后：
+
 - `apps/*/dist/` / `apps/*/.next/` 中是源码构建产物（不部署）
 - `deploy/*/` 中是**部署用静态文件**（已通过 `scripts/build-all.js` 同步或手工拷贝）
 
@@ -152,13 +153,13 @@ npm run lint:all
 
 ## 📖 文档索引
 
-| 类别 | 入口 |
-|---|---|
-| 系统架构设计 | [docs/architecture/](./docs/architecture/) |
-| API / 数据接口 | [docs/api/](./docs/api/) |
-| 产品 / 功能设计 | [docs/product/](./docs/product/) |
-| 使用与开发指南 | [docs/guides/](./docs/guides/) |
-| 脚本工具说明 | [scripts/README.md](./scripts/README.md) |
+| 类别            | 入口                                       |
+| --------------- | ------------------------------------------ |
+| 系统架构设计    | [docs/architecture/](./docs/architecture/) |
+| API / 数据接口  | [docs/api/](./docs/api/)                   |
+| 产品 / 功能设计 | [docs/product/](./docs/product/)           |
+| 使用与开发指南  | [docs/guides/](./docs/guides/)             |
+| 脚本工具说明    | [scripts/README.md](./scripts/README.md)   |
 
 ### 精选文档
 

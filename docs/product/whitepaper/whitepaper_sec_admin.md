@@ -281,27 +281,27 @@ const columns: ProColumns<CompanyOrderColumn>[] = [
 
 ### 状态标签颜色映射（深色模式）
 
-| 状态值 | 徽章类型 | 背景色 | 文字色 | 触发条件 | 对应操作 |
-|--------|---------|--------|--------|----------|----------|
-| `pending` | `Warning` | `#2B1D11` | `#D46B08` | 用户提交资料后 | 审核/催办 |
-| `reviewing` | `Processing` | `#1D2B2B` | `#5BD4D0` | 代理人开始审核 | 查看/转交 |
-| `registered` | `Success` | `#1B2E1B` | `#5BD46E` | 政府完成注册 | 查看/年审设置 |
-| `supplement` | `Error` | `#2E1B1B` | `#D45050` | 审核发现资料缺失 | 催办/驳回 |
-| `rejected` | `Default` | `#262626` | `#8C8C8C` | 严重不合规 | 归档/重新申请 |
-| `expiring` | `Warning` | `#2B1D11` | `#D46B08` | 年审即将到期 | 年审提醒 |
+| 状态值       | 徽章类型     | 背景色    | 文字色    | 触发条件         | 对应操作      |
+| ------------ | ------------ | --------- | --------- | ---------------- | ------------- |
+| `pending`    | `Warning`    | `#2B1D11` | `#D46B08` | 用户提交资料后   | 审核/催办     |
+| `reviewing`  | `Processing` | `#1D2B2B` | `#5BD4D0` | 代理人开始审核   | 查看/转交     |
+| `registered` | `Success`    | `#1B2E1B` | `#5BD46E` | 政府完成注册     | 查看/年审设置 |
+| `supplement` | `Error`      | `#2E1B1B` | `#D45050` | 审核发现资料缺失 | 催办/驳回     |
+| `rejected`   | `Default`    | `#262626` | `#8C8C8C` | 严重不合规       | 归档/重新申请 |
+| `expiring`   | `Warning`    | `#2B1D11` | `#D46B08` | 年审即将到期     | 年审提醒      |
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 运营主管 | 审核员 | 代理人 | 只读账号 |
-|------|-----------|---------|--------|--------|----------|
-| 查看订单列表 | ✅ | ✅ | ✅ | ✅(仅自己的) | ✅(脱敏) |
-| 审核订单 | ✅ | ✅ | ✅ | ❌ | ❌ |
-| 批量导出 | ✅ | ✅ | ❌ | ❌ | ❌ |
-| 批量分配代理人 | ✅ | ✅ | ❌ | ❌ | ❌ |
-| 发送催办 | ✅ | ✅ | ✅ | ✅(仅自己的) | ❌ |
-| 驳回/删除 | ✅ | ✅ | ✅ | ❌ | ❌ |
-| 查看统计卡片 | ✅ | ✅ | ✅ | ✅(仅自己的) | ✅(部分) |
-| 高级筛选 | ✅ | ✅ | ✅ | ✅(部分) | ✅(部分) |
+| 功能           | 超级管理员 | 运营主管 | 审核员 | 代理人       | 只读账号 |
+| -------------- | ---------- | -------- | ------ | ------------ | -------- |
+| 查看订单列表   | ✅         | ✅       | ✅     | ✅(仅自己的) | ✅(脱敏) |
+| 审核订单       | ✅         | ✅       | ✅     | ❌           | ❌       |
+| 批量导出       | ✅         | ✅       | ❌     | ❌           | ❌       |
+| 批量分配代理人 | ✅         | ✅       | ❌     | ❌           | ❌       |
+| 发送催办       | ✅         | ✅       | ✅     | ✅(仅自己的) | ❌       |
+| 驳回/删除      | ✅         | ✅       | ✅     | ❌           | ❌       |
+| 查看统计卡片   | ✅         | ✅       | ✅     | ✅(仅自己的) | ✅(部分) |
+| 高级筛选       | ✅         | ✅       | ✅     | ✅(部分)     | ✅(部分) |
 
 ### API 接口
 
@@ -509,9 +509,17 @@ Body: { channels: ('email' | 'sms' | 'app')[]; message?: string; }
 
 ```typescript
 type BankApplicationStatus =
-  | 'submitted' | 'preliminary_review' | 'document_review'
-  | 'appointment_scheduled' | 'appointment_done' | 'bank_review'
-  | 'approved' | 'rejected' | 'refund_pending' | 'refunded' | 'cancelled';
+  | 'submitted'
+  | 'preliminary_review'
+  | 'document_review'
+  | 'appointment_scheduled'
+  | 'appointment_done'
+  | 'bank_review'
+  | 'approved'
+  | 'rejected'
+  | 'refund_pending'
+  | 'refunded'
+  | 'cancelled';
 
 const statusFlow: Record<BankApplicationStatus, BankApplicationStatus[]> = {
   submitted: ['preliminary_review', 'cancelled'],
@@ -528,17 +536,17 @@ const statusFlow: Record<BankApplicationStatus, BankApplicationStatus[]> = {
 };
 
 const statusColorMap: Record<BankApplicationStatus, { bg: string; text: string }> = {
-  submitted:           { bg: '#1D2B2B', text: '#5BD4D0' },
-  preliminary_review:  { bg: '#2B1D11', text: '#D46B08' },
-  document_review:     { bg: '#1D2B2B', text: '#5BD4D0' },
+  submitted: { bg: '#1D2B2B', text: '#5BD4D0' },
+  preliminary_review: { bg: '#2B1D11', text: '#D46B08' },
+  document_review: { bg: '#1D2B2B', text: '#5BD4D0' },
   appointment_scheduled: { bg: '#1D1D2B', text: '#5B7BD4' },
-  appointment_done:    { bg: '#1D1D2B', text: '#5B7BD4' },
-  bank_review:         { bg: '#1D2B2B', text: '#5BD4D0' },
-  approved:            { bg: '#1B2E1B', text: '#5BD46E' },
-  rejected:            { bg: '#2E1B1B', text: '#D45050' },
-  refund_pending:      { bg: '#2B1D11', text: '#D46B08' },
-  refunded:            { bg: '#262626', text: '#8C8C8C' },
-  cancelled:           { bg: '#262626', text: '#8C8C8C' },
+  appointment_done: { bg: '#1D1D2B', text: '#5B7BD4' },
+  bank_review: { bg: '#1D2B2B', text: '#5BD4D0' },
+  approved: { bg: '#1B2E1B', text: '#5BD46E' },
+  rejected: { bg: '#2E1B1B', text: '#D45050' },
+  refund_pending: { bg: '#2B1D11', text: '#D46B08' },
+  refunded: { bg: '#262626', text: '#8C8C8C' },
+  cancelled: { bg: '#262626', text: '#8C8C8C' },
 };
 
 interface BankApplication {
@@ -551,35 +559,56 @@ interface BankApplication {
   status: BankApplicationStatus;
   submitTime: string;
   appointment?: {
-    scheduledAt: string; branchName: string; branchAddress: string;
-    accountManager?: string; managerContact?: string; mode: string;
+    scheduledAt: string;
+    branchName: string;
+    branchAddress: string;
+    accountManager?: string;
+    managerContact?: string;
+    mode: string;
     status: 'confirmed' | 'pending' | 'cancelled';
   };
-  questionnaire: { questionId: string; question: string; answer: string; category: string; }[];
+  questionnaire: { questionId: string; question: string; answer: string; category: string }[];
   refundRecords: RefundRecord[];
 }
 
 interface RefundRecord {
-  refundNo: string; amount: number; currency: string;
-  status: 'pending_ops' | 'pending_finance' | 'pending_exec' | 'approved' | 'rejected' | 'processed';
-  appliedBy: string; appliedAt: string; reason: string;
-  approvalChain: { step: string; status: string; operator?: string; operatedAt?: string; comment?: string; }[];
-  processedAt?: string; transactionRef?: string;
+  refundNo: string;
+  amount: number;
+  currency: string;
+  status:
+    | 'pending_ops'
+    | 'pending_finance'
+    | 'pending_exec'
+    | 'approved'
+    | 'rejected'
+    | 'processed';
+  appliedBy: string;
+  appliedAt: string;
+  reason: string;
+  approvalChain: {
+    step: string;
+    status: string;
+    operator?: string;
+    operatedAt?: string;
+    comment?: string;
+  }[];
+  processedAt?: string;
+  transactionRef?: string;
 }
 ```
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 运营主管 | 审核员 | 代理人 | 只读账号 |
-|------|-----------|---------|--------|--------|----------|
-| 查看申请列表 | ✅ | ✅ | ✅ | ✅(仅自己的) | ✅(脱敏) |
-| 审核申请 | ✅ | ✅ | ✅ | ❌ | ❌ |
-| 推进状态流 | ✅ | ✅ | ✅ | ❌ | ❌ |
-| 管理预约 | ✅ | ✅ | ✅ | ✅(仅自己的) | ❌ |
-| 退款审批 | ✅ | ✅ | ❌ | ❌ | ❌ |
-| 退款操作(财务) | ✅ | ❌ | ❌ | ❌ | ❌ |
-| 查看退款记录 | ✅ | ✅ | ✅ | ✅(仅自己的) | ✅(脱敏) |
-| 导出数据 | ✅ | ✅ | ❌ | ❌ | ❌ |
+| 功能           | 超级管理员 | 运营主管 | 审核员 | 代理人       | 只读账号 |
+| -------------- | ---------- | -------- | ------ | ------------ | -------- |
+| 查看申请列表   | ✅         | ✅       | ✅     | ✅(仅自己的) | ✅(脱敏) |
+| 审核申请       | ✅         | ✅       | ✅     | ❌           | ❌       |
+| 推进状态流     | ✅         | ✅       | ✅     | ❌           | ❌       |
+| 管理预约       | ✅         | ✅       | ✅     | ✅(仅自己的) | ❌       |
+| 退款审批       | ✅         | ✅       | ❌     | ❌           | ❌       |
+| 退款操作(财务) | ✅         | ❌       | ❌     | ❌           | ❌       |
+| 查看退款记录   | ✅         | ✅       | ✅     | ✅(仅自己的) | ✅(脱敏) |
+| 导出数据       | ✅         | ✅       | ❌     | ❌           | ❌       |
 
 ### API 接口
 
@@ -745,7 +774,10 @@ AI知识库管理页采用经典的 **左侧分类树 + 右侧内容区** 双栏
 ```typescript
 const categoryTree = [
   {
-    id: 'tax', name: '税务知识', icon: '📁', count: 71,
+    id: 'tax',
+    name: '税务知识',
+    icon: '📁',
+    count: 71,
     children: [
       { id: 'tax-cn', name: '中国税法', icon: '🇨🇳', count: 15 },
       { id: 'tax-hk', name: '香港税务', icon: '🇭🇰', count: 8 },
@@ -757,7 +789,10 @@ const categoryTree = [
     ],
   },
   {
-    id: 'legal', name: '法务法规', icon: '⚖️', count: 27,
+    id: 'legal',
+    name: '法务法规',
+    icon: '⚖️',
+    count: 27,
     children: [
       { id: 'legal-gdpr', name: 'GDPR相关', icon: '🇪🇺', count: 7 },
       { id: 'legal-ccpa', name: 'CCPA相关', icon: '🇺🇸', count: 5 },
@@ -766,7 +801,10 @@ const categoryTree = [
     ],
   },
   {
-    id: 'contract', name: '合同模板', icon: '📄', count: 43,
+    id: 'contract',
+    name: '合同模板',
+    icon: '📄',
+    count: 43,
     children: [
       { id: 'contract-b2c', name: 'B2C电商', icon: '🛒', count: 14 },
       { id: 'contract-b2b', name: 'B2B批发', icon: '🏭', count: 8 },
@@ -776,7 +814,10 @@ const categoryTree = [
     ],
   },
   {
-    id: 'sanctions', name: '制裁名单', icon: '🚫', count: 60000,
+    id: 'sanctions',
+    name: '制裁名单',
+    icon: '🚫',
+    count: 60000,
     children: [
       { id: 'san-ofac', name: 'OFAC SDN', icon: '🏛️', count: 35000 },
       { id: 'san-un', name: 'UN Consolidated', icon: '🇺🇳', count: 8000 },
@@ -789,14 +830,14 @@ const categoryTree = [
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 知识管理员 | 审核员 | 普通用户 | 访客 |
-|------|-----------|-----------|--------|----------|------|
-| 查看知识条目 | ✅ | ✅ | ✅ | ✅ | ✅(已发布) |
-| 新增/编辑/删除 | ✅ | ✅ | ❌ | ❌ | ❌ |
-| 批量导入/导出 | ✅ | ✅ | ❌ | ❌ | ❌ |
-| 向量检索测试 | ✅ | ✅ | ✅ | ❌ | ❌ |
-| 核验知识 | ✅ | ✅ | ✅ | ❌ | ❌ |
-| 管理分类树 | ✅ | ✅ | ❌ | ❌ | ❌ |
+| 功能           | 超级管理员 | 知识管理员 | 审核员 | 普通用户 | 访客       |
+| -------------- | ---------- | ---------- | ------ | -------- | ---------- |
+| 查看知识条目   | ✅         | ✅         | ✅     | ✅       | ✅(已发布) |
+| 新增/编辑/删除 | ✅         | ✅         | ❌     | ❌       | ❌         |
+| 批量导入/导出  | ✅         | ✅         | ❌     | ❌       | ❌         |
+| 向量检索测试   | ✅         | ✅         | ✅     | ❌       | ❌         |
+| 核验知识       | ✅         | ✅         | ✅     | ❌       | ❌         |
+| 管理分类树     | ✅         | ✅         | ❌     | ❌       | ❌         |
 
 ### API 接口
 
@@ -817,8 +858,6 @@ Response: { results: { entry: KnowledgeEntry; similarity: number; }[]; latencyMs
 POST /api/admin/kb/sync-vectors
 Body: { categoryId?: string; forceRecreate?: boolean; }
 ```
-
-
 
 ---
 
@@ -995,13 +1034,13 @@ Body: { categoryId?: string; forceRecreate?: boolean; }
 
 ```typescript
 interface TaxRate {
-  id: string;                    // "CN-VAT-STD-2019"
-  countryCode: string;           // ISO 3166-1 alpha-2
+  id: string; // "CN-VAT-STD-2019"
+  countryCode: string; // ISO 3166-1 alpha-2
   countryName: string;
   flagEmoji: string;
-  taxType: string;               // "VAT_STANDARD"
+  taxType: string; // "VAT_STANDARD"
   taxTypeName: string;
-  taxRate: number;               // 0.13 (表示13%)
+  taxRate: number; // 0.13 (表示13%)
   taxRateDisplay: string;
   effectiveDate: string;
   expiryDate?: string;
@@ -1021,8 +1060,12 @@ interface TaxRate {
 }
 
 interface TaxRateHistory {
-  id: string; taxRateId: string; version: number;
-  changedAt: string; changedBy: string; changedByName: string;
+  id: string;
+  taxRateId: string;
+  version: number;
+  changedAt: string;
+  changedBy: string;
+  changedByName: string;
   oldValue: Partial<TaxRate>;
   newValue: Partial<TaxRate>;
   changeReason: string;
@@ -1034,23 +1077,23 @@ interface TaxRateHistory {
 
 ### 核验状态映射
 
-| 状态 | 徽章 | 背景色 | 文字色 | 含义 | 触发条件 |
-|------|------|--------|--------|------|----------|
-| ✅ 已核验 | `Success` | `#1B2E1B` | `#5BD46E` | 数据经专业核验确认 | 税务专员确认后标记 |
-| 🔄 核验中 | `Processing` | `#1D2B2B` | `#5BD4D0` | 待核验或复核中 | 新增/编辑后自动进入 |
-| ⚠️ 有争议 | `Warning` | `#2B1D11` | `#D46B08` | 多方数据不一致 | 系统检测到冲突 |
-| ❌ 已过期 | `Error` | `#2E1B1B` | `#D45050` | 税率已失效 | 超过失效日期 |
+| 状态      | 徽章         | 背景色    | 文字色    | 含义               | 触发条件            |
+| --------- | ------------ | --------- | --------- | ------------------ | ------------------- |
+| ✅ 已核验 | `Success`    | `#1B2E1B` | `#5BD46E` | 数据经专业核验确认 | 税务专员确认后标记  |
+| 🔄 核验中 | `Processing` | `#1D2B2B` | `#5BD4D0` | 待核验或复核中     | 新增/编辑后自动进入 |
+| ⚠️ 有争议 | `Warning`    | `#2B1D11` | `#D46B08` | 多方数据不一致     | 系统检测到冲突      |
+| ❌ 已过期 | `Error`      | `#2E1B1B` | `#D45050` | 税率已失效         | 超过失效日期        |
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 税务专员 | 审核员 | 普通用户 |
-|------|-----------|---------|--------|----------|
-| 查看税率 | ✅ | ✅ | ✅ | ✅(已核验) |
-| 新增/编辑税率 | ✅ | ✅ | ❌ | ❌ |
-| 批量导入 | ✅ | ✅ | ❌ | ❌ |
-| 核验税率 | ✅ | ✅ | ✅ | ❌ |
-| 查看版本历史 | ✅ | ✅ | ✅ | ✅(部分) |
-| 回退版本 | ✅ | ✅ | ❌ | ❌ |
+| 功能          | 超级管理员 | 税务专员 | 审核员 | 普通用户   |
+| ------------- | ---------- | -------- | ------ | ---------- |
+| 查看税率      | ✅         | ✅       | ✅     | ✅(已核验) |
+| 新增/编辑税率 | ✅         | ✅       | ❌     | ❌         |
+| 批量导入      | ✅         | ✅       | ❌     | ❌         |
+| 核验税率      | ✅         | ✅       | ✅     | ❌         |
+| 查看版本历史  | ✅         | ✅       | ✅     | ✅(部分)   |
+| 回退版本      | ✅         | ✅       | ❌     | ❌         |
 
 ### API 接口
 
@@ -1254,14 +1297,14 @@ POST   /api/admin/tax-rates/:id/rollback → { targetVersionId, reason }
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 合规官 | 法务专员 | 普通用户 |
-|------|-----------|--------|---------|----------|
-| 查看法规 | ✅ | ✅ | ✅ | ✅(已发布) |
-| 新增/编辑法规 | ✅ | ✅ | ❌ | ❌ |
-| 管理合规清单 | ✅ | ✅ | ✅ | ❌ |
-| 配置通知 | ✅ | ✅ | ✅ | ✅(个人) |
-| 查看制裁风险 | ✅ | ✅ | ✅ | ✅(摘要) |
-| 导出法规 | ✅ | ✅ | ✅ | ❌ |
+| 功能          | 超级管理员 | 合规官 | 法务专员 | 普通用户   |
+| ------------- | ---------- | ------ | -------- | ---------- |
+| 查看法规      | ✅         | ✅     | ✅       | ✅(已发布) |
+| 新增/编辑法规 | ✅         | ✅     | ❌       | ❌         |
+| 管理合规清单  | ✅         | ✅     | ✅       | ❌         |
+| 配置通知      | ✅         | ✅     | ✅       | ✅(个人)   |
+| 查看制裁风险  | ✅         | ✅     | ✅       | ✅(摘要)   |
+| 导出法规      | ✅         | ✅     | ✅       | ❌         |
 
 ### API 接口
 
@@ -1447,7 +1490,15 @@ PUT  /api/admin/regulations/notification-settings → RegulationNotification
 ### 数据模型
 
 ```typescript
-type ContractScenario = 'b2c' | 'b2b' | 'saas' | 'logistics' | 'employment' | 'housing' | 'cooperation' | 'nda';
+type ContractScenario =
+  | 'b2c'
+  | 'b2b'
+  | 'saas'
+  | 'logistics'
+  | 'employment'
+  | 'housing'
+  | 'cooperation'
+  | 'nda';
 
 interface ContractTemplate {
   id: string;
@@ -1460,7 +1511,7 @@ interface ContractTemplate {
   languages: string[];
   variableCount: number;
   variables: TemplateVariable[];
-  content: string;               // Markdown 源码
+  content: string; // Markdown 源码
   contentHtml: string;
   usageCount: number;
   lastUsedAt?: string;
@@ -1471,7 +1522,15 @@ interface ContractTemplate {
   relatedRegulations?: string[];
 }
 
-type VariableType = 'text' | 'number' | 'date' | 'select' | 'boolean' | 'richtext' | 'currency' | 'percentage';
+type VariableType =
+  | 'text'
+  | 'number'
+  | 'date'
+  | 'select'
+  | 'boolean'
+  | 'richtext'
+  | 'currency'
+  | 'percentage';
 
 interface TemplateVariable {
   name: string;
@@ -1484,23 +1543,32 @@ interface TemplateVariable {
   maxLength?: number;
   validationRegex?: string;
   validationMessage?: string;
-  formatOptions?: { trim: boolean; capitalize: 'none' | 'first' | 'all' | 'words'; prefix?: string; suffix?: string; };
+  formatOptions?: {
+    trim: boolean;
+    capitalize: 'none' | 'first' | 'all' | 'words';
+    prefix?: string;
+    suffix?: string;
+  };
   options?: { label: string; value: string }[];
-  conditional?: { dependsOn: string; operator: 'equals' | 'notEquals' | 'contains' | 'isEmpty'; value: string; };
+  conditional?: {
+    dependsOn: string;
+    operator: 'equals' | 'notEquals' | 'contains' | 'isEmpty';
+    value: string;
+  };
   multilingual: Record<string, string>;
 }
 ```
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 法务主管 | 模板编辑 | 普通用户 |
-|------|-----------|---------|---------|----------|
-| 查看模板 | ✅ | ✅ | ✅ | ✅(已发布) |
-| 编辑模板 | ✅ | ✅ | ✅ | ❌ |
-| 编辑变量 | ✅ | ✅ | ✅ | ❌ |
-| 下载Word/PDF | ✅ | ✅ | ✅ | ✅(已发布) |
-| 复制模板 | ✅ | ✅ | ✅ | ❌ |
-| 发布/弃用模板 | ✅ | ✅ | ❌ | ❌ |
+| 功能          | 超级管理员 | 法务主管 | 模板编辑 | 普通用户   |
+| ------------- | ---------- | -------- | -------- | ---------- |
+| 查看模板      | ✅         | ✅       | ✅       | ✅(已发布) |
+| 编辑模板      | ✅         | ✅       | ✅       | ❌         |
+| 编辑变量      | ✅         | ✅       | ✅       | ❌         |
+| 下载Word/PDF  | ✅         | ✅       | ✅       | ✅(已发布) |
+| 复制模板      | ✅         | ✅       | ✅       | ❌         |
+| 发布/弃用模板 | ✅         | ✅       | ❌       | ❌         |
 
 ### API 接口
 
@@ -1510,8 +1578,6 @@ PUT  /api/admin/contract-templates/:id → { content, variables, versionNote }
 POST /api/admin/contract-templates/:id/preview → { variableValues, language } → { html }
 POST /api/admin/contract-templates/:id/download → { format, variableValues } → Blob
 ```
-
-
 
 ---
 
@@ -1727,8 +1793,15 @@ interface DLCLevelConfig {
   dvcThreshold: number;
 }
 
-type ConditionType = 'dvc_balance' | 'total_trade_amount' | 'content_count' | 'follower_count'
-  | 'consecutive_active_days' | 'invite_count' | 'staking_amount' | 'community_score';
+type ConditionType =
+  | 'dvc_balance'
+  | 'total_trade_amount'
+  | 'content_count'
+  | 'follower_count'
+  | 'consecutive_active_days'
+  | 'invite_count'
+  | 'staking_amount'
+  | 'community_score';
 
 interface UpgradeCondition {
   id: string;
@@ -1747,20 +1820,26 @@ interface PrivilegeConfig {
   icon: string;
   isEnabled: boolean;
   configValue: string;
-  configSchema?: { type: string; options?: { label: string; value: string }[]; min?: number; max?: number; step?: number; };
+  configSchema?: {
+    type: string;
+    options?: { label: string; value: string }[];
+    min?: number;
+    max?: number;
+    step?: number;
+  };
   description?: string;
 }
 ```
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 运营总监 | 数据分析师 | 普通管理员 |
-|------|-----------|---------|-----------|-----------|
-| 查看配置 | ✅ | ✅ | ✅ | ✅(只读) |
-| 编辑等级 | ✅ | ✅ | ❌ | ❌ |
-| 调整权重 | ✅ | ✅ | ❌ | ❌ |
-| 查看总览 | ✅ | ✅ | ✅ | ✅(只读) |
-| 导出配置 | ✅ | ✅ | ✅ | ❌ |
+| 功能     | 超级管理员 | 运营总监 | 数据分析师 | 普通管理员 |
+| -------- | ---------- | -------- | ---------- | ---------- |
+| 查看配置 | ✅         | ✅       | ✅         | ✅(只读)   |
+| 编辑等级 | ✅         | ✅       | ❌         | ❌         |
+| 调整权重 | ✅         | ✅       | ❌         | ❌         |
+| 查看总览 | ✅         | ✅       | ✅         | ✅(只读)   |
+| 导出配置 | ✅         | ✅       | ✅         | ❌         |
 
 ### API 接口
 
@@ -1982,8 +2061,20 @@ interface DistributionConfig {
   isActive: boolean;
   effectiveFrom: string;
   effectiveTo?: string;
-  inflowSources: { id: string; name: string; percentage: number; monthAmount?: string; subSources?: any[]; }[];
-  allocationRules: { id: string; name: string; percentage: number; description?: string; subRules?: any[]; }[];
+  inflowSources: {
+    id: string;
+    name: string;
+    percentage: number;
+    monthAmount?: string;
+    subSources?: any[];
+  }[];
+  allocationRules: {
+    id: string;
+    name: string;
+    percentage: number;
+    description?: string;
+    subRules?: any[];
+  }[];
   validationStatus: 'valid' | 'invalid';
   validationErrors?: string[];
   updatedBy: string;
@@ -2014,21 +2105,28 @@ interface DistributionRecord {
 interface PoolRealtimeUpdate {
   type: 'balance_update' | 'inflow' | 'distribution_start' | 'distribution_end' | 'heartbeat';
   timestamp: string;
-  data: { newBalance?: string; inflowAmount?: string; inflowSource?: string; inflowUser?: string; beneficiaryCount?: number; transactionHash?: string; };
+  data: {
+    newBalance?: string;
+    inflowAmount?: string;
+    inflowSource?: string;
+    inflowUser?: string;
+    beneficiaryCount?: number;
+    transactionHash?: string;
+  };
 }
 ```
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 财务总监 | 运营主管 | 审计员 |
-|------|-----------|---------|---------|--------|
-| 查看看板 | ✅ | ✅ | ✅ | ✅ |
-| 编辑分配比例 | ✅ | ✅ | ❌ | ❌ |
-| 手动发放 | ✅ | ✅ | ❌ | ❌ |
-| 查看发放记录 | ✅ | ✅ | ✅ | ✅ |
-| 导出财务报表 | ✅ | ✅ | ✅ | ✅ |
-| 查看预测 | ✅ | ✅ | ✅ | ✅ |
-| 调整预测参数 | ✅ | ❌ | ❌ | ❌ |
+| 功能         | 超级管理员 | 财务总监 | 运营主管 | 审计员 |
+| ------------ | ---------- | -------- | -------- | ------ |
+| 查看看板     | ✅         | ✅       | ✅       | ✅     |
+| 编辑分配比例 | ✅         | ✅       | ❌       | ❌     |
+| 手动发放     | ✅         | ✅       | ❌       | ❌     |
+| 查看发放记录 | ✅         | ✅       | ✅       | ✅     |
+| 导出财务报表 | ✅         | ✅       | ✅       | ✅     |
+| 查看预测     | ✅         | ✅       | ✅       | ✅     |
+| 调整预测参数 | ✅         | ❌       | ❌       | ❌     |
 
 ### API 接口
 
@@ -2430,16 +2528,16 @@ GET  /api/admin/dvsf/predictions?months=&growthRate=&model= → { conservative, 
 
 ### 权限矩阵
 
-| 功能 | 超级管理员 | 系统管理员 | 运维工程师 | 普通用户 |
-|------|-----------|-----------|-----------|----------|
-| 菜单管理 | ✅ | ✅ | ❌ | ❌ |
-| API配置 | ✅ | ✅ | ✅ | ❌ |
-| 数据库管理 | ✅ | ✅ | ✅ | ❌ |
-| 日志监控 | ✅ | ✅ | ✅ | ❌ |
-| 备份恢复 | ✅ | ✅ | ✅ | ❌ |
-| 通知设置 | ✅ | ✅ | ✅ | ✅(个人) |
-| 性能调优 | ✅ | ✅ | ✅ | ❌ |
-| 安全策略 | ✅ | ✅ | ❌ | ❌ |
+| 功能       | 超级管理员 | 系统管理员 | 运维工程师 | 普通用户 |
+| ---------- | ---------- | ---------- | ---------- | -------- |
+| 菜单管理   | ✅         | ✅         | ❌         | ❌       |
+| API配置    | ✅         | ✅         | ✅         | ❌       |
+| 数据库管理 | ✅         | ✅         | ✅         | ❌       |
+| 日志监控   | ✅         | ✅         | ✅         | ❌       |
+| 备份恢复   | ✅         | ✅         | ✅         | ❌       |
+| 通知设置   | ✅         | ✅         | ✅         | ✅(个人) |
+| 性能调优   | ✅         | ✅         | ✅         | ❌       |
+| 安全策略   | ✅         | ✅         | ❌         | ❌       |
 
 ### API 接口
 
@@ -2480,41 +2578,41 @@ POST   /api/admin/system/backup/drill       → { drillId: string }
 
 ### 色彩令牌
 
-| 令牌名 | 值 | 用途 | 线框图对应标识 |
-|--------|-----|------|---------------|
-| `colorBgBase` | `#141414` | 页面底色 | 外层背景 |
-| `colorBgContainer` | `#1f1f1f` | 卡片/面板背景 | 卡片背景 |
-| `colorBgElevated` | `#272727` | 弹窗/抽屉背景 | 弹窗背景 |
-| `colorBorder` | `#434343` | 边框色 | 分割线 |
-| `colorBorderSecondary` | `#303030` | 次级边框 | 内部分割 |
-| `colorText` | `#e0e0e0` | 主文字 | 标题文字 |
-| `colorTextSecondary` | `#a0a0a0` | 次级文字 | 描述文字 |
-| `colorTextTertiary` | `#737373` | 辅助文字 | 时间戳等 |
-| `colorPrimary` | `#5B8FF9` | 主题色 | 主按钮/链接 |
-| `colorSuccess` | `#5BD46E` | 成功色 | 成功状态 |
-| `colorWarning` | `#D4A05B` | 警告色 | 警告状态 |
-| `colorError` | `#D45050` | 错误色 | 错误状态 |
-| `colorInfo` | `#5BD4D0` | 信息色 | 信息提示 |
+| 令牌名                 | 值        | 用途          | 线框图对应标识 |
+| ---------------------- | --------- | ------------- | -------------- |
+| `colorBgBase`          | `#141414` | 页面底色      | 外层背景       |
+| `colorBgContainer`     | `#1f1f1f` | 卡片/面板背景 | 卡片背景       |
+| `colorBgElevated`      | `#272727` | 弹窗/抽屉背景 | 弹窗背景       |
+| `colorBorder`          | `#434343` | 边框色        | 分割线         |
+| `colorBorderSecondary` | `#303030` | 次级边框      | 内部分割       |
+| `colorText`            | `#e0e0e0` | 主文字        | 标题文字       |
+| `colorTextSecondary`   | `#a0a0a0` | 次级文字      | 描述文字       |
+| `colorTextTertiary`    | `#737373` | 辅助文字      | 时间戳等       |
+| `colorPrimary`         | `#5B8FF9` | 主题色        | 主按钮/链接    |
+| `colorSuccess`         | `#5BD46E` | 成功色        | 成功状态       |
+| `colorWarning`         | `#D4A05B` | 警告色        | 警告状态       |
+| `colorError`           | `#D45050` | 错误色        | 错误状态       |
+| `colorInfo`            | `#5BD4D0` | 信息色        | 信息提示       |
 
 ### 状态徽章颜色映射（全局）
 
-| 状态类型 | Ant Design Badge | 暗色背景 | 文字色 | 适用场景 |
-|----------|-----------------|----------|--------|----------|
-| 成功/完成 | `Success` | `#1B2E1B` | `#5BD46E` | 已注册、已发布、已完成 |
-| 处理中/审核 | `Processing` | `#1D2B2B` | `#5BD4D0` | 审核中、处理中 |
-| 警告/待办 | `Warning` | `#2B1D11` | `#D4A05B` | 待审核、即将到期 |
-| 错误/失败 | `Error` | `#2E1B1B` | `#D45050` | 已驳回、失败、过期 |
-| 默认/禁用 | `Default` | `#262626` | `#8C8C8C` | 草稿、已取消、禁用 |
+| 状态类型    | Ant Design Badge | 暗色背景  | 文字色    | 适用场景               |
+| ----------- | ---------------- | --------- | --------- | ---------------------- |
+| 成功/完成   | `Success`        | `#1B2E1B` | `#5BD46E` | 已注册、已发布、已完成 |
+| 处理中/审核 | `Processing`     | `#1D2B2B` | `#5BD4D0` | 审核中、处理中         |
+| 警告/待办   | `Warning`        | `#2B1D11` | `#D4A05B` | 待审核、即将到期       |
+| 错误/失败   | `Error`          | `#2E1B1B` | `#D45050` | 已驳回、失败、过期     |
+| 默认/禁用   | `Default`        | `#262626` | `#8C8C8C` | 草稿、已取消、禁用     |
 
 ### 卡片阴影层级
 
-| 层级 | 阴影值 | 使用场景 |
-|------|--------|----------|
-| 基础卡片 | `0 2px 8px rgba(0,0,0,0.3)` | 默认卡片 |
-| 悬停卡片 | `0 4px 16px rgba(0,0,0,0.4)` | 鼠标悬停 |
-| 弹出层 | `0 6px 24px rgba(0,0,0,0.5)` | 下拉菜单/浮层 |
-| 模态框 | `0 8px 32px rgba(0,0,0,0.6)` | 弹窗/抽屉 |
-| 全屏模态 | `0 12px 48px rgba(0,0,0,0.7)` | 最大化弹窗 |
+| 层级     | 阴影值                        | 使用场景      |
+| -------- | ----------------------------- | ------------- |
+| 基础卡片 | `0 2px 8px rgba(0,0,0,0.3)`   | 默认卡片      |
+| 悬停卡片 | `0 4px 16px rgba(0,0,0,0.4)`  | 鼠标悬停      |
+| 弹出层   | `0 6px 24px rgba(0,0,0,0.5)`  | 下拉菜单/浮层 |
+| 模态框   | `0 8px 32px rgba(0,0,0,0.6)`  | 弹窗/抽屉     |
+| 全屏模态 | `0 12px 48px rgba(0,0,0,0.7)` | 最大化弹窗    |
 
 ---
 
@@ -2522,14 +2620,14 @@ POST   /api/admin/system/backup/drill       → { drillId: string }
 
 所有页面均支持以下响应式断点：
 
-| 断点 | 宽度 | 布局调整 | 适用设备 |
-|------|------|---------|----------|
-| `xs` | < 576px | 单列堆叠，侧边栏收起为抽屉 | 手机 |
-| `sm` | 576-768px | 双列缩减为单列，统计卡片2x2 | 平板竖屏 |
-| `md` | 768-992px | 双列布局，侧边栏可收起 | 平板横屏 |
-| `lg` | 992-1200px | 完整双列/三列布局 | 小桌面 |
-| `xl` | 1200-1600px | 标准桌面布局 | 标准桌面 |
-| `xxl` | > 1600px | 最大化内容区，表格展开更多列 | 大屏 |
+| 断点  | 宽度        | 布局调整                     | 适用设备 |
+| ----- | ----------- | ---------------------------- | -------- |
+| `xs`  | < 576px     | 单列堆叠，侧边栏收起为抽屉   | 手机     |
+| `sm`  | 576-768px   | 双列缩减为单列，统计卡片2x2  | 平板竖屏 |
+| `md`  | 768-992px   | 双列布局，侧边栏可收起       | 平板横屏 |
+| `lg`  | 992-1200px  | 完整双列/三列布局            | 小桌面   |
+| `xl`  | 1200-1600px | 标准桌面布局                 | 标准桌面 |
+| `xxl` | > 1600px    | 最大化内容区，表格展开更多列 | 大屏     |
 
 ### 关键响应式行为
 
@@ -2615,18 +2713,18 @@ const siderResponsive = {
 
 ### 页面特定空状态
 
-| 页面 | 空状态场景 | 操作建议 |
-|------|-----------|---------|
-| 8.5.1 公司注册订单 | 筛选条件无匹配 | 重置筛选条件 |
-| 8.5.1 公司注册订单 | 代理人无订单 | 引导创建新订单 |
-| 8.5.2 银行开户申请 | 银行无申请 | 引导发起申请 |
-| 8.5.3 AI知识库 | 分类下无条目 | 引导新增知识 |
-| 8.5.4 税率数据库 | 国家无税率 | 引导导入数据 |
-| 8.5.5 法规库 | 筛选无匹配 | 调整筛选条件 |
-| 8.5.6 合同模板 | 场景无模板 | 引导创建模板 |
-| 8.5.7 DLC等级配置 | 等级无用户 | 正常状态展示 |
-| 8.5.8 DVSF分红池 | 池余额为零 | 引导配置入池 |
-| 8.5.9 系统设置 | 配置为空 | 引导完成初始配置 |
+| 页面               | 空状态场景     | 操作建议         |
+| ------------------ | -------------- | ---------------- |
+| 8.5.1 公司注册订单 | 筛选条件无匹配 | 重置筛选条件     |
+| 8.5.1 公司注册订单 | 代理人无订单   | 引导创建新订单   |
+| 8.5.2 银行开户申请 | 银行无申请     | 引导发起申请     |
+| 8.5.3 AI知识库     | 分类下无条目   | 引导新增知识     |
+| 8.5.4 税率数据库   | 国家无税率     | 引导导入数据     |
+| 8.5.5 法规库       | 筛选无匹配     | 调整筛选条件     |
+| 8.5.6 合同模板     | 场景无模板     | 引导创建模板     |
+| 8.5.7 DLC等级配置  | 等级无用户     | 正常状态展示     |
+| 8.5.8 DVSF分红池   | 池余额为零     | 引导配置入池     |
+| 8.5.9 系统设置     | 配置为空       | 引导完成初始配置 |
 
 ---
 
@@ -2634,34 +2732,34 @@ const siderResponsive = {
 
 ### 全局通用组件
 
-| 组件名 | 文件路径 | 复用页面 | 说明 |
-|--------|---------|---------|------|
-| `StatCard` | `@/components/StatCard` | 全部9页 | 统计卡片，支持点击联动筛选 |
-| `StatusBadge` | `@/components/StatusBadge` | 全部9页 | 状态徽章，暗色模式适配 |
-| `CountrySelector` | `@/components/CountrySelector` | 8.5.1/4/5/8 | 国家选择器，带国旗和搜索 |
-| `EncryptedInput` | `@/components/EncryptedInput` | 8.5.9 | 加密输入框，支持显示/隐藏 |
-| `RealTimeCounter` | `@/components/RealTimeCounter` | 8.5.8 | 实时数字，支持跳动动画 |
-| `VectorSearchTest` | `@/components/VectorSearchTest` | 8.5.3 | 向量检索测试弹窗 |
-| `AuditTimeline` | `@/components/AuditTimeline` | 8.5.1/2/4 | 审计时间线 |
-| `BatchOperationBar` | `@/components/BatchOperationBar` | 8.5.1/2/3/4 | 批量操作栏 |
-| `EmptyState` | `@/components/EmptyState` | 全部9页 | 空状态组件 |
-| `ErrorState` | `@/components/ErrorState` | 全部9页 | 错误状态组件 |
-| `RichTextEditor` | `@/components/RichTextEditor` | 8.5.3/6 | 富文本编辑器 |
-| `TemplatePreview` | `@/components/TemplatePreview` | 8.5.6 | 模板实时预览 |
-| `HealthCheckBadge` | `@/components/HealthCheckBadge` | 8.5.9 | 健康检查徽章 |
+| 组件名              | 文件路径                         | 复用页面    | 说明                       |
+| ------------------- | -------------------------------- | ----------- | -------------------------- |
+| `StatCard`          | `@/components/StatCard`          | 全部9页     | 统计卡片，支持点击联动筛选 |
+| `StatusBadge`       | `@/components/StatusBadge`       | 全部9页     | 状态徽章，暗色模式适配     |
+| `CountrySelector`   | `@/components/CountrySelector`   | 8.5.1/4/5/8 | 国家选择器，带国旗和搜索   |
+| `EncryptedInput`    | `@/components/EncryptedInput`    | 8.5.9       | 加密输入框，支持显示/隐藏  |
+| `RealTimeCounter`   | `@/components/RealTimeCounter`   | 8.5.8       | 实时数字，支持跳动动画     |
+| `VectorSearchTest`  | `@/components/VectorSearchTest`  | 8.5.3       | 向量检索测试弹窗           |
+| `AuditTimeline`     | `@/components/AuditTimeline`     | 8.5.1/2/4   | 审计时间线                 |
+| `BatchOperationBar` | `@/components/BatchOperationBar` | 8.5.1/2/3/4 | 批量操作栏                 |
+| `EmptyState`        | `@/components/EmptyState`        | 全部9页     | 空状态组件                 |
+| `ErrorState`        | `@/components/ErrorState`        | 全部9页     | 错误状态组件               |
+| `RichTextEditor`    | `@/components/RichTextEditor`    | 8.5.3/6     | 富文本编辑器               |
+| `TemplatePreview`   | `@/components/TemplatePreview`   | 8.5.6       | 模板实时预览               |
+| `HealthCheckBadge`  | `@/components/HealthCheckBadge`  | 8.5.9       | 健康检查徽章               |
 
 ### Hooks 复用
 
-| Hook 名 | 文件路径 | 复用页面 | 说明 |
-|---------|---------|---------|------|
-| `useRealTimeData` | `@/hooks/useRealTimeData` | 8.5.8 | WebSocket 实时数据订阅 |
-| `usePermission` | `@/hooks/usePermission` | 全部9页 | 权限检查 |
-| `useDarkTheme` | `@/hooks/useDarkTheme` | 全部9页 | 深色模式检测 |
-| `useTableSelection` | `@/hooks/useTableSelection` | 8.5.1/2/3/4 | 表格多选状态管理 |
-| `useDebounceSearch` | `@/hooks/useDebounceSearch` | 全部9页 | 防抖搜索 |
-| `useCountUp` | `@/hooks/useCountUp` | 8.5.8 | 数字跳动动画 |
-| `useFormDirty` | `@/hooks/useFormDirty` | 8.5.7/9 | 表单变更检测 |
-| `useAutoSave` | `@/hooks/useAutoSave` | 8.5.6/7 | 自动保存草稿 |
+| Hook 名             | 文件路径                    | 复用页面    | 说明                   |
+| ------------------- | --------------------------- | ----------- | ---------------------- |
+| `useRealTimeData`   | `@/hooks/useRealTimeData`   | 8.5.8       | WebSocket 实时数据订阅 |
+| `usePermission`     | `@/hooks/usePermission`     | 全部9页     | 权限检查               |
+| `useDarkTheme`      | `@/hooks/useDarkTheme`      | 全部9页     | 深色模式检测           |
+| `useTableSelection` | `@/hooks/useTableSelection` | 8.5.1/2/3/4 | 表格多选状态管理       |
+| `useDebounceSearch` | `@/hooks/useDebounceSearch` | 全部9页     | 防抖搜索               |
+| `useCountUp`        | `@/hooks/useCountUp`        | 8.5.8       | 数字跳动动画           |
+| `useFormDirty`      | `@/hooks/useFormDirty`      | 8.5.7/9     | 表单变更检测           |
+| `useAutoSave`       | `@/hooks/useAutoSave`       | 8.5.6/7     | 自动保存草稿           |
 
 ---
 
@@ -2669,4 +2767,3 @@ const siderResponsive = {
 > **最后更新**: 2025-01-20  
 > **适用产品版本**: 太初国链 Admin Dashboard v2.5+  
 > **技术栈**: React 18 + Ant Design Pro v5 + TypeScript + Recharts + WebSocket
-

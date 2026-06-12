@@ -2,9 +2,24 @@ import { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ArrowLeft, Play, Pause, Heart, MessageCircle, Share2,
-  Bookmark, Star, Send, Maximize2, Gauge, Subtitles,
-  Eye, Clock, ThumbsUp, ChevronRight, CheckCircle2, Volume2
+  ArrowLeft,
+  Play,
+  Pause,
+  Heart,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  Star,
+  Send,
+  Maximize2,
+  Gauge,
+  Subtitles,
+  Eye,
+  Clock,
+  ThumbsUp,
+  ChevronRight,
+  CheckCircle2,
+  Volume2,
 } from 'lucide-react';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
@@ -59,7 +74,8 @@ const videoDataMap: Record<string, VideoData> = {
     bookmarks: 520,
     duration: '12:35',
     durationSeconds: 755,
-    description: '本视频详细演示如何通过太初国链APP，在3分钟内完成萨摩亚公司注册的AI填单流程。从资料准备到提交审核，全流程可视化操作指导，新手也能轻松上手。',
+    description:
+      '本视频详细演示如何通过太初国链APP，在3分钟内完成萨摩亚公司注册的AI填单流程。从资料准备到提交审核，全流程可视化操作指导，新手也能轻松上手。',
     tags: ['萨摩亚注册', 'AI工具', '跨境电商'],
     publishedAt: '2024-12-18',
     category: '萨摩亚',
@@ -78,23 +94,73 @@ const defaultVideo: VideoData = {
   bookmarks: 230,
   duration: '08:20',
   durationSeconds: 500,
-  description: '使用AI填单助手，3分钟内完成萨摩亚公司注册的所有表单填写。智能识别、自动填充、一键提交，让跨境注册变得简单高效。',
+  description:
+    '使用AI填单助手，3分钟内完成萨摩亚公司注册的所有表单填写。智能识别、自动填充、一键提交，让跨境注册变得简单高效。',
   tags: ['AI填单', '萨摩亚', '教程'],
   publishedAt: '2024-12-17',
   category: 'AI工具',
 };
 
 const commentsData: Comment[] = [
-  { id: 'c1', userName: '用户A', userAvatar: '', content: '太方便了，已经注册成功！', likes: 23, timeAgo: '2小时前' },
-  { id: 'c2', userName: '用户B', userAvatar: '', content: 'AI填单真的省了很多时间', likes: 15, timeAgo: '5小时前' },
-  { id: 'c3', userName: '用户C', userAvatar: '', content: '请问年审费用是多少？', likes: 8, timeAgo: '1天前' },
+  {
+    id: 'c1',
+    userName: '用户A',
+    userAvatar: '',
+    content: '太方便了，已经注册成功！',
+    likes: 23,
+    timeAgo: '2小时前',
+  },
+  {
+    id: 'c2',
+    userName: '用户B',
+    userAvatar: '',
+    content: 'AI填单真的省了很多时间',
+    likes: 15,
+    timeAgo: '5小时前',
+  },
+  {
+    id: 'c3',
+    userName: '用户C',
+    userAvatar: '',
+    content: '请问年审费用是多少？',
+    likes: 8,
+    timeAgo: '1天前',
+  },
 ];
 
 const relatedVideos: RelatedVideo[] = [
-  { id: 'v2', title: '税务计算器使用指南', duration: '15:45', views: 15000, author: '智财管家AI', timeAgo: '4天前' },
-  { id: 'v3', title: '福建老酒出海案例', duration: '22:10', views: 8900, author: '出海助手AI', timeAgo: '5天前' },
-  { id: 'v4', title: '泰国市场爆品分析', duration: '05:30', views: 12000, author: '市场洞察AI', timeAgo: '1周前' },
-  { id: 'v5', title: 'AI选品官实战演示', duration: '18:15', views: 6700, author: '太初国链官方', timeAgo: '1周前' },
+  {
+    id: 'v2',
+    title: '税务计算器使用指南',
+    duration: '15:45',
+    views: 15000,
+    author: '智财管家AI',
+    timeAgo: '4天前',
+  },
+  {
+    id: 'v3',
+    title: '福建老酒出海案例',
+    duration: '22:10',
+    views: 8900,
+    author: '出海助手AI',
+    timeAgo: '5天前',
+  },
+  {
+    id: 'v4',
+    title: '泰国市场爆品分析',
+    duration: '05:30',
+    views: 12000,
+    author: '市场洞察AI',
+    timeAgo: '1周前',
+  },
+  {
+    id: 'v5',
+    title: 'AI选品官实战演示',
+    duration: '18:15',
+    views: 6700,
+    author: '太初国链官方',
+    timeAgo: '1周前',
+  },
 ];
 
 /* ── utilities ────────────────────────────────────── */
@@ -128,7 +194,7 @@ function getGradientForId(id: string): string {
 export default function VideoPlayer() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const video = id ? (videoDataMap[id] || { ...defaultVideo, id }) : defaultVideo;
+  const video = id ? videoDataMap[id] || { ...defaultVideo, id } : defaultVideo;
   usePageTitle(video.title);
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -216,7 +282,9 @@ export default function VideoPlayer() {
           <div className="absolute bottom-0 left-0 right-0 p-3">
             {/* Progress Bar */}
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[10px] text-white/80 font-mono">{formatTime(currentSeconds)}</span>
+              <span className="text-[10px] text-white/80 font-mono">
+                {formatTime(currentSeconds)}
+              </span>
               <div
                 className="flex-1 h-[3px] bg-white/20 rounded-full overflow-hidden cursor-pointer relative"
                 onClick={(e) => {
@@ -239,7 +307,11 @@ export default function VideoPlayer() {
             {/* Control Buttons */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <motion.button whileTap={{ scale: 0.9 }} onClick={() => setIsPlaying(!isPlaying)} className="text-white/80">
+                <motion.button
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="text-white/80"
+                >
                   {isPlaying ? <Pause size={16} /> : <Play size={16} />}
                 </motion.button>
                 <motion.button whileTap={{ scale: 0.9 }} className="text-white/60">
@@ -267,7 +339,10 @@ export default function VideoPlayer() {
                         {['0.5x', '1x', '1.5x', '2x'].map((s) => (
                           <button
                             key={s}
-                            onClick={() => { setSpeed(s); setShowSpeedMenu(false); }}
+                            onClick={() => {
+                              setSpeed(s);
+                              setShowSpeedMenu(false);
+                            }}
                             className={`block w-full px-4 py-1.5 text-[11px] text-center ${speed === s ? 'text-coral bg-coral/10' : 'text-text-secondary hover:bg-bg-elevated'}`}
                           >
                             {s}
@@ -329,10 +404,28 @@ export default function VideoPlayer() {
         className="flex items-center justify-around py-3 mt-2 border-y border-white/[0.06] mx-4"
       >
         {[
-          { icon: Heart, count: video.likes, label: '点赞', active: liked, onClick: () => setLiked(!liked) },
-          { icon: MessageCircle, count: video.comments, label: '评论', active: false, onClick: () => { } },
-          { icon: Share2, count: video.shares, label: '分享', active: false, onClick: () => { } },
-          { icon: Bookmark, count: video.bookmarks, label: '收藏', active: bookmarked, onClick: () => setBookmarked(!bookmarked) },
+          {
+            icon: Heart,
+            count: video.likes,
+            label: '点赞',
+            active: liked,
+            onClick: () => setLiked(!liked),
+          },
+          {
+            icon: MessageCircle,
+            count: video.comments,
+            label: '评论',
+            active: false,
+            onClick: () => {},
+          },
+          { icon: Share2, count: video.shares, label: '分享', active: false, onClick: () => {} },
+          {
+            icon: Bookmark,
+            count: video.bookmarks,
+            label: '收藏',
+            active: bookmarked,
+            onClick: () => setBookmarked(!bookmarked),
+          },
         ].map((action) => (
           <motion.button
             key={action.label}
@@ -357,9 +450,7 @@ export default function VideoPlayer() {
         transition={{ delay: 0.3 }}
         className="px-4 pt-4"
       >
-        <h3 className="text-h4 font-semibold text-text-primary">
-          评论（{video.comments}）
-        </h3>
+        <h3 className="text-h4 font-semibold text-text-primary">评论（{video.comments}）</h3>
 
         {/* Comment Input */}
         <div className="flex items-center gap-3 mt-3 pb-4 border-b border-white/[0.04]">

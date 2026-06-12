@@ -11,7 +11,7 @@ interface SafeEChartsProps {
 export const SafeECharts: React.FC<SafeEChartsProps> = ({
   option,
   style = { height: 300 },
-  title
+  title,
 }) => {
   const [echarts, setEcharts] = React.useState<any>(null);
   const [hasError, setHasError] = React.useState(false);
@@ -25,7 +25,9 @@ export const SafeECharts: React.FC<SafeEChartsProps> = ({
       .catch(() => {
         if (mounted) setHasError(true);
       });
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   if (hasError || !echarts) {
@@ -38,7 +40,7 @@ export const SafeECharts: React.FC<SafeEChartsProps> = ({
           justifyContent: 'center',
           backgroundColor: '#f5f5f5',
           borderRadius: '4px',
-          color: '#999'
+          color: '#999',
         }}
       >
         {title || '图表功能开发中'}

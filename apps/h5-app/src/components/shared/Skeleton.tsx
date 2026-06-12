@@ -51,12 +51,7 @@ export default function Skeleton({
     );
   }
 
-  return (
-    <div
-      className={cn('skeleton-shimmer rounded-md', className)}
-      style={{ width, height }}
-    />
-  );
+  return <div className={cn('skeleton-shimmer rounded-md', className)} style={{ width, height }} />;
 }
 
 // Preset skeleton layouts for common use cases
@@ -68,7 +63,13 @@ export function SkeletonText({ lines = 2, className }: { lines?: number; classNa
   return <Skeleton variant="text" lines={lines} className={className} />;
 }
 
-export function SkeletonCircle({ size = '48px', className }: { size?: string; className?: string }) {
+export function SkeletonCircle({
+  size = '48px',
+  className,
+}: {
+  size?: string;
+  className?: string;
+}) {
   return <Skeleton variant="circle" width={size} height={size} className={className} />;
 }
 

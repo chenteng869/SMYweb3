@@ -1,9 +1,23 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  FileText, FileCheck, FileClock, FileWarning, ChevronRight,
-  Upload, Download, Search, Sparkles, Filter, X,
-  Building2, Receipt, BookOpen, FileSignature, Landmark, ShieldCheck
+  FileText,
+  FileCheck,
+  FileClock,
+  FileWarning,
+  ChevronRight,
+  Upload,
+  Download,
+  Search,
+  Sparkles,
+  Filter,
+  X,
+  Building2,
+  Receipt,
+  BookOpen,
+  FileSignature,
+  Landmark,
+  ShieldCheck,
 } from 'lucide-react';
 import TopBar from '@/components/layout/TopBar';
 import Card from '@/components/shared/Card';
@@ -34,35 +48,238 @@ interface DocItem {
 
 const ALL_DOCUMENTS: DocItem[] = [
   // Registration
-  { id: 'd1', name: '公司注册证书', category: 'registration', type: 'certificate', date: '2024-01-22', status: 'ready', aiGenerated: false, company: 'TAICHU OPC LTD', size: '1.2MB' },
-  { id: 'd2', name: '公司章程', category: 'registration', type: 'articles', date: '2024-01-22', status: 'ready', aiGenerated: true, company: 'TAICHU OPC LTD', size: '856KB' },
-  { id: 'd3', name: '董事名册', category: 'registration', type: 'register', date: '2024-01-25', status: 'ready', aiGenerated: false, company: 'TAICHU OPC LTD', size: '320KB' },
-  { id: 'd4', name: '股东名册', category: 'registration', type: 'register', date: '2024-01-25', status: 'ready', aiGenerated: false, company: 'TAICHU OPC LTD', size: '280KB' },
-  { id: 'd5', name: '营业执照', category: 'registration', type: 'certificate', date: '2024-03-18', status: 'ready', aiGenerated: false, company: 'TAICHU TRADING LTD', size: '2.1MB' },
-  { id: 'd6', name: '商业登记证', category: 'registration', type: 'certificate', date: '2024-06-05', status: 'ready', aiGenerated: false, company: 'TAICHU TRADING LTD', size: '1.5MB' },
-  { id: 'd7', name: '周年申报表', category: 'registration', type: 'annual_return', date: '2024-12-01', status: 'pending', aiGenerated: true, company: 'TAICHU OPC LTD', size: '--' },
+  {
+    id: 'd1',
+    name: '公司注册证书',
+    category: 'registration',
+    type: 'certificate',
+    date: '2024-01-22',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU OPC LTD',
+    size: '1.2MB',
+  },
+  {
+    id: 'd2',
+    name: '公司章程',
+    category: 'registration',
+    type: 'articles',
+    date: '2024-01-22',
+    status: 'ready',
+    aiGenerated: true,
+    company: 'TAICHU OPC LTD',
+    size: '856KB',
+  },
+  {
+    id: 'd3',
+    name: '董事名册',
+    category: 'registration',
+    type: 'register',
+    date: '2024-01-25',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU OPC LTD',
+    size: '320KB',
+  },
+  {
+    id: 'd4',
+    name: '股东名册',
+    category: 'registration',
+    type: 'register',
+    date: '2024-01-25',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU OPC LTD',
+    size: '280KB',
+  },
+  {
+    id: 'd5',
+    name: '营业执照',
+    category: 'registration',
+    type: 'certificate',
+    date: '2024-03-18',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU TRADING LTD',
+    size: '2.1MB',
+  },
+  {
+    id: 'd6',
+    name: '商业登记证',
+    category: 'registration',
+    type: 'certificate',
+    date: '2024-06-05',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU TRADING LTD',
+    size: '1.5MB',
+  },
+  {
+    id: 'd7',
+    name: '周年申报表',
+    category: 'registration',
+    type: 'annual_return',
+    date: '2024-12-01',
+    status: 'pending',
+    aiGenerated: true,
+    company: 'TAICHU OPC LTD',
+    size: '--',
+  },
 
   // Bank
-  { id: 'd8', name: '汇丰银行开户确认函', category: 'bank', type: 'bank_doc', date: '2024-02-10', status: 'ready', aiGenerated: false, company: 'TAICHU OPC LTD', size: '450KB' },
-  { id: 'd9', name: '星展银行KYC文件', category: 'bank', type: 'bank_doc', date: '2024-03-15', status: 'ready', aiGenerated: false, company: 'TAICHU TRADING LTD', size: '3.2MB' },
-  { id: 'd10', name: '银行服务协议', category: 'bank', type: 'contract', date: '2024-02-15', status: 'ready', aiGenerated: true, company: 'TAICHU OPC LTD', size: '1.8MB' },
-  { id: 'd11', name: 'Wise账户申请表', category: 'bank', type: 'bank_doc', date: '2024-12-10', status: 'pending', aiGenerated: false, company: 'TAICHU HOLDINGS LTD', size: '--' },
+  {
+    id: 'd8',
+    name: '汇丰银行开户确认函',
+    category: 'bank',
+    type: 'bank_doc',
+    date: '2024-02-10',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU OPC LTD',
+    size: '450KB',
+  },
+  {
+    id: 'd9',
+    name: '星展银行KYC文件',
+    category: 'bank',
+    type: 'bank_doc',
+    date: '2024-03-15',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU TRADING LTD',
+    size: '3.2MB',
+  },
+  {
+    id: 'd10',
+    name: '银行服务协议',
+    category: 'bank',
+    type: 'contract',
+    date: '2024-02-15',
+    status: 'ready',
+    aiGenerated: true,
+    company: 'TAICHU OPC LTD',
+    size: '1.8MB',
+  },
+  {
+    id: 'd11',
+    name: 'Wise账户申请表',
+    category: 'bank',
+    type: 'bank_doc',
+    date: '2024-12-10',
+    status: 'pending',
+    aiGenerated: false,
+    company: 'TAICHU HOLDINGS LTD',
+    size: '--',
+  },
 
   // Tax
-  { id: 'd12', name: '萨摩亚年度税务申报', category: 'tax', type: 'tax_return', date: '2024-12-15', status: 'pending', aiGenerated: true, company: 'TAICHU OPC LTD', size: '--' },
-  { id: 'd13', name: 'GST/VAT注册文件', category: 'tax', type: 'tax_cert', date: '2024-04-20', status: 'ready', aiGenerated: false, company: 'TAICHU TRADING LTD', size: '620KB' },
-  { id: 'd14', name: '税务居民证明', category: 'tax', type: 'tax_cert', date: '2024-05-01', status: 'ready', aiGenerated: false, company: 'TAICHU OPC LTD', size: '410KB' },
-  { id: 'd15', name: '转让定价文档', category: 'tax', type: 'tax_doc', date: '2024-12-20', status: 'ai-generating', aiGenerated: true, company: 'TAICHU OPC LTD', size: '--' },
+  {
+    id: 'd12',
+    name: '萨摩亚年度税务申报',
+    category: 'tax',
+    type: 'tax_return',
+    date: '2024-12-15',
+    status: 'pending',
+    aiGenerated: true,
+    company: 'TAICHU OPC LTD',
+    size: '--',
+  },
+  {
+    id: 'd13',
+    name: 'GST/VAT注册文件',
+    category: 'tax',
+    type: 'tax_cert',
+    date: '2024-04-20',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU TRADING LTD',
+    size: '620KB',
+  },
+  {
+    id: 'd14',
+    name: '税务居民证明',
+    category: 'tax',
+    type: 'tax_cert',
+    date: '2024-05-01',
+    status: 'ready',
+    aiGenerated: false,
+    company: 'TAICHU OPC LTD',
+    size: '410KB',
+  },
+  {
+    id: 'd15',
+    name: '转让定价文档',
+    category: 'tax',
+    type: 'tax_doc',
+    date: '2024-12-20',
+    status: 'ai-generating',
+    aiGenerated: true,
+    company: 'TAICHU OPC LTD',
+    size: '--',
+  },
 
   // Contracts
-  { id: 'd16', name: '服务协议模板', category: 'contract', type: 'contract_template', date: '2024-06-15', status: 'ready', aiGenerated: true, company: '通用', size: '520KB' },
-  { id: 'd17', name: '供应商合同', category: 'contract', type: 'contract', date: '2024-07-01', status: 'ready', aiGenerated: true, company: 'TAICHU TRADING LTD', size: '1.2MB' },
-  { id: 'd18', name: '雇佣合同模板', category: 'contract', type: 'contract_template', date: '2024-08-01', status: 'ready', aiGenerated: true, company: '通用', size: '680KB' },
-  { id: 'd19', name: '保密协议(NDA)', category: 'contract', type: 'contract', date: '2024-09-10', status: 'ready', aiGenerated: true, company: '通用', size: '340KB' },
-  { id: 'd20', name: '股东协议', category: 'contract', type: 'contract', date: '2024-10-15', status: 'pending', aiGenerated: true, company: 'TAICHU HOLDINGS LTD', size: '--' },
+  {
+    id: 'd16',
+    name: '服务协议模板',
+    category: 'contract',
+    type: 'contract_template',
+    date: '2024-06-15',
+    status: 'ready',
+    aiGenerated: true,
+    company: '通用',
+    size: '520KB',
+  },
+  {
+    id: 'd17',
+    name: '供应商合同',
+    category: 'contract',
+    type: 'contract',
+    date: '2024-07-01',
+    status: 'ready',
+    aiGenerated: true,
+    company: 'TAICHU TRADING LTD',
+    size: '1.2MB',
+  },
+  {
+    id: 'd18',
+    name: '雇佣合同模板',
+    category: 'contract',
+    type: 'contract_template',
+    date: '2024-08-01',
+    status: 'ready',
+    aiGenerated: true,
+    company: '通用',
+    size: '680KB',
+  },
+  {
+    id: 'd19',
+    name: '保密协议(NDA)',
+    category: 'contract',
+    type: 'contract',
+    date: '2024-09-10',
+    status: 'ready',
+    aiGenerated: true,
+    company: '通用',
+    size: '340KB',
+  },
+  {
+    id: 'd20',
+    name: '股东协议',
+    category: 'contract',
+    type: 'contract',
+    date: '2024-10-15',
+    status: 'pending',
+    aiGenerated: true,
+    company: 'TAICHU HOLDINGS LTD',
+    size: '--',
+  },
 ];
 
-const STATUS_CONFIG: Record<string, { label: string; status: 'success' | 'warning' | 'danger' | 'accent' }> = {
+const STATUS_CONFIG: Record<
+  string,
+  { label: string; status: 'success' | 'warning' | 'danger' | 'accent' }
+> = {
   ready: { label: '已完成', status: 'success' },
   pending: { label: '待处理', status: 'warning' },
   expired: { label: '已过期', status: 'danger' },
@@ -84,15 +301,16 @@ const TYPE_ICONS: Record<string, React.ComponentType<{ size?: number; className?
 
 export default function DocumentCenter() {
   usePageTitle('文档中心');
-  const companies = useAppStore(s => s.companies);
+  const companies = useAppStore((s) => s.companies);
 
   const [activeCategory, setActiveCategory] = useState('registration');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
 
-  const filteredDocs = ALL_DOCUMENTS.filter(doc => {
+  const filteredDocs = ALL_DOCUMENTS.filter((doc) => {
     const matchesCategory = doc.category === activeCategory;
-    const matchesSearch = !searchQuery ||
+    const matchesSearch =
+      !searchQuery ||
       doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       doc.company.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -100,9 +318,9 @@ export default function DocumentCenter() {
 
   const stats = {
     total: ALL_DOCUMENTS.length,
-    ready: ALL_DOCUMENTS.filter(d => d.status === 'ready').length,
-    pending: ALL_DOCUMENTS.filter(d => d.status === 'pending').length,
-    aiGenerated: ALL_DOCUMENTS.filter(d => d.aiGenerated).length,
+    ready: ALL_DOCUMENTS.filter((d) => d.status === 'ready').length,
+    pending: ALL_DOCUMENTS.filter((d) => d.status === 'pending').length,
+    aiGenerated: ALL_DOCUMENTS.filter((d) => d.aiGenerated).length,
   };
 
   return (
@@ -125,7 +343,7 @@ export default function DocumentCenter() {
             { label: '已完成', value: stats.ready, color: 'text-teal' },
             { label: '待处理', value: stats.pending, color: 'text-warning' },
             { label: 'AI生成', value: stats.aiGenerated, color: 'text-accent' },
-          ].map(s => (
+          ].map((s) => (
             <motion.div
               key={s.label}
               variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
@@ -144,7 +362,10 @@ export default function DocumentCenter() {
           transition={{ delay: 0.1 }}
         >
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
+            />
             <input
               type="text"
               value={searchQuery}
@@ -190,8 +411,8 @@ export default function DocumentCenter() {
           transition={{ delay: 0.2 }}
           className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide"
         >
-          {CATEGORIES.map(cat => {
-            const count = ALL_DOCUMENTS.filter(d => d.category === cat.id).length;
+          {CATEGORIES.map((cat) => {
+            const count = ALL_DOCUMENTS.filter((d) => d.category === cat.id).length;
             return (
               <motion.button
                 key={cat.id}
@@ -205,7 +426,9 @@ export default function DocumentCenter() {
               >
                 <cat.icon size={14} />
                 {cat.label}
-                <span className={`text-[10px] ${activeCategory === cat.id ? 'text-bg-dark/60' : 'text-text-muted'}`}>
+                <span
+                  className={`text-[10px] ${activeCategory === cat.id ? 'text-bg-dark/60' : 'text-text-muted'}`}
+                >
                   {count}
                 </span>
               </motion.button>
@@ -281,7 +504,10 @@ export default function DocumentCenter() {
                           {statusConfig.label}
                         </StatusBadge>
                         {doc.status === 'ready' && (
-                          <motion.button whileTap={{ scale: 0.9 }} className="w-8 h-8 rounded-lg bg-bg-elevated flex items-center justify-center">
+                          <motion.button
+                            whileTap={{ scale: 0.9 }}
+                            className="w-8 h-8 rounded-lg bg-bg-elevated flex items-center justify-center"
+                          >
                             <Download size={14} className="text-text-muted" />
                           </motion.button>
                         )}

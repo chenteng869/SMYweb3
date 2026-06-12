@@ -1,0 +1,52 @@
+[
+  {
+    "page": "首页",
+    "path": "/",
+    "status": "OK",
+    "js_errors": 2,
+    "console_errors": 6,
+    "errors_detail": ["未登录或登录已过期", "未登录或登录已过期"],
+    "screenshot": "d:\\3、系统项目开发\\trae_projects\\SMYweb3.020260527\\tests\\e2e\\screenshots\\health-首页.png",
+    "text_preview": "W\nWOPC 创业家\n萨摩亚 · 国家级管理平台\n仪表盘\n大屏指挥台\n安全防御中心\n用户管理\n公司管理\nAI 电子名片\nAI 大脑\nOpenClaw 智能体\nn8n 工作流\nAI 大模型集成\nBPM 工作流引擎\n银行账户\n支付管理\n税务管理\nDLC 等级\nDVSF 分红\n法务合规\n视频中心\n自媒体中心\n文档中心\n📺 AI电视新闻\n🎯 AI全球获客\n直播管理\n订单工单\n通知管理\n区块链\n注册管理\n系"
+  },
+  {
+    "page": "登录页",
+    "path": "/login",
+    "status": "OK",
+    "js_errors": 0,
+    "console_errors": 0,
+    "errors_detail": [],
+    "screenshot": "d:\\3、系统项目开发\\trae_projects\\SMYweb3.020260527\\tests\\e2e\\screenshots\\health-登录页.png",
+    "text_preview": "W\nWOPC Samoa\nGovernment Administration Portal v2.0.0\n萨摩亚 · 国家级管理平台 · 安全认证系统\n用户名\n密码\n安全登录\n\n演示账号 (Demo Accounts)\n\n超级管理员\nadmin / admin123456\n运营员\noperator / admin123456\n审计员\nauditor / admin123456\n© 2026 WOP"
+  },
+  {
+    "page": "DID列表",
+    "path": "/did/list",
+    "status": "OK",
+    "js_errors": 0,
+    "console_errors": 0,
+    "errors_detail": [],
+    "screenshot": "d:\\3、系统项目开发\\trae_projects\\SMYweb3.020260527\\tests\\e2e\\screenshots\\health-DID列表.png",
+    "text_preview": "W\nWOPC 创业家\n萨摩亚 · 国家级管理平台\n仪表盘\n大屏指挥台\n安全防御中心\n用户管理\n公司管理\nAI 电子名片\nAI 大脑\nOpenClaw 智能体\nn8n 工作流\nAI 大模型集成\nBPM 工作流引擎\n银行账户\n支付管理\n税务管理\nDLC 等级\nDVSF 分红\n法务合规\n视频中心\n自媒体中心\n文档中心\n📺 AI电视新闻\n🎯 AI全球获客\n直播管理\n订单工单\n通知管理\n区块链\n注册管理\n系"
+  },
+  {
+    "page": "DID签发",
+    "path": "/did/issue",
+    "status": "OK",
+    "js_errors": 0,
+    "console_errors": 0,
+    "errors_detail": [],
+    "screenshot": "d:\\3、系统项目开发\\trae_projects\\SMYweb3.020260527\\tests\\e2e\\screenshots\\health-DID签发.png",
+    "text_preview": "W\nWOPC 创业家\n萨摩亚 · 国家级管理平台\n仪表盘\n大屏指挥台\n安全防御中心\n用户管理\n公司管理\nAI 电子名片\nAI 大脑\nOpenClaw 智能体\nn8n 工作流\nAI 大模型集成\nBPM 工作流引擎\n银行账户\n支付管理\n税务管理\nDLC 等级\nDVSF 分红\n法务合规\n视频中心\n自媒体中心\n文档中心\n📺 AI电视新闻\n🎯 AI全球获客\n直播管理\n订单工单\n通知管理\n区块链\n注册管理\n系"
+  },
+  {
+    "page": "DID名片",
+    "path": "/did/cards",
+    "status": "OK",
+    "js_errors": 0,
+    "console_errors": 4,
+    "errors_detail": [],
+    "screenshot": "d:\\3、系统项目开发\\trae_projects\\SMYweb3.020260527\\tests\\e2e\\screenshots\\health-DID名片.png",
+    "text_preview": "W\nWOPC 创业家\n萨摩亚 · 国家级管理平台\n仪表盘\n大屏指挥台\n安全防御中心\n用户管理\n公司管理\nAI 电子名片\nAI 大脑\nOpenClaw 智能体\nn8n 工作流\nAI 大模型集成\nBPM 工作流引擎\n银行账户\n支付管理\n税务管理\nDLC 等级\nDVSF 分红\n法务合规\n视频中心\n自媒体中心\n文档中心\n📺 AI电视新闻\n🎯 AI全球获客\n直播管理\n订单工单\n通知管理\n区块链\n注册管理\n系"
+  }
+]

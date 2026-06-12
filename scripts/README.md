@@ -2,11 +2,11 @@
 
 通用脚本集合。
 
-| 脚本 | 命令 | 作用 |
-|---|---|---|
-| [build-all.js](./build-all.js) | `npm run build:all` | 顺序构建全部 4 个子项目 |
-| [dev-all.js](./dev-all.js) | `npm run dev:all` | 并行启动全部 4 个开发服务 |
-| [clean.js](./clean.js) | `npm run clean` | 清理所有构建产物和 deploy/ 目录 |
+| 脚本                           | 命令                | 作用                            |
+| ------------------------------ | ------------------- | ------------------------------- |
+| [build-all.js](./build-all.js) | `npm run build:all` | 顺序构建全部 4 个子项目         |
+| [dev-all.js](./dev-all.js)     | `npm run dev:all`   | 并行启动全部 4 个开发服务       |
+| [clean.js](./clean.js)         | `npm run clean`     | 清理所有构建产物和 deploy/ 目录 |
 
 ## 用法
 

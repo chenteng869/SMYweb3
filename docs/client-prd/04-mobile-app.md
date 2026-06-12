@@ -43,38 +43,38 @@
 
 **为什么需要这章**：移动端 APP 跟 H5 / 小程序是**平行**渠道，不是"升级版 H5"。本章明确移动端的业务定位（海外拉新 + 留存 + Web3 入口）和可量化的北极星指标。
 
-| 目标 | 指标（Year 1） | 数据来源 |
-|---|---|---|
-| **海外用户占比** | ≥ 60%（vs H5 国内占比 80%+） | 设备注册时 `deviceRegion` 字段 |
-| **海外渠道 CAC** | Apple Search Ads < $2.5 / Google UAC < $3.0 | AppsFlyer / Adjust |
-| **30 日留存** | ≥ 25%（H5 仅 8%） | Mixpanel cohort |
-| **IAP 转化率** | 付费用户中 IAP 占比 ≥ 35% | App Store Connect / Google Play Console |
-| **Web3 钱包绑定率** | DLC 3+ 用户中 ≥ 50% 绑定钱包 | MobileDevice.walletBound |
-| **推送到达率** | APNs ≥ 95% / FCM ≥ 90% / 厂商通道 ≥ 85% | 极光统计 / 自建 token 表 |
-| **Crash 率** | Crashlytics < 0.5% | Firebase / Bugly |
-| **App Store 评分** | iOS 4.7+ / Google Play 4.5+ | App Store Connect / Play Console |
-| **审核一次过** | iOS ≥ 90% / Google Play ≥ 95% | 提审记录 |
-| **海外社交登录占比** | 海外用户中 Facebook + Google 登录 ≥ 70% | OverseasAuthBinding 表 |
+| 目标                 | 指标（Year 1）                              | 数据来源                                |
+| -------------------- | ------------------------------------------- | --------------------------------------- |
+| **海外用户占比**     | ≥ 60%（vs H5 国内占比 80%+）                | 设备注册时 `deviceRegion` 字段          |
+| **海外渠道 CAC**     | Apple Search Ads < $2.5 / Google UAC < $3.0 | AppsFlyer / Adjust                      |
+| **30 日留存**        | ≥ 25%（H5 仅 8%）                           | Mixpanel cohort                         |
+| **IAP 转化率**       | 付费用户中 IAP 占比 ≥ 35%                   | App Store Connect / Google Play Console |
+| **Web3 钱包绑定率**  | DLC 3+ 用户中 ≥ 50% 绑定钱包                | MobileDevice.walletBound                |
+| **推送到达率**       | APNs ≥ 95% / FCM ≥ 90% / 厂商通道 ≥ 85%     | 极光统计 / 自建 token 表                |
+| **Crash 率**         | Crashlytics < 0.5%                          | Firebase / Bugly                        |
+| **App Store 评分**   | iOS 4.7+ / Google Play 4.5+                 | App Store Connect / Play Console        |
+| **审核一次过**       | iOS ≥ 90% / Google Play ≥ 95%               | 提审记录                                |
+| **海外社交登录占比** | 海外用户中 Facebook + Google 登录 ≥ 70%     | OverseasAuthBinding 表                  |
 
 ---
 
 ## 2. 用户故事
 
-| # | 故事 |
-|---|---|
-| US-1 | 作为海外用户，我下载 APP 后用 **Apple ID** 一键登录（iOS），避免输入手机号 |
-| US-2 | 作为海外用户，我用 **Google Sign-In** 登录（Android），同时自动拿到 Gmail 头像 |
-| US-3 | 作为萨摩亚华人，我想用**手机号 + OTP** 登录（复用 H5 的短信通道） |
-| US-4 | 作为 DLC 4 用户，我用 **Face ID** 替代密码登录（生物识别） |
-| US-5 | 作为 Web3 用户，我打开 APP 弹出 **WalletConnect** 二维码，扫一下连接 MetaMask |
-| US-6 | 作为商家，我在 APP 内点**WhatsApp**按钮直接联系客服（不用装第三方） |
-| US-7 | 作为运营，我用**系统推送**提醒用户 DLC 升级（APNs / FCM 双通道） |
-| US-8 | 作为付费用户，我用 **Apple Pay** 1 秒内完成订阅支付（不用输卡号） |
-| US-9 | 作为 KOL，我想把"AI 名片"分享到 **Facebook / LinkedIn / WhatsApp**，用 APP 专属分享面板 |
-| US-10 | 作为老用户，APP 进入后台后收到**本地通知**（离线 DLC 升级提示） |
+| #     | 故事                                                                                        |
+| ----- | ------------------------------------------------------------------------------------------- |
+| US-1  | 作为海外用户，我下载 APP 后用 **Apple ID** 一键登录（iOS），避免输入手机号                  |
+| US-2  | 作为海外用户，我用 **Google Sign-In** 登录（Android），同时自动拿到 Gmail 头像              |
+| US-3  | 作为萨摩亚华人，我想用**手机号 + OTP** 登录（复用 H5 的短信通道）                           |
+| US-4  | 作为 DLC 4 用户，我用 **Face ID** 替代密码登录（生物识别）                                  |
+| US-5  | 作为 Web3 用户，我打开 APP 弹出 **WalletConnect** 二维码，扫一下连接 MetaMask               |
+| US-6  | 作为商家，我在 APP 内点**WhatsApp**按钮直接联系客服（不用装第三方）                         |
+| US-7  | 作为运营，我用**系统推送**提醒用户 DLC 升级（APNs / FCM 双通道）                            |
+| US-8  | 作为付费用户，我用 **Apple Pay** 1 秒内完成订阅支付（不用输卡号）                           |
+| US-9  | 作为 KOL，我想把"AI 名片"分享到 **Facebook / LinkedIn / WhatsApp**，用 APP 专属分享面板     |
+| US-10 | 作为老用户，APP 进入后台后收到**本地通知**（离线 DLC 升级提示）                             |
 | US-11 | 作为用户，我在 iOS 锁屏收到 APNs 长按推送 → 直接跳到订单详情（**3D Touch** / Haptic Touch） |
-| US-12 | 作为新用户，我用 **Facebook 登录**后自动关注海购星官方主页（Conversion API 上报） |
-| US-13 | 作为海外商家，我**离线**打开 APP 仍能看到缓存的 KYC 资料（MMKV 持久化） |
+| US-12 | 作为新用户，我用 **Facebook 登录**后自动关注海购星官方主页（Conversion API 上报）           |
+| US-13 | 作为海外商家，我**离线**打开 APP 仍能看到缓存的 KYC 资料（MMKV 持久化）                     |
 
 ---
 
@@ -84,26 +84,26 @@
 
 ### 3.1 4 端能力对比总表
 
-| 维度 | H5 (Web) | 微信小程序 | **APP (RN)** | APP 独有 / 优势 |
-|---|---|---|---|---|
-| **框架** | Vite + React 19 | 微信原生 (WXML/WXSS) | **React Native 0.74+** | 跨 iOS + Android，单团队维护 |
-| **后端 API** | `/api/h5/*` | `/api/h5/*`（同 H5） | `/api/h5/*`（**完全复用**） | 三端共用一套接口 |
-| **登录方式** | 手机号 + 密码 / OTP | wx.login + unionid | **手机号 OTP / Apple ID / Google / Facebook / LinkedIn / 钱包签名** | 多达 7 种登录通道 |
-| **支付** | Stripe / 支付宝 H5 / 微信 H5 | `wx.requestPayment` | **Apple Pay / Google Pay / IAP / 微信 H5 / 支付宝 H5** | IAP 必走（30% 抽成） |
-| **推送** | Web Push（受限） | 订阅消息（一次性） | **APNs / FCM / 极光 / 厂商通道** | 真正的系统级 Push |
-| **Web3 钱包** | window.ethereum（受浏览器限制） | ❌ 不支持 | **WalletConnect v2 / MetaMask SDK** | 钱包即登录，链上签名 |
-| **生物识别** | WebAuthn（兼容性差） | ❌ 不支持 | **Face ID / Touch ID / 指纹** | 替代密码登录 |
-| **原生能力** | 受限（getUserMedia 等） | 有限 | **相机/相册/通讯录/定位/蓝牙/扫码** | 完整调用 |
-| **离线缓存** | localStorage（5MB）/ IndexedDB | Storage（10MB） | **AsyncStorage / MMKV / SQLite** | 大容量 + 加密 |
-| **应用商店** | ❌ 无 | ❌ 无 | **App Store / Google Play / 国内安卓 5 大市场** | 渠道曝光 + ASO |
-| **裂变分享** | navigator.share | `onShareAppMessage` | **Facebook SDK / WhatsApp deep link / LinkedIn Share / TikTok Pixels** | 海外社交全打通 |
-| **UI 风格** | 浏览器原生 | 微信 UI | **底部 Tab Bar / 抽屉侧边栏 / 3D Touch / 长按菜单** | 平台特定 UI |
-| **链接跳转** | 普通 URL | Scheme URL | **Universal Link (iOS) / App Link (Android)** | 装 APP 后直达 |
-| **版本管理** | 浏览器刷新即可 | 灰度发布 | **CodePush 热更新 + TestFlight + 商店灰度** | 紧急修复不等审核 |
-| **审核** | ❌ 无 | 微信审核 1-3 天 | **App Store 4.7+ 必过、Play 1-3 天、华为/小米 1-3 天** | 需过审 + 内购合规 |
-| **包大小** | 0 | 主包 2MB | iOS 4GB / Android 4GB | 体积大可加视频/资源 |
-| **性能** | 首屏 1.5s | 首屏 1.5s | **iOS 启动 ≤ 1.2s / Android ≤ 1.5s** | 接近原生 |
-| **i18n** | i18next 4 语言 | i18next 4 语言 | **i18next 4 语言 + 平台特定文案** | 完全一致 |
+| 维度          | H5 (Web)                        | 微信小程序           | **APP (RN)**                                                           | APP 独有 / 优势              |
+| ------------- | ------------------------------- | -------------------- | ---------------------------------------------------------------------- | ---------------------------- |
+| **框架**      | Vite + React 19                 | 微信原生 (WXML/WXSS) | **React Native 0.74+**                                                 | 跨 iOS + Android，单团队维护 |
+| **后端 API**  | `/api/h5/*`                     | `/api/h5/*`（同 H5） | `/api/h5/*`（**完全复用**）                                            | 三端共用一套接口             |
+| **登录方式**  | 手机号 + 密码 / OTP             | wx.login + unionid   | **手机号 OTP / Apple ID / Google / Facebook / LinkedIn / 钱包签名**    | 多达 7 种登录通道            |
+| **支付**      | Stripe / 支付宝 H5 / 微信 H5    | `wx.requestPayment`  | **Apple Pay / Google Pay / IAP / 微信 H5 / 支付宝 H5**                 | IAP 必走（30% 抽成）         |
+| **推送**      | Web Push（受限）                | 订阅消息（一次性）   | **APNs / FCM / 极光 / 厂商通道**                                       | 真正的系统级 Push            |
+| **Web3 钱包** | window.ethereum（受浏览器限制） | ❌ 不支持            | **WalletConnect v2 / MetaMask SDK**                                    | 钱包即登录，链上签名         |
+| **生物识别**  | WebAuthn（兼容性差）            | ❌ 不支持            | **Face ID / Touch ID / 指纹**                                          | 替代密码登录                 |
+| **原生能力**  | 受限（getUserMedia 等）         | 有限                 | **相机/相册/通讯录/定位/蓝牙/扫码**                                    | 完整调用                     |
+| **离线缓存**  | localStorage（5MB）/ IndexedDB  | Storage（10MB）      | **AsyncStorage / MMKV / SQLite**                                       | 大容量 + 加密                |
+| **应用商店**  | ❌ 无                           | ❌ 无                | **App Store / Google Play / 国内安卓 5 大市场**                        | 渠道曝光 + ASO               |
+| **裂变分享**  | navigator.share                 | `onShareAppMessage`  | **Facebook SDK / WhatsApp deep link / LinkedIn Share / TikTok Pixels** | 海外社交全打通               |
+| **UI 风格**   | 浏览器原生                      | 微信 UI              | **底部 Tab Bar / 抽屉侧边栏 / 3D Touch / 长按菜单**                    | 平台特定 UI                  |
+| **链接跳转**  | 普通 URL                        | Scheme URL           | **Universal Link (iOS) / App Link (Android)**                          | 装 APP 后直达                |
+| **版本管理**  | 浏览器刷新即可                  | 灰度发布             | **CodePush 热更新 + TestFlight + 商店灰度**                            | 紧急修复不等审核             |
+| **审核**      | ❌ 无                           | 微信审核 1-3 天      | **App Store 4.7+ 必过、Play 1-3 天、华为/小米 1-3 天**                 | 需过审 + 内购合规            |
+| **包大小**    | 0                               | 主包 2MB             | iOS 4GB / Android 4GB                                                  | 体积大可加视频/资源          |
+| **性能**      | 首屏 1.5s                       | 首屏 1.5s            | **iOS 启动 ≤ 1.2s / Android ≤ 1.5s**                                   | 接近原生                     |
+| **i18n**      | i18next 4 语言                  | i18next 4 语言       | **i18next 4 语言 + 平台特定文案**                                      | 完全一致                     |
 
 ### 3.2 复用部分（**后端 API 不动**）
 
@@ -117,19 +117,19 @@
 
 ### 3.3 改造部分（**前端实现差异**）
 
-| 维度 | H5 | APP（RN） | 改造点 |
-|---|---|---|---|
-| 框架 | Vite + React 19 | RN 0.74 + Hermes | 路由、状态、组件 API 全部重写 |
-| 登录 | 手机号 OTP | OTP + Apple ID + Google + Facebook + LinkedIn + 钱包 | 7 通道统一抽象 `AuthProvider` |
-| 支付 | Stripe / Alipay H5 | Apple Pay / Google Pay / IAP / 微信 H5 / 支付宝 H5 | 走原生 SDK |
-| 推送 | Web Push | APNs / FCM / 极光 / 厂商通道 | 走 `PushNotificationIOS` / `@react-native-firebase/messaging` |
-| 分享 | `navigator.share` | Facebook SDK / WhatsApp deep link | 走 `react-native-share` + FB / LinkedIn 官方 SDK |
-| 摄像头扫码 | jsQR | `react-native-vision-camera` + MLKit | 性能提升 5x |
-| 文件下载 | `<a download>` | RNFS + 原生下载 | 断点续传 |
-| 后台保活 | ❌ | iOS Background Modes / Android Foreground Service | 任务类应用需 |
-| 域名 | `https://smy.app` | 不需要域名白名单 | 走应用商店审核 |
-| Web3 钱包 | MetaMask 浏览器扩展 | WalletConnect v2 + MetaMask SDK（**in-app browser**） | APP 内直接连 |
-| 离线缓存 | localStorage | MMKV（10x 快）+ SQLite（结构化） | 加密 + 大容量 |
+| 维度       | H5                  | APP（RN）                                             | 改造点                                                        |
+| ---------- | ------------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
+| 框架       | Vite + React 19     | RN 0.74 + Hermes                                      | 路由、状态、组件 API 全部重写                                 |
+| 登录       | 手机号 OTP          | OTP + Apple ID + Google + Facebook + LinkedIn + 钱包  | 7 通道统一抽象 `AuthProvider`                                 |
+| 支付       | Stripe / Alipay H5  | Apple Pay / Google Pay / IAP / 微信 H5 / 支付宝 H5    | 走原生 SDK                                                    |
+| 推送       | Web Push            | APNs / FCM / 极光 / 厂商通道                          | 走 `PushNotificationIOS` / `@react-native-firebase/messaging` |
+| 分享       | `navigator.share`   | Facebook SDK / WhatsApp deep link                     | 走 `react-native-share` + FB / LinkedIn 官方 SDK              |
+| 摄像头扫码 | jsQR                | `react-native-vision-camera` + MLKit                  | 性能提升 5x                                                   |
+| 文件下载   | `<a download>`      | RNFS + 原生下载                                       | 断点续传                                                      |
+| 后台保活   | ❌                  | iOS Background Modes / Android Foreground Service     | 任务类应用需                                                  |
+| 域名       | `https://smy.app`   | 不需要域名白名单                                      | 走应用商店审核                                                |
+| Web3 钱包  | MetaMask 浏览器扩展 | WalletConnect v2 + MetaMask SDK（**in-app browser**） | APP 内直接连                                                  |
+| 离线缓存   | localStorage        | MMKV（10x 快）+ SQLite（结构化）                      | 加密 + 大容量                                                 |
 
 ### 3.4 不支持的能力（明确告知产品）
 
@@ -143,20 +143,20 @@
 
 ### 3.5 APP 独有的能力（H5 / 小程序都没有）
 
-| 能力 | 场景 | 实现 |
-|---|---|---|
-| **APNs / FCM 推送** | DLC 升级 / 支付成功 / 营销活动 | iOS 直接 APNs，Android 国内用厂商通道，海外用 FCM |
-| **生物识别登录** | 替代密码登录 | `react-native-biometrics` |
-| **Web3 钱包** | DID 链上签名 / NFT 凭证 | WalletConnect v2 + MetaMask SDK |
-| **Apple Pay / Google Pay** | 1 秒内支付 | `react-native-iap` + `react-native-payments` |
-| **IAP** | 数字商品订阅（30% 抽成） | `react-native-iap`（iOS StoreKit / Android BillingClient） |
-| **WhatsApp 客服** | 海外客服 | `Linking.openURL('whatsapp://send?phone=...')` |
-| **Facebook 分享 / 登录** | 海外裂变 | `react-native-fbsdk-next` |
-| **LinkedIn 分享** | B2B 渠道 | `react-native-linkedin` |
-| **TikTok 像素** | 海外投放归因 | `react-native-tiktok-business-sdk` |
-| **Universal Link** | 装 APP 后直接跳详情 | apple-app-site-association + Android App Links |
-| **离线 DLC 升级** | 弱网下提示 | MMKV 缓存 DLC 阈值 + 本地通知 |
-| **3D Touch / 长按菜单** | 快捷操作 | iOS `UIContextMenuInteraction` / Android 长按 |
+| 能力                       | 场景                           | 实现                                                       |
+| -------------------------- | ------------------------------ | ---------------------------------------------------------- |
+| **APNs / FCM 推送**        | DLC 升级 / 支付成功 / 营销活动 | iOS 直接 APNs，Android 国内用厂商通道，海外用 FCM          |
+| **生物识别登录**           | 替代密码登录                   | `react-native-biometrics`                                  |
+| **Web3 钱包**              | DID 链上签名 / NFT 凭证        | WalletConnect v2 + MetaMask SDK                            |
+| **Apple Pay / Google Pay** | 1 秒内支付                     | `react-native-iap` + `react-native-payments`               |
+| **IAP**                    | 数字商品订阅（30% 抽成）       | `react-native-iap`（iOS StoreKit / Android BillingClient） |
+| **WhatsApp 客服**          | 海外客服                       | `Linking.openURL('whatsapp://send?phone=...')`             |
+| **Facebook 分享 / 登录**   | 海外裂变                       | `react-native-fbsdk-next`                                  |
+| **LinkedIn 分享**          | B2B 渠道                       | `react-native-linkedin`                                    |
+| **TikTok 像素**            | 海外投放归因                   | `react-native-tiktok-business-sdk`                         |
+| **Universal Link**         | 装 APP 后直接跳详情            | apple-app-site-association + Android App Links             |
+| **离线 DLC 升级**          | 弱网下提示                     | MMKV 缓存 DLC 阈值 + 本地通知                              |
+| **3D Touch / 长按菜单**    | 快捷操作                       | iOS `UIContextMenuInteraction` / Android 长按              |
 
 ---
 
@@ -166,26 +166,26 @@
 
 ### 4.1 三方案对比
 
-| 维度 | **React Native 0.74+** | Flutter 3.x | Native (Swift + Kotlin) |
-|---|---|---|---|
-| **语言** | TypeScript（**复用现有 React 团队**） | Dart（团队**无**人写过） | Swift + Kotlin（2 套团队） |
-| **跨端** | ✅ 1 套代码 → iOS + Android | ✅ 同 RN | ❌ 2 套 |
-| **学习成本** | React 团队 0 成本 | 需学 Dart + Widget | 需学 Swift + Kotlin |
-| **生态** | npm 海量库（Web3 / FB / LinkedIn 都有 RN 包） | pub.dev 略少 | 平台原生，库最丰富 |
-| **性能** | 接近原生（Hermes 引擎 + Fabric 渲染） | Skia 自绘，略快于 RN | 最快 |
-| **热更新** | ✅ **CodePush**（关键！） | ❌ 无官方热更 | ❌ 无 |
-| **Web3 集成** | ✅ WalletConnect v2 / MetaMask SDK 官方 RN 包 | 需 bridge | 平台原生 |
-| **海外社交 SDK** | ✅ FB / Google / LinkedIn 都有 RN 包 | 需 MethodChannel | 平台原生 |
-| **IAP 抽成规避** | 需 IAP（30%）或外部支付 | 同 RN | 同 RN |
-| **包大小** | 30-50MB（含 Hermes） | 20-30MB | iOS 10-20MB / Android 15-25MB |
-| **启动时间** | iOS 1.2s / Android 1.5s | iOS 1.0s / Android 1.3s | iOS 0.5s / Android 0.8s |
-| **冷启动内存** | 150-200MB | 120-150MB | 80-100MB |
-| **Crash 率** | 0.3-0.5% | 0.2-0.4% | 0.1-0.2% |
-| **团队复用** | ✅ 100%（Vite + React 19 同构） | ❌ 0%（新语言） | ❌ 30%（仅 API 设计） |
-| **人员招聘** | 容易（RN 开发者多） | 中等 | 难（iOS + Android 分招） |
-| **维护成本** | 1 个团队 | 1 个团队 | 2 个团队 |
-| **Apple 审核风险** | 低（RN 是合规框架） | 中（Flutter 曾被拒过"赛博还原"） | 无 |
-| **App Store 4.7+ 通过率** | 95%+ | 90%+ | 99% |
+| 维度                      | **React Native 0.74+**                        | Flutter 3.x                      | Native (Swift + Kotlin)       |
+| ------------------------- | --------------------------------------------- | -------------------------------- | ----------------------------- |
+| **语言**                  | TypeScript（**复用现有 React 团队**）         | Dart（团队**无**人写过）         | Swift + Kotlin（2 套团队）    |
+| **跨端**                  | ✅ 1 套代码 → iOS + Android                   | ✅ 同 RN                         | ❌ 2 套                       |
+| **学习成本**              | React 团队 0 成本                             | 需学 Dart + Widget               | 需学 Swift + Kotlin           |
+| **生态**                  | npm 海量库（Web3 / FB / LinkedIn 都有 RN 包） | pub.dev 略少                     | 平台原生，库最丰富            |
+| **性能**                  | 接近原生（Hermes 引擎 + Fabric 渲染）         | Skia 自绘，略快于 RN             | 最快                          |
+| **热更新**                | ✅ **CodePush**（关键！）                     | ❌ 无官方热更                    | ❌ 无                         |
+| **Web3 集成**             | ✅ WalletConnect v2 / MetaMask SDK 官方 RN 包 | 需 bridge                        | 平台原生                      |
+| **海外社交 SDK**          | ✅ FB / Google / LinkedIn 都有 RN 包          | 需 MethodChannel                 | 平台原生                      |
+| **IAP 抽成规避**          | 需 IAP（30%）或外部支付                       | 同 RN                            | 同 RN                         |
+| **包大小**                | 30-50MB（含 Hermes）                          | 20-30MB                          | iOS 10-20MB / Android 15-25MB |
+| **启动时间**              | iOS 1.2s / Android 1.5s                       | iOS 1.0s / Android 1.3s          | iOS 0.5s / Android 0.8s       |
+| **冷启动内存**            | 150-200MB                                     | 120-150MB                        | 80-100MB                      |
+| **Crash 率**              | 0.3-0.5%                                      | 0.2-0.4%                         | 0.1-0.2%                      |
+| **团队复用**              | ✅ 100%（Vite + React 19 同构）               | ❌ 0%（新语言）                  | ❌ 30%（仅 API 设计）         |
+| **人员招聘**              | 容易（RN 开发者多）                           | 中等                             | 难（iOS + Android 分招）      |
+| **维护成本**              | 1 个团队                                      | 1 个团队                         | 2 个团队                      |
+| **Apple 审核风险**        | 低（RN 是合规框架）                           | 中（Flutter 曾被拒过"赛博还原"） | 无                            |
+| **App Store 4.7+ 通过率** | 95%+                                          | 90%+                             | 99%                           |
 
 ### 4.2 选型理由
 
@@ -200,22 +200,22 @@
 
 ### 4.3 关键技术决策
 
-| 决策点 | 选择 | 理由 |
-|---|---|---|
-| 渲染引擎 | **Hermes**（默认） | 启动快 50%，内存小 30%，包小 10MB |
-| 新架构 | **启用 Fabric + TurboModules** | 同步 JSI 调用，性能提升 30%+ |
-| 导航 | **React Navigation 7** | 生态最广，H5 团队已用 |
-| 状态管理 | **Zustand 4** | 比 Redux Toolkit 轻 60%，API 跟 H5 一致 |
-| 网络层 | **axios + 自研 retry + offline queue** | H5 端已用 axios |
-| 离线缓存 | **MMKV（KV）+ react-native-sqlite-storage（结构化）** | MMKV 比 AsyncStorage 快 **30 倍** |
-| 推送 | **APNs (iOS) / FCM (海外 Android) / 极光 + 厂商通道 (国内 Android)** | 国内不能用 FCM，必须走厂商通道 |
-| 支付 | **react-native-iap (IAP) + react-native-payments (Apple/Google Pay)** | 官方维护 |
-| Web3 | **@walletconnect/react-native-compat + react-native-metamask-sdk** | 官方 RN 包 |
-| 生物识别 | **react-native-biometrics** | 跨 iOS / Android 一致 API |
-| i18n | **react-i18next + react-native-localize** | H5 端已用 i18next |
-| Crash 监控 | **Sentry + Firebase Crashlytics + Bugly** | 海外 Sentry，国内 Bugly |
-| 热更新 | **Microsoft CodePush**（iOS 暂不支持，见 §22.2） | 紧急修复秒级生效 |
-| 链接 | **Universal Link (iOS) + App Link (Android)** | 装 APP 后直跳，免引导页 |
+| 决策点     | 选择                                                                  | 理由                                    |
+| ---------- | --------------------------------------------------------------------- | --------------------------------------- |
+| 渲染引擎   | **Hermes**（默认）                                                    | 启动快 50%，内存小 30%，包小 10MB       |
+| 新架构     | **启用 Fabric + TurboModules**                                        | 同步 JSI 调用，性能提升 30%+            |
+| 导航       | **React Navigation 7**                                                | 生态最广，H5 团队已用                   |
+| 状态管理   | **Zustand 4**                                                         | 比 Redux Toolkit 轻 60%，API 跟 H5 一致 |
+| 网络层     | **axios + 自研 retry + offline queue**                                | H5 端已用 axios                         |
+| 离线缓存   | **MMKV（KV）+ react-native-sqlite-storage（结构化）**                 | MMKV 比 AsyncStorage 快 **30 倍**       |
+| 推送       | **APNs (iOS) / FCM (海外 Android) / 极光 + 厂商通道 (国内 Android)**  | 国内不能用 FCM，必须走厂商通道          |
+| 支付       | **react-native-iap (IAP) + react-native-payments (Apple/Google Pay)** | 官方维护                                |
+| Web3       | **@walletconnect/react-native-compat + react-native-metamask-sdk**    | 官方 RN 包                              |
+| 生物识别   | **react-native-biometrics**                                           | 跨 iOS / Android 一致 API               |
+| i18n       | **react-i18next + react-native-localize**                             | H5 端已用 i18next                       |
+| Crash 监控 | **Sentry + Firebase Crashlytics + Bugly**                             | 海外 Sentry，国内 Bugly                 |
+| 热更新     | **Microsoft CodePush**（iOS 暂不支持，见 §22.2）                      | 紧急修复秒级生效                        |
+| 链接       | **Universal Link (iOS) + App Link (Android)**                         | 装 APP 后直跳，免引导页                 |
 
 ---
 
@@ -254,6 +254,7 @@
 ```
 
 **关键点**：
+
 - Apple 登录**不**返回手机号（保护隐私），用 `appleSub`（sub claim）做唯一标识
 - Android 用 Google Sign-In 时返回 `idToken`（JWT），后端验签 + 查 `sub` 字段
 - 海外用户**优先**用 Apple/Google/Facebook（避免海外短信成本）
@@ -300,6 +301,7 @@
 ```
 
 **关键点**：
+
 - iOS 必须先 `requestPermission`（`alert` / `badge` / `sound`），用户拒绝后**不能**再弹（要走设置）
 - Android 13+ 必须 POST_NOTIFICATIONS 权限（动态申请）
 - 国内 Android **不能**用 FCM，必须走极光 + 厂商通道（华为/小米/OPPO/VIVO/魅族）
@@ -369,6 +371,7 @@
 ```
 
 **关键决策**：
+
 - **必须服务端验签** receipt，**不**能信前端
 - 订阅类商品（自动续费）必须用 `RNIap.requestSubscription`（**不**是 `requestPurchase`）
 - 安卓订阅要用 `RNIap.requestSubscription({ sku, prorationMode })`
@@ -387,6 +390,7 @@
 ```
 
 **关键**：
+
 - **必须用 SFSafariViewController**（iOS）/ Chrome Custom Tabs（Android），**不**用 WebView（苹果拒）
 - Universal Link 跳回：`https://smy.app/payment/return?orderId=xxx`
 - 安卓需在 `app/build.gradle` 加 `intent-filter` 配 `android:autoVerify="true"`
@@ -441,6 +445,7 @@
 ```
 
 **关键点**：
+
 - 验签用 `ethers.verifyMessage(message, signature)` 恢复 `address`，对比是否一致
 - nonce 必须**每次**重新生成（防重放攻击），存 Redis 5 分钟
 - 一个 address 只能绑一个 userId（**不**允许多个 user 共享钱包）
@@ -466,6 +471,7 @@
 ```
 
 **关键点**：
+
 - **不**把 refreshToken 直接存 MMKV（不安全）
 - secureKey 用 `react-native-keychain`（iOS Keychain / Android Keystore）
 - 用户**拒绝**生物识别 → 降级到密码 / OTP
@@ -529,6 +535,7 @@
 ```
 
 **关键决策**：
+
 - Facebook / Google 登录**必**用官方 SDK（**不**用 webview，**不**用 expo-auth-session 等）
 - Facebook 申请 review：必须提供测试账号 + 详细业务说明，否则登录权限被吊销
 - LinkedIn 登录需申请 Marketing Developer Platform 权限
@@ -554,6 +561,7 @@
 ```
 
 **或直接 Deep Link**：
+
 ```typescript
 import { Linking } from 'react-native';
 
@@ -595,6 +603,7 @@ const shareToWhatsApp = async (text: string) => {
 ```
 
 **关键点**：
+
 - 模板消息需 Meta 审核（首次发送需客户在 24h 内回复）
 - 客服后台建议接 respond.io / Intercom（带 WhatsApp 集成）
 - 客服会话上下文（含历史订单 / KYC）需后端调 WhatsApp API 上传
@@ -607,29 +616,29 @@ const shareToWhatsApp = async (text: string) => {
 
 ### 6.1 MobileDevice（设备注册）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | UUID 主键 |
-| userId | String | | 关联 User.id（00-foundation §13 双身份允许，登录后才填） |
-| deviceId | String(64) | ✓ | iOS `identifierForVendor` / Android `ANDROID_ID`（包装后），**不**存明文原始 ID |
-| platform | enum | ✓ | `ios` / `android` |
-| osVersion | String | ✓ | `17.4.1` / `14` |
-| appVersion | String | ✓ | `1.0.0` |
-| buildNumber | Int | ✓ | iOS CFBundleVersion / Android versionCode |
-| deviceModel | String | | `iPhone15,2` / `Pixel 8` |
-| manufacturer | String | | `Apple` / `Samsung` |
-| brand | String | | `iPhone` / `Galaxy` |
-| locale | String | | `en-US` / `zh-CN` / `ja-JP` / `ko-KR` |
-| timezone | String | | `Asia/Shanghai` |
-| region | String | | ISO 国家码（IP 解析）`WS` / `US` / `CN` |
-| appInstallId | String | | 关联 AppInstall.id（安装来源追踪） |
-| walletBound | Boolean | | 是否绑定了 Web3 钱包（见 §6.5） |
-| walletAddress | String(64) | | 钱包地址（EIP-55 checksum） |
-| walletChainId | Int | | 链 ID（1=ETH, 56=BSC, 137=Polygon） |
-| biometricEnabled | Boolean | | 是否启用了生物识别登录 |
-| lastActiveAt | DateTime | | 最后一次 APP 启动时间 |
-| jailbroken | Boolean | | 是否越狱 / root（安全风险标记） |
-| createdAt, updatedAt, deletedAt | | | 通用（按 §6） |
+| 字段                            | 类型       | 必填 | 说明                                                                            |
+| ------------------------------- | ---------- | ---- | ------------------------------------------------------------------------------- |
+| id                              | String     | ✓    | UUID 主键                                                                       |
+| userId                          | String     |      | 关联 User.id（00-foundation §13 双身份允许，登录后才填）                        |
+| deviceId                        | String(64) | ✓    | iOS `identifierForVendor` / Android `ANDROID_ID`（包装后），**不**存明文原始 ID |
+| platform                        | enum       | ✓    | `ios` / `android`                                                               |
+| osVersion                       | String     | ✓    | `17.4.1` / `14`                                                                 |
+| appVersion                      | String     | ✓    | `1.0.0`                                                                         |
+| buildNumber                     | Int        | ✓    | iOS CFBundleVersion / Android versionCode                                       |
+| deviceModel                     | String     |      | `iPhone15,2` / `Pixel 8`                                                        |
+| manufacturer                    | String     |      | `Apple` / `Samsung`                                                             |
+| brand                           | String     |      | `iPhone` / `Galaxy`                                                             |
+| locale                          | String     |      | `en-US` / `zh-CN` / `ja-JP` / `ko-KR`                                           |
+| timezone                        | String     |      | `Asia/Shanghai`                                                                 |
+| region                          | String     |      | ISO 国家码（IP 解析）`WS` / `US` / `CN`                                         |
+| appInstallId                    | String     |      | 关联 AppInstall.id（安装来源追踪）                                              |
+| walletBound                     | Boolean    |      | 是否绑定了 Web3 钱包（见 §6.5）                                                 |
+| walletAddress                   | String(64) |      | 钱包地址（EIP-55 checksum）                                                     |
+| walletChainId                   | Int        |      | 链 ID（1=ETH, 56=BSC, 137=Polygon）                                             |
+| biometricEnabled                | Boolean    |      | 是否启用了生物识别登录                                                          |
+| lastActiveAt                    | DateTime   |      | 最后一次 APP 启动时间                                                           |
+| jailbroken                      | Boolean    |      | 是否越狱 / root（安全风险标记）                                                 |
+| createdAt, updatedAt, deletedAt |            |      | 通用（按 §6）                                                                   |
 
 ```prisma
 model MobileDevice {
@@ -675,18 +684,18 @@ model MobileDevice {
 
 > **为什么需要这章**：推送 token **不是**一次性凭证——一个设备可同时有 iOS APNs token + Android FCM token（极少）+ 极光 registrationId（国内安卓）。需独立表管理 token 生命周期（轮转 / 失效 / 卸载）。
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| deviceId | String | ✓ | 关联 MobileDevice.id |
-| channel | enum | ✓ | `apns` / `fcm` / `jpush` / `huawei` / `xiaomi` / `oppo` / `vivo` / `meizu` |
-| token | String(512) | ✓ | 推送 token（**不**同通道长度不同） |
-| appId | String | | 多 APP 隔离（如 iOS 主 APP + Today Extension） |
-| isActive | Boolean | | 是否有效（APNs/FCM 反馈失效时改 false） |
-| subscribedTopics | String | | JSON 数组，订阅的主题（`["dlc_upgrade", "payment", "marketing"]`） |
-| lastSeenAt | DateTime | | 最后一次成功推送时间（用于清理失效 token） |
-| failedCount | Int | | 连续失败次数（≥ 5 次自动停用） |
-| createdAt, updatedAt, deletedAt | | | |
+| 字段                            | 类型        | 必填 | 说明                                                                       |
+| ------------------------------- | ----------- | ---- | -------------------------------------------------------------------------- |
+| id                              | String      | ✓    |                                                                            |
+| deviceId                        | String      | ✓    | 关联 MobileDevice.id                                                       |
+| channel                         | enum        | ✓    | `apns` / `fcm` / `jpush` / `huawei` / `xiaomi` / `oppo` / `vivo` / `meizu` |
+| token                           | String(512) | ✓    | 推送 token（**不**同通道长度不同）                                         |
+| appId                           | String      |      | 多 APP 隔离（如 iOS 主 APP + Today Extension）                             |
+| isActive                        | Boolean     |      | 是否有效（APNs/FCM 反馈失效时改 false）                                    |
+| subscribedTopics                | String      |      | JSON 数组，订阅的主题（`["dlc_upgrade", "payment", "marketing"]`）         |
+| lastSeenAt                      | DateTime    |      | 最后一次成功推送时间（用于清理失效 token）                                 |
+| failedCount                     | Int         |      | 连续失败次数（≥ 5 次自动停用）                                             |
+| createdAt, updatedAt, deletedAt |             |      |                                                                            |
 
 ```prisma
 model PushToken {
@@ -712,6 +721,7 @@ model PushToken {
 ```
 
 **Token 轮转策略**：
+
 - iOS APNs token 在系统升级 / APP 重装后会变，APP 启动时**每次**调 `PushNotificationIOS.getInitialNotificationToken()` + `onRegister` 回调
 - 同一 deviceId + 同一 channel 下，新 token 覆盖旧 token（`upsert`）
 - 后端定时任务：每天清理 `isActive=false` 且 `lastSeenAt < 30 days ago` 的 token
@@ -720,22 +730,22 @@ model PushToken {
 
 > **为什么需要这章**：海外渠道（Apple Search Ads / Google UAC / Facebook Ads / TikTok Ads）的**归因**必须**有据可查**。所有安装必须带 `installReferrer` / `adToken` / `adGroupId` 落库。
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| deviceId | String | ✓ | 关联 MobileDevice.id |
-| installId | String | | 一次性唯一 ID（生成后存 Keychain / Keystore） |
-| source | enum | ✓ | `organic` / `apple_search_ads` / `google_uac` / `facebook_ads` / `tiktok_ads` / `referral` / `qrcode` |
-| campaignId | String | | 广告 campaign ID |
-| adGroupId | String | | 广告组 ID |
-| creativeId | String | | 创意 ID |
-| adToken | String | | 广告 click token（iOS `iAd` / Google `referrer`） |
-| clickId | String | | Facebook `fbclid` / TikTok `ttclid` |
-| attributionPlatform | String | | `appsflyer` / `adjust` / `branch` |
-| attributionJson | String | | 原始归因数据（JSON，用于审计） |
-| installAt | DateTime | ✓ | 安装时间 |
-| firstOpenAt | DateTime | | 首次打开时间 |
-| createdAt, updatedAt | | | |
+| 字段                 | 类型     | 必填 | 说明                                                                                                  |
+| -------------------- | -------- | ---- | ----------------------------------------------------------------------------------------------------- |
+| id                   | String   | ✓    |                                                                                                       |
+| deviceId             | String   | ✓    | 关联 MobileDevice.id                                                                                  |
+| installId            | String   |      | 一次性唯一 ID（生成后存 Keychain / Keystore）                                                         |
+| source               | enum     | ✓    | `organic` / `apple_search_ads` / `google_uac` / `facebook_ads` / `tiktok_ads` / `referral` / `qrcode` |
+| campaignId           | String   |      | 广告 campaign ID                                                                                      |
+| adGroupId            | String   |      | 广告组 ID                                                                                             |
+| creativeId           | String   |      | 创意 ID                                                                                               |
+| adToken              | String   |      | 广告 click token（iOS `iAd` / Google `referrer`）                                                     |
+| clickId              | String   |      | Facebook `fbclid` / TikTok `ttclid`                                                                   |
+| attributionPlatform  | String   |      | `appsflyer` / `adjust` / `branch`                                                                     |
+| attributionJson      | String   |      | 原始归因数据（JSON，用于审计）                                                                        |
+| installAt            | DateTime | ✓    | 安装时间                                                                                              |
+| firstOpenAt          | DateTime |      | 首次打开时间                                                                                          |
+| createdAt, updatedAt |          |      |                                                                                                       |
 
 ```prisma
 model AppInstall {
@@ -764,6 +774,7 @@ model AppInstall {
 ```
 
 **关键**：
+
 - 归因平台用 AppsFlyer（海外主流）或 Adjust
 - ATT（App Tracking Transparency）：iOS 14.5+ 必须先弹 ATT 弹窗，**不**能默认同意
 - SKAdNetwork：iOS 14+ 必配（即使不投苹果广告也要配，否则苹果会拒）
@@ -772,19 +783,19 @@ model AppInstall {
 
 > **为什么需要这章**：生物识别**不**是密码，而是"解锁"已存储的 refreshToken。需独立表记录"何时 / 哪台设备 / 哪种生物识别"。
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| deviceId | String | ✓ | 关联 MobileDevice.id |
-| userId | String | ✓ | 关联 User.id |
-| biometricType | enum | ✓ | `face_id` / `touch_id` / `fingerprint` / `face_unlock` / `iris` |
-| enrolledAt | DateTime | ✓ | 启用时间 |
-| lastUsedAt | DateTime | | 最后一次使用 |
-| useCount | Int | | 使用次数 |
-| isActive | Boolean | | 是否启用（用户可关闭） |
-| publicKey | String | | 设备公钥（iOS Secure Enclave / Android StrongBox） |
-| revokedAt | DateTime | | 撤销时间 |
-| createdAt, updatedAt | | | |
+| 字段                 | 类型     | 必填 | 说明                                                            |
+| -------------------- | -------- | ---- | --------------------------------------------------------------- |
+| id                   | String   | ✓    |                                                                 |
+| deviceId             | String   | ✓    | 关联 MobileDevice.id                                            |
+| userId               | String   | ✓    | 关联 User.id                                                    |
+| biometricType        | enum     | ✓    | `face_id` / `touch_id` / `fingerprint` / `face_unlock` / `iris` |
+| enrolledAt           | DateTime | ✓    | 启用时间                                                        |
+| lastUsedAt           | DateTime |      | 最后一次使用                                                    |
+| useCount             | Int      |      | 使用次数                                                        |
+| isActive             | Boolean  |      | 是否启用（用户可关闭）                                          |
+| publicKey            | String   |      | 设备公钥（iOS Secure Enclave / Android StrongBox）              |
+| revokedAt            | DateTime |      | 撤销时间                                                        |
+| createdAt, updatedAt |          |      |                                                                 |
 
 ```prisma
 model BiometricAuth {
@@ -813,25 +824,25 @@ model BiometricAuth {
 
 > **为什么需要这章**：海外用户**有多个社交身份**（Facebook + Google + LinkedIn + WhatsApp），必须按 00-foundation §13 双身份规则支持**一自然人 → 多 overseas auth binding**。这张表是 §17 社交集成的**核心数据**。
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| userId | String | ✓ | 关联 User.id（**不**唯一——一个 user 可有多个 binding） |
-| provider | enum | ✓ | `facebook` / `google` / `linkedin` / `twitter` / `apple` / `wechat` / `wallet` |
-| providerUserId | String(128) | ✓ | 各平台 userId（Facebook `me.id` / Google `sub` / LinkedIn `sub`） |
-| providerEmail | String | | 平台返回的 email（**不**一定给） |
-| providerName | String | | 平台显示名 |
-| providerAvatarUrl | String | | 头像 URL（**不**存 CDN，需时调平台 API） |
-| providerAccessToken | String | | **KMS 加密**后存（用于调平台 API，如 Facebook 发帖） |
-| providerRefreshToken | String | | **KMS 加密**后存 |
-| accessTokenExpiresAt | DateTime | | accessToken 过期时间 |
-| scope | String | | 授权 scope（逗号分隔） |
-| rawProfile | String | | 原始 profile JSON（**KMS 加密**） |
-| lastLoginAt | DateTime | | 最后一次用该 provider 登录 |
-| isPrimary | Boolean | | 是否为该 provider 的主账号（一 provider 唯一） |
-| isActive | Boolean | | 是否启用（用户可解绑） |
-| unbindedAt | DateTime | | 解绑时间 |
-| createdAt, updatedAt, deletedAt | | | |
+| 字段                            | 类型        | 必填 | 说明                                                                           |
+| ------------------------------- | ----------- | ---- | ------------------------------------------------------------------------------ |
+| id                              | String      | ✓    |                                                                                |
+| userId                          | String      | ✓    | 关联 User.id（**不**唯一——一个 user 可有多个 binding）                         |
+| provider                        | enum        | ✓    | `facebook` / `google` / `linkedin` / `twitter` / `apple` / `wechat` / `wallet` |
+| providerUserId                  | String(128) | ✓    | 各平台 userId（Facebook `me.id` / Google `sub` / LinkedIn `sub`）              |
+| providerEmail                   | String      |      | 平台返回的 email（**不**一定给）                                               |
+| providerName                    | String      |      | 平台显示名                                                                     |
+| providerAvatarUrl               | String      |      | 头像 URL（**不**存 CDN，需时调平台 API）                                       |
+| providerAccessToken             | String      |      | **KMS 加密**后存（用于调平台 API，如 Facebook 发帖）                           |
+| providerRefreshToken            | String      |      | **KMS 加密**后存                                                               |
+| accessTokenExpiresAt            | DateTime    |      | accessToken 过期时间                                                           |
+| scope                           | String      |      | 授权 scope（逗号分隔）                                                         |
+| rawProfile                      | String      |      | 原始 profile JSON（**KMS 加密**）                                              |
+| lastLoginAt                     | DateTime    |      | 最后一次用该 provider 登录                                                     |
+| isPrimary                       | Boolean     |      | 是否为该 provider 的主账号（一 provider 唯一）                                 |
+| isActive                        | Boolean     |      | 是否启用（用户可解绑）                                                         |
+| unbindedAt                      | DateTime    |      | 解绑时间                                                                       |
+| createdAt, updatedAt, deletedAt |             |      |                                                                                |
 
 ```prisma
 model OverseasAuthBinding {
@@ -867,6 +878,7 @@ model OverseasAuthBinding {
 ```
 
 **关键决策**：
+
 - 同一 provider + 同一 providerUserId **唯一**（防重复绑定）
 - 同一 user 可有多个 provider 的 binding（如 user_123 同时绑 Facebook + Google + LinkedIn）
 - `providerAccessToken` / `providerRefreshToken` **必须**用 00-foundation §11 KMS 加密
@@ -899,6 +911,7 @@ model OverseasAuthBinding {
 ```
 
 **触发条件**：
+
 - `unknown`：APP 安装后**未**触发 `requestPermission`
 - `unknown → enabled`：用户授权 + 拿 token 成功
 - `unknown → disabled`：用户拒绝（iOS 不能再次弹，需引导到设置）
@@ -925,6 +938,7 @@ draft → iap_pending → iap_verifying → paid → fulfilled
 ```
 
 **关键**：
+
 - `iap_verifying` 是**必须**有的中间状态（防用户在前端提前跳成功页）
 - 验签失败**不**直接关单，写 `iap_invalid` 让人工介入（可能是沙盒 receipt 误传）
 - 防重放：每条 receipt 后端**只**处理一次（`@@unique([platform, transactionId])`）
@@ -942,6 +956,7 @@ unbound → bound → active
 ```
 
 **关键**：
+
 - `token_expired`：调平台 API 时 `401` / token 过期
 - 自动 refresh 用 `providerRefreshToken`（**必须** KMS 加密）
 - `platform_revoked`：用户去 Facebook "应用设置" 撤销 → 回调 webhook（**必须**接）
@@ -955,71 +970,71 @@ unbound → bound → active
 
 ### 8.1 设备与推送
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/devices/register` | 公开 | 注册设备（首次启动） |
-| PUT | `/api/h5/devices/:id` | 需登录 | 更新设备信息（locale / 钱包地址 / 生物识别状态） |
-| POST | `/api/h5/devices/:id/push-tokens` | 需登录 | 注册 / 更新 push token |
-| DELETE | `/api/h5/push-tokens/:id` | 需登录 | 注销 push token（用户登出） |
-| POST | `/api/h5/push-tokens/feedback` | 内部 | APNs/FCM 反馈的失效 token 处理 |
-| POST | `/api/h5/devices/:id/biometric` | 需登录 | 启用生物识别登录 |
-| DELETE | `/api/h5/devices/:id/biometric` | 需登录 | 关闭生物识别登录 |
+| Method | Path                              | 权限   | 说明                                             |
+| ------ | --------------------------------- | ------ | ------------------------------------------------ |
+| POST   | `/api/h5/devices/register`        | 公开   | 注册设备（首次启动）                             |
+| PUT    | `/api/h5/devices/:id`             | 需登录 | 更新设备信息（locale / 钱包地址 / 生物识别状态） |
+| POST   | `/api/h5/devices/:id/push-tokens` | 需登录 | 注册 / 更新 push token                           |
+| DELETE | `/api/h5/push-tokens/:id`         | 需登录 | 注销 push token（用户登出）                      |
+| POST   | `/api/h5/push-tokens/feedback`    | 内部   | APNs/FCM 反馈的失效 token 处理                   |
+| POST   | `/api/h5/devices/:id/biometric`   | 需登录 | 启用生物识别登录                                 |
+| DELETE | `/api/h5/devices/:id/biometric`   | 需登录 | 关闭生物识别登录                                 |
 
 ### 8.2 APP 特有登录
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/auth/apple-login` | 公开 | Apple ID 登录（identityToken 验签） |
-| POST | `/api/h5/auth/google-login` | 公开 | Google 登录（idToken 验签） |
-| POST | `/api/h5/auth/facebook-login` | 公开 | Facebook 登录（accessToken 验签） |
-| POST | `/api/h5/auth/linkedin-login` | 公开 | LinkedIn 登录（authorizationCode 换 token） |
-| POST | `/api/h5/auth/wallet-login` | 公开 | 钱包签名登录（personalSign 验签） |
-| POST | `/api/h5/auth/refresh-token` | 需设备 | 用设备存储的 refreshToken 换新 accessToken |
+| Method | Path                          | 权限   | 说明                                        |
+| ------ | ----------------------------- | ------ | ------------------------------------------- |
+| POST   | `/api/h5/auth/apple-login`    | 公开   | Apple ID 登录（identityToken 验签）         |
+| POST   | `/api/h5/auth/google-login`   | 公开   | Google 登录（idToken 验签）                 |
+| POST   | `/api/h5/auth/facebook-login` | 公开   | Facebook 登录（accessToken 验签）           |
+| POST   | `/api/h5/auth/linkedin-login` | 公开   | LinkedIn 登录（authorizationCode 换 token） |
+| POST   | `/api/h5/auth/wallet-login`   | 公开   | 钱包签名登录（personalSign 验签）           |
+| POST   | `/api/h5/auth/refresh-token`  | 需设备 | 用设备存储的 refreshToken 换新 accessToken  |
 
 ### 8.3 IAP 支付
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/payments/iap-products` | 需登录 | 拉商品列表（同步苹果/谷歌） |
-| POST | `/api/h5/payments/iap-verify` | 需登录 | 验签 receipt（iOS / Android） |
-| POST | `/api/h5/payments/iap-webhook` | Apple/Google | 服务器异步通知（订阅续费 / 退款） |
-| GET | `/api/h5/payments/iap-orders/:id` | 需登录 | 查询订单状态 |
-| POST | `/api/h5/payments/apple-pay-process` | 需登录 | Apple Pay 支付处理（PKPayment → 通道） |
-| POST | `/api/h5/payments/google-pay-process` | 需登录 | Google Pay 支付处理 |
+| Method | Path                                  | 权限         | 说明                                   |
+| ------ | ------------------------------------- | ------------ | -------------------------------------- |
+| POST   | `/api/h5/payments/iap-products`       | 需登录       | 拉商品列表（同步苹果/谷歌）            |
+| POST   | `/api/h5/payments/iap-verify`         | 需登录       | 验签 receipt（iOS / Android）          |
+| POST   | `/api/h5/payments/iap-webhook`        | Apple/Google | 服务器异步通知（订阅续费 / 退款）      |
+| GET    | `/api/h5/payments/iap-orders/:id`     | 需登录       | 查询订单状态                           |
+| POST   | `/api/h5/payments/apple-pay-process`  | 需登录       | Apple Pay 支付处理（PKPayment → 通道） |
+| POST   | `/api/h5/payments/google-pay-process` | 需登录       | Google Pay 支付处理                    |
 
 ### 8.4 海外社交账号绑定管理
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| GET | `/api/h5/auth/overseas-bindings` | 需登录 | 当前用户所有海外账号绑定 |
-| POST | `/api/h5/auth/overseas-bindings/:id/refresh` | 内部 | 刷新 accessToken（定时任务调） |
-| DELETE | `/api/h5/auth/overseas-bindings/:id` | 需登录 | 解绑海外账号 |
-| POST | `/api/h5/auth/overseas-bindings/:id/primary` | 需登录 | 设为主账号 |
+| Method | Path                                         | 权限   | 说明                           |
+| ------ | -------------------------------------------- | ------ | ------------------------------ |
+| GET    | `/api/h5/auth/overseas-bindings`             | 需登录 | 当前用户所有海外账号绑定       |
+| POST   | `/api/h5/auth/overseas-bindings/:id/refresh` | 内部   | 刷新 accessToken（定时任务调） |
+| DELETE | `/api/h5/auth/overseas-bindings/:id`         | 需登录 | 解绑海外账号                   |
+| POST   | `/api/h5/auth/overseas-bindings/:id/primary` | 需登录 | 设为主账号                     |
 
 ### 8.5 Web3 钱包
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| GET | `/api/h5/auth/wallet-nonce` | 公开 | 拉 nonce（5 分钟有效） |
-| POST | `/api/h5/auth/wallet-login` | 公开 | 钱包签名登录 |
-| POST | `/api/h5/wallet/bind` | 需登录 | 绑定钱包地址到当前账号 |
-| DELETE | `/api/h5/wallet/unbind` | 需登录 | 解绑 |
-| POST | `/api/h5/wallet/sign` | 需登录 | 链上签名代理（用于 DID 凭证签发） |
+| Method | Path                        | 权限   | 说明                              |
+| ------ | --------------------------- | ------ | --------------------------------- |
+| GET    | `/api/h5/auth/wallet-nonce` | 公开   | 拉 nonce（5 分钟有效）            |
+| POST   | `/api/h5/auth/wallet-login` | 公开   | 钱包签名登录                      |
+| POST   | `/api/h5/wallet/bind`       | 需登录 | 绑定钱包地址到当前账号            |
+| DELETE | `/api/h5/wallet/unbind`     | 需登录 | 解绑                              |
+| POST   | `/api/h5/wallet/sign`       | 需登录 | 链上签名代理（用于 DID 凭证签发） |
 
 ### 8.6 WhatsApp 客服
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/support/whatsapp-session` | 需登录 | 启动 WhatsApp 客服会话 |
-| GET | `/api/h5/support/whatsapp-templates` | 需登录 | 拉可用模板消息列表 |
-| POST | `/api/h5/support/whatsapp-webhook` | Meta 回调 | 客户消息回调（内部） |
+| Method | Path                                 | 权限      | 说明                   |
+| ------ | ------------------------------------ | --------- | ---------------------- |
+| POST   | `/api/h5/support/whatsapp-session`   | 需登录    | 启动 WhatsApp 客服会话 |
+| GET    | `/api/h5/support/whatsapp-templates` | 需登录    | 拉可用模板消息列表     |
+| POST   | `/api/h5/support/whatsapp-webhook`   | Meta 回调 | 客户消息回调（内部）   |
 
 ### 8.7 归因与统计
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/install/track` | 公开 | 上报安装来源（appsflyer / adjust） |
-| POST | `/api/h5/install/deeplink` | 公开 | Universal Link / App Link 解析 |
+| Method | Path                       | 权限 | 说明                               |
+| ------ | -------------------------- | ---- | ---------------------------------- |
+| POST   | `/api/h5/install/track`    | 公开 | 上报安装来源（appsflyer / adjust） |
+| POST   | `/api/h5/install/deeplink` | 公开 | Universal Link / App Link 解析     |
 
 ---
 
@@ -1029,19 +1044,19 @@ unbound → bound → active
 
 ### 9.1 技术栈
 
-| 类别 | 选型 | 版本 | 理由 |
-|---|---|---|---|
-| 框架 | React Native | 0.74+ | 双端复用；Hermes 引擎性能优于 JSC |
-| 语言 | TypeScript | 5.0+ | 类型安全；与后端共享 DTO 类型 |
-| 导航 | React Navigation | 7.x | 社区标准；支持 deep link 深度集成 |
-| 状态 | Zustand | 4.x | 轻量（< 1KB），无 boilerplate；替代 Redux |
-| 持久化 | MMKV | 1.x | 同步 KV，**比** AsyncStorage 快 30 倍 |
-| 结构化存储 | react-native-sqlite-storage | 6.x | 离线订单 / 草稿 / 缓存 |
-| 网络 | axios | 1.x | interceptor 机制；与 H5 一致 |
-| 表单 | React Hook Form | 7.x | 非受控，性能好 |
-| 国际化 | i18next + react-i18next | 23.x + 14.x | 与 H5/小程序共享翻译文件 |
-| 监控 | Sentry | 0.10+ | 跨端错误聚合 |
-| 打包 | Metro + Hermes | 0.80+ | Hermes 预编译字节码，体积 -30% |
+| 类别       | 选型                        | 版本        | 理由                                      |
+| ---------- | --------------------------- | ----------- | ----------------------------------------- |
+| 框架       | React Native                | 0.74+       | 双端复用；Hermes 引擎性能优于 JSC         |
+| 语言       | TypeScript                  | 5.0+        | 类型安全；与后端共享 DTO 类型             |
+| 导航       | React Navigation            | 7.x         | 社区标准；支持 deep link 深度集成         |
+| 状态       | Zustand                     | 4.x         | 轻量（< 1KB），无 boilerplate；替代 Redux |
+| 持久化     | MMKV                        | 1.x         | 同步 KV，**比** AsyncStorage 快 30 倍     |
+| 结构化存储 | react-native-sqlite-storage | 6.x         | 离线订单 / 草稿 / 缓存                    |
+| 网络       | axios                       | 1.x         | interceptor 机制；与 H5 一致              |
+| 表单       | React Hook Form             | 7.x         | 非受控，性能好                            |
+| 国际化     | i18next + react-i18next     | 23.x + 14.x | 与 H5/小程序共享翻译文件                  |
+| 监控       | Sentry                      | 0.10+       | 跨端错误聚合                              |
+| 打包       | Metro + Hermes              | 0.80+       | Hermes 预编译字节码，体积 -30%            |
 
 ### 9.2 目录结构
 
@@ -1094,6 +1109,7 @@ src/
 ### 9.3 导航方案
 
 **双层导航**：
+
 - **根导航器**：Stack 模式，根据登录态切换 `AuthStack` ↔ `MainStack`
 - **MainStack**：底部 Tab（Home / Market / Orders / Mine）+ 业务 Stack
 
@@ -1188,7 +1204,7 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
-  config.headers['X-App-Platform'] = Platform.OS;     // ios / android
+  config.headers['X-App-Platform'] = Platform.OS; // ios / android
   config.headers['X-App-Version'] = DeviceInfo.getVersion();
   config.headers['X-Device-Id'] = MMKV.getString('device_id');
   return config;
@@ -1212,7 +1228,7 @@ api.interceptors.response.use(
           MMKV.set(STORAGE_KEY_ACCESS, data.accessToken);
           useAuthStore.getState().refreshAccessToken(data.accessToken);
           isRefreshing = false;
-          refreshSubscribers.forEach(cb => cb(data.accessToken));
+          refreshSubscribers.forEach((cb) => cb(data.accessToken));
           refreshSubscribers = [];
           originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
           return api(originalRequest);
@@ -1237,14 +1253,14 @@ api.interceptors.response.use(
 
 ### 9.6 离线策略
 
-| 场景 | 策略 | 存储 |
-|---|---|---|
-| 订单草稿 | 离线时写入本地，恢复网络后同步 | SQLite（`draft_orders`） |
-| 购物车 | 始终本地（**不**依赖服务端） | MMKV |
-| 浏览历史 | 本地 + 登录后同步 | SQLite → 服务端 |
-| 钱包交易签名 | 必须在线（链上操作**不能**离线） | — |
-| 推送历史 | 本地缓存最近 100 条 | SQLite |
-| 语言包 | 打包内置 + 增量下载 | MMKV + 远程 CDN |
+| 场景         | 策略                             | 存储                     |
+| ------------ | -------------------------------- | ------------------------ |
+| 订单草稿     | 离线时写入本地，恢复网络后同步   | SQLite（`draft_orders`） |
+| 购物车       | 始终本地（**不**依赖服务端）     | MMKV                     |
+| 浏览历史     | 本地 + 登录后同步                | SQLite → 服务端          |
+| 钱包交易签名 | 必须在线（链上操作**不能**离线） | —                        |
+| 推送历史     | 本地缓存最近 100 条              | SQLite                   |
+| 语言包       | 打包内置 + 增量下载              | MMKV + 远程 CDN          |
 
 **冲突解决**：以**服务端为准**，本地数据**只**作为缓存。订单草稿在用户主动提交时才上传。
 
@@ -1269,13 +1285,13 @@ appcenter codepush release-react -a SamoaDAO/SamoaApp-iOS -d Production --target
 
 **完全复用** 00-foundation §8.3.1 状态色：
 
-| 业务状态 | 颜色 | hex | 文案（i18n key） |
-|---|---|---|---|
-| 成功 / 已完成 / 已支付 | 绿色 | #52C41A | `status.success` |
-| 进行中 / 处理中 | 蓝色 | #1890FF | `status.processing` |
-| 警告 / 待处理 | 橙色 | #FAAD14 | `status.warning` |
-| 失败 / 已取消 / 退款 | 红色 | #FF4D4F | `status.error` |
-| 中性 / 默认 | 灰色 | #8C8C8C | `status.default` |
+| 业务状态               | 颜色 | hex     | 文案（i18n key）    |
+| ---------------------- | ---- | ------- | ------------------- |
+| 成功 / 已完成 / 已支付 | 绿色 | #52C41A | `status.success`    |
+| 进行中 / 处理中        | 蓝色 | #1890FF | `status.processing` |
+| 警告 / 待处理          | 橙色 | #FAAD14 | `status.warning`    |
+| 失败 / 已取消 / 退款   | 红色 | #FF4D4F | `status.error`      |
+| 中性 / 默认            | 灰色 | #8C8C8C | `status.default`    |
 
 ```typescript
 // src/components/StatusBadge/StatusBadge.tsx
@@ -1313,16 +1329,16 @@ const styles = StyleSheet.create({
 
 ### 10.2 跨端差异（Platform.select）
 
-| 行为 | iOS | Android |
-|---|---|---|
-| 顶部状态栏 | SafeAreaView only | StatusBar + SafeAreaView |
-| 底部 Tab 高度 | 49pt + safe area | 56dp |
-| 字体 | San Francisco（系统） | Roboto（系统） |
-| 按下反馈 | opacity 0.6 | ripple（Pressable `android_ripple`） |
-| 键盘 | `keyboardAppearance="dark"` 默认深色 | 系统默认 |
-| 滚动条 | `showsVerticalScrollIndicator={false}` | 始终显示 |
-| 分享 | UIActivityViewController | Intent.ACTION_SEND |
-| 支付 | StoreKit (IAP) / PassKit (Apple Pay) | BillingClient (IAP) / Google Pay API |
+| 行为          | iOS                                    | Android                              |
+| ------------- | -------------------------------------- | ------------------------------------ |
+| 顶部状态栏    | SafeAreaView only                      | StatusBar + SafeAreaView             |
+| 底部 Tab 高度 | 49pt + safe area                       | 56dp                                 |
+| 字体          | San Francisco（系统）                  | Roboto（系统）                       |
+| 按下反馈      | opacity 0.6                            | ripple（Pressable `android_ripple`） |
+| 键盘          | `keyboardAppearance="dark"` 默认深色   | 系统默认                             |
+| 滚动条        | `showsVerticalScrollIndicator={false}` | 始终显示                             |
+| 分享          | UIActivityViewController               | Intent.ACTION_SEND                   |
+| 支付          | StoreKit (IAP) / PassKit (Apple Pay)   | BillingClient (IAP) / Google Pay API |
 
 ```typescript
 // 跨端统一按钮
@@ -1343,18 +1359,18 @@ import { Pressable, Platform } from 'react-native';
 // src/constants/design.ts
 export const DESIGN_TOKENS = {
   spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 },
-  radius:  { sm: 4, md: 8, lg: 12, xl: 16 },
+  radius: { sm: 4, md: 8, lg: 12, xl: 16 },
   fontSize: { xs: 11, sm: 13, md: 15, lg: 17, xl: 20, xxl: 24 },
   fontWeight: { regular: '400', medium: '500', semibold: '600', bold: '700' },
   color: {
-    primary:   '#1890FF',
-    success:   '#52C41A',
-    warning:   '#FAAD14',
-    error:     '#FF4D4F',
-    text:      '#000000D9',
+    primary: '#1890FF',
+    success: '#52C41A',
+    warning: '#FAAD14',
+    error: '#FF4D4F',
+    text: '#000000D9',
     textSecondary: '#00000073',
-    border:    '#D9D9D9',
-    bg:        '#F5F5F5',
+    border: '#D9D9D9',
+    bg: '#F5F5F5',
   },
 } as const;
 ```
@@ -1431,16 +1447,16 @@ export const DESIGN_TOKENS = {
 
 ### 11.2 Capabilities
 
-| Capability | 说明 | 必要性 |
-|---|---|---|
-| Push Notifications | APNs（推送） | **必** |
-| Sign in with Apple | Apple ID 登录 | **必**（海外） |
-| Apple Pay | Apple Pay 支付 | **必** |
-| In-App Purchase | IAP 内购 | **必** |
-| Associated Domains | Universal Link | **必** |
-| Keychain Sharing | 多 APP Keychain 共享 | 可选 |
-| App Groups | Widget / Extension 共享 | 可选 |
-| Background Modes | 远程推送 / 后台下载 | 可选 |
+| Capability         | 说明                    | 必要性         |
+| ------------------ | ----------------------- | -------------- |
+| Push Notifications | APNs（推送）            | **必**         |
+| Sign in with Apple | Apple ID 登录           | **必**（海外） |
+| Apple Pay          | Apple Pay 支付          | **必**         |
+| In-App Purchase    | IAP 内购                | **必**         |
+| Associated Domains | Universal Link          | **必**         |
+| Keychain Sharing   | 多 APP Keychain 共享    | 可选           |
+| App Groups         | Widget / Extension 共享 | 可选           |
+| Background Modes   | 远程推送 / 后台下载     | 可选           |
 
 ### 11.3 Universal Link 配置
 
@@ -1454,10 +1470,10 @@ export const DESIGN_TOKENS = {
       {
         "appIDs": ["ABCDE12345.com.samoadao.app"],
         "components": [
-          { "/": "/order/*",   "comment": "订单详情" },
+          { "/": "/order/*", "comment": "订单详情" },
           { "/": "/product/*", "comment": "商品详情" },
-          { "/": "/promo/*",   "comment": "活动页" },
-          { "/": "/wallet/*",  "comment": "钱包" }
+          { "/": "/promo/*", "comment": "活动页" },
+          { "/": "/wallet/*", "comment": "钱包" }
         ]
       }
     ]
@@ -1519,13 +1535,13 @@ export const DESIGN_TOKENS = {
 
 ### 11.6 常见审核被拒场景
 
-| 问题 | 原因 | 解决 |
-|---|---|---|
-| 5.1.1 隐私 - 数据收集 | 缺 Privacy Manifest | 补 `PrivacyInfo.xcprivacy` |
-| 4.0 设计 - 抄袭 | 与某 APP 高度相似 | 重做 UI |
-| 2.1 性能 - APP 完整性 | 登录崩溃 / 支付失败 | 修复 + 录屏 |
-| 1.4.1 安全 - 人身伤害 | 不当内容 | 删除 / 改文案 |
-| 3.1.1 付款 - IAP 绕过 | 提供支付宝 / 微信绕过 IAP | 走 IAP |
+| 问题                  | 原因                      | 解决                       |
+| --------------------- | ------------------------- | -------------------------- |
+| 5.1.1 隐私 - 数据收集 | 缺 Privacy Manifest       | 补 `PrivacyInfo.xcprivacy` |
+| 4.0 设计 - 抄袭       | 与某 APP 高度相似         | 重做 UI                    |
+| 2.1 性能 - APP 完整性 | 登录崩溃 / 支付失败       | 修复 + 录屏                |
+| 1.4.1 安全 - 人身伤害 | 不当内容                  | 删除 / 改文案              |
+| 3.1.1 付款 - IAP 绕过 | 提供支付宝 / 微信绕过 IAP | 走 IAP                     |
 
 ---
 
@@ -1692,14 +1708,14 @@ android {
 
 ### 12.5 国内安卓多渠道包
 
-| 渠道 | 包名 | 签名 | 上架 |
-|---|---|---|---|
-| 华为 | com.huawei.appgallery | 华为签名 | 华为应用市场 |
-| 小米 | com.xiaomi.market | 小米签名 | 小米应用商店 |
-| OPPO | com.oppo.market | OPPO 签名 | OPPO 软件商店 |
-| VIVO | com.vivo.appstore | VIVO 签名 | VIVO 应用商店 |
-| 应用宝 | com.tencent.android.qqdownloader | 通用 | 腾讯应用宝 |
-| Google | com.android.vending | Google 签名 | Google Play |
+| 渠道   | 包名                             | 签名        | 上架          |
+| ------ | -------------------------------- | ----------- | ------------- |
+| 华为   | com.huawei.appgallery            | 华为签名    | 华为应用市场  |
+| 小米   | com.xiaomi.market                | 小米签名    | 小米应用商店  |
+| OPPO   | com.oppo.market                  | OPPO 签名   | OPPO 软件商店 |
+| VIVO   | com.vivo.appstore                | VIVO 签名   | VIVO 应用商店 |
+| 应用宝 | com.tencent.android.qqdownloader | 通用        | 腾讯应用宝    |
+| Google | com.android.vending              | Google 签名 | Google Play   |
 
 **国内 APK 必须**有 ICP 备案 + 网络文化经营许可证 + ICP 证
 
@@ -1711,16 +1727,16 @@ android {
 
 ### 13.1 通道选型
 
-| 平台 | 通道 | SDK | 适用 |
-|---|---|---|---|
-| iOS | APNs | `@react-native-community/push-notification-ios` | 全球（**不**区分国内/海外） |
-| Android 海外 | FCM | `@react-native-firebase/messaging` | 海外（已装 GMS） |
-| Android 国内 | 极光 JPush | `jpush-react-native` | 国内（多厂商统一） |
-| Android 厂商 | 华为 HMS Push | `jpush` 集成 | 国内华为 |
-| Android 厂商 | 小米 Mi Push | `jpush` 集成 | 国内小米 |
-| Android 厂商 | OPPO Push | `jpush` 集成 | 国内 OPPO |
-| Android 厂商 | VIVO Push | `jpush` 集成 | 国内 VIVO |
-| Android 厂商 | 魅族 FlymePush | `jpush` 集成 | 国内魅族 |
+| 平台         | 通道           | SDK                                             | 适用                        |
+| ------------ | -------------- | ----------------------------------------------- | --------------------------- |
+| iOS          | APNs           | `@react-native-community/push-notification-ios` | 全球（**不**区分国内/海外） |
+| Android 海外 | FCM            | `@react-native-firebase/messaging`              | 海外（已装 GMS）            |
+| Android 国内 | 极光 JPush     | `jpush-react-native`                            | 国内（多厂商统一）          |
+| Android 厂商 | 华为 HMS Push  | `jpush` 集成                                    | 国内华为                    |
+| Android 厂商 | 小米 Mi Push   | `jpush` 集成                                    | 国内小米                    |
+| Android 厂商 | OPPO Push      | `jpush` 集成                                    | 国内 OPPO                   |
+| Android 厂商 | VIVO Push      | `jpush` 集成                                    | 国内 VIVO                   |
+| Android 厂商 | 魅族 FlymePush | `jpush` 集成                                    | 国内魅族                    |
 
 **极光 Push 同时下发到所有厂商**，APP 集成 `jpush-react-native` 后自动走最优通道。
 
@@ -1736,7 +1752,10 @@ import { MMKV } from '@/utils/mmkv';
 export const initIOSPush = async (deviceId: string) => {
   // 1. 请求权限
   await PushNotificationIOS.requestPermissions({
-    alert: true, badge: true, sound: true, critical: false,
+    alert: true,
+    badge: true,
+    sound: true,
+    critical: false,
   });
 
   // 2. 监听 token 注册
@@ -1763,7 +1782,10 @@ export const initIOSPush = async (deviceId: string) => {
   // 5. 拿当前 token
   const initialToken = await PushNotificationIOS.getInitialNotificationToken();
   if (initialToken) {
-    await api.post(`/api/h5/devices/${deviceId}/push-tokens`, { channel: 'apns', token: initialToken });
+    await api.post(`/api/h5/devices/${deviceId}/push-tokens`, {
+      channel: 'apns',
+      token: initialToken,
+    });
   }
 };
 ```
@@ -1821,7 +1843,7 @@ export const initAndroidJPush = async (deviceId: string) => {
   JPush.init({
     appKey: 'YOUR_JPUSH_APPKEY',
     channel: 'developer-default',
-    production: true,  // 生产环境
+    production: true, // 生产环境
   });
 
   // 2. 拿 registrationId
@@ -1859,6 +1881,7 @@ export const initAndroidJPush = async (deviceId: string) => {
 ### 13.5 推送路由
 
 后端按 device.region 决定通道：
+
 - `region ∈ {CN, HK, MO, TW}` → JPush（iOS 仍用 APNs）
 - 其他 → FCM（Android）/ APNs（iOS）
 
@@ -1881,7 +1904,9 @@ async sendPush(userId: string, payload: PushPayload) {
 
 ```typescript
 // 订阅 / 退订
-await api.post('/api/h5/push-tokens/subscribe', { topics: ['dlc_upgrade', 'payment', 'marketing'] });
+await api.post('/api/h5/push-tokens/subscribe', {
+  topics: ['dlc_upgrade', 'payment', 'marketing'],
+});
 await api.post('/api/h5/push-tokens/unsubscribe', { topics: ['marketing'] });
 ```
 
@@ -1896,17 +1921,18 @@ await api.post('/api/h5/push-tokens/unsubscribe', { topics: ['marketing'] });
 
 ### 14.1 支付通道选型
 
-| 支付方式 | 通道 | 适用 | 手续费 |
-|---|---|---|---|
-| Apple Pay | PassKit | 全球 iOS（**不**限商品类型） | 0% |
-| Google Pay | Google Pay API | 全球 Android | 0% |
-| IAP（iOS） | StoreKit 2 | iOS 数字商品 / 订阅 | 30% / 15%（小开发者） |
-| IAP（Android） | Google Play Billing v6 | Android 数字商品 | 30% / 15% |
-| 微信 H5 | 微信 H5 支付 | 国内安卓（用户**没**装微信时的回退） | 1% |
-| 支付宝 H5 | 支付宝 WAP 支付 | 国内安卓 | 1% |
-| Web3 钱包 | WalletConnect v2 | 全球加密货币 | gas fee |
+| 支付方式       | 通道                   | 适用                                 | 手续费                |
+| -------------- | ---------------------- | ------------------------------------ | --------------------- |
+| Apple Pay      | PassKit                | 全球 iOS（**不**限商品类型）         | 0%                    |
+| Google Pay     | Google Pay API         | 全球 Android                         | 0%                    |
+| IAP（iOS）     | StoreKit 2             | iOS 数字商品 / 订阅                  | 30% / 15%（小开发者） |
+| IAP（Android） | Google Play Billing v6 | Android 数字商品                     | 30% / 15%             |
+| 微信 H5        | 微信 H5 支付           | 国内安卓（用户**没**装微信时的回退） | 1%                    |
+| 支付宝 H5      | 支付宝 WAP 支付        | 国内安卓                             | 1%                    |
+| Web3 钱包      | WalletConnect v2       | 全球加密货币                         | gas fee               |
 
 **关键规则**（苹果）：
+
 - 数字内容（会员 / 课程 / 虚拟商品 / 数字订阅）→ **必须** IAP
 - 实体商品 / 服务（出海仓实物 / 物流服务）→ 可用 Apple Pay
 - **禁止**用第三方支付绕过 IAP
@@ -1929,12 +1955,14 @@ export const payWithApplePay = async (order: Order) => {
     merchantIdentifier: 'merchant.com.samoadao.app',
     supportedNetworks: ['visa', 'mastercard', 'amex'],
     merchantCapabilities: ['threeDSecure'],
-    countryCode: 'WS',      // 萨摩亚
+    countryCode: 'WS', // 萨摩亚
     currencyCode: order.currency, // USD / CNY
-    paymentItems: [{
-      label: order.productName,
-      amount: order.amount.toFixed(2),
-    }],
+    paymentItems: [
+      {
+        label: order.productName,
+        amount: order.amount.toFixed(2),
+      },
+    ],
   };
 
   const payment = await PassKit.presentPaymentSheet(paymentRequest);
@@ -1959,13 +1987,15 @@ export const initGooglePay = async () => {
   const { isReady } = await GooglePay.isReadyToPay({
     apiVersion: 2,
     apiVersionMinor: 0,
-    allowedPaymentMethods: [{
-      type: 'CARD',
-      parameters: {
-        allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-        allowedCardNetworks: ['VISA', 'MASTERCARD', 'AMEX'],
+    allowedPaymentMethods: [
+      {
+        type: 'CARD',
+        parameters: {
+          allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+          allowedCardNetworks: ['VISA', 'MASTERCARD', 'AMEX'],
+        },
       },
-    }],
+    ],
   });
   return isReady;
 };
@@ -1977,7 +2007,7 @@ export const payWithGooglePay = async (order: Order) => {
     paymentMethodTokenizationParameters: {
       tokenizationType: 'PAYMENT_GATEWAY',
       parameters: {
-        gateway: 'stripe',           // 或 adyen / braintree
+        gateway: 'stripe', // 或 adyen / braintree
         'stripe:publishableKey': 'pk_live_xxx',
         'stripe:version': '2020-08-27',
       },
@@ -2014,7 +2044,7 @@ const PRODUCT_IDS = ['com.samoadao.membership.monthly', 'com.samoadao.coins.100'
 export const initIOSIap = async () => {
   if (Platform.OS !== 'ios') return;
   await RNIap.initConnection();
-  await RNIap.clearTransactionIOS();  // 清未完成交易
+  await RNIap.clearTransactionIOS(); // 清未完成交易
 };
 
 export const getIOSProducts = async (): Promise<Product[]> => {
@@ -2029,7 +2059,7 @@ export const purchaseIOS = async (productId: string) => {
       platform: 'ios',
       productId,
       transactionId: purchase.transactionId,
-      receipt: purchase.transactionReceipt,  // base64
+      receipt: purchase.transactionReceipt, // base64
     });
     await RNIap.finishTransactionIOS(purchase.transactionId);
     return data;
@@ -2069,7 +2099,7 @@ export const purchaseAndroid = async (productId: string) => {
   try {
     const purchase: ProductPurchase = await RNIap.requestPurchase({
       skus: [productId],
-      obfuscatedAccountId: userId,         // 防滥用
+      obfuscatedAccountId: userId, // 防滥用
       obfuscatedProfileId: deviceId,
     });
     // 必须立即 ack，否则 3 天后自动退款
@@ -2128,15 +2158,15 @@ export const payWithWechatH5 = async (order: Order) => {
 
 ### 15.1 钱包选型
 
-| 钱包 | 库 | 适用 |
-|---|---|---|
-| MetaMask | `@metamask/sdk` | 全球最广 |
+| 钱包             | 库                                   | 适用                 |
+| ---------------- | ------------------------------------ | -------------------- |
+| MetaMask         | `@metamask/sdk`                      | 全球最广             |
 | WalletConnect v2 | `@walletconnect/react-native-compat` | 通用，连接 300+ 钱包 |
-| Trust Wallet | WalletConnect | 海外 |
-| Rainbow | WalletConnect | 海外 |
-| Coinbase Wallet | WalletConnect | 海外 |
-| imToken | WalletConnect | 国内 |
-| TokenPocket | WalletConnect | 国内 |
+| Trust Wallet     | WalletConnect                        | 海外                 |
+| Rainbow          | WalletConnect                        | 海外                 |
+| Coinbase Wallet  | WalletConnect                        | 海外                 |
+| imToken          | WalletConnect                        | 国内                 |
+| TokenPocket      | WalletConnect                        | 国内                 |
 
 **首选方案**：**WalletConnect v2**（覆盖 95% 钱包）；MetaMask 用专用 SDK 增强 Deep Link 体验。
 
@@ -2149,14 +2179,15 @@ import { Web3Wallet, IWeb3Wallet } from '@walletconnect/web3wallet';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { Linking, Platform } from 'react-native';
 
-const PROJECT_ID = 'YOUR_WC_PROJECT_ID';  // cloud.walletconnect.com 申请
+const PROJECT_ID = 'YOUR_WC_PROJECT_ID'; // cloud.walletconnect.com 申请
 
 let web3wallet: IWeb3Wallet | null = null;
 
 export const initWalletConnect = async () => {
   const core = new Core({ projectId: PROJECT_ID });
   web3wallet = await Web3Wallet.init({
-    core, metadata: {
+    core,
+    metadata: {
       name: 'SamoaDAO',
       description: '萨摩亚合规出海一站式平台',
       url: 'https://samoadao.com',
@@ -2196,9 +2227,11 @@ import { Linking } from 'react-native';
 
 export const onConnectWallet = async () => {
   // 1. 拿后端 nonce
-  const { data: { nonce, message } } = await api.get('/api/h5/auth/wallet-nonce');
+  const {
+    data: { nonce, message },
+  } = await api.get('/api/h5/auth/wallet-nonce');
   // 2. 拼 WalletConnect URI
-  const uri = await web3wallet.core.pairing.create({ });
+  const uri = await web3wallet.core.pairing.create({});
   // 3. 拉起钱包（按钱包排序：MetaMask > imToken > WalletConnect 二维码）
   const metamaskUrl = `metamask://wc?uri=${encodeURIComponent(uri)}`;
   await Linking.openURL(metamaskUrl);
@@ -2220,7 +2253,7 @@ export const signLoginMessage = async (address: string, message: string) => {
     chainId: 'eip155:1',
     request: { method: 'personal_sign', params: [message, address] },
   });
-  return result as string;  // 0x...
+  return result as string; // 0x...
 };
 ```
 
@@ -2228,12 +2261,23 @@ export const signLoginMessage = async (address: string, message: string) => {
 
 ```typescript
 // 签发链上 DID 凭证（如 KYC 完成证明）
-export const issueDIDCredential = async (vcData: { subject: string; type: string; claims: any }) => {
+export const issueDIDCredential = async (vcData: {
+  subject: string;
+  type: string;
+  claims: any;
+}) => {
   const session = web3wallet!.getActiveSessions()[0];
   // 1. 构造 EIP-712 typed data
   const typedData = {
     domain: { name: 'SamoaDAO', version: '1', chainId: 1, verifyingContract: '0x...' },
-    types: { Credential: [{ name: 'subject', type: 'string' }, { name: 'type', type: 'string' }, { name: 'claims', type: 'string' }, { name: 'issuedAt', type: 'uint256' }] },
+    types: {
+      Credential: [
+        { name: 'subject', type: 'string' },
+        { name: 'type', type: 'string' },
+        { name: 'claims', type: 'string' },
+        { name: 'issuedAt', type: 'uint256' },
+      ],
+    },
     primaryType: 'Credential',
     message: { ...vcData, issuedAt: Math.floor(Date.now() / 1000) },
   };
@@ -2241,7 +2285,10 @@ export const issueDIDCredential = async (vcData: { subject: string; type: string
   const signature = await web3wallet!.request({
     topic: session.topic,
     chainId: 'eip155:1',
-    request: { method: 'eth_signTypedData_v4', params: [session.namespaces.eip155.accounts[0].split(':')[2], JSON.stringify(typedData)] },
+    request: {
+      method: 'eth_signTypedData_v4',
+      params: [session.namespaces.eip155.accounts[0].split(':')[2], JSON.stringify(typedData)],
+    },
   });
   // 3. 上链（通过后端代理）
   return await api.post('/api/h5/wallet/sign', { typedData, signature });
@@ -2250,13 +2297,13 @@ export const issueDIDCredential = async (vcData: { subject: string; type: string
 
 ### 15.6 链 ID 与多链支持
 
-| 链 | chainId | 用途 |
-|---|---|---|
-| Ethereum | 1 | DID / NFT |
-| Polygon | 137 | NFT 会员（低 gas） |
-| Arbitrum | 42161 | 结算 |
-| BNB Chain | 56 | 出海仓结算 |
-| Solana | ... | Solana NFT（v2） |
+| 链        | chainId | 用途               |
+| --------- | ------- | ------------------ |
+| Ethereum  | 1       | DID / NFT          |
+| Polygon   | 137     | NFT 会员（低 gas） |
+| Arbitrum  | 42161   | 结算               |
+| BNB Chain | 56      | 出海仓结算         |
+| Solana    | ...     | Solana NFT（v2）   |
 
 ---
 
@@ -2316,7 +2363,10 @@ export const enableIOSBiometric = async (userId: string, refreshToken: string) =
   });
 };
 
-export const unlockWithIOSBiometric = async (): Promise<{ userId: string; refreshToken: string }> => {
+export const unlockWithIOSBiometric = async (): Promise<{
+  userId: string;
+  refreshToken: string;
+}> => {
   const credentials = await Keychain.getGenericPassword({
     service: SERVICE,
     authenticationPrompt: { title: '使用 Face ID 登录 SamoaDAO' },
@@ -2340,7 +2390,11 @@ export const enableAndroidBiometric = async (userId: string, refreshToken: strin
   // 1. 检查传感器
   const { available, biometryType } = await rnb.isSensorAvailable();
   if (!available) throw new Error('BIOMETRIC_NOT_AVAILABLE');
-  if (biometryType !== BiometryTypes.Biometrics && biometryType !== BiometryTypes.TouchID && biometryType !== BiometryTypes.FaceID) {
+  if (
+    biometryType !== BiometryTypes.Biometrics &&
+    biometryType !== BiometryTypes.TouchID &&
+    biometryType !== BiometryTypes.FaceID
+  ) {
     throw new Error('UNSUPPORTED_BIOMETRIC');
   }
   // 2. 提示
@@ -2353,7 +2407,10 @@ export const enableAndroidBiometric = async (userId: string, refreshToken: strin
   await EncryptedStorage.setItem(STORAGE_KEY, JSON.stringify({ userId, publicKey, encrypted }));
 };
 
-export const unlockWithAndroidBiometric = async (): Promise<{ userId: string; refreshToken: string }> => {
+export const unlockWithAndroidBiometric = async (): Promise<{
+  userId: string;
+  refreshToken: string;
+}> => {
   const raw = await EncryptedStorage.getItem(STORAGE_KEY);
   if (!raw) throw new Error('NO_BIOMETRIC_BINDING');
   const { userId, publicKey, encrypted } = JSON.parse(raw);
@@ -2402,19 +2459,20 @@ export const unlockWithBiometric = async () => {
 
 ### 17.1 平台总览
 
-| 平台 | 库 | 主要用途 | 关键 SDK |
-|---|---|---|---|
-| Facebook | `react-native-fbsdk-next` | 登录 / 分享 / 归因 | FB SDK + Conversions API（服务端） |
-| Google | `@react-native-google-signin/google-signin` | 登录 / 定位 / 推送主题 | Google Sign-In + Identity Services |
-| LinkedIn | `react-native-linkedin`（社区） | 登录 / B2B 客户引入 | LinkedIn Sign-In + Marketing API |
-| WhatsApp | 官方 Cloud API（无 RN SDK） | 客服 / 通知 / 订单状态 | Meta WhatsApp Business Cloud API |
-| TikTok | `react-native-tiktok-business-sdk` | 海外用户增长 / 广告归因 | TikTok SDK + Events API |
+| 平台     | 库                                          | 主要用途                | 关键 SDK                           |
+| -------- | ------------------------------------------- | ----------------------- | ---------------------------------- |
+| Facebook | `react-native-fbsdk-next`                   | 登录 / 分享 / 归因      | FB SDK + Conversions API（服务端） |
+| Google   | `@react-native-google-signin/google-signin` | 登录 / 定位 / 推送主题  | Google Sign-In + Identity Services |
+| LinkedIn | `react-native-linkedin`（社区）             | 登录 / B2B 客户引入     | LinkedIn Sign-In + Marketing API   |
+| WhatsApp | 官方 Cloud API（无 RN SDK）                 | 客服 / 通知 / 订单状态  | Meta WhatsApp Business Cloud API   |
+| TikTok   | `react-native-tiktok-business-sdk`          | 海外用户增长 / 广告归因 | TikTok SDK + Events API            |
 
 ### 17.2 Facebook 集成
 
 #### 17.2.1 SDK 配置
 
 **iOS Info.plist**：
+
 ```xml
 <key>FacebookAppID</key>
 <string>1234567890</string>
@@ -2430,6 +2488,7 @@ export const unlockWithBiometric = async () => {
 ```
 
 **Android Manifest**：
+
 ```xml
 <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
@@ -2440,7 +2499,13 @@ export const unlockWithBiometric = async () => {
 
 ```typescript
 // src/services/social/facebook.ts
-import { LoginManager, AccessToken, GraphRequest, GraphRequestManager, Settings } from 'react-native-fbsdk-next';
+import {
+  LoginManager,
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+  Settings,
+} from 'react-native-fbsdk-next';
 import { api } from '@/api/client';
 import { Platform } from 'react-native';
 
@@ -2456,12 +2521,17 @@ export const loginWithFacebook = async () => {
   if (!accessToken) throw new Error('NO_ACCESS_TOKEN');
   // 3. 拿 profile（**不**用 GraphRequestManager 异步回调）
   const profile = await new Promise<any>((resolve, reject) => {
-    const req = new GraphRequest('/me', {
-      accessToken: accessToken.accessToken,
-      parameters: { fields: { string: 'id,name,email,picture.type(large)' } },
-    }, (err, res) => {
-      if (err) reject(err); else resolve(res);
-    });
+    const req = new GraphRequest(
+      '/me',
+      {
+        accessToken: accessToken.accessToken,
+        parameters: { fields: { string: 'id,name,email,picture.type(large)' } },
+      },
+      (err, res) => {
+        if (err) reject(err);
+        else resolve(res);
+      }
+    );
     new GraphRequestManager().addRequest(req).start();
   });
   // 4. 调后端（**不**在客户端验签 Facebook token）
@@ -2503,7 +2573,11 @@ const access_token = await kms.getSecret('FACEBOOK_SYSTEM_USER_TOKEN');
 const pixel_id = 'FB_PIXEL_ID';
 const api = bizSdk.FacebookAdsApi.init(access_token);
 
-export const trackFBCAPI = async (eventName: string, userData: { email: string; externalId: string }, customData: any) => {
+export const trackFBCAPI = async (
+  eventName: string,
+  userData: { email: string; externalId: string },
+  customData: any
+) => {
   const event = {
     event_name: eventName,
     event_time: Math.floor(Date.now() / 1000),
@@ -2536,6 +2610,7 @@ const trackingStatus = await requestTrackingPermission();
 #### 17.3.1 SDK 配置
 
 **iOS Info.plist**：
+
 ```xml
 <key>GIDClientID</key>
 <string>YOUR_CLIENT_ID.apps.googleusercontent.com</string>
@@ -2558,10 +2633,10 @@ import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-si
 import { api } from '@/api/client';
 
 GoogleSignin.configure({
-  webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',  // 用于后端 idToken 验签
+  webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com', // 用于后端 idToken 验签
   iosClientId: 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com',
   scopes: ['profile', 'email'],
-  offlineAccess: true,   // 拿 refreshToken
+  offlineAccess: true, // 拿 refreshToken
 });
 
 export const loginWithGoogle = async () => {
@@ -2604,7 +2679,7 @@ async function verifyGoogleIdToken(idToken: string): Promise<GoogleProfile> {
   });
   const payload = ticket.getPayload();
   if (!payload.email_verified) throw new Error('EMAIL_NOT_VERIFIED');
-  return payload as any;  // sub, email, name, picture
+  return payload as any; // sub, email, name, picture
 }
 ```
 
@@ -2620,7 +2695,7 @@ async function verifyGoogleIdToken(idToken: string): Promise<GoogleProfile> {
 
 ```typescript
 // src/services/social/linkedin.ts
-import * as AuthSession from 'expo-auth-session';  // 或 react-native-app-auth
+import * as AuthSession from 'expo-auth-session'; // 或 react-native-app-auth
 import { api } from '@/api/client';
 
 const CLIENT_ID = 'YOUR_LINKEDIN_CLIENT_ID';
@@ -2630,7 +2705,7 @@ const SCOPES = ['openid', 'profile', 'email'];
 export const loginWithLinkedIn = async () => {
   // 1. 生成 PKCE code_verifier / code_challenge
   const codeVerifier = generateRandomString(64);
-  const codeChallenge = await sha256(codeVerifier);  // base64url
+  const codeChallenge = await sha256(codeVerifier); // base64url
   // 2. 打开 WebView / 系统浏览器走 OAuth
   const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES.join(' '))}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
   const result = await AuthSession.openAuthSessionAsync(authUrl, REDIRECT_URI);
@@ -2666,6 +2741,7 @@ async function exchangeLinkedInCode(code: string, codeVerifier: string) {
 ### 17.5 WhatsApp Business Cloud API
 
 **WhatsApp Business API 客户端**（**不**在 APP 端直接调，**全部**走后端）：
+
 - 客户端只做**启动客服会话**（拉起 WhatsApp APP 或 Web）
 - 通知消息**只**走后端用 Meta Cloud API 发送
 
@@ -2675,7 +2751,7 @@ async function exchangeLinkedInCode(code: string, codeVerifier: string) {
 // src/services/social/whatsapp.ts
 import { Linking, Platform } from 'react-native';
 
-const WHATSAPP_BUSINESS_PHONE = '68572199';  // 萨摩亚国际区号 + 电话
+const WHATSAPP_BUSINESS_PHONE = '68572199'; // 萨摩亚国际区号 + 电话
 
 export const startWhatsAppChat = async (templateMessage?: string) => {
   // 1. 拉预填消息（后端生成）
@@ -2706,7 +2782,12 @@ export const startWhatsAppChat = async (templateMessage?: string) => {
 ```typescript
 // 后端
 // POST https://graph.facebook.com/v18.0/{phone-number-id}/messages
-async function sendWhatsAppMessage(to: string, templateName: string, languageCode: string, params: string[]) {
+async function sendWhatsAppMessage(
+  to: string,
+  templateName: string,
+  languageCode: string,
+  params: string[]
+) {
   const accessToken = await kms.getSecret('WHATSAPP_BUSINESS_TOKEN');
   const phoneNumberId = await kms.getSecret('WHATSAPP_PHONE_NUMBER_ID');
   const url = `https://graph.facebook.com/v18.0/${phoneNumberId}/messages`;
@@ -2717,7 +2798,7 @@ async function sendWhatsAppMessage(to: string, templateName: string, languageCod
     template: {
       name: templateName,
       language: { code: languageCode },
-      components: [{ type: 'body', parameters: params.map(text => ({ type: 'text', text })) }],
+      components: [{ type: 'body', parameters: params.map((text) => ({ type: 'text', text })) }],
     },
   };
   await axios.post(url, body, { headers: { Authorization: `Bearer ${accessToken}` } });
@@ -2776,13 +2857,17 @@ await TikTokBusiness.trackEvent('Share', { content_id: productId });
 ```typescript
 // 后端 - 关键事件双发
 // POST https://business-api.tiktok.com/open_api/v1.3/event/track/
-async function trackTikTokEvent(eventName: string, user: { email: string; externalId: string }, props: any) {
+async function trackTikTokEvent(
+  eventName: string,
+  user: { email: string; externalId: string },
+  props: any
+) {
   const accessToken = await kms.getSecret('TIKTOK_ACCESS_TOKEN');
   const pixelId = await kms.getSecret('TIKTOK_PIXEL_ID');
   const body = {
     pixel_id: pixelId,
     event: eventName,
-    event_id: uuid(),     // 防重
+    event_id: uuid(), // 防重
     timestamp: new Date().toISOString(),
     context: {
       user: {
@@ -2834,6 +2919,7 @@ export const unbindOverseasAccount = async (bindingId: string) => {
 **场景**：用户先用 Facebook 注册，后用 Google 登录，且 Google 邮箱**相同**。
 
 **处理**：
+
 1. 后端检测到 `providerUserId` 已存在 → 提示用户
 2. 用户确认合并 → 把新 provider 绑定追加到 `OverseasAuthBinding`
 3. **不**合并 `User.id`（00-foundation §13 双身份规则：**一自然人可有多个 user**）
@@ -2843,13 +2929,13 @@ export const unbindOverseasAccount = async (bindingId: string) => {
 
 ### 17.9 海外社交集成清单
 
-| 平台 | 后端验签 | 服务端事件 | iOS ATT | Android 厂商适配 |
-|---|---|---|---|---|
-| Facebook | ✓ (`/me?appsecret_proof`) | ✓ (CAPI) | ✓ (必需) | — |
-| Google | ✓ (OAuth2Client) | ✓ (GA4 Measurement Protocol) | ✓ (可选) | — |
-| LinkedIn | ✓ (id_token + JWKS) | — (无 Conversions API) | — | — |
-| WhatsApp | ✓ (X-Hub-Signature-256) | — (无 events) | — | — |
-| TikTok | ✓ (OAuth 2.0) | ✓ (Events API) | — | — |
+| 平台     | 后端验签                  | 服务端事件                   | iOS ATT  | Android 厂商适配 |
+| -------- | ------------------------- | ---------------------------- | -------- | ---------------- |
+| Facebook | ✓ (`/me?appsecret_proof`) | ✓ (CAPI)                     | ✓ (必需) | —                |
+| Google   | ✓ (OAuth2Client)          | ✓ (GA4 Measurement Protocol) | ✓ (可选) | —                |
+| LinkedIn | ✓ (id_token + JWKS)       | — (无 Conversions API)       | —        | —                |
+| WhatsApp | ✓ (X-Hub-Signature-256)   | — (无 events)                | —        | —                |
+| TikTok   | ✓ (OAuth 2.0)             | ✓ (Events API)               | —        | —                |
 
 ---
 
@@ -2932,7 +3018,17 @@ import { I18nManager } from 'react-native';
 const RTL_LANGS = ['ar', 'he', 'fa', 'ur'];
 
 const detectLanguage = (): string => {
-  const best = RNLocalize.findBestLanguageTag(['en', 'zh', 'ja', 'ko', 'es', 'de', 'fr', 'ru', 'ar']);
+  const best = RNLocalize.findBestLanguageTag([
+    'en',
+    'zh',
+    'ja',
+    'ko',
+    'es',
+    'de',
+    'fr',
+    'ru',
+    'ar',
+  ]);
   return best?.languageTag ?? 'en-US';
 };
 
@@ -2943,7 +3039,9 @@ export const setupI18n = async () => {
     lng,
     fallbackLng: 'en-US',
     interpolation: { escapeValue: false },
-    resources: { /* ... */ },
+    resources: {
+      /* ... */
+    },
   });
   // RTL 切换（**必须**在所有 UI 渲染前）
   const shouldBeRTL = RTL_LANGS.includes(i18n.language.split('-')[0]);
@@ -2956,6 +3054,7 @@ export const setupI18n = async () => {
 ```
 
 **样式规则**：
+
 - 横向间距用 `marginStart` / `marginEnd`（**不**用 left/right）
 - 图标用 `transform: [{ scaleX: isRTL ? -1 : 1 }]`
 - 文本对齐用 `textAlign: 'left' | 'right'`（**不**用 logical alignment）
@@ -2980,10 +3079,10 @@ export const changeLanguage = async (lng: string) => {
 
 ### 18.5 翻译同步
 
-| 来源 | 平台 | 流程 |
-|---|---|---|
-| 业务方 | Crowdin / Phrase | 上传源语言 (en-US) |
-| 翻译 | Crowdin / 本地译员 | 下载 → 翻译 → 上传 |
+| 来源   | 平台                | 流程                    |
+| ------ | ------------------- | ----------------------- |
+| 业务方 | Crowdin / Phrase    | 上传源语言 (en-US)      |
+| 翻译   | Crowdin / 本地译员  | 下载 → 翻译 → 上传      |
 | 客户端 | 打包内置 + 增量更新 | `npm run i18n:download` |
 
 **强制规则**：未翻译的 key **必须** fallback 到 en-US（**不**显示 key 名）。
@@ -2996,113 +3095,113 @@ export const changeLanguage = async (lng: string) => {
 
 ### 19.1 设备注册与推送
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-01 | iOS 首次启动注册 | 全新设备、首次安装、允许通知 | `MobileDevice` 创建 + `PushToken` 创建 + 1 条 token (apns) | P0 |
-| TC-02 | Android 海外注册 | 海外 GMS 设备、首次安装、允许通知 | `MobileDevice` + `PushToken` (fcm) | P0 |
-| TC-03 | Android 国内注册 | 国内小米设备、首次安装、允许通知 | `MobileDevice` + `PushToken` (xiaomi / jpush) | P0 |
-| TC-04 | 用户拒绝通知 | iOS 启动时拒绝 | `isActive=false` + `subscribedTopics=[]` | P0 |
-| TC-05 | 推送 token 轮转 | 系统升级后重启 | 新 token 上传，旧 token 软删 | P1 |
-| TC-06 | 推送主题订阅 | 订阅 `marketing` | 推送列表收到该主题消息 | P1 |
-| TC-07 | 通知点击 deep link | 点击带 `orderId=123` 的通知 | APP 跳到订单详情 | P0 |
+| #     | 场景               | 步骤                              | 预期                                                       | 优先级 |
+| ----- | ------------------ | --------------------------------- | ---------------------------------------------------------- | ------ |
+| TC-01 | iOS 首次启动注册   | 全新设备、首次安装、允许通知      | `MobileDevice` 创建 + `PushToken` 创建 + 1 条 token (apns) | P0     |
+| TC-02 | Android 海外注册   | 海外 GMS 设备、首次安装、允许通知 | `MobileDevice` + `PushToken` (fcm)                         | P0     |
+| TC-03 | Android 国内注册   | 国内小米设备、首次安装、允许通知  | `MobileDevice` + `PushToken` (xiaomi / jpush)              | P0     |
+| TC-04 | 用户拒绝通知       | iOS 启动时拒绝                    | `isActive=false` + `subscribedTopics=[]`                   | P0     |
+| TC-05 | 推送 token 轮转    | 系统升级后重启                    | 新 token 上传，旧 token 软删                               | P1     |
+| TC-06 | 推送主题订阅       | 订阅 `marketing`                  | 推送列表收到该主题消息                                     | P1     |
+| TC-07 | 通知点击 deep link | 点击带 `orderId=123` 的通知       | APP 跳到订单详情                                           | P0     |
 
 ### 19.2 登录与认证
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-08 | 邮箱 + 密码登录 | 输入正确 | 拿到 access + refresh | P0 |
-| TC-09 | 手机号 + 验证码登录 | 收 6 位验证码 | 同上 | P0 |
-| TC-10 | Apple ID 登录（海外） | iOS 选 Apple | 拿到 idToken → 后端验签 → 登录 | P0 |
-| TC-11 | Google 登录（海外） | 选 Google | 拿到 idToken → 后端验签 → 登录 | P0 |
-| TC-12 | Facebook 登录 | 选 Facebook | 拿到 accessToken → 后端验签 → 登录 | P0 |
-| TC-13 | LinkedIn 登录 | 选 LinkedIn | OAuth 2.0 PKCE 走通 | P1 |
-| TC-14 | 钱包签名登录 | MetaMask 签名 | SIWE 验签 → 登录 | P1 |
-| TC-15 | refreshToken 自动续期 | accessToken 过期 + 401 | 自动 refresh + 重发原请求 | P0 |
-| TC-16 | 生物识别快速登录 | 已启用 Face ID + 启 APP | 解密 refreshToken → 自动登录 | P1 |
-| TC-17 | 生物识别失败 3 次 | 模拟失败 | 回退密码登录 | P1 |
+| #     | 场景                  | 步骤                    | 预期                               | 优先级 |
+| ----- | --------------------- | ----------------------- | ---------------------------------- | ------ |
+| TC-08 | 邮箱 + 密码登录       | 输入正确                | 拿到 access + refresh              | P0     |
+| TC-09 | 手机号 + 验证码登录   | 收 6 位验证码           | 同上                               | P0     |
+| TC-10 | Apple ID 登录（海外） | iOS 选 Apple            | 拿到 idToken → 后端验签 → 登录     | P0     |
+| TC-11 | Google 登录（海外）   | 选 Google               | 拿到 idToken → 后端验签 → 登录     | P0     |
+| TC-12 | Facebook 登录         | 选 Facebook             | 拿到 accessToken → 后端验签 → 登录 | P0     |
+| TC-13 | LinkedIn 登录         | 选 LinkedIn             | OAuth 2.0 PKCE 走通                | P1     |
+| TC-14 | 钱包签名登录          | MetaMask 签名           | SIWE 验签 → 登录                   | P1     |
+| TC-15 | refreshToken 自动续期 | accessToken 过期 + 401  | 自动 refresh + 重发原请求          | P0     |
+| TC-16 | 生物识别快速登录      | 已启用 Face ID + 启 APP | 解密 refreshToken → 自动登录       | P1     |
+| TC-17 | 生物识别失败 3 次     | 模拟失败                | 回退密码登录                       | P1     |
 
 ### 19.3 支付
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-18 | iOS IAP 订阅 | 选月度会员 → StoreKit 支付 | receipt 上传 → 后端验签 → 开通会员 | P0 |
-| TC-19 | iOS IAP 重复购买 | 同账号 + 同商品 | 防重：`@@unique([platform, transactionId])` 生效 | P0 |
-| TC-20 | iOS IAP 退款 | 苹果后台退款 | iap-webhook 收到 → 状态变更 → 关闭会员 | P0 |
-| TC-21 | Android IAP 订阅 | 选月度会员 → Billing | purchaseToken 上传 → 验签 → 开通 | P0 |
-| TC-22 | Android IAP 3 天未 ack | 模拟 | 谷歌自动退款 | P0 |
-| TC-23 | Apple Pay 实体商品 | iOS 选 Apple Pay | PassKit 弹窗 → 支付成功 | P0 |
-| TC-24 | Google Pay 实体商品 | Android 选 Google Pay | GooglePay 弹窗 → 支付成功 | P0 |
-| TC-25 | 微信 H5 支付 | 国内安卓 + 微信未装 | WebView 打开 → 完成支付 | P1 |
-| TC-26 | 支付宝 H5 支付 | 国内安卓 | WebView 打开 → 完成支付 | P1 |
+| #     | 场景                   | 步骤                       | 预期                                             | 优先级 |
+| ----- | ---------------------- | -------------------------- | ------------------------------------------------ | ------ |
+| TC-18 | iOS IAP 订阅           | 选月度会员 → StoreKit 支付 | receipt 上传 → 后端验签 → 开通会员               | P0     |
+| TC-19 | iOS IAP 重复购买       | 同账号 + 同商品            | 防重：`@@unique([platform, transactionId])` 生效 | P0     |
+| TC-20 | iOS IAP 退款           | 苹果后台退款               | iap-webhook 收到 → 状态变更 → 关闭会员           | P0     |
+| TC-21 | Android IAP 订阅       | 选月度会员 → Billing       | purchaseToken 上传 → 验签 → 开通                 | P0     |
+| TC-22 | Android IAP 3 天未 ack | 模拟                       | 谷歌自动退款                                     | P0     |
+| TC-23 | Apple Pay 实体商品     | iOS 选 Apple Pay           | PassKit 弹窗 → 支付成功                          | P0     |
+| TC-24 | Google Pay 实体商品    | Android 选 Google Pay      | GooglePay 弹窗 → 支付成功                        | P0     |
+| TC-25 | 微信 H5 支付           | 国内安卓 + 微信未装        | WebView 打开 → 完成支付                          | P1     |
+| TC-26 | 支付宝 H5 支付         | 国内安卓                   | WebView 打开 → 完成支付                          | P1     |
 
 ### 19.4 海外社交
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-27 | Facebook 登录（iOS ATT） | 弹 ATT → 同意 → 登录 | 拿到 id + email | P0 |
-| TC-28 | Facebook 登录（ATT 拒绝） | 弹 ATT → 拒绝 | FB SDK limited login → 只能拿 id | P0 |
-| TC-29 | Google 登录（无 Play Services） | 模拟 | 报 `PLAY_SERVICES_NOT_AVAILABLE` 错误 | P1 |
-| TC-30 | LinkedIn PKCE 登录 | 选 LinkedIn | OAuth 走通 → 拿 profile | P1 |
-| TC-31 | WhatsApp 启动客服 | 点"WhatsApp 客服" | 拉起 WhatsApp APP（含预填消息） | P0 |
-| TC-32 | TikTok 事件追踪 | 注册/下单 | 客户端事件 + 服务端 Events API 收到 | P0 |
-| TC-33 | 账号合并 | FB 登录后用同邮箱 Google 登录 | 提示合并 → 合并成功 | P1 |
-| TC-34 | 解绑 Facebook | 取消绑定 | `isActive=false`，FB token 在本地清理 | P0 |
-| TC-35 | Facebook CAPI 服务端事件 | 下单 | 后端 CAPI 调用成功 | P0 |
+| #     | 场景                            | 步骤                          | 预期                                  | 优先级 |
+| ----- | ------------------------------- | ----------------------------- | ------------------------------------- | ------ |
+| TC-27 | Facebook 登录（iOS ATT）        | 弹 ATT → 同意 → 登录          | 拿到 id + email                       | P0     |
+| TC-28 | Facebook 登录（ATT 拒绝）       | 弹 ATT → 拒绝                 | FB SDK limited login → 只能拿 id      | P0     |
+| TC-29 | Google 登录（无 Play Services） | 模拟                          | 报 `PLAY_SERVICES_NOT_AVAILABLE` 错误 | P1     |
+| TC-30 | LinkedIn PKCE 登录              | 选 LinkedIn                   | OAuth 走通 → 拿 profile               | P1     |
+| TC-31 | WhatsApp 启动客服               | 点"WhatsApp 客服"             | 拉起 WhatsApp APP（含预填消息）       | P0     |
+| TC-32 | TikTok 事件追踪                 | 注册/下单                     | 客户端事件 + 服务端 Events API 收到   | P0     |
+| TC-33 | 账号合并                        | FB 登录后用同邮箱 Google 登录 | 提示合并 → 合并成功                   | P1     |
+| TC-34 | 解绑 Facebook                   | 取消绑定                      | `isActive=false`，FB token 在本地清理 | P0     |
+| TC-35 | Facebook CAPI 服务端事件        | 下单                          | 后端 CAPI 调用成功                    | P0     |
 
 ### 19.5 Web3
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-36 | WalletConnect 连接 | 选 MetaMask | URI 拉起 MetaMask → 用户批准 → 拿到地址 | P0 |
-| TC-37 | 链上签名登录 | 钱包签名 nonce | 验签通过 → 登录 | P0 |
-| TC-38 | 签发 DID 凭证 | EIP-712 typed data 签名 | 拿到凭证 → 写 DB | P1 |
-| TC-39 | 切链 | 钱包从 Ethereum 切到 Polygon | session.update 触发 chainChanged 事件 | P1 |
+| #     | 场景               | 步骤                         | 预期                                    | 优先级 |
+| ----- | ------------------ | ---------------------------- | --------------------------------------- | ------ |
+| TC-36 | WalletConnect 连接 | 选 MetaMask                  | URI 拉起 MetaMask → 用户批准 → 拿到地址 | P0     |
+| TC-37 | 链上签名登录       | 钱包签名 nonce               | 验签通过 → 登录                         | P0     |
+| TC-38 | 签发 DID 凭证      | EIP-712 typed data 签名      | 拿到凭证 → 写 DB                        | P1     |
+| TC-39 | 切链               | 钱包从 Ethereum 切到 Polygon | session.update 触发 chainChanged 事件   | P1     |
 
 ### 19.6 设备兼容
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-40 | iOS 17+ Privacy Manifest | iOS 17 设备首次启动 | 苹果 Privacy 报告正确显示收集项 | P0 |
-| TC-41 | iPad 横屏 | iPad 横屏 | UI 适配（**不**拉伸） | P1 |
-| TC-42 | Android 14 通知权限 | API 34 设备首次启动 | 弹通知权限 | P0 |
-| TC-43 | Android 13+ 图片选择 | API 33+ 选图 | READ_MEDIA_IMAGES 权限申请 | P0 |
-| TC-44 | iPhone 14 Pro 灵动岛 | iPhone 14 Pro 启动 | Live Activity（如有）正常 | P2 |
-| TC-45 | 折叠屏 | Samsung Fold | UI 适配大屏 | P2 |
+| #     | 场景                     | 步骤                | 预期                            | 优先级 |
+| ----- | ------------------------ | ------------------- | ------------------------------- | ------ |
+| TC-40 | iOS 17+ Privacy Manifest | iOS 17 设备首次启动 | 苹果 Privacy 报告正确显示收集项 | P0     |
+| TC-41 | iPad 横屏                | iPad 横屏           | UI 适配（**不**拉伸）           | P1     |
+| TC-42 | Android 14 通知权限      | API 34 设备首次启动 | 弹通知权限                      | P0     |
+| TC-43 | Android 13+ 图片选择     | API 33+ 选图        | READ_MEDIA_IMAGES 权限申请      | P0     |
+| TC-44 | iPhone 14 Pro 灵动岛     | iPhone 14 Pro 启动  | Live Activity（如有）正常       | P2     |
+| TC-45 | 折叠屏                   | Samsung Fold        | UI 适配大屏                     | P2     |
 
 ### 19.7 性能
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-46 | 冷启动 | 杀进程后冷启 | < 2.5s（**不**含 SDK 初始化） | P0 |
-| TC-47 | 热启动 | 切后台 30s 后回前台 | < 0.5s | P0 |
-| TC-48 | 滑动帧率 | 滚动首页 1 分钟 | ≥ 55 FPS | P0 |
-| TC-49 | 内存占用 | 正常使用 30 分钟 | < 250 MB | P1 |
-| TC-50 | 包体积 | Release 包 | iOS < 80MB / Android < 50MB | P0 |
+| #     | 场景     | 步骤                | 预期                          | 优先级 |
+| ----- | -------- | ------------------- | ----------------------------- | ------ |
+| TC-46 | 冷启动   | 杀进程后冷启        | < 2.5s（**不**含 SDK 初始化） | P0     |
+| TC-47 | 热启动   | 切后台 30s 后回前台 | < 0.5s                        | P0     |
+| TC-48 | 滑动帧率 | 滚动首页 1 分钟     | ≥ 55 FPS                      | P0     |
+| TC-49 | 内存占用 | 正常使用 30 分钟    | < 250 MB                      | P1     |
+| TC-50 | 包体积   | Release 包          | iOS < 80MB / Android < 50MB   | P0     |
 
 ### 19.8 离线
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-51 | 离线查看订单列表 | 断网 → 打开订单 | 显示本地缓存（带"离线"角标） | P1 |
-| TC-52 | 离线创建草稿订单 | 断网 → 提交订单 | 存本地 + 恢复后自动同步 | P1 |
-| TC-53 | 离线时钱包操作 | 断网 → 钱包签名 | **拒绝**操作（链上不能离线） | P0 |
+| #     | 场景             | 步骤            | 预期                         | 优先级 |
+| ----- | ---------------- | --------------- | ---------------------------- | ------ |
+| TC-51 | 离线查看订单列表 | 断网 → 打开订单 | 显示本地缓存（带"离线"角标） | P1     |
+| TC-52 | 离线创建草稿订单 | 断网 → 提交订单 | 存本地 + 恢复后自动同步      | P1     |
+| TC-53 | 离线时钱包操作   | 断网 → 钱包签名 | **拒绝**操作（链上不能离线） | P0     |
 
 ### 19.9 国际化
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-54 | RTL 显示（阿语） | 切到阿拉伯语 | UI 镜像、文本从右到左 | P0 |
-| TC-55 | 数字 LTR | 阿语下显示金额 `100 USD` | 数字保持 LTR | P0 |
-| TC-56 | 翻译完整性 | 切到所有 9 种语言 | 未翻译 key fallback 到英文 | P0 |
+| #     | 场景             | 步骤                     | 预期                       | 优先级 |
+| ----- | ---------------- | ------------------------ | -------------------------- | ------ |
+| TC-54 | RTL 显示（阿语） | 切到阿拉伯语             | UI 镜像、文本从右到左      | P0     |
+| TC-55 | 数字 LTR         | 阿语下显示金额 `100 USD` | 数字保持 LTR               | P0     |
+| TC-56 | 翻译完整性       | 切到所有 9 种语言        | 未翻译 key fallback 到英文 | P0     |
 
 ### 19.10 上架审核
 
-| # | 场景 | 步骤 | 预期 | 优先级 |
-|---|---|---|---|---|
-| TC-57 | 苹果 ATT | iOS 14.5+ 首次启动 | ATT 弹窗正确弹出 | P0 |
-| TC-58 | 苹果 IAP 强制 | 数字商品走 IAP | **不**提供第三方支付入口 | P0 |
-| TC-59 | 苹果 Privacy Manifest | iOS 17 提交审核 | 审核通过 | P0 |
-| TC-60 | Google 数据安全 | 提交 Play Console | 表单填写正确 | P0 |
+| #     | 场景                  | 步骤               | 预期                     | 优先级 |
+| ----- | --------------------- | ------------------ | ------------------------ | ------ |
+| TC-57 | 苹果 ATT              | iOS 14.5+ 首次启动 | ATT 弹窗正确弹出         | P0     |
+| TC-58 | 苹果 IAP 强制         | 数字商品走 IAP     | **不**提供第三方支付入口 | P0     |
+| TC-59 | 苹果 Privacy Manifest | iOS 17 提交审核    | 审核通过                 | P0     |
+| TC-60 | Google 数据安全       | 提交 Play Console  | 表单填写正确             | P0     |
 
 ### 19.11 验收通过标准
 
@@ -3120,14 +3219,15 @@ export const changeLanguage = async (lng: string) => {
 
 ### 20.1 启动性能
 
-| 指标 | 目标 | 测量方法 |
-|---|---|---|
-| 冷启动 (iOS) | ≤ 2.0s | `AppDelegate.didFinishLaunching` 到第一帧 |
-| 冷启动 (Android) | ≤ 2.5s | `Application.onCreate` 到第一帧 |
-| 首屏可交互 | ≤ 1.5s | Splash 消失 → 用户可点击 |
-| 关键 SDK 初始化 | ≤ 1.0s | APNs / FCM / Bugly / Sentry 启动耗时 |
+| 指标             | 目标   | 测量方法                                  |
+| ---------------- | ------ | ----------------------------------------- |
+| 冷启动 (iOS)     | ≤ 2.0s | `AppDelegate.didFinishLaunching` 到第一帧 |
+| 冷启动 (Android) | ≤ 2.5s | `Application.onCreate` 到第一帧           |
+| 首屏可交互       | ≤ 1.5s | Splash 消失 → 用户可点击                  |
+| 关键 SDK 初始化  | ≤ 1.0s | APNs / FCM / Bugly / Sentry 启动耗时      |
 
 **优化手段**：
+
 - Hermes 预编译（**不**用 JSC）
 - 启动期**不**初始化所有 SDK（按需懒加载）
 - 用 `InteractionManager.runAfterInteractions` 推迟非关键操作
@@ -3151,13 +3251,13 @@ export const changeLanguage = async (lng: string) => {
 
 ### 20.2 运行时性能
 
-| 指标 | 目标 | 优化手段 |
-|---|---|---|
-| 滑动 FPS | ≥ 55 | FlashList（**不**用 FlatList） |
-| 长列表内存 | < 200 MB | `windowSize=5`、`removeClippedSubviews` |
-| 图片加载 | < 100ms（缓存命中） | FastImage + SDWebImage + Glide |
-| 路由切换 | < 300ms | `react-native-screens`（原生容器） |
-| 网络请求 | < 1.5s（P95） | axios + 缓存 + 预加载 |
+| 指标       | 目标                | 优化手段                                |
+| ---------- | ------------------- | --------------------------------------- |
+| 滑动 FPS   | ≥ 55                | FlashList（**不**用 FlatList）          |
+| 长列表内存 | < 200 MB            | `windowSize=5`、`removeClippedSubviews` |
+| 图片加载   | < 100ms（缓存命中） | FastImage + SDWebImage + Glide          |
+| 路由切换   | < 300ms             | `react-native-screens`（原生容器）      |
+| 网络请求   | < 1.5s（P95）       | axios + 缓存 + 预加载                   |
 
 ```typescript
 // FlashList 替代 FlatList（性能 5x）
@@ -3175,12 +3275,13 @@ import { FlashList } from '@shopify/flash-list';
 
 ### 20.3 包体积
 
-| 平台 | 目标 | 当前措施 |
-|---|---|---|
-| iOS | < 80 MB | ProGuard / R8 + 资源压缩 + 按需加载 |
+| 平台    | 目标    | 当前措施                                            |
+| ------- | ------- | --------------------------------------------------- |
+| iOS     | < 80 MB | ProGuard / R8 + 资源压缩 + 按需加载                 |
 | Android | < 50 MB | ABI splits（按设备分 ABI）+ 资源压缩 + 移除未用代码 |
 
 **Android ABI splits**：
+
 ```groovy
 android {
   splits {
@@ -3195,6 +3296,7 @@ android {
 ```
 
 **未用代码检测**：
+
 ```bash
 # 找未用第三方库
 npx depcheck
@@ -3205,26 +3307,28 @@ npx ts-prune
 
 ### 20.4 内存
 
-| 指标 | 目标 | 监控 |
-|---|---|---|
-| 普通使用 | < 250 MB | Sentry / Bugly |
-| 大图浏览 | < 400 MB | 需手动释放 |
+| 指标       | 目标     | 监控                              |
+| ---------- | -------- | --------------------------------- |
+| 普通使用   | < 250 MB | Sentry / Bugly                    |
+| 大图浏览   | < 400 MB | 需手动释放                        |
 | 长列表滚动 | < 300 MB | FlashList + removeClippedSubviews |
 
 **优化**：
+
 - 图片用 `FastImage.resizeMode='contain'`，**不**加载原图到内存
 - WebView 用完即销毁（**不**长存）
 - 大 JSON 解析用 `JSONStream`（**不**一次解析）
 
 ### 20.5 电量
 
-| 指标 | 目标 |
-|---|---|
-| 待机 8 小时 | < 5% 电量 |
-| 普通使用 1 小时 | < 15% 电量 |
-| 推送 1 小时 | < 2% 电量（APNs 是**低功耗**） |
+| 指标            | 目标                           |
+| --------------- | ------------------------------ |
+| 待机 8 小时     | < 5% 电量                      |
+| 普通使用 1 小时 | < 15% 电量                     |
+| 推送 1 小时     | < 2% 电量（APNs 是**低功耗**） |
 
 **优化**：
+
 - 后台**不**做轮询（用推送）
 - GPS 用完后立即停止更新
 - 网络请求用 `shouldBatch` 合并
@@ -3248,6 +3352,7 @@ Bugly.setUserSceneTag(12345, 'order_list');
 ### 20.7 Hermes 启用
 
 **iOS Podfile**：
+
 ```ruby
 use_react_native!(
   :hermes_enabled => true
@@ -3255,6 +3360,7 @@ use_react_native!(
 ```
 
 **Android gradle.properties**：
+
 ```
 hermesEnabled=true
 ```
@@ -3269,12 +3375,12 @@ hermesEnabled=true
 
 ### 21.1 多通道崩溃上报
 
-| 通道 | 适用 | 重要性 |
-|---|---|---|
-| Sentry | 全球（跨端） | **必** |
-| Firebase Crashlytics | iOS / 海外 Android | **必** |
-| 腾讯 Bugly | 国内 Android（含厂商） | **必**（国内稳定性） |
-| 自建日志 | 服务端兜底 | **必**（最后防线） |
+| 通道                 | 适用                   | 重要性               |
+| -------------------- | ---------------------- | -------------------- |
+| Sentry               | 全球（跨端）           | **必**               |
+| Firebase Crashlytics | iOS / 海外 Android     | **必**               |
+| 腾讯 Bugly           | 国内 Android（含厂商） | **必**（国内稳定性） |
+| 自建日志             | 服务端兜底             | **必**（最后防线）   |
 
 ### 21.2 Sentry 集成
 
@@ -3303,11 +3409,13 @@ const App = Sentry.wrap(RootApp);
 ### 21.3 Crashlytics 集成
 
 **iOS Podfile**：
+
 ```ruby
 pod 'Firebase/Crashlytics'
 ```
 
 **Android gradle**：
+
 ```groovy
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -3376,11 +3484,11 @@ appcenter codepush release-react \
 
 ### 21.7 ANR / 卡顿监控
 
-| 类型 | 平台 | 监控 |
-|---|---|---|
+| 类型                             | 平台    | 监控                     |
+| -------------------------------- | ------- | ------------------------ |
 | ANR (Application Not Responding) | Android | Bugly / Crashlytics 自动 |
-| 卡顿 (FPS < 30) | 双端 | Sentry performance |
-| Watchdog Timeout | iOS | 自建埋点 |
+| 卡顿 (FPS < 30)                  | 双端    | Sentry performance       |
+| Watchdog Timeout                 | iOS     | 自建埋点                 |
 
 ### 21.8 崩溃修复流程
 
@@ -3397,6 +3505,7 @@ appcenter codepush release-react \
 ### 22.1 版本号规范
 
 **语义化版本（SemVer）**：
+
 ```
 MAJOR.MINOR.PATCH
   │    │     │
@@ -3406,14 +3515,17 @@ MAJOR.MINOR.PATCH
 ```
 
 **iOS**：
+
 - `CFBundleShortVersionString`：1.0.0
 - `CFBundleVersion` (buildNumber)：100
 
 **Android**：
+
 - `versionName`：1.0.0
 - `versionCode`：100
 
 **版本号映射**：
+
 ```
 versionName 1.0.0  → versionCode 100
 versionName 1.0.1  → versionCode 101
@@ -3423,11 +3535,11 @@ versionName 2.0.0  → versionCode 200
 
 ### 22.2 强制更新 vs 建议更新
 
-| 模式 | 触发 | 处理 |
-|---|---|---|
-| 强制更新 | `versionCode < minVersionCode` | 启动时**只**显示更新页 |
-| 建议更新 | `versionCode < latestVersionCode` | 弹窗提示"立即更新" / "稍后" |
-| 静默更新 | `versionCode < recommendedVersionCode` | 后台下载，提示"夜间更新" |
+| 模式     | 触发                                   | 处理                        |
+| -------- | -------------------------------------- | --------------------------- |
+| 强制更新 | `versionCode < minVersionCode`         | 启动时**只**显示更新页      |
+| 建议更新 | `versionCode < latestVersionCode`      | 弹窗提示"立即更新" / "稍后" |
+| 静默更新 | `versionCode < recommendedVersionCode` | 后台下载，提示"夜间更新"    |
 
 ```typescript
 // 启动时检查
@@ -3448,14 +3560,14 @@ export const checkAppUpdate = async () => {
 
 ### 22.3 多渠道版本
 
-| 渠道 | versionName | 备注 |
-|---|---|---|
-| iOS App Store | 1.0.0 | 唯一 |
-| iOS TestFlight | 1.0.0 (build 100) | 内部 + 外测 |
-| Google Play | 1.0.0 (100) | 唯一 |
-| Google Play 内部测试 | 1.0.0 (100) | 内部 100 人 |
-| Google Play 封闭测试 | 1.0.0 (100) | 特定用户群 |
-| 华为 / 小米 / OPPO / VIVO | 1.0.0.100 | 国内应用市场 |
+| 渠道                      | versionName       | 备注         |
+| ------------------------- | ----------------- | ------------ |
+| iOS App Store             | 1.0.0             | 唯一         |
+| iOS TestFlight            | 1.0.0 (build 100) | 内部 + 外测  |
+| Google Play               | 1.0.0 (100)       | 唯一         |
+| Google Play 内部测试      | 1.0.0 (100)       | 内部 100 人  |
+| Google Play 封闭测试      | 1.0.0 (100)       | 特定用户群   |
+| 华为 / 小米 / OPPO / VIVO | 1.0.0.100         | 国内应用市场 |
 
 ### 22.4 CodePush 版本
 
@@ -3485,18 +3597,19 @@ export const checkAppUpdate = async () => {
 
 ### 23.1 iOS App Store 上架
 
-| 步骤 | 工具 | 耗时 |
-|---|---|---|
-| 1. 准备证书 | Apple Developer | 1 天 |
-| 2. 创建 APP ID | Apple Developer | 1h |
-| 3. 创建 Provisioning Profile | Xcode 自动 | 1h |
-| 4. TestFlight 内测 | TestFlight | 1-7 天 |
-| 5. TestFlight 外测 | TestFlight | 1-30 天 |
-| 6. App Store Connect 提交 | App Store Connect | 1h |
-| 7. 苹果审核 | 人工 | 24-48h |
-| 8. 发布 | App Store | 即时 |
+| 步骤                         | 工具              | 耗时    |
+| ---------------------------- | ----------------- | ------- |
+| 1. 准备证书                  | Apple Developer   | 1 天    |
+| 2. 创建 APP ID               | Apple Developer   | 1h      |
+| 3. 创建 Provisioning Profile | Xcode 自动        | 1h      |
+| 4. TestFlight 内测           | TestFlight        | 1-7 天  |
+| 5. TestFlight 外测           | TestFlight        | 1-30 天 |
+| 6. App Store Connect 提交    | App Store Connect | 1h      |
+| 7. 苹果审核                  | 人工              | 24-48h  |
+| 8. 发布                      | App Store         | 即时    |
 
 **必备资料**：
+
 - 应用图标（1024×1024 PNG）
 - 启动图（6.5" / 5.5" / 4.7" / iPad）
 - 应用截图（6.5" / 5.5" / iPad 各 1-10 张）
@@ -3511,17 +3624,18 @@ export const checkAppUpdate = async () => {
 
 ### 23.2 Google Play 上架
 
-| 步骤 | 工具 | 耗时 |
-|---|---|---|
-| 1. 创建开发者账号 | Google Play Console | 1 天（$25 一次性） |
-| 2. 创建 APP | Google Play Console | 1h |
-| 3. 上传 AAB | Google Play Console | 1h |
-| 4. 内部测试 | 自动 | 即时 |
-| 5. 封闭测试 | 自动 | 1-7 天 |
-| 6. 开放测试（可选） | 自动 | 1-7 天 |
-| 7. 正式发布 | 自动 | 1-7 天 |
+| 步骤                | 工具                | 耗时               |
+| ------------------- | ------------------- | ------------------ |
+| 1. 创建开发者账号   | Google Play Console | 1 天（$25 一次性） |
+| 2. 创建 APP         | Google Play Console | 1h                 |
+| 3. 上传 AAB         | Google Play Console | 1h                 |
+| 4. 内部测试         | 自动                | 即时               |
+| 5. 封闭测试         | 自动                | 1-7 天             |
+| 6. 开放测试（可选） | 自动                | 1-7 天             |
+| 7. 正式发布         | 自动                | 1-7 天             |
 
 **必备资料**：
+
 - AAB 文件
 - 应用图标（512×512 PNG）
 - Feature Graphic（1024×500）
@@ -3535,18 +3649,19 @@ export const checkAppUpdate = async () => {
 
 ### 23.3 国内应用市场
 
-| 市场 | 资质 |
-|---|---|
-| 华为 | 公司营业执照 + 软件著作权 + ICP 备案 + 华为开发者实名 |
-| 小米 | 同上 + 小米开发者实名 |
-| OPPO | 同上 + OPPO 开发者实名 |
-| VIVO | 同上 + VIVO 开发者实名 |
-| 应用宝 | 同上 + 腾讯开放平台实名 |
-| 百度 | 同上 + 百度开发者实名 |
-| 阿里 | 同上 + 阿里开发者实名 |
-| 360 | 同上 + 360 开发者实名 |
+| 市场   | 资质                                                  |
+| ------ | ----------------------------------------------------- |
+| 华为   | 公司营业执照 + 软件著作权 + ICP 备案 + 华为开发者实名 |
+| 小米   | 同上 + 小米开发者实名                                 |
+| OPPO   | 同上 + OPPO 开发者实名                                |
+| VIVO   | 同上 + VIVO 开发者实名                                |
+| 应用宝 | 同上 + 腾讯开放平台实名                               |
+| 百度   | 同上 + 百度开发者实名                                 |
+| 阿里   | 同上 + 阿里开发者实名                                 |
+| 360    | 同上 + 360 开发者实名                                 |
 
 **国内 APK 必须**有：
+
 - 营业执照
 - 软件著作权（**软著**）
 - ICP 备案（域名）
@@ -3557,21 +3672,21 @@ export const checkAppUpdate = async () => {
 
 ### 23.4 上架时间表
 
-| 阶段 | 耗时 |
-|---|---|
-| 准备资料 | 1-2 周 |
-| 软著申请 | 1-3 个月（**提前**准备） |
-| 苹果 / 谷歌审核 | 1-7 天 |
-| 国内应用市场审核 | 1-7 天/家 |
-| **总计** | 1-3 个月 |
+| 阶段             | 耗时                     |
+| ---------------- | ------------------------ |
+| 准备资料         | 1-2 周                   |
+| 软著申请         | 1-3 个月（**提前**准备） |
+| 苹果 / 谷歌审核  | 1-7 天                   |
+| 国内应用市场审核 | 1-7 天/家                |
+| **总计**         | 1-3 个月                 |
 
 ### 23.5 版本回滚
 
-| 情况 | 措施 |
-|---|---|
-| iOS 紧急崩溃 | CodePush 热修 + 苹果紧急发版（24h） |
+| 情况             | 措施                                        |
+| ---------------- | ------------------------------------------- |
+| iOS 紧急崩溃     | CodePush 热修 + 苹果紧急发版（24h）         |
 | Android 紧急崩溃 | 谷歌 Play Console 暂停发布 + 修复后重新发布 |
-| 国内安卓 | 极光热更新（**不**影响应用市场审核） |
+| 国内安卓         | 极光热更新（**不**影响应用市场审核）        |
 
 ---
 
@@ -3581,14 +3696,14 @@ export const checkAppUpdate = async () => {
 
 ### 24.1 风险等级
 
-| 风险 | 场景 | 检测 |
-|---|---|---|
-| **刷注册** | 批量注册薅羊毛 | 设备指纹 + 手机号三要素 + IP 频率 |
-| **刷单** | 虚假交易 | 行为分析（IP / 设备 / 时间） |
-| **IAP 退款欺诈** | 用户充值后立即退款 | 苹果 / 谷歌退款率监控 |
-| **黑卡支付** | 盗刷信用卡 | 3DS 验证 + 风控引擎 |
-| **虚假 KYC** | 用假证 / 别人身份证 | OCR + 活体检测 + 公安联网 |
-| **设备篡改** | 改机 / 越狱 / Hook | 设备指纹 + 越狱检测 + SafetyNet |
+| 风险             | 场景                | 检测                              |
+| ---------------- | ------------------- | --------------------------------- |
+| **刷注册**       | 批量注册薅羊毛      | 设备指纹 + 手机号三要素 + IP 频率 |
+| **刷单**         | 虚假交易            | 行为分析（IP / 设备 / 时间）      |
+| **IAP 退款欺诈** | 用户充值后立即退款  | 苹果 / 谷歌退款率监控             |
+| **黑卡支付**     | 盗刷信用卡          | 3DS 验证 + 风控引擎               |
+| **虚假 KYC**     | 用假证 / 别人身份证 | OCR + 活体检测 + 公安联网         |
+| **设备篡改**     | 改机 / 越狱 / Hook  | 设备指纹 + 越狱检测 + SafetyNet   |
 
 ### 24.2 设备指纹
 
@@ -3627,7 +3742,7 @@ export const isDeviceCompromised = async (): Promise<boolean> => {
     return await JailbreakMonkey.isJailBroken();
   }
   if (Platform.OS === 'android') {
-    return await DeviceInfo.isRooted();  // 简化检测
+    return await DeviceInfo.isRooted(); // 简化检测
   }
   return false;
 };
@@ -3683,13 +3798,13 @@ if (fraudScore > 0.8) {
 
 ### 24.7 异常行为检测
 
-| 行为 | 阈值 | 处理 |
-|---|---|---|
-| 同设备 1h 注册 > 3 次 | 是 | 触发图形验证码 |
-| 同 IP 24h 登录 > 50 次 | 是 | IP 临时封禁 |
-| 1 个用户 24h 下单 > 10 单 | 是 | 人工审核 |
-| 钱包操作 1h > 5 次 | 是 | 强制 KYC |
-| 退款率 > 30% | 是 | 暂停账号 |
+| 行为                      | 阈值 | 处理           |
+| ------------------------- | ---- | -------------- |
+| 同设备 1h 注册 > 3 次     | 是   | 触发图形验证码 |
+| 同 IP 24h 登录 > 50 次    | 是   | IP 临时封禁    |
+| 1 个用户 24h 下单 > 10 单 | 是   | 人工审核       |
+| 钱包操作 1h > 5 次        | 是   | 强制 KYC       |
+| 退款率 > 30%              | 是   | 暂停账号       |
 
 ---
 
@@ -3699,21 +3814,21 @@ if (fraudScore > 0.8) {
 
 ### 25.1 监控体系
 
-| 类型 | 工具 | 指标 |
-|---|---|---|
-| 崩溃 | Sentry + Crashlytics + Bugly | 崩溃率 / ANR |
-| 性能 | Sentry Performance + Bugly | 启动 / FPS / 内存 |
-| 业务埋点 | 神策 / GrowingIO / Mixpanel | 转化 / 留存 / 漏斗 |
-| 行为埋点 | 客户端上报 | 点击 / 浏览 / 滑动 |
-| 网络 | axios interceptor | 接口耗时 / 错误率 |
-| 用户反馈 | 应用商店评论 + 站内反馈 | NPS / 评分 |
+| 类型     | 工具                         | 指标               |
+| -------- | ---------------------------- | ------------------ |
+| 崩溃     | Sentry + Crashlytics + Bugly | 崩溃率 / ANR       |
+| 性能     | Sentry Performance + Bugly   | 启动 / FPS / 内存  |
+| 业务埋点 | 神策 / GrowingIO / Mixpanel  | 转化 / 留存 / 漏斗 |
+| 行为埋点 | 客户端上报                   | 点击 / 浏览 / 滑动 |
+| 网络     | axios interceptor            | 接口耗时 / 错误率  |
+| 用户反馈 | 应用商店评论 + 站内反馈      | NPS / 评分         |
 
 ### 25.2 业务埋点
 
 ```typescript
 // src/services/analytics/track.ts
-import analytics from '@react-native-firebase/analytics';  // GA4
-import Sensors from 'react-native-sensors-analytics';       // 神策
+import analytics from '@react-native-firebase/analytics'; // GA4
+import Sensors from 'react-native-sensors-analytics'; // 神策
 
 export const trackEvent = async (eventName: string, properties?: Record<string, any>) => {
   // GA4
@@ -3736,7 +3851,7 @@ export const trackShare = (provider: string, contentType: string, itemId: string
 ```typescript
 export const setUserProperties = async (user: User) => {
   await analytics().setUserId(user.id);
-  await analytics().setUserProperty('user_type', user.type);  // individual / business
+  await analytics().setUserProperty('user_type', user.type); // individual / business
   await analytics().setUserProperty('region', user.region);
   await analytics().setUserProperty('kyc_status', user.kycStatus);
   await analytics().setUserProperty('wallet_bound', user.walletBound ? 'true' : 'false');
@@ -3746,12 +3861,12 @@ export const setUserProperties = async (user: User) => {
 
 ### 25.4 漏斗分析
 
-| 漏斗 | 步骤 |
-|---|---|
-| 注册转化 | 启动 → 引导 → 选注册方式 → 输入手机号 → 收验证码 → 注册成功 |
-| 首次下单 | 启动 → 选商品 → 加购 → 提交订单 → 选支付 → 支付成功 |
-| 海外社交登录 | 启动 → 登录页 → 选 FB → ATT 弹窗 → FB 授权 → 拿 profile → 登录成功 |
-| 钱包绑定 | 我的 → 钱包 → 连接钱包 → 选 MetaMask → URI 拉起 → 用户签名 → 绑定成功 |
+| 漏斗         | 步骤                                                                  |
+| ------------ | --------------------------------------------------------------------- |
+| 注册转化     | 启动 → 引导 → 选注册方式 → 输入手机号 → 收验证码 → 注册成功           |
+| 首次下单     | 启动 → 选商品 → 加购 → 提交订单 → 选支付 → 支付成功                   |
+| 海外社交登录 | 启动 → 登录页 → 选 FB → ATT 弹窗 → FB 授权 → 拿 profile → 登录成功    |
+| 钱包绑定     | 我的 → 钱包 → 连接钱包 → 选 MetaMask → URI 拉起 → 用户签名 → 绑定成功 |
 
 ### 25.5 A/B 测试
 
@@ -3763,20 +3878,20 @@ import remoteConfig from '@react-native-firebase/remote-config';
 
 await remoteConfig().setConfigSettings({ minimumFetchIntervalMillis: 3600000 });
 await remoteConfig().fetchAndActivate();
-const variant = remoteConfig().getString('login_button_variant');  // 'a' / 'b'
+const variant = remoteConfig().getString('login_button_variant'); // 'a' / 'b'
 ```
 
 ### 25.6 监控大盘
 
-| 维度 | 关键指标 | 阈值 |
-|---|---|---|
-| 稳定性 | 崩溃率 | < 0.1% (P95) |
-| 性能 | 冷启动 | < 2.5s (P95) |
-| 性能 | FPS | > 55 (P50) |
-| 网络 | 接口 P95 耗时 | < 1.5s |
-| 业务 | DAU / MAU | 持续增长 |
-| 业务 | 7 日留存 | > 30% |
-| 业务 | 漏斗转化率 | 持续增长 |
+| 维度   | 关键指标      | 阈值         |
+| ------ | ------------- | ------------ |
+| 稳定性 | 崩溃率        | < 0.1% (P95) |
+| 性能   | 冷启动        | < 2.5s (P95) |
+| 性能   | FPS           | > 55 (P50)   |
+| 网络   | 接口 P95 耗时 | < 1.5s       |
+| 业务   | DAU / MAU     | 持续增长     |
+| 业务   | 7 日留存      | > 30%        |
+| 业务   | 漏斗转化率    | 持续增长     |
 
 ---
 
@@ -3786,92 +3901,92 @@ const variant = remoteConfig().getString('login_button_variant');  // 'a' / 'b'
 
 ### 26.1 与 00-foundation.md 一致性
 
-| 主题 | 引用点 | 本文档落实章节 |
-|---|---|---|
-| i18n 命名空间规范 | 00-foundation §5.5.1 | §18 i18n |
-| 状态色规范 | 00-foundation §8.3.1 | §10.1 StatusBadge |
-| KMS 凭据加密 | 00-foundation §11 | §17.2.3 (FB)、§17.3.3 (Google)、§17.5.2 (WhatsApp)、§17.6.3 (TikTok) |
-| User 外键约束 | 00-foundation §12 | §6.1 MobileDevice.userId / §6.4 BiometricAuth.userId / §6.5 OverseasAuthBinding.userId |
-| 统一退款状态机 | 00-foundation §7.5 | §7.2 IAP / §14.7 |
-| 双身份规则 | 00-foundation §13 | §6.5 OverseasAuthBinding（**不**用 `@@unique([userId, provider])`） |
-| 通用字段（createdAt / updatedAt / deletedAt） | 00-foundation §6 | §6.1-6.5 **全部** model |
-| 软删规范 | 00-foundation §6 | §6.1 / §6.4 / §6.5 |
-| 错误码规范 | 00-foundation §10 | §14 / §15 / §17 全部错误码 |
+| 主题                                          | 引用点               | 本文档落实章节                                                                         |
+| --------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------- |
+| i18n 命名空间规范                             | 00-foundation §5.5.1 | §18 i18n                                                                               |
+| 状态色规范                                    | 00-foundation §8.3.1 | §10.1 StatusBadge                                                                      |
+| KMS 凭据加密                                  | 00-foundation §11    | §17.2.3 (FB)、§17.3.3 (Google)、§17.5.2 (WhatsApp)、§17.6.3 (TikTok)                   |
+| User 外键约束                                 | 00-foundation §12    | §6.1 MobileDevice.userId / §6.4 BiometricAuth.userId / §6.5 OverseasAuthBinding.userId |
+| 统一退款状态机                                | 00-foundation §7.5   | §7.2 IAP / §14.7                                                                       |
+| 双身份规则                                    | 00-foundation §13    | §6.5 OverseasAuthBinding（**不**用 `@@unique([userId, provider])`）                    |
+| 通用字段（createdAt / updatedAt / deletedAt） | 00-foundation §6     | §6.1-6.5 **全部** model                                                                |
+| 软删规范                                      | 00-foundation §6     | §6.1 / §6.4 / §6.5                                                                     |
+| 错误码规范                                    | 00-foundation §10    | §14 / §15 / §17 全部错误码                                                             |
 
 ### 26.2 与 01-wechat-mini-program.md 一致性
 
-| 主题 | 引用点 | 本文档差异点 |
-|---|---|---|
-| 业务域 | 01-小程序 §1-§5 | **相同**（订单 / 钱包 / 会员 / 客服） |
-| i18n 命名空间 | 01-小程序 §4 | **相同**（en-US / zh-CN / ja-JP ...） |
-| 状态色 | 01-小程序 §6 | **相同**（success / processing / warning / error / default） |
-| 退款状态机 | 01-小程序 §5 | **相同**（**完全**复用 00-foundation §7.5） |
-| 字段定义 | 01-小程序 §7 | **新增** 5 个 APP 特有 model（MobileDevice / PushToken / AppInstall / BiometricAuth / OverseasAuthBinding） |
-| API | 01-小程序 §8 | **复用** `/api/h5/*`；**新增** `/api/h5/auth/apple-login` 等 6 个 |
-| 用户故事 | 01-小程序 §3 | **新增** 推送 / IAP / 钱包 / 生物识别 / 海外社交 |
-| 验收用例 | 01-小程序 §19 | **新增** 推送 / IAP / 生物识别 / 海外社交 / Web3 |
+| 主题          | 引用点          | 本文档差异点                                                                                                |
+| ------------- | --------------- | ----------------------------------------------------------------------------------------------------------- |
+| 业务域        | 01-小程序 §1-§5 | **相同**（订单 / 钱包 / 会员 / 客服）                                                                       |
+| i18n 命名空间 | 01-小程序 §4    | **相同**（en-US / zh-CN / ja-JP ...）                                                                       |
+| 状态色        | 01-小程序 §6    | **相同**（success / processing / warning / error / default）                                                |
+| 退款状态机    | 01-小程序 §5    | **相同**（**完全**复用 00-foundation §7.5）                                                                 |
+| 字段定义      | 01-小程序 §7    | **新增** 5 个 APP 特有 model（MobileDevice / PushToken / AppInstall / BiometricAuth / OverseasAuthBinding） |
+| API           | 01-小程序 §8    | **复用** `/api/h5/*`；**新增** `/api/h5/auth/apple-login` 等 6 个                                           |
+| 用户故事      | 01-小程序 §3    | **新增** 推送 / IAP / 钱包 / 生物识别 / 海外社交                                                            |
+| 验收用例      | 01-小程序 §19   | **新增** 推送 / IAP / 生物识别 / 海外社交 / Web3                                                            |
 
 ### 26.3 与 02-h5-web.md 一致性
 
-| 主题 | 引用点 | 本文档差异点 |
-|---|---|---|
-| 路由 | 02-H5 §4 | H5 用 react-router，APP 用 React Navigation |
-| API client | 02-H5 §5 | **统一** axios + interceptor（refreshToken 逻辑**相同**） |
-| 错误处理 | 02-H5 §6 | **统一** 全局错误拦截器（**不**区分平台） |
-| i18n 翻译文件 | 02-H5 §18 | **共享** 翻译资源（`/i18n/*` 集中仓库） |
+| 主题          | 引用点    | 本文档差异点                                              |
+| ------------- | --------- | --------------------------------------------------------- |
+| 路由          | 02-H5 §4  | H5 用 react-router，APP 用 React Navigation               |
+| API client    | 02-H5 §5  | **统一** axios + interceptor（refreshToken 逻辑**相同**） |
+| 错误处理      | 02-H5 §6  | **统一** 全局错误拦截器（**不**区分平台）                 |
+| i18n 翻译文件 | 02-H5 §18 | **共享** 翻译资源（`/i18n/*` 集中仓库）                   |
 
 ### 26.4 与 03-admin-web.md / 00-foundation.md 业务域一致性
 
-| 业务域 | 引用点 | 本文档 |
-|---|---|---|
-| 订单状态机 | 00-foundation §7.1 | **完全**一致 |
-| 退款状态机 | 00-foundation §7.5 | **完全**一致 |
+| 业务域       | 引用点             | 本文档                       |
+| ------------ | ------------------ | ---------------------------- |
+| 订单状态机   | 00-foundation §7.1 | **完全**一致                 |
+| 退款状态机   | 00-foundation §7.5 | **完全**一致                 |
 | 钱包交易状态 | 00-foundation §7.6 | **完全**一致（链上交易状态） |
-| KYC 状态 | 00-foundation §7.7 | **完全**一致 |
-| 会员等级 | 00-foundation §7.8 | **完全**一致 |
+| KYC 状态     | 00-foundation §7.7 | **完全**一致                 |
+| 会员等级     | 00-foundation §7.8 | **完全**一致                 |
 
 ### 26.5 与 后端 API 一致性
 
-| API 路径 | 引用 | 落实 |
-|---|---|---|
-| `/api/h5/*` | H5 共享 API 命名空间 | §8 **全部**接口均挂在 `/api/h5/` |
-| `/api/h5/auth/apple-login` | 本轮新增 | §8.2 |
-| `/api/h5/auth/google-login` | 本轮新增 | §8.2 |
-| `/api/h5/auth/facebook-login` | 本轮新增 | §8.2 |
-| `/api/h5/auth/linkedin-login` | 本轮新增 | §8.2 |
-| `/api/h5/auth/wallet-login` | 本轮新增 | §8.2 / §15 |
-| `/api/h5/devices/register` | 本轮新增 | §8.1 |
-| `/api/h5/devices/:id/push-tokens` | 本轮新增 | §8.1 / §13 |
-| `/api/h5/payments/iap-*` | 本轮新增 | §8.3 / §14.4 / §14.5 |
-| `/api/h5/auth/overseas-bindings*` | 本轮新增 | §8.4 / §17 |
-| `/api/h5/support/whatsapp-*` | 本轮新增 | §8.6 / §17.5 |
-| `/api/h5/install/track` | 本轮新增 | §8.7 / §17.6 |
+| API 路径                          | 引用                 | 落实                             |
+| --------------------------------- | -------------------- | -------------------------------- |
+| `/api/h5/*`                       | H5 共享 API 命名空间 | §8 **全部**接口均挂在 `/api/h5/` |
+| `/api/h5/auth/apple-login`        | 本轮新增             | §8.2                             |
+| `/api/h5/auth/google-login`       | 本轮新增             | §8.2                             |
+| `/api/h5/auth/facebook-login`     | 本轮新增             | §8.2                             |
+| `/api/h5/auth/linkedin-login`     | 本轮新增             | §8.2                             |
+| `/api/h5/auth/wallet-login`       | 本轮新增             | §8.2 / §15                       |
+| `/api/h5/devices/register`        | 本轮新增             | §8.1                             |
+| `/api/h5/devices/:id/push-tokens` | 本轮新增             | §8.1 / §13                       |
+| `/api/h5/payments/iap-*`          | 本轮新增             | §8.3 / §14.4 / §14.5             |
+| `/api/h5/auth/overseas-bindings*` | 本轮新增             | §8.4 / §17                       |
+| `/api/h5/support/whatsapp-*`      | 本轮新增             | §8.6 / §17.5                     |
+| `/api/h5/install/track`           | 本轮新增             | §8.7 / §17.6                     |
 
 ### 26.6 数据模型一致性
 
-| Model | 引用 | 字段一致性 |
-|---|---|---|
-| MobileDevice | 本文件 §6.1 | **新增**（与 User FK） |
-| PushToken | 本文件 §6.2 | **新增**（与 MobileDevice FK） |
-| AppInstall | 本文件 §6.3 | **新增**（与 MobileDevice FK） |
-| BiometricAuth | 本文件 §6.4 | **新增**（与 MobileDevice + User FK） |
-| OverseasAuthBinding | 本文件 §6.5 | **新增**（与 User + MobileDevice FK） |
-| User | 00-foundation §6 | **复用**（**不**改字段） |
-| Order | 00-foundation §6 | **复用**（APP 端只新增 `iapReceipt`、`iapTransactionId`） |
-| Wallet | 00-foundation §6 | **复用**（APP 端通过 `MobileDevice.walletAddress` 关联） |
-| KYC | 00-foundation §6 | **复用** |
-| Membership | 00-foundation §6 | **复用** |
+| Model               | 引用             | 字段一致性                                                |
+| ------------------- | ---------------- | --------------------------------------------------------- |
+| MobileDevice        | 本文件 §6.1      | **新增**（与 User FK）                                    |
+| PushToken           | 本文件 §6.2      | **新增**（与 MobileDevice FK）                            |
+| AppInstall          | 本文件 §6.3      | **新增**（与 MobileDevice FK）                            |
+| BiometricAuth       | 本文件 §6.4      | **新增**（与 MobileDevice + User FK）                     |
+| OverseasAuthBinding | 本文件 §6.5      | **新增**（与 User + MobileDevice FK）                     |
+| User                | 00-foundation §6 | **复用**（**不**改字段）                                  |
+| Order               | 00-foundation §6 | **复用**（APP 端只新增 `iapReceipt`、`iapTransactionId`） |
+| Wallet              | 00-foundation §6 | **复用**（APP 端通过 `MobileDevice.walletAddress` 关联）  |
+| KYC                 | 00-foundation §6 | **复用**                                                  |
+| Membership          | 00-foundation §6 | **复用**                                                  |
 
 ### 26.7 合规一致性
 
-| 主题 | 引用 | 落实 |
-|---|---|---|
-| 萨摩亚 FSA 合规 | 00-foundation §3 | §1.3 业务目标 |
-| 跨境数据 | 00-foundation §3.4 | §18.3 RTL 翻译需明确"未翻译 fallback" |
-| 反洗钱 AML | 00-foundation §3.5 | §24 反作弊 / §7.3 状态机 |
-| 隐私政策 | 00-foundation §4 | §11.5 Privacy Manifest / §12.1 data_extraction_rules |
-| KYC / KYB | 00-foundation §7.7 | §19.5 验收用例 |
-| 数据保留 | 00-foundation §3.6 | §6.1 `deletedAt` 软删 |
+| 主题            | 引用               | 落实                                                 |
+| --------------- | ------------------ | ---------------------------------------------------- |
+| 萨摩亚 FSA 合规 | 00-foundation §3   | §1.3 业务目标                                        |
+| 跨境数据        | 00-foundation §3.4 | §18.3 RTL 翻译需明确"未翻译 fallback"                |
+| 反洗钱 AML      | 00-foundation §3.5 | §24 反作弊 / §7.3 状态机                             |
+| 隐私政策        | 00-foundation §4   | §11.5 Privacy Manifest / §12.1 data_extraction_rules |
+| KYC / KYB       | 00-foundation §7.7 | §19.5 验收用例                                       |
+| 数据保留        | 00-foundation §3.6 | §6.1 `deletedAt` 软删                                |
 
 ### 26.8 i18n 翻译资源一致性
 
@@ -3882,13 +3997,13 @@ const variant = remoteConfig().getString('login_button_variant');  // 'a' / 'b'
 
 ### 26.9 设计 token 一致性
 
-| Token | 引用 | 本文件 |
-|---|---|---|
-| 状态色 | 00-foundation §8.3.1 | §10.1 / §10.3 |
-| 间距 | 00-foundation §8.3.2 | §10.3 DESIGN_TOKENS.spacing |
-| 圆角 | 00-foundation §8.3.3 | §10.3 DESIGN_TOKENS.radius |
-| 字号 | 00-foundation §8.3.4 | §10.3 DESIGN_TOKENS.fontSize |
-| 字体 | 00-foundation §8.3.5 | §10.2 Platform.select |
+| Token  | 引用                 | 本文件                       |
+| ------ | -------------------- | ---------------------------- |
+| 状态色 | 00-foundation §8.3.1 | §10.1 / §10.3                |
+| 间距   | 00-foundation §8.3.2 | §10.3 DESIGN_TOKENS.spacing  |
+| 圆角   | 00-foundation §8.3.3 | §10.3 DESIGN_TOKENS.radius   |
+| 字号   | 00-foundation §8.3.4 | §10.3 DESIGN_TOKENS.fontSize |
+| 字体   | 00-foundation §8.3.5 | §10.2 Platform.select        |
 
 ### 26.10 一致性检查 Checklist
 
@@ -3912,34 +4027,29 @@ const variant = remoteConfig().getString('login_button_variant');  // 'a' / 'b'
 
 ## 附录 A：术语表
 
-| 术语 | 英文 | 释义 |
-|---|---|---|
-| 通用链接 | Universal Link | iOS 平台**安全**的 Deep Link 方案 |
-| 应用链接 | App Link | Android 平台**安全**的 Deep Link 方案 |
-| 推送服务 | APNs / FCM | 苹果 / 谷歌推送服务 |
-| 内购 | IAP (In-App Purchase) | 应用内购买 |
-| 生物识别 | Biometric Authentication | 指纹 / Face ID / 面容 |
-| 签名钱包 | WalletConnect | 链上钱包标准协议 |
-| 跟踪透明度 | ATT (App Tracking Transparency) | iOS 14.5+ 隐私框架 |
-| 应用追踪透明度 | ATT | 同上 |
-| 私钥保险箱 | Secure Enclave / StrongBox | 设备级密钥存储 |
-| 转化 API | CAPI (Conversions API) | Facebook 服务端事件 API |
-| 客户关系管理 | CRM | — |
-| 健康管理 | Health Kit | iOS 健身（**本项目不涉及**） |
+| 术语           | 英文                            | 释义                                  |
+| -------------- | ------------------------------- | ------------------------------------- |
+| 通用链接       | Universal Link                  | iOS 平台**安全**的 Deep Link 方案     |
+| 应用链接       | App Link                        | Android 平台**安全**的 Deep Link 方案 |
+| 推送服务       | APNs / FCM                      | 苹果 / 谷歌推送服务                   |
+| 内购           | IAP (In-App Purchase)           | 应用内购买                            |
+| 生物识别       | Biometric Authentication        | 指纹 / Face ID / 面容                 |
+| 签名钱包       | WalletConnect                   | 链上钱包标准协议                      |
+| 跟踪透明度     | ATT (App Tracking Transparency) | iOS 14.5+ 隐私框架                    |
+| 应用追踪透明度 | ATT                             | 同上                                  |
+| 私钥保险箱     | Secure Enclave / StrongBox      | 设备级密钥存储                        |
+| 转化 API       | CAPI (Conversions API)          | Facebook 服务端事件 API               |
+| 客户关系管理   | CRM                             | —                                     |
+| 健康管理       | Health Kit                      | iOS 健身（**本项目不涉及**）          |
 
 ---
 
 ## 附录 B：变更记录
 
-| 版本 | 日期 | 作者 | 变更 |
-|---|---|---|---|
-| 1.0 | 2026-06-06 | PRD Team | 初稿 |
+| 版本 | 日期       | 作者     | 变更 |
+| ---- | ---------- | -------- | ---- |
+| 1.0  | 2026-06-06 | PRD Team | 初稿 |
 
 ---
 
 **文档结束**
-
-
-
-
-

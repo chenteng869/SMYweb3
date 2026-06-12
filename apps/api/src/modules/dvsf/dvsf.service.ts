@@ -18,7 +18,10 @@ export class DvsfService {
   }
 
   async poolDetail(id: number) {
-    return this.prisma.dvsfPool.findUnique({ where: { id }, include: { records: { take: 50, orderBy: { createdAt: 'desc' } } } });
+    return this.prisma.dvsfPool.findUnique({
+      where: { id },
+      include: { records: { take: 50, orderBy: { createdAt: 'desc' } } },
+    });
   }
 
   async listRecords(query: any) {
@@ -28,7 +31,13 @@ export class DvsfService {
     if (status) where.status = status;
     if (userId) where.userId = Number(userId);
     const [data, total] = await Promise.all([
-      this.prisma.dvsfRecord.findMany({ where, skip: (Number(page) - 1) * Number(pageSize), take: Number(pageSize), orderBy: { createdAt: 'desc' }, include: { pool: true } }),
+      this.prisma.dvsfRecord.findMany({
+        where,
+        skip: (Number(page) - 1) * Number(pageSize),
+        take: Number(pageSize),
+        orderBy: { createdAt: 'desc' },
+        include: { pool: true },
+      }),
       this.prisma.dvsfRecord.count({ where }),
     ]);
     return { data, total, page: Number(page), pageSize: Number(pageSize) };

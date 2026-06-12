@@ -17,7 +17,12 @@ const statusConfig: Record<BadgeStatus, { bg: string; text: string; label: strin
   default: { bg: 'bg-bg-elevated', text: 'text-text-secondary', label: '默认' },
 };
 
-export default function StatusBadge({ status = 'default', children, className, size = 'sm' }: StatusBadgeProps) {
+export default function StatusBadge({
+  status = 'default',
+  children,
+  className,
+  size = 'sm',
+}: StatusBadgeProps) {
   const config = statusConfig[status];
 
   return (
@@ -37,17 +42,33 @@ export default function StatusBadge({ status = 'default', children, className, s
 
 // Convenience exports for common statuses
 export function SuccessBadge({ children, className, size }: Omit<StatusBadgeProps, 'status'>) {
-  return <StatusBadge status="success" className={className} size={size}>{children || '已完成'}</StatusBadge>;
+  return (
+    <StatusBadge status="success" className={className} size={size}>
+      {children || '已完成'}
+    </StatusBadge>
+  );
 }
 
 export function WarningBadge({ children, className, size }: Omit<StatusBadgeProps, 'status'>) {
-  return <StatusBadge status="warning" className={className} size={size}>{children || '待处理'}</StatusBadge>;
+  return (
+    <StatusBadge status="warning" className={className} size={size}>
+      {children || '待处理'}
+    </StatusBadge>
+  );
 }
 
 export function DangerBadge({ children, className, size }: Omit<StatusBadgeProps, 'status'>) {
-  return <StatusBadge status="danger" className={className} size={size}>{children || '异常'}</StatusBadge>;
+  return (
+    <StatusBadge status="danger" className={className} size={size}>
+      {children || '异常'}
+    </StatusBadge>
+  );
 }
 
 export function AccentBadge({ children, className, size }: Omit<StatusBadgeProps, 'status'>) {
-  return <StatusBadge status="accent" className={className} size={size}>{children || '进行中'}</StatusBadge>;
+  return (
+    <StatusBadge status="accent" className={className} size={size}>
+      {children || '进行中'}
+    </StatusBadge>
+  );
 }

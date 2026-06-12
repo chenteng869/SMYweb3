@@ -111,7 +111,7 @@ export const DLC_LEVELS = [
     minDvc: 50000,
     maxDvc: 999999999,
     benefits: ['全功能解锁', '最高佣金', '私人银行服务'],
-    commissionRate: 0.20,
+    commissionRate: 0.2,
   },
 ] as const;
 

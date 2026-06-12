@@ -32,7 +32,9 @@ export class UsersService {
       include: {
         companies: true,
         bankAccounts: true,
-        _count: { select: { orders: true, dvcTransactions: true, mediaPosts: true, contracts: true } },
+        _count: {
+          select: { orders: true, dvcTransactions: true, mediaPosts: true, contracts: true },
+        },
       },
     });
     if (!user) throw new Error('用户不存在');
@@ -44,7 +46,10 @@ export class UsersService {
   }
 
   async updateStatus(id: number, isActive: boolean, reason?: string) {
-    return this.prisma.user.update({ where: { id }, data: { isActive, bannedReason: isActive ? null : reason } });
+    return this.prisma.user.update({
+      where: { id },
+      data: { isActive, bannedReason: isActive ? null : reason },
+    });
   }
 
   async updateKyc(id: number, kycStatus: string) {
@@ -70,24 +75,38 @@ export class UsersService {
 
   // ====== 1. Dashboard Statistics ======
   async getDashboardStats() {
-    const [total, verified, pending, active, todayNew, thisMonthNew, kycCompleted] = await Promise.all([
-      this.prisma.adminUser.count(),
-      this.prisma.adminUser.count({ where: { isActive: true } }),
-      this.prisma.adminUser.count({ where: { isActive: false } }),
-      this.prisma.adminUser.count({ where: { isActive: true } }),
-      this.prisma.adminUser.count({ where: { createdAt: { gte: new Date(new Date().setHours(0, 0, 0, 0)) } } }),
-      this.prisma.adminUser.count({ where: { createdAt: { gte: new Date(new Date().setDate(1)) } } }),
-      this.prisma.adminUser.count({ where: { isActive: true } }),
-    ]);
-    return { total, verified, pending, active, todayNew, thisMonthNew, kycCompletedRate: total > 0 ? Math.round((kycCompleted / total) * 100) : 0 };
+    const [total, verified, pending, active, todayNew, thisMonthNew, kycCompleted] =
+      await Promise.all([
+        this.prisma.adminUser.count(),
+        this.prisma.adminUser.count({ where: { isActive: true } }),
+        this.prisma.adminUser.count({ where: { isActive: false } }),
+        this.prisma.adminUser.count({ where: { isActive: true } }),
+        this.prisma.adminUser.count({
+          where: { createdAt: { gte: new Date(new Date().setHours(0, 0, 0, 0)) } },
+        }),
+        this.prisma.adminUser.count({
+          where: { createdAt: { gte: new Date(new Date().setDate(1)) } },
+        }),
+        this.prisma.adminUser.count({ where: { isActive: true } }),
+      ]);
+    return {
+      total,
+      verified,
+      pending,
+      active,
+      todayNew,
+      thisMonthNew,
+      kycCompletedRate: total > 0 ? Math.round((kycCompleted / total) * 100) : 0,
+    };
   }
 
   // ====== 2. Role Management (CRUD) ======
   async getRoles(query?: { isActive?: string }) {
     const where: any = {};
-    if (query?.isActive !== undefined && query.isActive !== '') where.isActive = query.isActive === 'true';
+    if (query?.isActive !== undefined && query.isActive !== '')
+      where.isActive = query.isActive === 'true';
     const data = await this.prisma.role.findMany({ where, orderBy: { sortOrder: 'asc' } });
-    return data.map(r => ({ ...r, permissions: JSON.parse(r.permissions || '[]') }));
+    return data.map((r) => ({ ...r, permissions: JSON.parse(r.permissions || '[]') }));
   }
   async getRole(id: number) {
     const r = await this.prisma.role.findUniqueOrThrow({ where: { id } });
@@ -96,7 +115,7 @@ export class UsersService {
   }
   async createRole(dto: any) {
     return this.prisma.role.create({
-      data: { ...dto, permissions: JSON.stringify(dto.permissions || []) }
+      data: { ...dto, permissions: JSON.stringify(dto.permissions || []) },
     });
   }
   async updateRole(id: number, dto: any) {
@@ -113,7 +132,7 @@ export class UsersService {
     await this.prisma.userRole.deleteMany({ where: { userId } });
     if (roleIds.length > 0) {
       await this.prisma.userRole.createMany({
-        data: roleIds.map(roleId => ({ userId, roleId }))
+        data: roleIds.map((roleId) => ({ userId, roleId })),
       });
     }
     return { success: true };
@@ -122,9 +141,9 @@ export class UsersService {
     const roles = await this.prisma.userRole.findMany({
       where: { userId },
       include: { role: true },
-      orderBy: { assignedAt: 'desc' }
+      orderBy: { assignedAt: 'desc' },
     });
-    return roles.map(ur => ur.role);
+    return roles.map((ur) => ur.role);
   }
 
   // ====== 3. Risk Assessment (AML/CFT) ======
@@ -138,23 +157,32 @@ export class UsersService {
         where,
         skip: (page - 1) * pageSize,
         take: pageSize,
-        orderBy: { overallScore: 'desc' }
+        orderBy: { overallScore: 'desc' },
       }),
-      this.prisma.userRiskAssessment.count({ where })
+      this.prisma.userRiskAssessment.count({ where }),
     ]);
-    return { data: data.map(d => ({
-      ...d,
-      boInfo: d.boInfo ? JSON.parse(d.boInfo) : null,
-      sofDocuments: d.sofDocuments ? JSON.parse(d.sofDocuments) : null,
-      pepDetails: d.pepDetails ? JSON.parse(d.pepDetails) : null,
-    })), total, page, pageSize };
+    return {
+      data: data.map((d) => ({
+        ...d,
+        boInfo: d.boInfo ? JSON.parse(d.boInfo) : null,
+        sofDocuments: d.sofDocuments ? JSON.parse(d.sofDocuments) : null,
+        pepDetails: d.pepDetails ? JSON.parse(d.pepDetails) : null,
+      })),
+      total,
+      page,
+      pageSize,
+    };
   }
   async getRiskAssessment(userId: number) {
     let ra = await this.prisma.userRiskAssessment.findUnique({ where: { userId } });
     if (!ra) {
       ra = await this.prisma.userRiskAssessment.create({ data: { userId } });
     }
-    return { ...ra, boInfo: ra.boInfo ? JSON.parse(ra.boInfo || '[]') : [], sofDocuments: ra.sofDocuments ? JSON.parse(ra.sofDocuments || '[]') : [] };
+    return {
+      ...ra,
+      boInfo: ra.boInfo ? JSON.parse(ra.boInfo || '[]') : [],
+      sofDocuments: ra.sofDocuments ? JSON.parse(ra.sofDocuments || '[]') : [],
+    };
   }
   async updateRiskAssessment(userId: number, dto: any) {
     const updateData: any = { ...dto };
@@ -164,18 +192,19 @@ export class UsersService {
     // Auto-calculate risk level from score
     if (updateData.overallScore !== undefined) {
       const score = updateData.overallScore;
-      updateData.riskLevel = score >= 80 ? 'critical' : score >= 60 ? 'high' : score >= 30 ? 'medium' : 'low';
+      updateData.riskLevel =
+        score >= 80 ? 'critical' : score >= 60 ? 'high' : score >= 30 ? 'medium' : 'low';
       updateData.lastAssessedAt = new Date();
     }
     return this.prisma.userRiskAssessment.upsert({
       where: { userId },
       create: { userId, ...updateData },
-      update: updateData
+      update: updateData,
     });
   }
   async getRiskStats() {
     const [total, low, medium, high, critical, sanctions, peps] = await Promise.all(
-      ['low', 'medium', 'high', 'critical'].map(level =>
+      ['low', 'medium', 'high', 'critical'].map((level) =>
         this.prisma.userRiskAssessment.count({ where: { riskLevel: level } })
       )
     );
@@ -183,17 +212,35 @@ export class UsersService {
       this.prisma.userRiskAssessment.count({ where: { sanctionsHit: true } }),
       this.prisma.userRiskAssessment.count({ where: { pepFlag: true } }),
     ]);
-    return { total: total + low + medium + high + critical, low, medium, high, critical, sanctions: sanctionsCount, peps: pepCount };
+    return {
+      total: total + low + medium + high + critical,
+      low,
+      medium,
+      high,
+      critical,
+      sanctions: sanctionsCount,
+      peps: pepCount,
+    };
   }
 
   // ====== 4. Audit Log (Read-only, auto-created) ======
-  async getAuditLogs(query?: { userId?: string; action?: string; targetType?: string; startDate?: string; endDate?: string; page?: number; pageSize?: number }) {
+  async getAuditLogs(query?: {
+    userId?: string;
+    action?: string;
+    targetType?: string;
+    startDate?: string;
+    endDate?: string;
+    page?: number;
+    pageSize?: number;
+  }) {
     const where: any = {};
     if (query?.userId) where.userId = Number(query.userId);
     if (query?.action) where.action = { contains: query.action };
     if (query?.targetType) where.targetType = query.targetType;
-    if (query?.startDate) where.createdAt = { ...(where.createdAt || {}), gte: new Date(query.startDate) };
-    if (query?.endDate) where.createdAt = { ...(where.createdAt || {}), lte: new Date(query.endDate + 'T23:59:59') };
+    if (query?.startDate)
+      where.createdAt = { ...(where.createdAt || {}), gte: new Date(query.startDate) };
+    if (query?.endDate)
+      where.createdAt = { ...(where.createdAt || {}), lte: new Date(query.endDate + 'T23:59:59') };
     const page = Number(query?.page || 1);
     const pageSize = Number(query?.pageSize || 30);
     const [data, total] = await Promise.all([
@@ -201,28 +248,44 @@ export class UsersService {
         where,
         skip: (page - 1) * pageSize,
         take: pageSize,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       }),
-      this.prisma.auditLogEnhanced.count({ where })
+      this.prisma.auditLogEnhanced.count({ where }),
     ]);
     return { data, total, page, pageSize };
   }
   async getAuditLogStats() {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const weekAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
     const [todayCount, weekCount, totalCount, uniqueUsers, topActions] = await Promise.all([
       this.prisma.auditLogEnhanced.count({ where: { createdAt: { gte: today } } }),
       this.prisma.auditLogEnhanced.count({ where: { createdAt: { gte: weekAgo } } }),
       this.prisma.auditLogEnhanced.count(),
       // @ts-ignore Prisma groupBy circular type reference (known issue)
-      this.prisma.auditLogEnhanced.groupBy({ by: ['userId'], _count: true, take: 10, orderBy: { _count: { sort: 'desc' } } }).then((r: any) => r.length),
+      this.prisma.auditLogEnhanced
+        .groupBy({ by: ['userId'], _count: true, take: 10, orderBy: { _count: { sort: 'desc' } } })
+        .then((r: any) => r.length),
       // @ts-ignore Prisma groupBy circular type reference (known issue)
-      this.prisma.auditLogEnhanced.groupBy({ by: ['action'], _count: true, take: 10, orderBy: { _count: { sort: 'desc' } } }),
+      this.prisma.auditLogEnhanced.groupBy({
+        by: ['action'],
+        _count: true,
+        take: 10,
+        orderBy: { _count: { sort: 'desc' } },
+      }),
     ]);
     return { todayCount, weekCount, totalCount, uniqueUsers, topActions: topActions.slice(0, 10) };
   }
   // Helper: create audit log entry (called by other methods)
-  async createAuditLog(entry: { userId?: number; action: string; targetId?: number; targetType?: string; description?: string; ipAddress?: string; userAgent?: string }) {
+  async createAuditLog(entry: {
+    userId?: number;
+    action: string;
+    targetId?: number;
+    targetType?: string;
+    description?: string;
+    ipAddress?: string;
+    userAgent?: string;
+  }) {
     return this.prisma.auditLogEnhanced.create({
       data: {
         userId: entry.userId || null,
@@ -232,7 +295,7 @@ export class UsersService {
         description: entry.description || null,
         ipAddress: entry.ipAddress || null,
         userAgent: entry.userAgent || null,
-      }
+      },
     });
   }
 
@@ -240,7 +303,7 @@ export class UsersService {
   async getUserSessions(userId: number) {
     return this.prisma.userSession.findMany({
       where: { userId },
-      orderBy: { lastActivityAt: 'desc' }
+      orderBy: { lastActivityAt: 'desc' },
     });
   }
   async getAllActiveSessions(query?: { page?: number; pageSize?: number }) {
@@ -248,15 +311,20 @@ export class UsersService {
     const page = Number(query?.page || 1);
     const pageSize = Number(query?.pageSize || 20);
     const [data, total] = await Promise.all([
-      this.prisma.userSession.findMany({ where, skip: (page - 1) * pageSize, take: pageSize, orderBy: { lastActivityAt: 'desc' } }),
-      this.prisma.userSession.count({ where })
+      this.prisma.userSession.findMany({
+        where,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { lastActivityAt: 'desc' },
+      }),
+      this.prisma.userSession.count({ where }),
     ]);
     return { data, total, page, pageSize };
   }
   async terminateSession(sessionId: string, reason: string = 'force_logout') {
     return this.prisma.userSession.update({
       where: { sessionId },
-      data: { isActive: false, terminatedAt: new Date(), terminateReason: reason }
+      data: { isActive: false, terminatedAt: new Date(), terminateReason: reason },
     });
   }
   async terminateAllUserSessions(userId: number, exceptSessionId?: string) {
@@ -264,14 +332,21 @@ export class UsersService {
     if (exceptSessionId) where.sessionId = { not: exceptSessionId };
     return this.prisma.userSession.updateMany({
       where,
-      data: { isActive: false, terminatedAt: new Date(), terminateReason: 'force_logout_all' }
+      data: { isActive: false, terminatedAt: new Date(), terminateReason: 'force_logout_all' },
     });
   }
   async getSessionStats() {
     const [active, todayCreated, totalTerminated] = await Promise.all([
       this.prisma.userSession.count({ where: { isActive: true, expiresAt: { gt: new Date() } } }),
-      this.prisma.userSession.count({ where: { createdAt: { gte: new Date(new Date().setHours(0, 0, 0, 0)) } } }),
-      this.prisma.userSession.count({ where: { isActive: false, terminatedAt: { gte: new Date(Date.now() - 7 * 24 * 3600 * 1000) } } }),
+      this.prisma.userSession.count({
+        where: { createdAt: { gte: new Date(new Date().setHours(0, 0, 0, 0)) } },
+      }),
+      this.prisma.userSession.count({
+        where: {
+          isActive: false,
+          terminatedAt: { gte: new Date(Date.now() - 7 * 24 * 3600 * 1000) },
+        },
+      }),
     ]);
     return { active, todayCreated, weekTerminated: totalTerminated };
   }
@@ -285,9 +360,9 @@ export class UsersService {
         where: { userId },
         skip: (page - 1) * pageSize,
         take: pageSize,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       }),
-      this.prisma.loginHistory.count({ where: { userId } })
+      this.prisma.loginHistory.count({ where: { userId } }),
     ]);
     return { data, total, page, pageSize };
   }

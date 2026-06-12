@@ -2,9 +2,25 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
-  Building2, FileCheck, CreditCard, Landmark, ChevronRight, CheckCircle,
-  Clock, Globe, ArrowRight, ArrowLeft, Bot, Upload, File, X,
-  Sparkles, ShieldCheck, Package, Star, Loader2
+  Building2,
+  FileCheck,
+  CreditCard,
+  Landmark,
+  ChevronRight,
+  CheckCircle,
+  Clock,
+  Globe,
+  ArrowRight,
+  ArrowLeft,
+  Bot,
+  Upload,
+  File,
+  X,
+  Sparkles,
+  ShieldCheck,
+  Package,
+  Star,
+  Loader2,
 } from 'lucide-react';
 import TopBar from '@/components/layout/TopBar';
 import Card from '@/components/shared/Card';
@@ -37,25 +53,25 @@ const INITIAL_AI_MSG: ChatMsg = {
 };
 
 const FOLLOWUP_MSGS: Record<string, ChatMsg> = {
-  '投资控股': {
+  投资控股: {
     id: 'm2',
     role: 'ai',
     content: '了解，用于投资控股架构。您计划控股的公司位于哪个地区？',
     options: ['中国香港', '新加坡', '美国', '其他'],
   },
-  '跨境电商': {
+  跨境电商: {
     id: 'm2b',
     role: 'ai',
     content: '好的，跨境电商业务。您主要目标销售市场是？',
     options: ['东南亚', '欧美', '中东', '全球'],
   },
-  '资产保护': {
+  资产保护: {
     id: 'm2c',
     role: 'ai',
     content: '明白，资产保护目的。您是否需要配套银行账户？',
     options: ['需要', '暂不需要'],
   },
-  '其他': {
+  其他: {
     id: 'm2d',
     role: 'ai',
     content: '好的，请简要说明您的业务需求，我将为您推荐最佳方案。',
@@ -65,20 +81,52 @@ const FOLLOWUP_MSGS: Record<string, ChatMsg> = {
 const THIRD_MSG: ChatMsg = {
   id: 'm3',
   role: 'ai',
-  content: '完美！我已根据您的需求生成初步方案。请确认公司名称（可输入2-3个备选），然后进入下一步上传资料。',
+  content:
+    '完美！我已根据您的需求生成初步方案。请确认公司名称（可输入2-3个备选），然后进入下一步上传资料。',
 };
 
 /* ─── Packages ─── */
 const PACKAGES = [
-  { id: 'basic', name: '基础版', price: 2999, features: ['萨摩亚SPV注册', '公司注册证书', '章程文件', '标准注册地址'], color: '#00D4AA' },
-  { id: 'pro', name: '专业版', price: 5999, features: ['基础版全部内容', '首年秘书服务', '银行开户协助', '税务咨询1小时'], popular: true, color: '#F6A623' },
-  { id: 'elite', name: '旗舰版', price: 9999, features: ['专业版全部内容', '全年合规托管', 'AI管家服务', '优先审核通道', '免费年审1次'], color: '#A78BFA' },
+  {
+    id: 'basic',
+    name: '基础版',
+    price: 2999,
+    features: ['萨摩亚SPV注册', '公司注册证书', '章程文件', '标准注册地址'],
+    color: '#00D4AA',
+  },
+  {
+    id: 'pro',
+    name: '专业版',
+    price: 5999,
+    features: ['基础版全部内容', '首年秘书服务', '银行开户协助', '税务咨询1小时'],
+    popular: true,
+    color: '#F6A623',
+  },
+  {
+    id: 'elite',
+    name: '旗舰版',
+    price: 9999,
+    features: ['专业版全部内容', '全年合规托管', 'AI管家服务', '优先审核通道', '免费年审1次'],
+    color: '#A78BFA',
+  },
 ];
 
 /* ─── Upload Areas ─── */
 const UPLOAD_AREAS = [
-  { id: 'passport', label: '护照扫描件', desc: '清晰彩色扫描，PDF/JPG', icon: File, required: true },
-  { id: 'address', label: '地址证明', desc: '近3个月内水电账单', icon: ShieldCheck, required: true },
+  {
+    id: 'passport',
+    label: '护照扫描件',
+    desc: '清晰彩色扫描，PDF/JPG',
+    icon: File,
+    required: true,
+  },
+  {
+    id: 'address',
+    label: '地址证明',
+    desc: '近3个月内水电账单',
+    icon: ShieldCheck,
+    required: true,
+  },
   { id: 'bank', label: '银行推荐信', desc: '原件或电子版', icon: Landmark, required: false },
 ];
 
@@ -89,7 +137,7 @@ function cn(...classes: (string | undefined | false)[]) {
 export default function CompanyRegister() {
   usePageTitle('公司注册');
   const navigate = useNavigate();
-  const companies = useAppStore(s => s.companies);
+  const companies = useAppStore((s) => s.companies);
 
   const [step, setStep] = useState(1);
   const [selectedPkg, setSelectedPkg] = useState('');
@@ -101,18 +149,20 @@ export default function CompanyRegister() {
   const [isSuccess, setIsSuccess] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [chatMessages]);
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
 
   const handleOptionClick = (option: string) => {
-    setChatMessages(prev => [...prev, { id: `u${Date.now()}`, role: 'user', content: option }]);
-    setChatStep(prev => {
+    setChatMessages((prev) => [...prev, { id: `u${Date.now()}`, role: 'user', content: option }]);
+    setChatStep((prev) => {
       const next = prev + 1;
       setTimeout(() => {
         if (next === 1) {
           const followup = FOLLOWUP_MSGS[option];
-          if (followup) setChatMessages(p => [...p, followup]);
+          if (followup) setChatMessages((p) => [...p, followup]);
         } else if (next === 2) {
-          setChatMessages(p => [...p, THIRD_MSG]);
+          setChatMessages((p) => [...p, THIRD_MSG]);
         }
       }, 400);
       return next;
@@ -120,15 +170,18 @@ export default function CompanyRegister() {
   };
 
   const handleUpload = (id: string) => {
-    setUploads(prev => ({ ...prev, [id]: '已选择: document.pdf' }));
+    setUploads((prev) => ({ ...prev, [id]: '已选择: document.pdf' }));
   };
 
   const handleSubmit = () => {
     setIsSubmitting(true);
-    setTimeout(() => { setIsSubmitting(false); setIsSuccess(true); }, 2000);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }, 2000);
   };
 
-  const totalPrice = PACKAGES.find(p => p.id === selectedPkg)?.price || 0;
+  const totalPrice = PACKAGES.find((p) => p.id === selectedPkg)?.price || 0;
 
   if (isSuccess) {
     return (
@@ -198,12 +251,27 @@ export default function CompanyRegister() {
                       ? 'bg-gradient-to-br from-coral to-orange-500 text-bg-dark'
                       : 'bg-bg-elevated text-text-muted'
                   )}
-                  animate={step === s.id ? { boxShadow: ['0 0 0 0 rgba(246,166,35,0.3)', '0 0 0 8px rgba(246,166,35,0)', '0 0 0 0 rgba(246,166,35,0.3)'] } : {}}
+                  animate={
+                    step === s.id
+                      ? {
+                          boxShadow: [
+                            '0 0 0 0 rgba(246,166,35,0.3)',
+                            '0 0 0 8px rgba(246,166,35,0)',
+                            '0 0 0 0 rgba(246,166,35,0.3)',
+                          ],
+                        }
+                      : {}
+                  }
                   transition={{ duration: 2, repeat: Infinity }}
                 >
                   <s.icon size={16} />
                 </motion.div>
-                <span className={cn('text-[9px] mt-1.5', step >= s.id ? 'text-coral' : 'text-text-muted')}>
+                <span
+                  className={cn(
+                    'text-[9px] mt-1.5',
+                    step >= s.id ? 'text-coral' : 'text-text-muted'
+                  )}
+                >
                   {s.label}
                 </span>
                 {i < STEPS.length - 1 && (
@@ -261,13 +329,22 @@ export default function CompanyRegister() {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-body font-semibold text-text-primary">{pkg.name}</h3>
-                            {selectedPkg === pkg.id && <CheckCircle size={16} className="text-coral" />}
+                            <h3 className="text-body font-semibold text-text-primary">
+                              {pkg.name}
+                            </h3>
+                            {selectedPkg === pkg.id && (
+                              <CheckCircle size={16} className="text-coral" />
+                            )}
                           </div>
-                          <p className="font-display text-h2 text-gradient-kpi">¥{pkg.price.toLocaleString()}</p>
+                          <p className="font-display text-h2 text-gradient-kpi">
+                            ¥{pkg.price.toLocaleString()}
+                          </p>
                           <ul className="mt-2 space-y-1">
-                            {pkg.features.map(f => (
-                              <li key={f} className="flex items-center gap-1.5 text-caption text-text-secondary">
+                            {pkg.features.map((f) => (
+                              <li
+                                key={f}
+                                className="flex items-center gap-1.5 text-caption text-text-secondary"
+                              >
                                 <CheckCircle size={10} className="text-teal shrink-0" />
                                 {f}
                               </li>
@@ -332,7 +409,7 @@ export default function CompanyRegister() {
                         </div>
                         {msg.options && (
                           <div className="flex flex-wrap gap-2 mt-2">
-                            {msg.options.map(opt => (
+                            {msg.options.map((opt) => (
                               <motion.button
                                 key={opt}
                                 whileTap={{ scale: 0.95 }}
@@ -353,11 +430,10 @@ export default function CompanyRegister() {
 
               {/* Company Name Input */}
               {chatStep >= 2 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <label className="text-body-sm text-text-secondary mb-1.5 block">公司名称（首选）</label>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                  <label className="text-body-sm text-text-secondary mb-1.5 block">
+                    公司名称（首选）
+                  </label>
                   <input
                     type="text"
                     value={companyName}
@@ -412,8 +488,14 @@ export default function CompanyRegister() {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <h3 className="text-body-sm font-medium text-text-primary">{area.label}</h3>
-                            {area.required && <span className="text-[9px] px-1 py-0.5 rounded bg-danger/15 text-danger">必需</span>}
+                            <h3 className="text-body-sm font-medium text-text-primary">
+                              {area.label}
+                            </h3>
+                            {area.required && (
+                              <span className="text-[9px] px-1 py-0.5 rounded bg-danger/15 text-danger">
+                                必需
+                              </span>
+                            )}
                           </div>
                           <p className="text-caption text-text-muted">{area.desc}</p>
 
@@ -424,8 +506,18 @@ export default function CompanyRegister() {
                               className="mt-2 flex items-center gap-2 px-3 py-2 rounded-lg bg-teal/10 border border-teal/20"
                             >
                               <CheckCircle size={14} className="text-teal" />
-                              <span className="text-caption text-teal flex-1 truncate">{uploads[area.id]}</span>
-                              <button onClick={() => setUploads(p => { const n = { ...p }; delete n[area.id]; return n; })}>
+                              <span className="text-caption text-teal flex-1 truncate">
+                                {uploads[area.id]}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  setUploads((p) => {
+                                    const n = { ...p };
+                                    delete n[area.id];
+                                    return n;
+                                  })
+                                }
+                              >
                                 <X size={14} className="text-text-muted" />
                               </button>
                             </motion.div>
@@ -488,7 +580,8 @@ export default function CompanyRegister() {
                 <div>
                   <p className="text-caption text-text-muted">选择方案</p>
                   <p className="text-body font-medium text-text-primary">
-                    {PACKAGES.find(p => p.id === selectedPkg)?.name} — ¥{totalPrice.toLocaleString()}
+                    {PACKAGES.find((p) => p.id === selectedPkg)?.name} — ¥
+                    {totalPrice.toLocaleString()}
                   </p>
                 </div>
                 <div className="border-t border-white/[0.06] pt-3">
@@ -502,9 +595,12 @@ export default function CompanyRegister() {
                 <div className="border-t border-white/[0.06] pt-3">
                   <p className="text-caption text-text-muted">上传资料</p>
                   <div className="flex flex-wrap gap-2 mt-1">
-                    {Object.keys(uploads).map(k => (
-                      <span key={k} className="text-[10px] px-2 py-1 rounded-full bg-teal/15 text-teal">
-                        {UPLOAD_AREAS.find(a => a.id === k)?.label} ✓
+                    {Object.keys(uploads).map((k) => (
+                      <span
+                        key={k}
+                        className="text-[10px] px-2 py-1 rounded-full bg-teal/15 text-teal"
+                      >
+                        {UPLOAD_AREAS.find((a) => a.id === k)?.label} ✓
                       </span>
                     ))}
                   </div>
@@ -517,18 +613,22 @@ export default function CompanyRegister() {
                     <span className="text-body-sm text-text-primary">预计时间线</span>
                   </div>
                   <div className="space-y-2">
-                    {['资料审核: 1-2工作日', '政府审批: 5-7工作日', '证书发放: 1工作日'].map((t, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-coral" />
-                        <span className="text-caption text-text-secondary">{t}</span>
-                      </div>
-                    ))}
+                    {['资料审核: 1-2工作日', '政府审批: 5-7工作日', '证书发放: 1工作日'].map(
+                      (t, i) => (
+                        <div key={i} className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-coral" />
+                          <span className="text-caption text-text-secondary">{t}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-body text-text-muted">合计费用</span>
-                  <span className="font-display text-h2 text-gradient-kpi">¥{totalPrice.toLocaleString()}</span>
+                  <span className="font-display text-h2 text-gradient-kpi">
+                    ¥{totalPrice.toLocaleString()}
+                  </span>
                 </div>
               </Card>
 
@@ -577,11 +677,18 @@ export default function CompanyRegister() {
                         <Building2 size={18} className="text-coral" />
                       </div>
                       <div>
-                        <h3 className="text-body-sm font-medium text-text-primary">{company.name}</h3>
-                        <p className="text-caption text-text-muted">{company.jurisdiction} · {company.registrationNumber}</p>
+                        <h3 className="text-body-sm font-medium text-text-primary">
+                          {company.name}
+                        </h3>
+                        <p className="text-caption text-text-muted">
+                          {company.jurisdiction} · {company.registrationNumber}
+                        </p>
                       </div>
                     </div>
-                    <StatusBadge status={company.status === 'active' ? 'success' : 'warning'} size="sm">
+                    <StatusBadge
+                      status={company.status === 'active' ? 'success' : 'warning'}
+                      size="sm"
+                    >
                       {company.status === 'active' ? '运营中' : '处理中'}
                     </StatusBadge>
                   </div>

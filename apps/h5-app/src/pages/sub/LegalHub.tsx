@@ -1,11 +1,28 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Shield, FileText, AlertTriangle, CheckCircle, Globe,
-  ArrowLeft, Search, XCircle, ShieldCheck, ShieldAlert,
-  Handshake, Users, Lock, Home, Key,
-  Sparkles, Download,
-  Clock, FileCheck, CheckSquare, Square, Upload
+  Shield,
+  FileText,
+  AlertTriangle,
+  CheckCircle,
+  Globe,
+  ArrowLeft,
+  Search,
+  XCircle,
+  ShieldCheck,
+  ShieldAlert,
+  Handshake,
+  Users,
+  Lock,
+  Home,
+  Key,
+  Sparkles,
+  Download,
+  Clock,
+  FileCheck,
+  CheckSquare,
+  Square,
+  Upload,
 } from 'lucide-react';
 import TopBar from '@/components/layout/TopBar';
 import Card from '@/components/shared/Card';
@@ -53,7 +70,11 @@ const CONTRACT_TYPES: ContractType[] = [
 
 const COUNTRY_DATA: Record<string, CountryInfo> = {
   TH: {
-    code: 'TH', name: '泰国', flag: '🇹🇭', status: 'full', score: 85,
+    code: 'TH',
+    name: '泰国',
+    flag: '🇹🇭',
+    status: 'full',
+    score: 85,
     mandatory: [
       { text: 'PDPA个人数据保护法', done: true },
       { text: '电商法 (E-Commerce Act)', done: true },
@@ -73,7 +94,11 @@ const COUNTRY_DATA: Record<string, CountryInfo> = {
     ],
   },
   SG: {
-    code: 'SG', name: '新加坡', flag: '🇸🇬', status: 'full', score: 95,
+    code: 'SG',
+    name: '新加坡',
+    flag: '🇸🇬',
+    status: 'full',
+    score: 95,
     mandatory: [
       { text: 'PDPA个人数据保护法', done: true },
       { text: 'GST消费税注册', done: true },
@@ -92,7 +117,11 @@ const COUNTRY_DATA: Record<string, CountryInfo> = {
     ],
   },
   VN: {
-    code: 'VN', name: '越南', flag: '🇻🇳', status: 'partial', score: 72,
+    code: 'VN',
+    name: '越南',
+    flag: '🇻🇳',
+    status: 'partial',
+    score: 72,
     mandatory: [
       { text: '网络安全法', done: true },
       { text: '电商注册', done: false },
@@ -110,7 +139,11 @@ const COUNTRY_DATA: Record<string, CountryInfo> = {
     ],
   },
   US: {
-    code: 'US', name: '美国', flag: '🇺🇸', status: 'full', score: 90,
+    code: 'US',
+    name: '美国',
+    flag: '🇺🇸',
+    status: 'full',
+    score: 90,
     mandatory: [
       { text: 'CCPA/CPRA隐私法', done: true },
       { text: 'EIN税号', done: true },
@@ -129,7 +162,11 @@ const COUNTRY_DATA: Record<string, CountryInfo> = {
     ],
   },
   CN: {
-    code: 'CN', name: '中国', flag: '🇨🇳', status: 'full', score: 88,
+    code: 'CN',
+    name: '中国',
+    flag: '🇨🇳',
+    status: 'full',
+    score: 88,
     mandatory: [
       { text: '个人信息保护法 (PIPL)', done: true },
       { text: '数据安全法', done: true },
@@ -199,7 +236,10 @@ const WORLD_MAP_PATHS = [
   { d: 'M220,62 L228,60 L230,72 L222,74 Z', code: 'VN', label: '越南' },
 ];
 
-const MAP_COUNTRY_META: Record<string, { fill: string; status: 'full' | 'partial' | 'restricted' }> = {
+const MAP_COUNTRY_META: Record<
+  string,
+  { fill: string; status: 'full' | 'partial' | 'restricted' }
+> = {
   US: { fill: '#00D4AA', status: 'full' },
   CN: { fill: '#00D4AA', status: 'full' },
   TH: { fill: '#00D4AA', status: 'full' },
@@ -254,7 +294,9 @@ export default function LegalHub() {
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={`flex-1 flex items-center justify-center gap-1.5 text-[14px] font-medium transition-all relative ${
-                activeTab === tab.key ? 'text-text-primary' : 'text-text-muted hover:text-text-secondary'
+                activeTab === tab.key
+                  ? 'text-text-primary'
+                  : 'text-text-muted hover:text-text-secondary'
               }`}
             >
               <tab.icon size={15} />
@@ -292,7 +334,13 @@ function ComplianceMapTab() {
 
   const overviewCards = [
     { icon: CheckCircle, title: '合规国家', value: '150+', color: 'text-teal', bg: 'bg-teal/15' },
-    { icon: FileCheck, title: '合规框架', value: 'FATF/OECD', color: 'text-blue-400', bg: 'bg-blue-400/15' },
+    {
+      icon: FileCheck,
+      title: '合规框架',
+      value: 'FATF/OECD',
+      color: 'text-blue-400',
+      bg: 'bg-blue-400/15',
+    },
     { icon: Clock, title: '监控频率', value: '实时', color: 'text-coral', bg: 'bg-coral/15' },
     { icon: AlertTriangle, title: '待处理预警', value: '0', color: 'text-teal', bg: 'bg-teal/15' },
   ];
@@ -407,30 +455,54 @@ function ComplianceMapTab() {
                 <span className="text-2xl">{selectedData.flag}</span>
                 <div>
                   <h3 className="text-body font-medium text-text-primary">{selectedData.name}</h3>
-                  <span className={`text-[11px] px-2 py-0.5 rounded-full ${
-                    selectedData.status === 'full'
-                      ? 'bg-teal/15 text-teal'
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full ${
+                      selectedData.status === 'full'
+                        ? 'bg-teal/15 text-teal'
+                        : selectedData.status === 'partial'
+                          ? 'bg-yellow-500/15 text-yellow-500'
+                          : 'bg-red-500/15 text-red-500'
+                    }`}
+                  >
+                    {selectedData.status === 'full'
+                      ? '已覆盖'
                       : selectedData.status === 'partial'
-                      ? 'bg-yellow-500/15 text-yellow-500'
-                      : 'bg-red-500/15 text-red-500'
-                  }`}>
-                    {selectedData.status === 'full' ? '已覆盖' : selectedData.status === 'partial' ? '部分覆盖' : '受限'}
+                        ? '部分覆盖'
+                        : '受限'}
                   </span>
                 </div>
               </div>
               {/* Score Ring */}
               <div className="relative w-14 h-14 flex items-center justify-center">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="3" />
                   <circle
-                    cx="18" cy="18" r="15" fill="none"
-                    stroke={selectedData.score >= 85 ? '#00D4AA' : selectedData.score >= 70 ? '#F6A623' : '#EF4444'}
+                    cx="18"
+                    cy="18"
+                    r="15"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.08)"
+                    strokeWidth="3"
+                  />
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="15"
+                    fill="none"
+                    stroke={
+                      selectedData.score >= 85
+                        ? '#00D4AA'
+                        : selectedData.score >= 70
+                          ? '#F6A623'
+                          : '#EF4444'
+                    }
                     strokeWidth="3"
                     strokeDasharray={`${selectedData.score * 0.94} 100`}
                     strokeLinecap="round"
                   />
                 </svg>
-                <span className="absolute text-[13px] font-bold text-text-primary">{selectedData.score}</span>
+                <span className="absolute text-[13px] font-bold text-text-primary">
+                  {selectedData.score}
+                </span>
               </div>
             </div>
 
@@ -445,7 +517,9 @@ function ComplianceMapTab() {
                     />
                   </div>
                   <span className="text-[10px] text-text-muted">{item.label}</span>
-                  <span className="text-[10px] ml-0.5" style={{ color: item.color }}>{item.score}</span>
+                  <span className="text-[10px] ml-0.5" style={{ color: item.color }}>
+                    {item.score}
+                  </span>
                 </div>
               ))}
             </div>
@@ -601,7 +675,10 @@ function ContractTab() {
                 { name: 'B2C电商服务协议', date: '2026-06-04', status: '已完成' },
                 { name: 'SaaS订阅合同', date: '2026-06-03', status: '已签署' },
               ].map((item, i) => (
-                <div key={i} className="flex items-center justify-between p-2.5 rounded-md bg-bg-elevated">
+                <div
+                  key={i}
+                  className="flex items-center justify-between p-2.5 rounded-md bg-bg-elevated"
+                >
                   <div className="flex items-center gap-2">
                     <FileText size={14} className="text-blue-400" />
                     <span className="text-[13px] text-text-primary">{item.name}</span>
@@ -616,7 +693,10 @@ function ContractTab() {
         /* Contract Form & Generation */
         <>
           <button
-            onClick={() => { setSelectedScenario(null); setGenerated(false); }}
+            onClick={() => {
+              setSelectedScenario(null);
+              setGenerated(false);
+            }}
             className="text-[13px] text-coral flex items-center gap-1 hover:underline"
           >
             <ArrowLeft size={14} />
@@ -690,12 +770,20 @@ function ContractTab() {
                       <div className="flex justify-between px-2">
                         {genSteps.map((step, i) => (
                           <div key={step} className="flex flex-col items-center gap-1">
-                            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] ${
-                              i <= genStep ? 'bg-coral text-bg-dark' : 'bg-white/10 text-text-muted'
-                            }`}>
+                            <div
+                              className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] ${
+                                i <= genStep
+                                  ? 'bg-coral text-bg-dark'
+                                  : 'bg-white/10 text-text-muted'
+                              }`}
+                            >
                               {i < genStep ? <CheckCircle size={10} /> : i + 1}
                             </div>
-                            <span className={`text-[8px] ${i <= genStep ? 'text-coral' : 'text-text-muted'}`}>{step}</span>
+                            <span
+                              className={`text-[8px] ${i <= genStep ? 'text-coral' : 'text-text-muted'}`}
+                            >
+                              {step}
+                            </span>
                           </div>
                         ))}
                       </div>
@@ -724,7 +812,9 @@ function ContractTab() {
                       key={tab.key}
                       onClick={() => setContractTab(tab.key)}
                       className={`flex-1 py-2.5 text-[12px] font-medium transition-all relative ${
-                        contractTab === tab.key ? 'text-coral' : 'text-text-muted hover:text-text-secondary'
+                        contractTab === tab.key
+                          ? 'text-coral'
+                          : 'text-text-muted hover:text-text-secondary'
                       }`}
                     >
                       {tab.label}
@@ -850,7 +940,11 @@ function SanctionsTab() {
           ))}
         </div>
 
-        <GradientButton onClick={handleScreen} isLoading={isScreening} disabled={!searchQuery.trim()}>
+        <GradientButton
+          onClick={handleScreen}
+          isLoading={isScreening}
+          disabled={!searchQuery.trim()}
+        >
           <ShieldCheck size={16} />
           开始筛查
         </GradientButton>
@@ -866,14 +960,20 @@ function SanctionsTab() {
             transition={{ type: 'spring', damping: 20 }}
           >
             <Card
-              variant={screenStatus === 'clear' ? 'default' : screenStatus === 'warning' ? 'default' : 'default'}
+              variant={
+                screenStatus === 'clear'
+                  ? 'default'
+                  : screenStatus === 'warning'
+                    ? 'default'
+                    : 'default'
+              }
               padding="lg"
               className={
                 screenStatus === 'clear'
                   ? 'border border-teal/30'
                   : screenStatus === 'warning'
-                  ? 'border border-yellow-500/30'
-                  : 'border border-red-500/30'
+                    ? 'border border-yellow-500/30'
+                    : 'border border-red-500/30'
               }
             >
               <div className="flex flex-col items-center text-center py-4">
@@ -932,15 +1032,15 @@ function SanctionsTab() {
                       <XCircle size={48} className="text-red-500 mb-3" />
                     </motion.div>
                     <h3 className="text-h3 text-red-500 mb-1">发现匹配记录</h3>
-                    <p className="text-body-sm text-text-secondary mb-4">
-                      匹配到OFAC制裁名单
-                    </p>
+                    <p className="text-body-sm text-text-secondary mb-4">匹配到OFAC制裁名单</p>
                     <div className="w-full bg-red-500/5 border border-red-500/20 rounded-md p-3 text-left">
                       <p className="text-[12px] text-text-muted">匹配详情</p>
                       <p className="text-[13px] text-red-400 font-medium mt-1">
                         XYZ Shipping Co. (别名: XYZ Maritime)
                       </p>
-                      <p className="text-[11px] text-text-muted mt-1">SDN名单 · 新增日期: 2025-11-15</p>
+                      <p className="text-[11px] text-text-muted mt-1">
+                        SDN名单 · 新增日期: 2025-11-15
+                      </p>
                       <p className="text-[11px] text-red-400 mt-2">
                         建议: 立即停止与该实体的任何交易，联系法务团队
                       </p>
@@ -969,7 +1069,9 @@ function SanctionsTab() {
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: db.color }} />
                 <span className="text-[13px] text-text-primary">{db.name}</span>
               </div>
-              <span className="text-[13px] font-medium" style={{ color: db.color }}>{db.count}</span>
+              <span className="text-[13px] font-medium" style={{ color: db.color }}>
+                {db.count}
+              </span>
             </motion.div>
           ))}
         </div>
@@ -1010,8 +1112,8 @@ function SanctionsTab() {
                     item.result === 'clear'
                       ? 'bg-teal'
                       : item.result === 'warning'
-                      ? 'bg-yellow-500'
-                      : 'bg-red-500'
+                        ? 'bg-yellow-500'
+                        : 'bg-red-500'
                   }`}
                 />
                 <span className="text-[11px] text-text-muted">{item.time}</span>

@@ -1,0 +1,275 @@
+# ============================================================
+# SMYweb3.0 — Docker 镜像构建 & 推送流水线
+# 触发: 打 tag (v*.*.*)
+# 功能: 构建 Docker 镜像 → 推送到 GHCR (GitHub Container Registry)
+# 基于 docker-compose.staging.yml 配置
+# ============================================================
+
+name: Docker Build & Push
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # 匹配语义化版本号: v1.0.0, v2.1.3-beta 等
+  workflow_dispatch:
+    inputs:
+      tag_version:
+        description: '手动指定版本标签 (例如: v1.0.0)'
+        required: false
+        default: ''
+      push_images:
+        description: '是否推送到 GHCR'
+        required: true
+        default: true
+        type: boolean
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository_owner }}/smyweb3
+
+jobs:
+  # ===== Job 1: 提取版本信息 & 设置元数据 =====
+  prepare:
+    name: Prepare metadata
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      image_tags: ${{ steps.meta.outputs.tags }}
+      image_labels: ${{ steps.meta.outputs.labels }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.tag_version }}" ]; then
+            VERSION="${{ github.event.inputs.tag_version }}"
+          else
+            # 从 git tag 提取版本 (refs/tags/v1.0.0 -> v1.0.0)
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "📦 版本号: ${VERSION}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.push_images == 'true')
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata for API
+        id: meta-api
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-api
+          tags: |
+            type=semver,pattern={{version}},value=${{ steps.version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=
+
+      - name: Extract Docker metadata for Admin Web
+        id: meta-admin
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-admin
+          tags: |
+            type=semver,pattern={{version}},value=${{ steps.version.outputs.version }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=
+
+  # ===== Job 2: 构建 & 推送 API 镜像 (NestJS) =====
+  build-and-push-api:
+    name: Build & Push API Image
+    runs-on: ubuntu-latest
+    needs: prepare
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (支持多架构构建)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.push_images == 'true')
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./apps/api/Dockerfile
+          push: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.push_images == 'true') }}
+          tags: ${{ needs.prepare.outputs.api_image_tags }}
+          labels: ${{ needs.prepare.outputs.api_image_labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            NODE_VERSION=22
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+
+      - name: Image digest (API)
+        run: echo ${{ steps.build-api.outputs.digest }}
+
+  # ===== Job 3: 构建 & 推送 Admin Web 镜像 (React + Vite/Nginx) =====
+  build-and-push-admin:
+    name: Build & Push Admin Web Image
+    runs-on: ubuntu-latest
+    needs: prepare
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (支持多架构构建)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.push_images == 'true')
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 检查 Admin Web 的 Dockerfile 是否存在（可能需要创建）
+      - name: Check Admin Web Dockerfile
+        id: check-dockerfile
+        run: |
+          if [ -f "./apps/admin-web/Dockerfile" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "✅ 找到 apps/admin-web/Dockerfile"
+          elif [ -f "./apps/h5-app/Dockerfile" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "dockerfile_path=./apps/h5-app/Dockerfile" >> $GITHUB_OUTPUT
+            echo "✅ 使用 apps/h5-app/Dockerfile"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ 未找到前端 Dockerfile，将跳过"
+          fi
+
+      - name: Build and push Admin Web image
+        if: steps.check-dockerfile.outputs.exists == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ steps.check-dockerfile.outputs.dockerfile_path || './apps/admin-web/Dockerfile' }}
+          push: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.push_images == 'true') }}
+          tags: ${{ needs.prepare.outputs.admin_image_tags }}
+          labels: ${{ needs.prepare.outputs.admin_image_labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+          build-args: |
+            NODE_VERSION=22
+            VITE_APP_VERSION=${{ needs.prepare.outputs.version }}
+
+      - name: Image digest (Admin Web)
+        if: steps.check-dockerfile.outputs.exists == 'true'
+        run: echo ${{ steps.build-admin.outputs.digest }}
+
+  # ===== Job 4: 验证 Staging Compose 配置 =====
+  validate-staging-compose:
+    name: Validate Staging Compose Config
+    runs-on: ubuntu-latest
+    needs: [build-and-push-api, build-and-push-admin]
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate docker-compose.staging.yml syntax
+        run: |
+          echo "=== 验证 Staging Compose 配置 ==="
+          docker compose -f docker-compose.staging.yml config --quiet
+          echo "✅ docker-compose.staging.yml 配置验证通过"
+
+      - name: Show service summary
+        run: |
+          echo "=== Staging 环境服务列表 ==="
+          docker compose -f docker-compose.staging.yml config --services
+          echo ""
+          echo "📦 已构建镜像:"
+          echo "  - ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-api:${{ needs.prepare.outputs.version }}"
+          echo "  - ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-admin:${{ needs.prepare.outputs.version }}"
+
+  # ===== Job 5: 构建摘要 =====
+  build-summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [prepare, build-and-push-api, build-and-push-admin, validate-staging-compose]
+    if: always()
+
+    steps:
+      - name: Generate build summary
+        run: |
+          cat << EOF >> $GITHUB_STEP_SUMMARY
+
+          ## 🐳 Docker 镜像构建报告
+
+          ### 版本信息
+          | 项目 | 值 |
+          |------|-----|
+          | **版本号** | `${{ needs.prepare.outputs.version }}` |
+          | **触发方式** | ${{ github.event_name }} |
+          | **提交 SHA** | `${{ github.sha }}` |
+
+          ### 构建状态
+          | 镜像 | 状态 |
+          |------|------|
+          | **API** (NestJS) | ${{ needs.build-and-push-api.result == 'success' && '✅ 成功' || '❌ 失败' }} |
+          | **Admin Web** (React) | ${{ needs.build-and-push-admin.result == 'success' && '✅ 成功' || '⏭️ 跳过/失败' }} |
+          | **Staging Compose** | ${{ needs.validate-staging-compose.result == 'success' && '✅ 通过' || '⏭️ 跳过' }} |
+
+          ### GHCR 镜像地址
+          \`\`\`
+          ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-api:${{ needs.prepare.outputs.version }}
+          ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-admin:${{ needs.prepare.outputs.version }}
+          \`\`\`
+
+          ### 下一步操作
+          1. 更新 staging 环境变量 (\`.env.production\`)
+          2. 在服务器拉取新镜像并重启服务:
+             \`\`\`bash
+             docker compose -f docker-compose.staging.yml pull && \
+             docker compose -f docker-compose.staging.yml up -d
+             \`\`\`
+
+          EOF
+
+      - name: Final status check
+        run: |
+          if [[ "${{ needs.build-and-push-api.result }}" == "failure" ]]; then
+            echo "❌ API 镜像构建失败"
+            exit 1
+          fi
+          echo "✅ Docker 构建流程完成"

@@ -1,0 +1,785 @@
+// WOPC 创业家 管理后台 - Prisma Schema (PostgreSQL Version)
+// 覆盖 H5 全部业务模块:User / DLC / Company / Bank / Payment / Tax / Legal / AI / Video / Media / Document / Notification / DID / Order
+// + OpenClaw 智能体 / n8n 工作流 / AI 大模型集成 / BPM 工作流引擎
+//
+// ⚠️ 注意：这是 PostgreSQL 版本示例，仅修改了 datasource 部分
+// 所有 model 定义与 SQLite 版本完全相同（Prisma datamodel 是数据库无关的）
+//
+// 使用方法：
+// 1. 将此文件重命名为 schema.prisma 替换原文件
+// 2. 或仅修改下方 datasource 部分的 provider 和 url
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"   // ← 从 "sqlite" 改为 "postgresql"
+  url      = env("DATABASE_URL")
+  // PostgreSQL 连接字符串示例：
+  // postgresql://username:password@localhost:5432/database_name?schema=public
+}
+
+// ============================================================
+// 1. 管理员与权限 (Admin & Auth)
+// ============================================================
+model AdminUser {
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  email         String    @unique
+  password      String
+  name          String
+  avatar        String?
+  roleId        Int
+  role          AdminRole @relation(fields: [roleId], references: [id])
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  lastLoginIp   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  auditLogs     AuditLog[]
+}
+
+model AdminRole {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  code        String     @unique
+  description String?
+  permissions String     // JSON: ["*"] or ["users:read", ...]
+  isSystem    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  users       AdminUser[]
+}
+
+model AuditLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int?
+  user       AdminUser? @relation(fields: [userId], references: [id])
+  action     String    // "login" / "create_user" / "update_company" / ...
+  module     String    // "auth" / "users" / "companies" / ...
+  resource   String?   // 资源 ID
+  method     String?   // GET/POST/PUT/DELETE
+  path       String?
+  ip         String?
+  userAgent  String?
+  status     String    @default("success") // "success" / "failed"
+  detail     String?   // JSON 详情
+  createdAt  DateTime  @default(now())
+}
+
+// ============================================================
+// 2. H5 用户 (User)
+// ============================================================
+model User {
+  id              Int       @id @default(autoincrement())
+  openId          String    @unique
+  unionId         String?
+  phone           String?   @unique
+  email           String?   @unique
+  name            String
+  avatar          String?
+  dlcLevel        Int       @default(1)
+  dvcBalance      Float     @default(0)
+  usdtBalance     Float     @default(0)
+  kycStatus       String    @default("unverified") // unverified/pending/verified/rejected
+  kycName         String?
+  kycIdNo         String?
+  kycCountry      String?
+  kycSubmittedAt  DateTime?
+  kycVerifiedAt   DateTime?
+  isActive        Boolean   @default(true)
+  isBanned        Boolean   @default(false)
+  bannedReason    String?
+  inviteCode      String?   @unique
+  invitedBy       Int?
+  inviter         User?     @relation("UserInvites", fields: [invitedBy], references: [id])
+  invitees        User[]    @relation("UserInvites")
+  lastActiveAt    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  companies       Company[]
+  bankAccounts    BankAccount[]
+  paymentTxns     PaymentTransaction[]
+  orders          Order[]
+  dvcTransactions DvcTransaction[]
+  didIdentities     DidIdentity[]
+  walletAccounts    WalletAccount[]
+  kycRecords        KycRecord[]
+  sbtCredentials    SbtCredential[]
+  platformPermissions PlatformPermission[]
+  businessCards     BusinessCard[]
+  documents         Document[]
+  videoComments     VideoComment[]
+  mediaPosts        MediaPost[]
+  aiMessages        AiMessage[]
+  aiTodos           AiTodo[]
+  contracts       Contract[]
+  notifications   Notification[]
+}
+
+// ============================================================
+// 3. DLC 等级与积分 (DLC Level & DVC)
+// ============================================================
+model DlcLevel {
+  id             Int       @id @default(autoincrement())
+  level          Int       @unique
+  name           String
+  color          String
+  minDvc         Float
+  maxDvc         Float
+  benefits       String    // JSON array
+  commissionRate Float
+  sortOrder      Int       @default(0)
+  isActive       Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model DvcTransaction {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  type        String    // earn/spend/reward/convert
+  amount      Float
+  balance     Float
+  description String
+  relatedType String?   // order / reward / staking
+  relatedId   Int?
+  status      String    @default("completed")
+  createdAt   DateTime  @default(now())
+}
+
+model DvsfPool {
+  id           Int       @id @default(autoincrement())
+  name         String
+  totalAmount  Float     @default(0)
+  distributed  Float     @default(0)
+  period       String    // 2026Q1 / 2026-06
+  status       String    @default("active") // active/closed
+  distributeAt DateTime?
+  description  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  records      DvsfRecord[]
+}
+
+model DvsfRecord {
+  id        Int       @id @default(autoincrement())
+  poolId    Int
+  pool      DvsfPool  @relation(fields: [poolId], references: [id])
+  userId    Int
+  level     Int
+  amount    Float
+  txHash    String?
+  status    String    @default("pending") // pending/distributed/failed
+  createdAt DateTime  @default(now())
+}
+
+// ============================================================
+// 4. 公司管理 (Company)
+// ============================================================
+model Company {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  user                User      @relation(fields: [userId], references: [id])
+  name                String
+  type                String    // samoa_spv/hong_kong/singapore/bvi/cayman/delaware/seychelles
+  jurisdiction        String
+  registrationNumber  String?   @unique
+  incorporationDate   DateTime?
+  status              String    @default("pending") // active/pending/suspended/dissolved
+  complianceStatus    String    @default("good") // good/warning/overdue/critical
+  annualReturnDue     DateTime?
+  registeredAddress   String?
+  businessScope       String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  directors    Director[]
+  shareholders Shareholder[]
+  documents    CompanyDocument[]
+  bankAccounts BankAccount[]
+  orders       Order[]
+}
+
+model Director {
+  id            Int      @id @default(autoincrement())
+  companyId     Int
+  company       Company  @relation(fields: [companyId], references: [id])
+  name          String
+  nationality   String
+  idType        String?  // passport/id_card
+  idNumber      String?
+  appointedDate DateTime
+  resignedDate  DateTime?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+}
+
+model Shareholder {
+  id         Int      @id @default(autoincrement())
+  companyId  Int
+  company    Company  @relation(fields: [companyId], references: [id])
+  name       String
+  type       String   // individual/corporate
+  shares     Int
+  percentage Float
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model CompanyDocument {
+  id         Int       @id @default(autoincrement())
+  companyId  Int
+  company    Company   @relation(fields: [companyId], references: [id])
+  name       String
+  type       String    // certificate/contract/report
+  fileUrl    String
+  status     String    @default("uploaded") // uploaded/pending/expired
+  uploadDate DateTime  @default(now())
+  expiryDate DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+// ============================================================
+// 5. 银行账户 (Bank Account)
+// ============================================================
+model BankAccount {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  user          User      @relation(fields: [userId], references: [id])
+  companyId     Int?
+  company       Company?  @relation(fields: [companyId], references: [id])
+  bankName      String
+  accountNumber String    @unique
+  accountName   String
+  currency      String
+  swiftCode     String?
+  iban          String?
+  bankAddress   String?
+  status        String    @default("pending") // active/pending/closed/rejected
+  purpose       String?   // 收款/付款/薪资
+  openedAt      DateTime?
+  closedAt      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// ============================================================
+// 6. 支付管理 (Payment)
+// ============================================================
+model PaymentChannel {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  type               String    // card/bank_transfer/crypto/ewallet/local
+  icon               String?
+  description        String?
+  currencies         String    // JSON array
+  feeRate            Float     @default(0)
+  minAmount          Float     @default(0)
+  maxAmount          Float     @default(0)
+  processingTime     String?
+  settlementTime     String?
+  supportedCountries String    // JSON array
+  isActive           Boolean   @default(true)
+  sortOrder          Int       @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  transactions       PaymentTransaction[]
+}
+
+model PaymentTransaction {
+  id            Int             @id @default(autoincrement())
+  userId        Int?
+  user          User?           @relation(fields: [userId], references: [id])
+  channelId     Int
+  channel       PaymentChannel  @relation(fields: [channelId], references: [id])
+  channelName   String
+  type          String          // incoming/outgoing
+  amount        Float
+  currency      String
+  fee           Float           @default(0)
+  netAmount     Float
+  status        String          @default("pending") // completed/pending/processing/failed/refunded
+  counterparty  String?
+  description   String?
+  reference     String?         @unique
+  metadata      String?         // JSON
+  completedAt   DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model ExchangeRate {
+  id        Int      @id @default(autoincrement())
+  from      String
+  to        String
+  rate      Float
+  change24h Float    @default(0)
+  source    String?
+  timestamp DateTime @default(now())
+
+  @@unique([from, to])
+}
+
+// ============================================================
+// 7. 税务管理 (Tax)
+// ============================================================
+model TaxRate {
+  id                     Int      @id @default(autoincrement())
+  country                String
+  countryCode            String
+  structureType          String   // samoa_spv/hong_kong/...
+  corporateTax           Float
+  vatGst                 Float
+  withholdingTax         Float
+  capitalGainsTax        Float
+  doubleTaxationTreaties String   // JSON array
+  notes                  String?
+  effectiveDate          DateTime
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([countryCode, structureType])
+}
+
+// ============================================================
+// 8. 法务合规 (Legal)
+// ============================================================
+model LegalCompliance {
+  id          Int      @id @default(autoincrement())
+  country     String
+  countryCode String
+  category    String   // KYC / AML / Tax / Data / Labor
+  requirement String
+  description String
+  penalty     String?
+  status      String   @default("required") // required/recommended/optional
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Contract {
+  id          Int       @id @default(autoincrement())
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id])
+  name        String
+  type        String    // service / employment / nda / share
+  parties     String    // JSON array
+  content     String?
+  fileUrl     String?
+  status      String    @default("draft") // draft/reviewing/signed/expired
+  aiGenerated Boolean   @default(false)
+  createdDate DateTime  @default(now())
+  signedDate  DateTime?
+  expiryDate  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================================
+// 9. AI 大脑 (AI Agents)
+// ============================================================
+model AiAgent {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique
+  role         String   // 财务顾问/法务顾问/...
+  description  String
+  icon         String?
+  color        String   @default("#3B82F6")
+  capabilities String   // JSON array
+  systemPrompt String
+  modelName    String   @default("gpt-4")
+  temperature  Float    @default(0.7)
+  status       String   @default("active") // active/idle/busy/offline
+  messageCount Int      @default(0)
+  sortOrder    Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  messages AiMessage[]
+  todos    AiTodo[]
+}
+
+model AiMessage {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  agentId   Int
+  agent     AiAgent  @relation(fields: [agentId], references: [id])
+  agentName String
+  role      String   // user/agent/system
+  content   String
+  tokens    Int      @default(0)
+  rating    Int?     // 1-5
+  createdAt DateTime @default(now())
+}
+
+model AiTodo {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  agentId     Int
+  agent       AiAgent   @relation(fields: [agentId], references: [id])
+  agentName   String
+  title       String
+  description String?
+  priority    String    @default("medium") // high/medium/low
+  status      String    @default("pending") // pending/in_progress/completed
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AiKnowledge {
+  id        Int      @id @default(autoincrement())
+  title     String
+  category  String   // tax/legal/payment/company/finance
+  content   String
+  source    String?
+  tags      String   // JSON array
+  embedding String?  // JSON
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============================================================
+// 10. 视频中心 (Video)
+// ============================================================
+model Video {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  thumbnail   String?
+  videoUrl    String
+  duration    Int      @default(0) // 秒
+  category    String
+  tags        String   // JSON array
+  author      String
+  authorId    Int?
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  shares      Int      @default(0)
+  status      String   @default("published") // draft/published/removed
+  isFeatured  Boolean  @default(false)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  comments VideoComment[]
+}
+
+model VideoComment {
+  id        Int      @id @default(autoincrement())
+  videoId   Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userName  String
+  userAvatar String?
+  content   String
+  likes     Int      @default(0)
+  parentId  Int?
+  isHidden  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ============================================================
+// 11. 自媒体 (Media)
+// ============================================================
+model MediaPost {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  title       String
+  content     String
+  platform    String    // wechat/weibo/tiktok/xiaohongshu/twitter/linkedin
+  status      String    @default("draft") // draft/scheduled/published/failed
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  impressions Int       @default(0)
+  clicks      Int       @default(0)
+  likes       Int       @default(0)
+  shares      Int       @default(0)
+  comments    Int       @default(0)
+  aiGenerated Boolean   @default(false)
+  imageUrls   String?   // JSON array
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// ============================================================
+// 12. 文档中心 (Document)
+// ============================================================
+model Document {
+  id         Int       @id @default(autoincrement())
+  userId     Int?
+  user       User?     @relation(fields: [userId], references: [id])
+  name       String
+  type       String    // passport/license/contract/report/invoice
+  category   String    // KYC/公司/合同/...
+  fileUrl    String
+  fileSize   Int       @default(0) // bytes
+  mimeType   String?
+  status     String    @default("uploaded") // uploaded/pending/expired
+  expiryDate DateTime?
+  uploadedAt DateTime  @default(now())
+  createdAt  DateTime  @default(now())
+}
+
+// ============================================================
+// 13. DID 数字身份 (DID Identity) - 8 tables
+// ============================================================
+model DidIdentity {
+  id              Int       @id @default(autoincrement())
+  userId          Int       @unique
+  user            User      @relation(fields: [userId], references: [id])
+  did             String    @unique                // did:zsdt:U202600000001
+  didMethod       String    @default("zsdt")
+  status          String    @default("pending")    // pending/created/kyc_pending/verified/active/restricted/frozen/revoked/deactivated
+  kycStatus       String    @default("unverified") // unverified/pending/verified/rejected
+  amlStatus       String    @default("unchecked")  // unchecked/pending/cleared/suspicious
+  riskLevel       String    @default("low")        // low/medium/high/critical
+  memberLevel     String    @default("standard")   // standard/gold/platinum/diamond
+  primaryWallet   String?
+  credentialHash  String?
+  chainTxHash     String?
+  activatedAt     DateTime?
+  frozenAt        DateTime?
+  revokedAt       DateTime?
+  issuedAt        DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  wallets         WalletAccount[]
+  kycRecords      KycRecord[]
+  credentials     SbtCredential[]
+  permissions     PlatformPermission[]
+  auditLogs       DidAuditLog[]
+
+  @@index([status])
+  @@index([kycStatus])
+  @@map("did_identities")
+}
+
+model WalletAccount {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  user            User      @relation(fields: [userId], references: [id])
+  didId           Int?
+  did             DidIdentity? @relation(fields: [didId], references: [id])
+  walletAddress   String
+  chainId         String    @default("1")          // 1=ETH, 56=BSC
+  walletType      String?                          // metamask/okx/binance
+  isPrimary       Boolean   @default(false)
+  role            String    @default("primary")    // primary/backup/payment/exchange/ecommerce/gaming
+  riskStatus      String    @default("normal")     // normal/suspicious/blocked
+  lastLoginAt     DateTime?
+  linkedAt        DateTime  @default(now())
+  unlinkedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([walletAddress, chainId])
+  @@index([userId])
+  @@index([didId])
+  @@map("wallet_accounts")
+}
+
+model WalletNonce {
+  id              Int       @id @default(autoincrement())
+  walletAddress   String
+  nonce           String    @unique
+  purpose         String    @default("login")      // login/bind/unbind
+  expiredAt       DateTime
+  used            Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+
+  @@index([walletAddress])
+  @@index([expiredAt])
+  @@map("wallet_nonces")
+}
+
+model KycRecord {
+  id                  Int       @id @default(autoincrement())
+  userId              Int
+  user                User      @relation(fields: [userId], references: [id])
+  didId               Int?
+  did                 DidIdentity? @relation(fields: [didId], references: [id])
+  provider            String    @default("manual") // manual/onfido/sumsub
+  kycStatus           String    @default("pending") // pending/reviewing/approved/rejected/expired
+  fullNameEncrypted   String?   @map("full_name_encrypted")
+  documentType        String?   @map("document_type")
+  documentNoEncrypted String?   @map("document_no_encrypted")
+  country             String?
+  verificationResult  String?   @map("verification_result") // JSON
+  resultHash          String?   @map("result_hash")
+  rejectionReason     String?   @map("rejection_reason")
+  reviewedBy          Int?
+  reviewedAt          DateTime? @map("reviewed_at")
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([didId])
+  @@index([kycStatus])
+  @@map("kyc_records")
+}
+
+model SbtCredential {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  didId             Int?
+  did               DidIdentity? @relation(fields: [didId], references: [id])
+  walletAddress     String
+  contractAddress   String?   @map("contract_address")
+  tokenId           String?   @map("token_id")
+  credentialType    String    @map("credential_type")  // KYC_VERIFIED/MEMBER/VIP/MERCHANT/...
+  credentialLevel   String?   @map("credential_level") // standard/gold/platinum
+  chainId           String?
+  status            String    @default("active")       // active/revoked/expired
+  txHash            String?   @map("tx_hash")
+  metadataUri       String?   @map("metadata_uri")
+  issuedBy          Int?      @map("issued_by")
+  issuedAt          DateTime  @default(now()) @map("issued_at")
+  revokedBy         Int?      @map("revoked_by")
+  revokedAt         DateTime? @map("revoked_at")
+  revokeReason      String?   @map("revoke_reason")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([didId])
+  @@index([credentialType])
+  @@index([status])
+  @@map("sbt_credentials")
+}
+
+model PlatformPermission {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  user              User      @relation(fields: [userId], references: [id])
+  didId             Int?
+  did               DidIdentity? @relation(fields: [didId], references: [id])
+  platform          String    // portal/ecommerce/exchange/gaming
+  allowed           Boolean   @default(false)
+  permissionStatus  String    @default("pending") @map("permission_status") // pending/approved/denied/revoked
+  reason            String?
+  updatedBy         Int?      @map("updated_by")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@unique([didId, platform])
+  @@index([platform])
+  @@map("did_platform_permissions")
+}
+
+model DidAuditLog {
+  id              Int       @id @default(autoincrement())
+  userId          Int?
+  didId           Int?
+  did             DidIdentity? @relation(fields: [didId], references: [id])
+  adminId         Int?
+  action          String    // did:create/wallet:bind/kyc:verify/sbt:issue/...
+  module          String?   // did/wallets/kyc/sbt/platform-access
+  targetType      String?   @map("target_type")
+  targetId        String?   @map("target_id")
+  beforeData      String?   @map("before_data") // JSON
+  afterData       String?   @map("after_data")  // JSON
+  reason          String?
+  ip              String?
+  userAgent       String?   @map("user_agent")
+  dataHash        String?   @map("data_hash")
+  createdAt       DateTime  @default(now())
+
+  @@index([didId])
+  @@index([action])
+  @@index([module])
+  @@index([createdAt])
+  @@map("did_audit_logs")
+}
+
+// ============================================================
+// 14. AI 商业名片 (Business Card)
+// ============================================================
+model BusinessCard {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  name       String
+  title      String
+  company    String?
+  phone      String?
+  email      String?
+  website    String?
+  avatar     String?
+  qrCode     String?
+  theme      String   @default("default")
+  viewCount  Int      @default(0)
+  isPublic   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ============================================================
+// 15. 通知 (Notification)
+// ============================================================
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      String   @default("info") // info/success/warning/error
+  read      Boolean  @default(false)
+  actionUrl String?
+  createdAt DateTime @default(now())
+}
+
+// ============================================================
+// 16. 订单/工单 (Order)
+// ============================================================
+model Order {
+  id          Int       @id @default(autoincrement())
+  orderNo     String    @unique
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  companyId   Int?
+  company     Company?  @relation(fields: [companyId], references: [id])
+  type        String    // company_registration/bank_account/payment_setup/compliance/tax_filing
+  title       String
+  amount      Float     @default(0)
+  currency    String    @default("USD")
+  status      String    @default("new") // new/processing/reviewing/completed/cancelled
+  assignedTo  String?
+  progress    Int       @default(0) // 0-100
+  notes       String?
+  attachments String?   // JSON array
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+}
+
+// ============================================================
+// 17. 系统配置 (System Config)
+// ============================================================
+model SystemConfig {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  group     String   @default("default") // general/security/notification/feature
+  label     String?
+  type      String   @default("string") // string/number/boolean/json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Note: 剩余的模型定义（OpenClaw, n8n, BPM, AI Models, Acquisition, AI TV, Live Streaming,
+//       Registration, Users Enhancement）与 SQLite 版本完全相同，
+//       为节省空间在此省略。完整定义请参考原始 schema.prisma 文件。

@@ -14,24 +14,24 @@
 
 ### 1.1 平台战略定位
 
-| 平台 | 战略定位 | 核心指标 | 不做 |
-|---|---|---|---|
-| **Facebook** | 拉新主力（欧美东南亚）+ 客服 | 注册 CAC < $2.5，MAU 贡献 ≥ 35% | ❌ 自家粉丝页不重运营（外包给运营组） |
-| **LinkedIn** | B2B 商务获客（DLC 4/5 商务用户） | 商务咨询 lead 月 ≥ 50 | ❌ 营销内容矩阵（仅 Lead Gen + Share） |
-| **Google** | 全链路（登录 + 地图 + 分析 + 内购） | GA4 漏斗覆盖率 100%，Play Billing 占比 ≥ 20% | ❌ 自研地图组件（直接用 Maps JS） |
-| **WhatsApp** | 客服私域（萨摩亚本地 + 印度巴西） | 客服首响 < 5 min，留存率 +25% | ❌ WhatsApp Pay（不进中国/欧美主流） |
-| **TikTok** | Z 世代拉新（视频裂变 + 购物车） | 视频曝光 ≥ 1000 万/月，K 因子 ≥ 1.2 | ❌ Research API（仅商用） |
+| 平台         | 战略定位                            | 核心指标                                     | 不做                                   |
+| ------------ | ----------------------------------- | -------------------------------------------- | -------------------------------------- |
+| **Facebook** | 拉新主力（欧美东南亚）+ 客服        | 注册 CAC < $2.5，MAU 贡献 ≥ 35%              | ❌ 自家粉丝页不重运营（外包给运营组）  |
+| **LinkedIn** | B2B 商务获客（DLC 4/5 商务用户）    | 商务咨询 lead 月 ≥ 50                        | ❌ 营销内容矩阵（仅 Lead Gen + Share） |
+| **Google**   | 全链路（登录 + 地图 + 分析 + 内购） | GA4 漏斗覆盖率 100%，Play Billing 占比 ≥ 20% | ❌ 自研地图组件（直接用 Maps JS）      |
+| **WhatsApp** | 客服私域（萨摩亚本地 + 印度巴西）   | 客服首响 < 5 min，留存率 +25%                | ❌ WhatsApp Pay（不进中国/欧美主流）   |
+| **TikTok**   | Z 世代拉新（视频裂变 + 购物车）     | 视频曝光 ≥ 1000 万/月，K 因子 ≥ 1.2          | ❌ Research API（仅商用）              |
 
 ### 1.2 5 平台核心指标（北极星）
 
-| 指标 | 2026 H2 目标 | 2027 H1 目标 |
-|---|---|---|
-| 海外注册用户 | 50 万 | 200 万 |
-| 5 平台拉新占比 | ≥ 60% | ≥ 75% |
-| 广告 ROI | ≥ 1.8 | ≥ 2.5 |
-| 客服 SLA（首响） | < 5 min | < 3 min |
-| 海外月活 MAU | 25 万 | 80 万 |
-| 合规事件 | 0 起 | 0 起 |
+| 指标             | 2026 H2 目标 | 2027 H1 目标 |
+| ---------------- | ------------ | ------------ |
+| 海外注册用户     | 50 万        | 200 万       |
+| 5 平台拉新占比   | ≥ 60%        | ≥ 75%        |
+| 广告 ROI         | ≥ 1.8        | ≥ 2.5        |
+| 客服 SLA（首响） | < 5 min      | < 3 min      |
+| 海外月活 MAU     | 25 万        | 80 万        |
+| 合规事件         | 0 起         | 0 起         |
 
 ### 1.3 业务边界（**重要**）
 
@@ -49,23 +49,23 @@
 
 > **为什么需要这章**：用 5 平台各自的典型场景描述用户旅程，让开发、运营、客服对「为什么接」有共同认知。
 
-| # | 故事 |
-|---|---|
-| US-1 | 作为游客，我在 H5 落地页点「Continue with Facebook」，授权后自动建账号（无需填手机号） |
-| US-2 | 作为 LinkedIn 用户，我用「Sign in with LinkedIn」登录，平台自动同步我的职位/公司信息 |
-| US-3 | 作为 Google 用户，我在 H5 首页看到「One Tap」登录弹窗，点一下就登录（**不**跳转） |
-| US-4 | 作为萨摩亚本地用户，下单后我收到 WhatsApp 模板消息（订单确认），可点按钮「查询物流」 |
-| US-5 | 作为 Z 世代用户，我用 TikTok 登录，平台把视频分享回流到我的 TikTok 账号 |
-| US-6 | 作为商务客户，我从 LinkedIn 看到 Lead Gen Form 广告，提交表单后自动进 H5 CRM |
-| US-7 | 作为客服，我在工作台看到用户从 Facebook Messenger 来的会话，直接回复（**不**切平台） |
-| US-8 | 作为运营，我需要在 Facebook Ads Manager 看「注册转化」，Conversions API 帮我把服务端事件回传 |
-| US-9 | 作为用户，我从 Facebook 广告点进来，URL 带 `fbclid`，系统识别归因后给我专属优惠 |
-| US-10 | 作为商家，我用 WhatsApp Business Profile 展示公司地址/营业时间，用户直接 WhatsApp 咨询 |
-| US-11 | 作为商家，我在 Google Maps 搜索结果看到自己店铺（Places API 数据打通） |
+| #     | 故事                                                                                          |
+| ----- | --------------------------------------------------------------------------------------------- |
+| US-1  | 作为游客，我在 H5 落地页点「Continue with Facebook」，授权后自动建账号（无需填手机号）        |
+| US-2  | 作为 LinkedIn 用户，我用「Sign in with LinkedIn」登录，平台自动同步我的职位/公司信息          |
+| US-3  | 作为 Google 用户，我在 H5 首页看到「One Tap」登录弹窗，点一下就登录（**不**跳转）             |
+| US-4  | 作为萨摩亚本地用户，下单后我收到 WhatsApp 模板消息（订单确认），可点按钮「查询物流」          |
+| US-5  | 作为 Z 世代用户，我用 TikTok 登录，平台把视频分享回流到我的 TikTok 账号                       |
+| US-6  | 作为商务客户，我从 LinkedIn 看到 Lead Gen Form 广告，提交表单后自动进 H5 CRM                  |
+| US-7  | 作为客服，我在工作台看到用户从 Facebook Messenger 来的会话，直接回复（**不**切平台）          |
+| US-8  | 作为运营，我需要在 Facebook Ads Manager 看「注册转化」，Conversions API 帮我把服务端事件回传  |
+| US-9  | 作为用户，我从 Facebook 广告点进来，URL 带 `fbclid`，系统识别归因后给我专属优惠               |
+| US-10 | 作为商家，我用 WhatsApp Business Profile 展示公司地址/营业时间，用户直接 WhatsApp 咨询        |
+| US-11 | 作为商家，我在 Google Maps 搜索结果看到自己店铺（Places API 数据打通）                        |
 | US-12 | 作为用户，我在 TikTok 看到 KOL 视频带「立即购买」按钮，跳 H5 完成下单（**不**走 TikTok Shop） |
-| US-13 | 作为欧盟用户，我拒绝 Cookie 横幅后再点 Facebook 登录，系统跳过 Pixel 上报 |
-| US-14 | 作为付费用户，我在 Android 端用 Google Play Billing 订阅服务（**不**走 Stripe） |
-| US-15 | 作为商务用户，我用 Google Workspace 邮箱注册（OpenID Connect） |
+| US-13 | 作为欧盟用户，我拒绝 Cookie 横幅后再点 Facebook 登录，系统跳过 Pixel 上报                     |
+| US-14 | 作为付费用户，我在 Android 端用 Google Play Billing 订阅服务（**不**走 Stripe）               |
+| US-15 | 作为商务用户，我用 Google Workspace 邮箱注册（OpenID Connect）                                |
 
 ---
 
@@ -83,21 +83,21 @@
 
 ### 3.2 改造部分（**前端 + 后端双侧**）
 
-| 维度 | H5 / 小程序 / APP | 海外 5 平台 | 改造点 |
-|---|---|---|---|
-| **集成方式** | 自有 App / 小程序 | 第三方平台 + OAuth | 需各自 App Review |
-| **登录** | 自有账号体系 | 5 平台 OAuth 2.0 跳转 | 新增 `/api/h5/oauth/*` |
-| **用户身份** | User 表统一 | 1 个 User 绑 N 个海外账号 | 新增 `OverseasAuth` 统一表 |
-| **凭证存储** | User 密码 (bcrypt) | Access/Refresh Token | **必须** KMS 加密（§11） |
-| **支付** | Stripe / Alipay H5 / WxPay | **新增** Google Play Billing | 新增 `GoogleBillingService` |
-| **客服** | 内嵌 AI Chat | Facebook Messenger / WhatsApp | 双通道，统一 SLA |
-| **推送** | 订阅消息 / FCM | **额外** WhatsApp 模板 / Messenger | 5 通道，按用户偏好 |
-| **地图** | 高德 / 腾讯 | **新增** Google Maps JS | 按地区动态加载 |
-| **数据分析** | 自研埋点 | **新增** GA4 + Facebook Pixel + TikTok Pixel | 5 平台 Pixel 统一抽象（§16） |
-| **广告归因** | 无 | **新增** Facebook / TikTok Ads 归因 | 新增 `AdAttribution` 表 |
-| **合规要求** | 中国个保法 | GDPR / CCPA + 平台 ToS | Cookie 横幅 + 数据驻留 |
-| **App Review** | 应用市场上架审核 | 5 平台各自审核（部分 API 需额外权限） | 2-8 周 |
-| **API 版本** | 自有 API 自由迭代 | Graph API v18+ / LinkedIn v2 / WhatsApp Cloud v18+ | 必须按平台版本约束 |
+| 维度           | H5 / 小程序 / APP          | 海外 5 平台                                        | 改造点                       |
+| -------------- | -------------------------- | -------------------------------------------------- | ---------------------------- |
+| **集成方式**   | 自有 App / 小程序          | 第三方平台 + OAuth                                 | 需各自 App Review            |
+| **登录**       | 自有账号体系               | 5 平台 OAuth 2.0 跳转                              | 新增 `/api/h5/oauth/*`       |
+| **用户身份**   | User 表统一                | 1 个 User 绑 N 个海外账号                          | 新增 `OverseasAuth` 统一表   |
+| **凭证存储**   | User 密码 (bcrypt)         | Access/Refresh Token                               | **必须** KMS 加密（§11）     |
+| **支付**       | Stripe / Alipay H5 / WxPay | **新增** Google Play Billing                       | 新增 `GoogleBillingService`  |
+| **客服**       | 内嵌 AI Chat               | Facebook Messenger / WhatsApp                      | 双通道，统一 SLA             |
+| **推送**       | 订阅消息 / FCM             | **额外** WhatsApp 模板 / Messenger                 | 5 通道，按用户偏好           |
+| **地图**       | 高德 / 腾讯                | **新增** Google Maps JS                            | 按地区动态加载               |
+| **数据分析**   | 自研埋点                   | **新增** GA4 + Facebook Pixel + TikTok Pixel       | 5 平台 Pixel 统一抽象（§16） |
+| **广告归因**   | 无                         | **新增** Facebook / TikTok Ads 归因                | 新增 `AdAttribution` 表      |
+| **合规要求**   | 中国个保法                 | GDPR / CCPA + 平台 ToS                             | Cookie 横幅 + 数据驻留       |
+| **App Review** | 应用市场上架审核           | 5 平台各自审核（部分 API 需额外权限）              | 2-8 周                       |
+| **API 版本**   | 自有 API 自由迭代          | Graph API v18+ / LinkedIn v2 / WhatsApp Cloud v18+ | 必须按平台版本约束           |
 
 ### 3.3 不支持 / 不做的能力（**明确告知产品**）
 
@@ -114,13 +114,13 @@
 
 ### 3.4 5 平台 OAuth 范围（Scope）对比
 
-| 平台 | 必选 scope | 可选 scope | 敏感 scope（需 App Review） |
-|---|---|---|---|
-| **Facebook** | `email`, `public_profile` | `user_friends` (v2 后基本无效) | `user_posts`, `user_photos`, `pages_show_list`, `pages_messaging` |
-| **LinkedIn** | `openid`, `profile`, `email` | — | `w_member_social` (UGC Share), `r_ads`, `r_ads_reporting`, `r_organization_social` |
-| **Google** | `openid`, `email`, `profile` | — | `https://www.googleapis.com/auth/ads.readonly`, `https://www.googleapis.com/auth/analytics.readonly` |
-| **WhatsApp** | **无 OAuth**（仅 Business API） | — | `whatsapp_business_management`, `whatsapp_business_messaging` |
-| **TikTok** | `user.info.basic` | `user.info.profile`, `user.info.stats` | `user.video.publish`, `business.content.discover` |
+| 平台         | 必选 scope                      | 可选 scope                             | 敏感 scope（需 App Review）                                                                          |
+| ------------ | ------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| **Facebook** | `email`, `public_profile`       | `user_friends` (v2 后基本无效)         | `user_posts`, `user_photos`, `pages_show_list`, `pages_messaging`                                    |
+| **LinkedIn** | `openid`, `profile`, `email`    | —                                      | `w_member_social` (UGC Share), `r_ads`, `r_ads_reporting`, `r_organization_social`                   |
+| **Google**   | `openid`, `email`, `profile`    | —                                      | `https://www.googleapis.com/auth/ads.readonly`, `https://www.googleapis.com/auth/analytics.readonly` |
+| **WhatsApp** | **无 OAuth**（仅 Business API） | —                                      | `whatsapp_business_management`, `whatsapp_business_messaging`                                        |
+| **TikTok**   | `user.info.basic`               | `user.info.profile`, `user.info.stats` | `user.video.publish`, `business.content.discover`                                                    |
 
 ---
 
@@ -175,12 +175,12 @@
 
 ### 4.2 5 平台 OAuth 差异速查
 
-| 平台 | Auth URL | Token URL | UserInfo 端点 | 特殊点 |
-|---|---|---|---|---|
-| **Facebook** | `https://www.facebook.com/v18.0/dialog/oauth` | `https://graph.facebook.com/v18.0/oauth/access_token` | `GET /me?fields=id,name,email,picture` | access_token **短**（2h），用 long-lived token 60 天 |
-| **LinkedIn** | `https://www.linkedin.com/oauth/v2/authorization` | `https://www.linkedin.com/oauth/v2/accessToken` | `GET /v2/userinfo` (OIDC) | 强制 PKCE，refresh token 365 天 |
-| **Google** | `https://accounts.google.com/o/oauth2/v2/auth` | `https://oauth2.googleapis.com/token` | `GET /v3/userinfo` (OIDC) | id_token 走 JWT 验签；One Tap 不走此流程 |
-| **TikTok** | `https://www.tiktok.com/v2/auth/authorize/` | `https://open.tiktokapis.com/v2/oauth/token/` | `GET /v2/user/info/` | 强制 PKCE，client_key 替代 client_id |
+| 平台         | Auth URL                                          | Token URL                                             | UserInfo 端点                          | 特殊点                                               |
+| ------------ | ------------------------------------------------- | ----------------------------------------------------- | -------------------------------------- | ---------------------------------------------------- |
+| **Facebook** | `https://www.facebook.com/v18.0/dialog/oauth`     | `https://graph.facebook.com/v18.0/oauth/access_token` | `GET /me?fields=id,name,email,picture` | access_token **短**（2h），用 long-lived token 60 天 |
+| **LinkedIn** | `https://www.linkedin.com/oauth/v2/authorization` | `https://www.linkedin.com/oauth/v2/accessToken`       | `GET /v2/userinfo` (OIDC)              | 强制 PKCE，refresh token 365 天                      |
+| **Google**   | `https://accounts.google.com/o/oauth2/v2/auth`    | `https://oauth2.googleapis.com/token`                 | `GET /v3/userinfo` (OIDC)              | id_token 走 JWT 验签；One Tap 不走此流程             |
+| **TikTok**   | `https://www.tiktok.com/v2/auth/authorize/`       | `https://open.tiktokapis.com/v2/oauth/token/`         | `GET /v2/user/info/`                   | 强制 PKCE，client_key 替代 client_id                 |
 
 ### 4.3 统一抽象后端设计
 
@@ -198,10 +198,10 @@ export interface OAuthProvider {
 export interface TokenSet {
   accessToken: string;
   refreshToken?: string;
-  expiresIn: number;        // 秒
+  expiresIn: number; // 秒
   scope: string;
   tokenType: 'Bearer' | 'Bearer';
-  idToken?: string;         // OIDC
+  idToken?: string; // OIDC
 }
 
 export interface Profile {
@@ -216,13 +216,13 @@ export interface Profile {
 
 ### 4.4 统一绑定策略
 
-| 场景 | 行为 |
-|---|---|
-| 首次登录（无 User） | 自动建 User 账号（`source = 'facebook'` 等） |
-| 二次登录（已有 User 绑过该平台） | 静默登录，刷 access_token |
-| 同一平台绑不同 User | 拒绝（`platform + platformUserId` 唯一） |
-| 同一 User 绑多个平台 | ✅ 允许（双身份规则 §13） |
-| 同一邮箱不同平台 | ✅ 允许（应用层可做合并提示，**不**强制） |
+| 场景                             | 行为                                         |
+| -------------------------------- | -------------------------------------------- |
+| 首次登录（无 User）              | 自动建 User 账号（`source = 'facebook'` 等） |
+| 二次登录（已有 User 绑过该平台） | 静默登录，刷 access_token                    |
+| 同一平台绑不同 User              | 拒绝（`platform + platformUserId` 唯一）     |
+| 同一 User 绑多个平台             | ✅ 允许（双身份规则 §13）                    |
+| 同一邮箱不同平台                 | ✅ 允许（应用层可做合并提示，**不**强制）    |
 
 ---
 
@@ -261,6 +261,7 @@ window.location = facebook.com/dialog/oauth?client_id=xxx&redirect_uri=...&state
 ```
 
 **关键点**：
+
 - `access_token` **必须**走 KMS 加密（00-foundation §11）存 `OverseasAuth.accessToken`
 - `state` 用 HMAC-SHA256(secret, sessionId) 防 CSRF，10 分钟过期
 - Conversions API 与 Pixel **必须**同 `event_id`（去重）
@@ -290,6 +291,7 @@ Lead Gen Form 流程：
 ```
 
 **关键点**：
+
 - LinkedIn v2 OIDC **必须**验 `id_token` 签名（用 JWKS endpoint）
 - UGC Share 需 `w_member_social` scope（**敏感**，需 App Review）
 - Lead Gen Form webhook 用 HMAC-SHA256(secret) 签名校验
@@ -332,6 +334,7 @@ Play Billing（Android 端）：
 ```
 
 **关键点**：
+
 - One Tap 弹窗**仅**展示 1 次（用户拒绝后 14 天内不弹，避免骚扰）
 - Maps JS API key **必须**配 HTTP referrer 限制（**仅**允许 H5 域名）
 - GA4 事件名严格按 Google 规范（`purchase` / `sign_up` / `login` 等**预定义**事件优先）
@@ -380,6 +383,7 @@ Click-to-WhatsApp Ads：
 ```
 
 **关键点**：
+
 - 模板消息**必须**用户 opt-in（首次加好友 / 主动发起对话）
 - 营销类模板**有**24h 发送窗口限制（utility / authentication 无限制但场景严）
 - 海外（欧美）用户对营销消息敏感，**默认不**发 marketing 模板
@@ -415,6 +419,7 @@ TikTok Pixel + Events API：
 ```
 
 **关键点**：
+
 - TikTok 强制 PKCE（区别于 Facebook 简单模式）
 - `event_id` 服务端 + 前端同值用于去重
 - TikTok Pixel 在中国大陆 IP **不**加载（避免合规风险）
@@ -428,30 +433,30 @@ TikTok Pixel + Events API：
 
 ### 6.1 OverseasAuth（**统一**海外社交账号绑定表）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | UUID |
-| userId | String | ✓ | 关联 `User.id`（00-foundation §13 双身份允许多绑） |
-| user | User | ✓ | `@relation("OverseasAuthUser", onDelete: Restrict)` |
-| platform | String | ✓ | `facebook` / `linkedin` / `google` / `tiktok` / `whatsapp` |
-| platformUserId | String | ✓ | 平台返回的用户唯一 ID |
-| platformUnionId | String | | 跨 app unionId（Facebook 无 / TikTok 有 / 微信类平台有） |
-| email | String | | 平台返回的邮箱 |
-| emailVerified | Boolean | | |
-| displayName | String | | 平台昵称 |
-| avatarUrl | String | | |
-| accessTokenEncrypted | String | | **必填** — KMS 加密后的 access_token（§11） |
-| refreshTokenEncrypted | String | | KMS 加密后的 refresh_token（部分平台无） |
-| accessTokenExpiresAt | DateTime | | |
-| refreshTokenExpiresAt | DateTime | | |
-| scopes | String | | 授权 scope 列表（逗号分隔） |
-| idTokenClaims | String | | OIDC id_token claims（JSON） |
-| lastRefreshedAt | DateTime | | 上次刷 token 时间 |
-| raw | String | | 平台返回的原始 profile JSON（脱敏后） |
-| status | String | ✓ | `active` / `expired` / `revoked` / `disconnected` |
-| connectedAt | DateTime | ✓ | 首次绑定时间 |
-| lastUsedAt | DateTime | | |
-| createdAt, updatedAt, deletedAt | | | 通用 |
+| 字段                            | 类型     | 必填 | 说明                                                       |
+| ------------------------------- | -------- | ---- | ---------------------------------------------------------- |
+| id                              | String   | ✓    | UUID                                                       |
+| userId                          | String   | ✓    | 关联 `User.id`（00-foundation §13 双身份允许多绑）         |
+| user                            | User     | ✓    | `@relation("OverseasAuthUser", onDelete: Restrict)`        |
+| platform                        | String   | ✓    | `facebook` / `linkedin` / `google` / `tiktok` / `whatsapp` |
+| platformUserId                  | String   | ✓    | 平台返回的用户唯一 ID                                      |
+| platformUnionId                 | String   |      | 跨 app unionId（Facebook 无 / TikTok 有 / 微信类平台有）   |
+| email                           | String   |      | 平台返回的邮箱                                             |
+| emailVerified                   | Boolean  |      |                                                            |
+| displayName                     | String   |      | 平台昵称                                                   |
+| avatarUrl                       | String   |      |                                                            |
+| accessTokenEncrypted            | String   |      | **必填** — KMS 加密后的 access_token（§11）                |
+| refreshTokenEncrypted           | String   |      | KMS 加密后的 refresh_token（部分平台无）                   |
+| accessTokenExpiresAt            | DateTime |      |                                                            |
+| refreshTokenExpiresAt           | DateTime |      |                                                            |
+| scopes                          | String   |      | 授权 scope 列表（逗号分隔）                                |
+| idTokenClaims                   | String   |      | OIDC id_token claims（JSON）                               |
+| lastRefreshedAt                 | DateTime |      | 上次刷 token 时间                                          |
+| raw                             | String   |      | 平台返回的原始 profile JSON（脱敏后）                      |
+| status                          | String   | ✓    | `active` / `expired` / `revoked` / `disconnected`          |
+| connectedAt                     | DateTime | ✓    | 首次绑定时间                                               |
+| lastUsedAt                      | DateTime |      |                                                            |
+| createdAt, updatedAt, deletedAt |          |      | 通用                                                       |
 
 ```prisma
 model OverseasAuth {
@@ -489,19 +494,19 @@ model OverseasAuth {
 
 ### 6.2 WhatsAppTemplate（WhatsApp 消息模板）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| templateId | String | ✓ | Meta 平台模板 ID（`templ_xxx`） |
-| name | String | ✓ | 模板名（如 `order_paid_v1`） |
-| language | String | ✓ | ISO 639-1（`en` / `zh_CN`） |
-| category | String | ✓ | `utility` / `marketing` / `authentication` |
-| status | String | ✓ | `pending` / `approved` / `rejected` / `paused` |
-| components | String | ✓ | JSON（header / body / footer / buttons） |
-| variables | String | | JSON 变量定义（type, example） |
-| rejectionReason | String | | Meta 驳回原因 |
-| lastSyncedAt | DateTime | | 上次从 Meta 同步时间 |
-| createdAt, updatedAt, deletedAt | | | |
+| 字段                            | 类型     | 必填 | 说明                                           |
+| ------------------------------- | -------- | ---- | ---------------------------------------------- |
+| id                              | String   | ✓    |                                                |
+| templateId                      | String   | ✓    | Meta 平台模板 ID（`templ_xxx`）                |
+| name                            | String   | ✓    | 模板名（如 `order_paid_v1`）                   |
+| language                        | String   | ✓    | ISO 639-1（`en` / `zh_CN`）                    |
+| category                        | String   | ✓    | `utility` / `marketing` / `authentication`     |
+| status                          | String   | ✓    | `pending` / `approved` / `rejected` / `paused` |
+| components                      | String   | ✓    | JSON（header / body / footer / buttons）       |
+| variables                       | String   |      | JSON 变量定义（type, example）                 |
+| rejectionReason                 | String   |      | Meta 驳回原因                                  |
+| lastSyncedAt                    | DateTime |      | 上次从 Meta 同步时间                           |
+| createdAt, updatedAt, deletedAt |          |      |                                                |
 
 ```prisma
 model WhatsAppTemplate {
@@ -526,24 +531,24 @@ model WhatsAppTemplate {
 
 ### 6.3 WhatsAppConversation（WhatsApp 对话）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| userId | String | | 关联 User（仅当识别出用户时填） |
-| user | User | | `@relation("WhatsAppConversationUser", onDelete: Restrict)` |
-| phoneNumber | String | ✓ | 对方手机号（E.164 格式） |
-| wabaId | String | | WhatsApp Business Account ID |
-| phoneNumberId | String | | Meta 平台 phone_number_id |
-| lastMessageAt | DateTime | | |
-| lastMessagePreview | String | | |
-| windowExpiresAt | DateTime | | 24h 客服窗口过期时间 |
-| messageCount | Int | | |
-| unreadCount | Int | | |
-| status | String | | `open` / `ai_handled` / `human_handled` / `closed` |
-| assignedTo | String | | 客服 AdminUser ID（被接管时） |
-| assignedToUser | AdminUser | | `@relation("WhatsAppConversationAssigned", onDelete: Restrict)` |
-| metadata | String | | JSON（来源广告、首次进入页面等） |
-| createdAt, updatedAt, deletedAt | | | |
+| 字段                            | 类型      | 必填 | 说明                                                            |
+| ------------------------------- | --------- | ---- | --------------------------------------------------------------- |
+| id                              | String    | ✓    |                                                                 |
+| userId                          | String    |      | 关联 User（仅当识别出用户时填）                                 |
+| user                            | User      |      | `@relation("WhatsAppConversationUser", onDelete: Restrict)`     |
+| phoneNumber                     | String    | ✓    | 对方手机号（E.164 格式）                                        |
+| wabaId                          | String    |      | WhatsApp Business Account ID                                    |
+| phoneNumberId                   | String    |      | Meta 平台 phone_number_id                                       |
+| lastMessageAt                   | DateTime  |      |                                                                 |
+| lastMessagePreview              | String    |      |                                                                 |
+| windowExpiresAt                 | DateTime  |      | 24h 客服窗口过期时间                                            |
+| messageCount                    | Int       |      |                                                                 |
+| unreadCount                     | Int       |      |                                                                 |
+| status                          | String    |      | `open` / `ai_handled` / `human_handled` / `closed`              |
+| assignedTo                      | String    |      | 客服 AdminUser ID（被接管时）                                   |
+| assignedToUser                  | AdminUser |      | `@relation("WhatsAppConversationAssigned", onDelete: Restrict)` |
+| metadata                        | String    |      | JSON（来源广告、首次进入页面等）                                |
+| createdAt, updatedAt, deletedAt |           |      |                                                                 |
 
 ```prisma
 model WhatsAppConversation {
@@ -576,27 +581,27 @@ model WhatsAppConversation {
 
 ### 6.4 MarketingEvent（**统一**营销事件表 — 5 平台 Pixel + GA4）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| userId | String | | 关联 User（可空：游客） |
-| user | User | | `@relation("MarketingEventUser", onDelete: Restrict)` |
-| anonymousId | String | | 游客标识（UUID） |
-| eventId | String | ✓ | **去重 key**（前端生成 UUID，服务端复用同值） |
-| eventName | String | ✓ | 事件名（如 `CompletePayment` / `purchase`） |
-| platform | String | ✓ | `facebook_pixel` / `tiktok_pixel` / `google_ga4` / `snapchat_pixel` / `server_capi` / `server_events_api` |
-| source | String | | `web` / `ios` / `android` / `server` |
-| eventTime | DateTime | ✓ | 事件发生时间（用户本地时区） |
-| eventTimeUtc | DateTime | ✓ | UTC 时间（用于服务端校准） |
-| properties | String | | JSON 事件属性（content_ids, value, currency 等） |
-| context | String | | JSON 上下文（url, referrer, user_agent, ip） |
-| sessionId | String | | 会话 ID |
-| adId | String | | 广告归因 ID（如 `fbclid` / `ttclid` / `gclid`） |
-| attributionSource | String | | `facebook` / `tiktok` / `google` / `organic` |
-| processed | Boolean | | 是否已下发到平台 |
-| processedAt | DateTime | | |
-| failureReason | String | | 下发失败原因 |
-| createdAt | | | |
+| 字段              | 类型     | 必填 | 说明                                                                                                      |
+| ----------------- | -------- | ---- | --------------------------------------------------------------------------------------------------------- |
+| id                | String   | ✓    |                                                                                                           |
+| userId            | String   |      | 关联 User（可空：游客）                                                                                   |
+| user              | User     |      | `@relation("MarketingEventUser", onDelete: Restrict)`                                                     |
+| anonymousId       | String   |      | 游客标识（UUID）                                                                                          |
+| eventId           | String   | ✓    | **去重 key**（前端生成 UUID，服务端复用同值）                                                             |
+| eventName         | String   | ✓    | 事件名（如 `CompletePayment` / `purchase`）                                                               |
+| platform          | String   | ✓    | `facebook_pixel` / `tiktok_pixel` / `google_ga4` / `snapchat_pixel` / `server_capi` / `server_events_api` |
+| source            | String   |      | `web` / `ios` / `android` / `server`                                                                      |
+| eventTime         | DateTime | ✓    | 事件发生时间（用户本地时区）                                                                              |
+| eventTimeUtc      | DateTime | ✓    | UTC 时间（用于服务端校准）                                                                                |
+| properties        | String   |      | JSON 事件属性（content_ids, value, currency 等）                                                          |
+| context           | String   |      | JSON 上下文（url, referrer, user_agent, ip）                                                              |
+| sessionId         | String   |      | 会话 ID                                                                                                   |
+| adId              | String   |      | 广告归因 ID（如 `fbclid` / `ttclid` / `gclid`）                                                           |
+| attributionSource | String   |      | `facebook` / `tiktok` / `google` / `organic`                                                              |
+| processed         | Boolean  |      | 是否已下发到平台                                                                                          |
+| processedAt       | DateTime |      |                                                                                                           |
+| failureReason     | String   |      | 下发失败原因                                                                                              |
+| createdAt         |          |      |                                                                                                           |
 
 ```prisma
 model MarketingEvent {
@@ -631,34 +636,34 @@ model MarketingEvent {
 
 ### 6.5 AdAttribution（广告归因）
 
-| 字段 | 类型 | 必填 | 说明 |
-|---|---|---|---|
-| id | String | ✓ | |
-| userId | String | | |
-| user | User | | `@relation("AdAttributionUser", onDelete: Restrict)` |
-| anonymousId | String | | 游客 ID（归因时可能未登录） |
-| platform | String | ✓ | `facebook` / `tiktok` / `google` / `linkedin` |
-| clickId | String | ✓ | `fbclid` / `ttclid` / `gclid` / `li_fat_id` |
-| campaignId | String | | 广告系列 ID |
-| adsetId | String | | 广告组 ID |
-| adId | String | | 广告 ID |
-| campaignName | String | | |
-| adsetName | String | | |
-| adName | String | | |
-| landingUrl | String | | 落地页 URL |
-| referrer | String | | HTTP referrer |
-| userAgent | String | | |
-| ipAddress | String | | |
-| geoCountry | String | | 推断国家 |
-| attributionType | String | | `click` / `view`（点击 / 展示） |
-| attributionWindow | Int | | 归因窗口（天），默认 7 天点击 + 1 天展示 |
-| matchedAt | DateTime | ✓ | 匹配时间 |
-| converted | Boolean | | 是否转化 |
-| convertedAt | DateTime | | |
-| conversionType | String | | `register` / `purchase` / `subscribe` 等 |
-| conversionValue | Decimal | | 转化价值 |
-| raw | String | | 平台返回的原始归因数据 |
-| createdAt, updatedAt, deletedAt | | | |
+| 字段                            | 类型     | 必填 | 说明                                                 |
+| ------------------------------- | -------- | ---- | ---------------------------------------------------- |
+| id                              | String   | ✓    |                                                      |
+| userId                          | String   |      |                                                      |
+| user                            | User     |      | `@relation("AdAttributionUser", onDelete: Restrict)` |
+| anonymousId                     | String   |      | 游客 ID（归因时可能未登录）                          |
+| platform                        | String   | ✓    | `facebook` / `tiktok` / `google` / `linkedin`        |
+| clickId                         | String   | ✓    | `fbclid` / `ttclid` / `gclid` / `li_fat_id`          |
+| campaignId                      | String   |      | 广告系列 ID                                          |
+| adsetId                         | String   |      | 广告组 ID                                            |
+| adId                            | String   |      | 广告 ID                                              |
+| campaignName                    | String   |      |                                                      |
+| adsetName                       | String   |      |                                                      |
+| adName                          | String   |      |                                                      |
+| landingUrl                      | String   |      | 落地页 URL                                           |
+| referrer                        | String   |      | HTTP referrer                                        |
+| userAgent                       | String   |      |                                                      |
+| ipAddress                       | String   |      |                                                      |
+| geoCountry                      | String   |      | 推断国家                                             |
+| attributionType                 | String   |      | `click` / `view`（点击 / 展示）                      |
+| attributionWindow               | Int      |      | 归因窗口（天），默认 7 天点击 + 1 天展示             |
+| matchedAt                       | DateTime | ✓    | 匹配时间                                             |
+| converted                       | Boolean  |      | 是否转化                                             |
+| convertedAt                     | DateTime |      |                                                      |
+| conversionType                  | String   |      | `register` / `purchase` / `subscribe` 等             |
+| conversionValue                 | Decimal  |      | 转化价值                                             |
+| raw                             | String   |      | 平台返回的原始归因数据                               |
+| createdAt, updatedAt, deletedAt |          |      |                                                      |
 
 ```prisma
 model AdAttribution {
@@ -720,12 +725,14 @@ model AdAttribution {
 ```
 
 **状态变更触发**：
+
 - `→ active`：`POST /api/h5/oauth/:platform/callback` 成功
 - `active → expired`：后台 cron 扫 `accessTokenExpiresAt < now() - 1h` 且 refresh 失败
 - `active → revoked`：监听 `https://graph.facebook.com/v18.0/{app_id}/subscriptions` webhook
 - `* → disconnected`：`POST /api/h5/oauth/:platform/disconnect`
 
 **独立日志表**（00-foundation §4.3）：
+
 ```prisma
 model OverseasAuthStatusLog {
   id           String   @id @default(uuid())
@@ -769,6 +776,7 @@ converted (用户完成目标事件：注册/下单/订阅)
 ```
 
 **关键点**：
+
 - 归因窗口：默认 7 天点击 + 1 天展示（可按 campaign 调整）
 - 同一用户多次进入 → 多条 AdAttribution（last-click attribution 最后一次点击胜出）
 - 跨设备归因**本期不**做（P2）
@@ -781,53 +789,53 @@ converted (用户完成目标事件：注册/下单/订阅)
 
 ### 8.1 OAuth（`/api/h5/oauth/*`）
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| GET | `/api/h5/oauth/:platform/authorize` | 公开 | 返回 authorize URL（带 HMAC state） |
-| GET | `/api/h5/oauth/:platform/callback` | 公开 | OAuth 回调（前端用 302 跳到 H5） |
-| POST | `/api/h5/oauth/:platform/one-tap` | 公开 | Google One Tap / Apple 等无跳转登录 |
-| POST | `/api/h5/oauth/:platform/disconnect` | 需登录 | 解绑（不影响 H5 账号） |
-| GET | `/api/h5/oauth/me` | 需登录 | 当前用户已绑定的所有海外平台 |
-| POST | `/api/h5/oauth/:platform/refresh` | 内部 cron | 刷 token（**不**暴露前端） |
-| POST | `/api/h5/oauth/whatsapp/webhook` | Meta 回调 | WhatsApp 收消息 webhook（**不**需 JWT，签名校验） |
-| GET | `/api/h5/oauth/whatsapp/webhook` | Meta 回调 | webhook 验证（GET 模式返回 hub.challenge） |
-| POST | `/api/h5/oauth/linkedin/lead-webhook` | LinkedIn 回调 | Lead Gen Form 数据接收 |
-| POST | `/api/h5/oauth/facebook/deauth` | Meta 回调 | 用户撤销授权通知（**不**需 JWT） |
-| POST | `/api/h5/oauth/facebook/datalookup` | Meta 回调 | 数据查询请求（GDPR/CCPA 配合） |
+| Method | Path                                  | 权限          | 说明                                              |
+| ------ | ------------------------------------- | ------------- | ------------------------------------------------- |
+| GET    | `/api/h5/oauth/:platform/authorize`   | 公开          | 返回 authorize URL（带 HMAC state）               |
+| GET    | `/api/h5/oauth/:platform/callback`    | 公开          | OAuth 回调（前端用 302 跳到 H5）                  |
+| POST   | `/api/h5/oauth/:platform/one-tap`     | 公开          | Google One Tap / Apple 等无跳转登录               |
+| POST   | `/api/h5/oauth/:platform/disconnect`  | 需登录        | 解绑（不影响 H5 账号）                            |
+| GET    | `/api/h5/oauth/me`                    | 需登录        | 当前用户已绑定的所有海外平台                      |
+| POST   | `/api/h5/oauth/:platform/refresh`     | 内部 cron     | 刷 token（**不**暴露前端）                        |
+| POST   | `/api/h5/oauth/whatsapp/webhook`      | Meta 回调     | WhatsApp 收消息 webhook（**不**需 JWT，签名校验） |
+| GET    | `/api/h5/oauth/whatsapp/webhook`      | Meta 回调     | webhook 验证（GET 模式返回 hub.challenge）        |
+| POST   | `/api/h5/oauth/linkedin/lead-webhook` | LinkedIn 回调 | Lead Gen Form 数据接收                            |
+| POST   | `/api/h5/oauth/facebook/deauth`       | Meta 回调     | 用户撤销授权通知（**不**需 JWT）                  |
+| POST   | `/api/h5/oauth/facebook/datalookup`   | Meta 回调     | 数据查询请求（GDPR/CCPA 配合）                    |
 
 ### 8.2 Marketing（`/api/h5/marketing/*`）
 
-| Method | Path | 权限 | 说明 |
-|---|---|---|---|
-| POST | `/api/h5/marketing/track` | 公开 | 接收前端事件（统一去重，扇出到 5 平台） |
-| POST | `/api/h5/marketing/facebook/events` | 内部 | Conversions API 服务端事件 |
-| POST | `/api/h5/marketing/tiktok/events` | 内部 | TikTok Events API 服务端事件 |
-| POST | `/api/h5/marketing/google/events` | 内部 | GA4 Measurement Protocol |
-| POST | `/api/h5/marketing/attribution/match` | 公开 | URL 带 clickId 落库归因 |
-| GET | `/api/h5/marketing/attribution/me` | 需登录 | 当前用户归因记录（最近 N 条） |
-| GET | `/api/h5/marketing/attribution/conversion` | 内部 cron | 拉平台归因窗口内转化数据 |
-| POST | `/api/h5/marketing/payments/google-play/verify` | 需登录 | Google Play 购买凭证校验 |
-| POST | `/api/h5/marketing/payments/google-play/webhook` | Google 回调 | Real-time Developer Notifications |
-| GET | `/api/h5/marketing/whatsapp/templates` | 需登录 | 列出已通过模板（供选择） |
-| POST | `/api/h5/marketing/whatsapp/send` | 内部 | 发送模板消息 |
-| GET | `/api/h5/marketing/conversion-funnel` | 需登录 | 5 平台漏斗数据（汇总） |
+| Method | Path                                             | 权限        | 说明                                    |
+| ------ | ------------------------------------------------ | ----------- | --------------------------------------- |
+| POST   | `/api/h5/marketing/track`                        | 公开        | 接收前端事件（统一去重，扇出到 5 平台） |
+| POST   | `/api/h5/marketing/facebook/events`              | 内部        | Conversions API 服务端事件              |
+| POST   | `/api/h5/marketing/tiktok/events`                | 内部        | TikTok Events API 服务端事件            |
+| POST   | `/api/h5/marketing/google/events`                | 内部        | GA4 Measurement Protocol                |
+| POST   | `/api/h5/marketing/attribution/match`            | 公开        | URL 带 clickId 落库归因                 |
+| GET    | `/api/h5/marketing/attribution/me`               | 需登录      | 当前用户归因记录（最近 N 条）           |
+| GET    | `/api/h5/marketing/attribution/conversion`       | 内部 cron   | 拉平台归因窗口内转化数据                |
+| POST   | `/api/h5/marketing/payments/google-play/verify`  | 需登录      | Google Play 购买凭证校验                |
+| POST   | `/api/h5/marketing/payments/google-play/webhook` | Google 回调 | Real-time Developer Notifications       |
+| GET    | `/api/h5/marketing/whatsapp/templates`           | 需登录      | 列出已通过模板（供选择）                |
+| POST   | `/api/h5/marketing/whatsapp/send`                | 内部        | 发送模板消息                            |
+| GET    | `/api/h5/marketing/conversion-funnel`            | 需登录      | 5 平台漏斗数据（汇总）                  |
 
 ### 8.3 错误码（OAuth / Marketing 特有）
 
-| code | 含义 | HTTP | 处理 |
-|---|---|---|---|
-| `OAUTH_STATE_MISMATCH` | state 不匹配（CSRF） | 400 | 清掉 session 重新授权 |
-| `OAUTH_STATE_EXPIRED` | state 超过 10 分钟 | 400 | 重新发起 |
-| `OAUTH_CODE_EXPIRED` | code 已用或过期 | 400 | 重新发起 |
-| `OAUTH_TOKEN_EXCHANGE_FAILED` | 平台返回非 200 | 502 | 重试 1 次，仍失败报警 |
-| `OAUTH_SCOPE_INSUFFICIENT` | scope 不足 | 403 | 引导用户重新授权完整 scope |
-| `OAUTH_PLATFORM_REVOKED` | 用户在平台撤销 | 401 | 标记 OverseasAuth.status=revoked |
-| `MARKETING_EVENT_DUPLICATE` | 事件去重命中 | 200 | 静默成功 |
-| `MARKETING_PLATFORM_RATE_LIMIT` | 平台 429 | 429 | 退避 60s 重试 |
-| `MARKETING_CONVERSIONS_INVALID_PIXEL` | Pixel ID 无效 | 502 | 报警（配置错误） |
-| `WHATSAPP_TEMPLATE_NOT_APPROVED` | 模板未通过 | 400 | 提示选其他模板 |
-| `WHATSAPP_PHONE_NOT_OPT_IN` | 用户未 opt-in | 400 | 提示先加好友 |
-| `WHATSAPP_24H_WINDOW_EXPIRED` | 24h 窗口外 | 400 | 必须用模板消息 |
+| code                                  | 含义                 | HTTP | 处理                             |
+| ------------------------------------- | -------------------- | ---- | -------------------------------- |
+| `OAUTH_STATE_MISMATCH`                | state 不匹配（CSRF） | 400  | 清掉 session 重新授权            |
+| `OAUTH_STATE_EXPIRED`                 | state 超过 10 分钟   | 400  | 重新发起                         |
+| `OAUTH_CODE_EXPIRED`                  | code 已用或过期      | 400  | 重新发起                         |
+| `OAUTH_TOKEN_EXCHANGE_FAILED`         | 平台返回非 200       | 502  | 重试 1 次，仍失败报警            |
+| `OAUTH_SCOPE_INSUFFICIENT`            | scope 不足           | 403  | 引导用户重新授权完整 scope       |
+| `OAUTH_PLATFORM_REVOKED`              | 用户在平台撤销       | 401  | 标记 OverseasAuth.status=revoked |
+| `MARKETING_EVENT_DUPLICATE`           | 事件去重命中         | 200  | 静默成功                         |
+| `MARKETING_PLATFORM_RATE_LIMIT`       | 平台 429             | 429  | 退避 60s 重试                    |
+| `MARKETING_CONVERSIONS_INVALID_PIXEL` | Pixel ID 无效        | 502  | 报警（配置错误）                 |
+| `WHATSAPP_TEMPLATE_NOT_APPROVED`      | 模板未通过           | 400  | 提示选其他模板                   |
+| `WHATSAPP_PHONE_NOT_OPT_IN`           | 用户未 opt-in        | 400  | 提示先加好友                     |
+| `WHATSAPP_24H_WINDOW_EXPIRED`         | 24h 窗口外           | 400  | 必须用模板消息                   |
 
 ---
 
@@ -837,19 +845,25 @@ converted (用户完成目标事件：注册/下单/订阅)
 
 ### 9.1 SDK 集成矩阵
 
-| 平台 | 客户端 SDK | 服务端 SDK | 异步加载 | 包大小 |
-|---|---|---|---|---|
-| **Facebook** | `fbevents.js` (Pixel) + `FB.init` | `facebook-nodejs-business-sdk` | ✅ `next/script` strategy="lazyOnload" | 220KB |
-| **LinkedIn** | `LinkedIn Insight Tag` + `lnkd.init` | `linkedin-api-client` | ✅ | 65KB |
-| **Google** | `gsi/client` (Sign-In + One Tap) + `maps/api/js` + `gtag/js` | `googleapis` (Node) | ✅ One Tap 立即，Maps 按需 | 150KB |
-| **WhatsApp** | **无**客户端 SDK（用 wa.me 链接） | `@whiskeysockets/baileys` (Community) **或** 直接调 Cloud API | N/A | 0KB |
-| **TikTok** | `tiktok-sdk` (Web) | `tiktok-business-api-sdk` | ✅ | 95KB |
+| 平台         | 客户端 SDK                                                   | 服务端 SDK                                                    | 异步加载                               | 包大小 |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------- | -------------------------------------- | ------ |
+| **Facebook** | `fbevents.js` (Pixel) + `FB.init`                            | `facebook-nodejs-business-sdk`                                | ✅ `next/script` strategy="lazyOnload" | 220KB  |
+| **LinkedIn** | `LinkedIn Insight Tag` + `lnkd.init`                         | `linkedin-api-client`                                         | ✅                                     | 65KB   |
+| **Google**   | `gsi/client` (Sign-In + One Tap) + `maps/api/js` + `gtag/js` | `googleapis` (Node)                                           | ✅ One Tap 立即，Maps 按需             | 150KB  |
+| **WhatsApp** | **无**客户端 SDK（用 wa.me 链接）                            | `@whiskeysockets/baileys` (Community) **或** 直接调 Cloud API | N/A                                    | 0KB    |
+| **TikTok**   | `tiktok-sdk` (Web)                                           | `tiktok-business-api-sdk`                                     | ✅                                     | 95KB   |
 
 ### 9.2 异步加载实现
 
 ```typescript
 // apps/h5-app/src/lib/sdk-loader.ts
-type SDKName = 'facebook' | 'linkedin' | 'google-signin' | 'google-maps' | 'google-gtag' | 'tiktok-pixel';
+type SDKName =
+  | 'facebook'
+  | 'linkedin'
+  | 'google-signin'
+  | 'google-maps'
+  | 'google-gtag'
+  | 'tiktok-pixel';
 
 const loadedSDKs = new Set<SDKName>();
 
@@ -858,22 +872,34 @@ export async function loadSDK(sdk: SDKName): Promise<void> {
 
   switch (sdk) {
     case 'facebook':
-      await import(/* webpackChunkName: "fb-sdk" */ 'facebook-sdk-wrapper').then(m => m.initFacebook());
+      await import(/* webpackChunkName: "fb-sdk" */ 'facebook-sdk-wrapper').then((m) =>
+        m.initFacebook()
+      );
       break;
     case 'linkedin':
-      await import(/* webpackChunkName: "li-sdk" */ 'linkedin-insight').then(m => m.initLinkedIn());
+      await import(/* webpackChunkName: "li-sdk" */ 'linkedin-insight').then((m) =>
+        m.initLinkedIn()
+      );
       break;
     case 'google-signin':
       await loadScript('https://accounts.google.com/gsi/client', { async: true, defer: true });
       break;
     case 'google-maps':
-      await loadScript(`https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_KEY}&libraries=places&loading=async`, { async: true, defer: true });
+      await loadScript(
+        `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_KEY}&libraries=places&loading=async`,
+        { async: true, defer: true }
+      );
       break;
     case 'google-gtag':
-      await loadScript(`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA4_ID}`, { async: true });
+      await loadScript(
+        `https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA4_ID}`,
+        { async: true }
+      );
       break;
     case 'tiktok-pixel':
-      await import(/* webpackChunkName: "tt-sdk" */ 'tiktok-pixel').then(m => m.initTikTokPixel());
+      await import(/* webpackChunkName: "tt-sdk" */ 'tiktok-pixel').then((m) =>
+        m.initTikTokPixel()
+      );
       break;
   }
   loadedSDKs.add(sdk);
@@ -898,14 +924,14 @@ function loadScript(src: string, attrs: Record<string, string>): Promise<void> {
 
 ### 9.3 何时加载哪个 SDK
 
-| 触发点 | 加载 SDK | 备注 |
-|---|---|---|
-| H5 落地页 | `tiktok-pixel`, `facebook-pixel`, `google-gtag` | 仅 Pixel，**不**做登录 |
-| 用户点「Continue with Facebook」 | `facebook` (login) | 按需 |
-| 用户点「Sign in with Google」 | `google-signin` | |
-| H5 首页（auto） | `google-signin` (One Tap 自动弹) | 检测 EU 用户**不**弹 |
-| 商家中心地图选址 | `google-maps` | 按页面 |
-| 分享按钮 hover | 平台对应 Share SDK | hover 加载 |
+| 触发点                           | 加载 SDK                                        | 备注                   |
+| -------------------------------- | ----------------------------------------------- | ---------------------- |
+| H5 落地页                        | `tiktok-pixel`, `facebook-pixel`, `google-gtag` | 仅 Pixel，**不**做登录 |
+| 用户点「Continue with Facebook」 | `facebook` (login)                              | 按需                   |
+| 用户点「Sign in with Google」    | `google-signin`                                 |                        |
+| H5 首页（auto）                  | `google-signin` (One Tap 自动弹)                | 检测 EU 用户**不**弹   |
+| 商家中心地图选址                 | `google-maps`                                   | 按页面                 |
+| 分享按钮 hover                   | 平台对应 Share SDK                              | hover 加载             |
 
 ---
 
@@ -1111,6 +1137,7 @@ export function CookieConsent() {
    - `ads_read`（需审核）
 
 **Webhook 订阅**（Settings → Webhooks）：
+
 - `deauthorize` → `https://api.smy.app/api/h5/oauth/facebook/deauth`
 - `datalookup_request` → `https://api.smy.app/api/h5/oauth/facebook/datalookup`
 
@@ -1126,7 +1153,10 @@ export class FacebookService {
   private pixelId: string;
   private accessToken: string;
 
-  constructor(private config: ConfigService, private secrets: SecretsService) {
+  constructor(
+    private config: ConfigService,
+    private secrets: SecretsService
+  ) {
     this.pixelId = config.get('FACEBOOK_PIXEL_ID');
     this.accessToken = secrets.getCredential('facebook', 'system_user_token');
     this.api = FacebookAdsApi.init(this.accessToken);
@@ -1167,7 +1197,7 @@ export class FacebookService {
     });
     return {
       accessToken: longRes.data.access_token,
-      expiresIn: longRes.data.expires_in,  // ~5184000 (60 days)
+      expiresIn: longRes.data.expires_in, // ~5184000 (60 days)
       tokenType: 'Bearer',
     };
   }
@@ -1190,15 +1220,15 @@ export class FacebookService {
   async sendConversionEvent(event: MarketingEvent): Promise<void> {
     const serverEvent = new ServerEvent()
       .setEventName(event.eventName)
-      .setEventId(event.eventId)  // 与 Pixel 同 ID 用于去重
+      .setEventId(event.eventId) // 与 Pixel 同 ID 用于去重
       .setEventTime(Math.floor(new Date(event.eventTime).getTime() / 1000))
       .setUserData({
         email: hash(event.properties?.email),
         external_id: hash(event.userId),
         client_ip: event.context?.ip,
         client_user_agent: event.context?.userAgent,
-        fbc: event.properties?.fbc,  // _fbc cookie
-        fbp: event.properties?.fbp,  // _fbp cookie
+        fbc: event.properties?.fbc, // _fbc cookie
+        fbp: event.properties?.fbp, // _fbp cookie
       })
       .setCustomData({
         currency: event.properties?.currency,
@@ -1223,17 +1253,25 @@ export class FacebookService {
 ```html
 <!-- apps/h5-app/index.html -->
 <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
+  !(function (f, b, e, v, n, t, s) {
+    if (f.fbq) return;
+    n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
   // 仅在用户同意 cookie 后初始化
-  window.addEventListener('cookie_consent', function(e) {
+  window.addEventListener('cookie_consent', function (e) {
     if (e.detail === 'all' || e.detail === 'essential') {
       fbq('init', '{{ pixel_id }}');
       fbq('track', 'PageView');
@@ -1269,22 +1307,24 @@ export function trackFBEvent(eventName: string, data: any) {
 ```html
 <!-- 在 H5 客服页面加载 Messenger Customer Chat Plugin -->
 <script>
-  window.fbAsyncInit = function() {
+  window.fbAsyncInit = function () {
     FB.init({ appId: '{{ fb_app_id }}', autoLogAppEvents: true, xfbml: true, version: 'v18.0' });
   };
 </script>
 <script async defer src="https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js"></script>
 
-<div class="fb-customerchat"
+<div
+  class="fb-customerchat"
   attribution="install_email"
   page_id="{{ facebook_page_id }}"
   theme_color="#10B981"
   logged_in_greeting="您好，需要什么帮助？"
-  logged_out_greeting="您好，需要什么帮助？">
-</div>
+  logged_out_greeting="您好，需要什么帮助？"
+></div>
 ```
 
 **关键点**：
+
 - 用户**必须**先登录 Facebook 才能用 Messenger（无匿名会话）
 - 商家 Facebook Page **必须**开启自动回复（AI 接管）
 - H5 与 Messenger **不**能共享 session，需用户在 FB 重新授权
@@ -1322,7 +1362,9 @@ export class LinkedInService {
   constructor(private config: ConfigService) {
     this.clientId = config.get('LINKEDIN_CLIENT_ID');
     this.clientSecret = config.get('LINKEDIN_CLIENT_SECRET');
-    this.jwksClient = new JwksClient({ jwksUri: 'https://www.linkedin.com/oauth/openid/connect/jwks' });
+    this.jwksClient = new JwksClient({
+      jwksUri: 'https://www.linkedin.com/oauth/openid/connect/jwks',
+    });
   }
 
   // === PKCE 强制 ===
@@ -1355,7 +1397,7 @@ export class LinkedInService {
       accessToken: res.data.access_token,
       refreshToken: res.data.refresh_token,
       expiresIn: res.data.expires_in,
-      idToken: res.data.id_token,  // OIDC
+      idToken: res.data.id_token, // OIDC
       scope: res.data.scope,
     };
   }
@@ -1384,27 +1426,37 @@ export class LinkedInService {
 
   // === UGC Share ===
   async sharePost(personUrn: string, text: string): Promise<void> {
-    const res = await axios.post('https://api.linkedin.com/v2/ugcPosts', {
-      author: personUrn,
-      lifecycleState: 'PUBLISHED',
-      specificContent: {
-        'com.linkedin.ugc.ShareContent': {
-          shareCommentary: { text },
-          shareMediaCategory: 'NONE',
+    const res = await axios.post(
+      'https://api.linkedin.com/v2/ugcPosts',
+      {
+        author: personUrn,
+        lifecycleState: 'PUBLISHED',
+        specificContent: {
+          'com.linkedin.ugc.ShareContent': {
+            shareCommentary: { text },
+            shareMediaCategory: 'NONE',
+          },
         },
+        visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
       },
-      visibility: { 'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC' },
-    }, {
-      headers: { Authorization: `Bearer ${this.accessToken}`, 'X-Restli-Protocol-Version': '2.0.0' },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+          'X-Restli-Protocol-Version': '2.0.0',
+        },
+      }
+    );
     return res.data;
   }
 
   // === Lead Gen Forms ===
   async fetchLeadForms(campaignId: string): Promise<any[]> {
-    const res = await axios.get(`https://api.linkedin.com/v2/adForms?q=leadGenForm&campaigns=urn:li:sponsoredCampaign:${campaignId}`, {
-      headers: { Authorization: `Bearer ${this.accessToken}` },
-    });
+    const res = await axios.get(
+      `https://api.linkedin.com/v2/adForms?q=leadGenForm&campaigns=urn:li:sponsoredCampaign:${campaignId}`,
+      {
+        headers: { Authorization: `Bearer ${this.accessToken}` },
+      }
+    );
     return res.data.elements;
   }
 }
@@ -1415,13 +1467,19 @@ export class LinkedInService {
 ```html
 <!-- H5 全站底部 -->
 <script>
-  _linkedin_partner_id = "{{ partner_id }}";
+  _linkedin_partner_id = '{{ partner_id }}';
   window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
   window._linkedin_data_partner_ids.push(_linkedin_partner_id);
 </script>
 <script async src="https://snap.licdn.com/li.lms-analytics/insight.min.js"></script>
 <noscript>
-  <img height="1" width="1" style="display:none" alt="" src="https://px.ads.linkedin.com/collect/?pid={{ partner_id }}&fmt=gif" />
+  <img
+    height="1"
+    width="1"
+    style="display:none"
+    alt=""
+    src="https://px.ads.linkedin.com/collect/?pid={{ partner_id }}&fmt=gif"
+  />
 </noscript>
 ```
 
@@ -1434,8 +1492,10 @@ export class LinkedInWebhookController {
   @Post('lead-webhook')
   async handleLeadWebhook(@Body() body: any, @Headers('x-li-signature') signature: string) {
     // 1. 验签
-    const expected = crypto.createHmac('sha256', this.config.get('LINKEDIN_WEBHOOK_SECRET'))
-      .update(JSON.stringify(body)).digest('hex');
+    const expected = crypto
+      .createHmac('sha256', this.config.get('LINKEDIN_WEBHOOK_SECRET'))
+      .update(JSON.stringify(body))
+      .digest('hex');
     if (signature !== expected) throw new UnauthorizedException();
 
     // 2. 解析 lead
@@ -1483,12 +1543,13 @@ export class LinkedInWebhookController {
 
 ```html
 <!-- H5 登录页 -->
-<div id="g_id_onload"
-     data-client_id="{{ google_client_id }}.apps.googleusercontent.com"
-     data-callback="handleGoogleSignIn"
-     data-auto_prompt="false"
-     data-itp_support="true">
-</div>
+<div
+  id="g_id_onload"
+  data-client_id="{{ google_client_id }}.apps.googleusercontent.com"
+  data-callback="handleGoogleSignIn"
+  data-auto_prompt="false"
+  data-itp_support="true"
+></div>
 <div class="g_id_signin" data-type="standard"></div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1499,17 +1560,20 @@ export class LinkedInWebhookController {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idToken: response.credential }),
-    }).then(r => r.json()).then(data => {
-      if (data.token) {
-        localStorage.setItem('smy_token', data.token);
-        window.location.href = '/';
-      }
-    });
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem('smy_token', data.token);
+          window.location.href = '/';
+        }
+      });
   }
 </script>
 ```
 
 **One Tap 触发逻辑**：
+
 - 用户**首次**访问 → 自动弹
 - 用户**拒绝** → 14 天内不弹
 - 用户已登录 → 不弹
@@ -1594,14 +1658,17 @@ export async function searchNearby(lat: number, lng: number, type: string) {
   const maps = await loadMaps();
   const service = new maps.places.PlacesService(document.createElement('div'));
   return new Promise((resolve, reject) => {
-    service.nearbySearch({
-      location: { lat, lng },
-      radius: 1000,
-      type,
-    }, (results, status) => {
-      if (status === maps.places.PlacesServiceStatus.OK) resolve(results);
-      else reject(new Error(status));
-    });
+    service.nearbySearch(
+      {
+        location: { lat, lng },
+        radius: 1000,
+        type,
+      },
+      (results, status) => {
+        if (status === maps.places.PlacesServiceStatus.OK) resolve(results);
+        else reject(new Error(status));
+      }
+    );
   });
 }
 ```
@@ -1633,7 +1700,7 @@ export class GooglePlayBilling {
     // H5 WebView 调后端 /api/h5/payments/google-play/verify
     const result = await fetch('/api/h5/payments/google-play/verify', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({ purchaseToken, productId }),
     });
     return result.json();
@@ -1718,7 +1785,7 @@ async verifyRecaptcha(token: string, action: string): Promise<number> {
 // apps/api/src/integrations/whatsapp/template-sync.service.ts
 @Injectable()
 export class WhatsAppTemplateSyncService {
-  @Cron('0 */6 * * *')  // 每 6 小时
+  @Cron('0 */6 * * *') // 每 6 小时
   async syncTemplates() {
     const res = await axios.get(`https://graph.facebook.com/v18.0/{waba-id}/message_templates`, {
       headers: { Authorization: `Bearer ${this.config.get('WHATSAPP_ACCESS_TOKEN')}` },
@@ -1731,10 +1798,12 @@ export class WhatsAppTemplateSyncService {
           templateId: t.id,
           name: t.name,
           language: t.language,
-          category: t.category,  // utility / marketing / authentication
-          status: t.status,      // APPROVED / PENDING / REJECTED
+          category: t.category, // utility / marketing / authentication
+          status: t.status, // APPROVED / PENDING / REJECTED
           components: JSON.stringify(t.components),
-          variables: JSON.stringify(t.components.find((c: any) => c.type === 'BODY')?.example?.body_text || []),
+          variables: JSON.stringify(
+            t.components.find((c: any) => c.type === 'BODY')?.example?.body_text || []
+          ),
           lastSyncedAt: new Date(),
         },
         update: {
@@ -1756,11 +1825,11 @@ export class WhatsAppTemplateSyncService {
 @Injectable()
 export class WhatsAppSendService {
   async sendTemplate(opts: {
-    to: string;          // E.164 格式
+    to: string; // E.164 格式
     templateName: string;
-    language: string;    // en / zh_CN
+    language: string; // en / zh_CN
     variables: Record<string, string>;
-    buttons?: Array<{ id: string; text: string }>;  // 按钮
+    buttons?: Array<{ id: string; text: string }>; // 按钮
   }): Promise<string> {
     // 1. 查模板
     const template = await this.prisma.whatsAppTemplate.findUnique({
@@ -1775,7 +1844,7 @@ export class WhatsAppSendService {
     if (Object.keys(opts.variables).length) {
       components.push({
         type: 'body',
-        parameters: Object.values(opts.variables).map(text => ({ type: 'text', text })),
+        parameters: Object.values(opts.variables).map((text) => ({ type: 'text', text })),
       });
     }
     if (opts.buttons) {
@@ -1783,7 +1852,7 @@ export class WhatsAppSendService {
         type: 'button',
         sub_type: 'quick_reply',
         index: 0,
-        parameters: opts.buttons.map(b => ({ type: 'payload', payload: b.id })),
+        parameters: opts.buttons.map((b) => ({ type: 'payload', payload: b.id })),
       });
     }
 
@@ -1805,7 +1874,7 @@ export class WhatsAppSendService {
       }
     );
 
-    return res.data.messages[0].id;  // wamid.xxx
+    return res.data.messages[0].id; // wamid.xxx
   }
 }
 ```
@@ -1818,8 +1887,11 @@ export class WhatsAppSendService {
 export class WhatsAppWebhookController {
   @Get('webhook')
   verify(@Query() q: { 'hub.mode': string; 'hub.verify_token': string; 'hub.challenge': string }) {
-    if (q['hub.mode'] === 'subscribe' && q['hub.verify_token'] === this.config.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')) {
-      return q['hub.challenge'];  // 200 text/plain
+    if (
+      q['hub.mode'] === 'subscribe' &&
+      q['hub.verify_token'] === this.config.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
+    ) {
+      return q['hub.challenge']; // 200 text/plain
     }
     throw new ForbiddenException();
   }
@@ -1827,8 +1899,12 @@ export class WhatsAppWebhookController {
   @Post('webhook')
   async handle(@Body() body: any, @Headers('x-hub-signature-256') signature: string) {
     // 1. 验签（HMAC-SHA256，body 全量）
-    const expected = 'sha256=' + crypto.createHmac('sha256', this.config.get('WHATSAPP_APP_SECRET'))
-      .update(JSON.stringify(body)).digest('hex');
+    const expected =
+      'sha256=' +
+      crypto
+        .createHmac('sha256', this.config.get('WHATSAPP_APP_SECRET'))
+        .update(JSON.stringify(body))
+        .digest('hex');
     if (signature !== expected) throw new UnauthorizedException();
 
     // 2. 解析
@@ -1914,11 +1990,13 @@ export class WhatsAppWebhookController {
 ### 14.5 24h 窗口管理
 
 **规则**：
+
 - 用户**最后一条**入站消息后 24h 内：可发**自由文本 + 媒体**
 - 超过 24h：**只能**用预先批准的**模板消息**
 - 模板消息**不**受限（utility / authentication 模板 24h 外**仍**可发）
 
 **会话窗口刷新**：
+
 ```typescript
 // 用户每发一条入站消息 → 24h 窗口重置
 windowExpiresAt = new Date(lastInboundAt + 24h)
@@ -1988,21 +2066,25 @@ export class TikTokService {
   }
 
   async exchangeCode(code: string, codeVerifier: string): Promise<TokenSet> {
-    const res = await axios.post('https://open.tiktokapis.com/v2/oauth/token/', {
-      client_key: this.config.get('TIKTOK_CLIENT_KEY'),
-      client_secret: this.config.get('TIKTOK_CLIENT_SECRET'),
-      code,
-      grant_type: 'authorization_code',
-      redirect_uri: this.config.get('TIKTOK_OAUTH_REDIRECT'),
-      code_verifier: codeVerifier,
-    }, {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
+    const res = await axios.post(
+      'https://open.tiktokapis.com/v2/oauth/token/',
+      {
+        client_key: this.config.get('TIKTOK_CLIENT_KEY'),
+        client_secret: this.config.get('TIKTOK_CLIENT_SECRET'),
+        code,
+        grant_type: 'authorization_code',
+        redirect_uri: this.config.get('TIKTOK_OAUTH_REDIRECT'),
+        code_verifier: codeVerifier,
+      },
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      }
+    );
     return {
       accessToken: res.data.access_token,
       refreshToken: res.data.refresh_token,
-      expiresIn: res.data.expires_in,  // 7200s (2h)
-      refreshExpiresIn: res.data.refresh_expires_in,  // 31536000s (365d)
+      expiresIn: res.data.expires_in, // 7200s (2h)
+      refreshExpiresIn: res.data.refresh_expires_in, // 31536000s (365d)
       scope: res.data.scope,
       tokenType: 'Bearer',
     };
@@ -2011,7 +2093,8 @@ export class TikTokService {
   async getUserInfo(accessToken: string): Promise<TikTokProfile> {
     const res = await axios.get('https://open.tiktokapis.com/v2/user/info/', {
       params: {
-        fields: 'open_id,union_id,display_name,avatar_url,profile_deep_link,follower_count,likes_count,video_count',
+        fields:
+          'open_id,union_id,display_name,avatar_url,profile_deep_link,follower_count,likes_count,video_count',
       },
       headers: { Authorization: `Bearer ${accessToken}` },
     });
@@ -2029,19 +2112,60 @@ export class TikTokService {
 ### 15.3 TikTok Pixel + Events API
 
 **前端 Pixel**：
+
 ```html
 <script>
-  !function (w, d, t) {
-    w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};
-    var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;
-    var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+  !(function (w, d, t) {
+    w.TiktokAnalyticsObject = t;
+    var ttq = (w[t] = w[t] || []);
+    ((ttq.methods = [
+      'page',
+      'track',
+      'identify',
+      'instances',
+      'debug',
+      'on',
+      'off',
+      'once',
+      'ready',
+      'alias',
+      'group',
+      'enableCookie',
+      'disableCookie',
+    ]),
+      (ttq.setAndDefer = function (t, e) {
+        t[e] = function () {
+          t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+        };
+      }));
+    for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
+    ((ttq.instance = function (t) {
+      for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++)
+        ttq.setAndDefer(e, ttq.methods[n]);
+      return e;
+    }),
+      (ttq.load = function (e, n) {
+        var i = 'https://analytics.tiktok.com/i18n/pixel/events.js';
+        ((ttq._i = ttq._i || {}),
+          (ttq._i[e] = []),
+          (ttq._i[e]._u = i),
+          (ttq._t = ttq._t || {}),
+          (ttq._t[e] = +new Date()),
+          (ttq._o = ttq._o || {}),
+          (ttq._o[e] = n || {}));
+        var o = document.createElement('script');
+        ((o.type = 'text/javascript'), (o.async = !0), (o.src = i + '?sdkid=' + e + '&lib=' + t));
+        var a = document.getElementsByTagName('script')[0];
+        a.parentNode.insertBefore(o, a);
+      }));
     ttq.load('{{ pixel_id }}');
     ttq.page();
-  }(window, document, 'ttq');
+  })(window, document, 'ttq');
 </script>
 ```
 
 **服务端 Events API**：
+
 ```typescript
 async sendTikTokEvent(event: MarketingEvent): Promise<void> {
   const pixelCode = this.config.get('TIKTOK_PIXEL_CODE');
@@ -2083,6 +2207,7 @@ async sendTikTokEvent(event: MarketingEvent): Promise<void> {
 ### 15.4 TikTok Share Kit（Web 端限制）
 
 Web 端**无**官方 Share SDK（仅移动端），替代方案：
+
 ```typescript
 async shareToTikTok(url: string, text: string) {
   // 1. 复制文案 + 链接
@@ -2114,27 +2239,37 @@ type EventName =
   | 'AddToCart'
   | 'InitiateCheckout'
   | 'AddPaymentInfo'
-  | 'Purchase'           // Facebook / TikTok
-  | 'CompletePayment'    // TikTok 专用
+  | 'Purchase' // Facebook / TikTok
+  | 'CompletePayment' // TikTok 专用
   | 'CompleteRegistration'
   | 'Subscribe'
   | 'Login'
   | 'Search'
   | 'Share'
-  | 'Contact'            // WhatsApp click
-  | 'Lead'               // LinkedIn Lead Gen
-  | 'custom';            // 任意自定义
+  | 'Contact' // WhatsApp click
+  | 'Lead' // LinkedIn Lead Gen
+  | 'custom'; // 任意自定义
 
 interface TrackOptions {
   eventName: EventName;
   properties?: Record<string, any>;
   // 跨平台同 eventId 用于去重（CAPI + Pixel）
-  eventId?: string;  // 默认生成 UUID
+  eventId?: string; // 默认生成 UUID
 }
 
 const platformMap: Record<EventName, Record<string, string>> = {
-  Purchase: { facebook: 'Purchase', tiktok: 'CompletePayment', google: 'purchase', linkedin: 'conversion' },
-  CompleteRegistration: { facebook: 'CompleteRegistration', tiktok: 'CompleteRegistration', google: 'sign_up', linkedin: 'lead' },
+  Purchase: {
+    facebook: 'Purchase',
+    tiktok: 'CompletePayment',
+    google: 'purchase',
+    linkedin: 'conversion',
+  },
+  CompleteRegistration: {
+    facebook: 'CompleteRegistration',
+    tiktok: 'CompleteRegistration',
+    google: 'sign_up',
+    linkedin: 'lead',
+  },
   // ...
 };
 
@@ -2143,26 +2278,42 @@ export async function trackEvent(opts: TrackOptions): Promise<void> {
   const eventTime = new Date();
 
   // 1. 服务端记录（统一去重 + 扇出）
-  api.post('/api/h5/marketing/track', {
-    eventName: opts.eventName,
-    eventId,
-    properties: opts.properties,
-    eventTime: eventTime.toISOString(),
-  }, { showLoading: false }).catch(() => null);
+  api
+    .post(
+      '/api/h5/marketing/track',
+      {
+        eventName: opts.eventName,
+        eventId,
+        properties: opts.properties,
+        eventTime: eventTime.toISOString(),
+      },
+      { showLoading: false }
+    )
+    .catch(() => null);
 
   // 2. 各平台 Pixel（前端）
   if (cookieConsent !== 'reject') {
     // Facebook Pixel
     if (window.fbq) {
-      window.fbq('track', platformMap[opts.eventName]?.facebook || opts.eventName, opts.properties, { eventID: eventId });
+      window.fbq(
+        'track',
+        platformMap[opts.eventName]?.facebook || opts.eventName,
+        opts.properties,
+        { eventID: eventId }
+      );
     }
     // TikTok Pixel
     if (window.ttq) {
-      window.ttq.track(platformMap[opts.eventName]?.tiktok || opts.eventName, opts.properties, { eventID: eventId });
+      window.ttq.track(platformMap[opts.eventName]?.tiktok || opts.eventName, opts.properties, {
+        eventID: eventId,
+      });
     }
     // Google GA4
     if (window.gtag) {
-      window.gtag('event', platformMap[opts.eventName]?.google || opts.eventName, { ...opts.properties, event_id: eventId });
+      window.gtag('event', platformMap[opts.eventName]?.google || opts.eventName, {
+        ...opts.properties,
+        event_id: eventId,
+      });
     }
     // LinkedIn Insight
     if (window._linkedin_data_partner_ids) {
@@ -2221,18 +2372,18 @@ export class MarketingService {
 
 ### 16.3 事件映射表（统一字典）
 
-| 业务事件 | Facebook | TikTok | Google GA4 | LinkedIn |
-|---|---|---|---|---|
-| 注册完成 | CompleteRegistration | CompleteRegistration | sign_up | lead |
-| 登录 | Login | Login | login | — |
-| 浏览内容 | ViewContent | ViewContent | view_item_list | — |
-| 加入购物车 | AddToCart | AddToCart | add_to_cart | — |
-| 开始结算 | InitiateCheckout | InitiateCheckout | begin_checkout | — |
-| 填写支付信息 | AddPaymentInfo | AddPaymentInfo | add_payment_info | — |
-| 支付完成 | Purchase | CompletePayment | purchase | conversion |
-| 订阅 | Subscribe | Subscribe | purchase | conversion |
-| 分享 | Share | Share | share | — |
-| 联系客服 | Contact | Contact | generate_lead | lead |
+| 业务事件     | Facebook             | TikTok               | Google GA4       | LinkedIn   |
+| ------------ | -------------------- | -------------------- | ---------------- | ---------- |
+| 注册完成     | CompleteRegistration | CompleteRegistration | sign_up          | lead       |
+| 登录         | Login                | Login                | login            | —          |
+| 浏览内容     | ViewContent          | ViewContent          | view_item_list   | —          |
+| 加入购物车   | AddToCart            | AddToCart            | add_to_cart      | —          |
+| 开始结算     | InitiateCheckout     | InitiateCheckout     | begin_checkout   | —          |
+| 填写支付信息 | AddPaymentInfo       | AddPaymentInfo       | add_payment_info | —          |
+| 支付完成     | Purchase             | CompletePayment      | purchase         | conversion |
+| 订阅         | Subscribe            | Subscribe            | purchase         | conversion |
+| 分享         | Share                | Share                | share            | —          |
+| 联系客服     | Contact              | Contact              | generate_lead    | lead       |
 
 ---
 
@@ -2242,25 +2393,25 @@ export class MarketingService {
 
 ### 17.1 5 平台数据传输要求
 
-| 平台 | 数据中心 | GDPR 合规 | CCPA 合规 | 跨境传输要求 |
-|---|---|---|---|---|
-| **Facebook** | 美国 | ✅ Data Privacy Framework | ✅ | SCCs (Standard Contractual Clauses) |
-| **LinkedIn** | 美国 | ✅ | ✅ | SCCs |
-| **Google** | 美国 / 欧洲 | ✅（有 EU 数据隔离选项） | ✅ | SCCs |
-| **WhatsApp** | 美国（Meta） | ✅ | ✅ | SCCs |
-| **TikTok** | 美国 / 新加坡 / 爱尔兰 | ✅（爱尔兰数据中心可用） | ✅ | SCCs |
+| 平台         | 数据中心               | GDPR 合规                 | CCPA 合规 | 跨境传输要求                        |
+| ------------ | ---------------------- | ------------------------- | --------- | ----------------------------------- |
+| **Facebook** | 美国                   | ✅ Data Privacy Framework | ✅        | SCCs (Standard Contractual Clauses) |
+| **LinkedIn** | 美国                   | ✅                        | ✅        | SCCs                                |
+| **Google**   | 美国 / 欧洲            | ✅（有 EU 数据隔离选项）  | ✅        | SCCs                                |
+| **WhatsApp** | 美国（Meta）           | ✅                        | ✅        | SCCs                                |
+| **TikTok**   | 美国 / 新加坡 / 爱尔兰 | ✅（爱尔兰数据中心可用）  | ✅        | SCCs                                |
 
 ### 17.2 GDPR 用户权利实现
 
-| 权利 | 实现 |
-|---|---|
-| **知情权** | 隐私政策明确列出 5 平台数据处理 + Cookie 横幅 |
-| **访问权** | 用户 H5 profile → "导出我的数据" → 触发 5 平台 `datalookup` |
-| **更正权** | H5 profile 直接编辑 |
-| **删除权** | "删除账号" → 调 5 平台 `deletion` API（**异步**，72h 内处理） |
-| **限制处理权** | Cookie 横幅 "Reject All" |
-| **数据可携权** | JSON 导出（含 5 平台 OAuth 数据） |
-| **反对权** | "关闭个性化推荐" 开关 |
+| 权利           | 实现                                                          |
+| -------------- | ------------------------------------------------------------- |
+| **知情权**     | 隐私政策明确列出 5 平台数据处理 + Cookie 横幅                 |
+| **访问权**     | 用户 H5 profile → "导出我的数据" → 触发 5 平台 `datalookup`   |
+| **更正权**     | H5 profile 直接编辑                                           |
+| **删除权**     | "删除账号" → 调 5 平台 `deletion` API（**异步**，72h 内处理） |
+| **限制处理权** | Cookie 横幅 "Reject All"                                      |
+| **数据可携权** | JSON 导出（含 5 平台 OAuth 数据）                             |
+| **反对权**     | "关闭个性化推荐" 开关                                         |
 
 ### 17.3 Cookie 同意管理（**强制**）
 
@@ -2269,7 +2420,38 @@ export class MarketingService {
 async function detectRegion(ip: string): Promise<'EU' | 'UK' | 'CA' | 'BR' | 'OTHER'> {
   const res = await fetch(`https://ipapi.co/${ip}/json/`);
   const data = await res.json();
-  if (['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE'].includes(data.country)) return 'EU';
+  if (
+    [
+      'AT',
+      'BE',
+      'BG',
+      'HR',
+      'CY',
+      'CZ',
+      'DK',
+      'EE',
+      'FI',
+      'FR',
+      'DE',
+      'GR',
+      'HU',
+      'IE',
+      'IT',
+      'LV',
+      'LT',
+      'LU',
+      'MT',
+      'NL',
+      'PL',
+      'PT',
+      'RO',
+      'SK',
+      'SI',
+      'ES',
+      'SE',
+    ].includes(data.country)
+  )
+    return 'EU';
   if (data.country === 'GB') return 'UK';
   if (data.country === 'US' && data.region === 'California') return 'CA';
   if (data.country === 'BR') return 'BR';
@@ -2290,7 +2472,13 @@ async function detectRegion(ip: string): Promise<'EU' | 'UK' | 'CA' | 'BR' | 'OT
 
 ```typescript
 // 所有 5 平台数据访问 → AuditLog
-async function auditOverseasDataAccess(adminUserId: string, action: string, userId: string, platform: string, reason: string) {
+async function auditOverseasDataAccess(
+  adminUserId: string,
+  action: string,
+  userId: string,
+  platform: string,
+  reason: string
+) {
   await this.prisma.auditLog.create({
     data: {
       adminUserId,
@@ -2312,11 +2500,11 @@ async function auditOverseasDataAccess(adminUserId: string, action: string, user
 
 ### 18.1 命名空间速查（**新增**）
 
-| namespace | 用途 | 示例 key |
-|---|---|---|
-| `social` | 5 平台登录、分享按钮文案 | `social.facebookLogin`, `social.share.platforms` |
-| `oauth` | OAuth 错误、状态文案 | `oauth.error.stateMismatch`, `oauth.success.connected` |
-| `marketing` | 广告、归因、Cookie 同意 | `marketing.cookieConsent.message`, `marketing.attribution.source` |
+| namespace   | 用途                     | 示例 key                                                          |
+| ----------- | ------------------------ | ----------------------------------------------------------------- |
+| `social`    | 5 平台登录、分享按钮文案 | `social.facebookLogin`, `social.share.platforms`                  |
+| `oauth`     | OAuth 错误、状态文案     | `oauth.error.stateMismatch`, `oauth.success.connected`            |
+| `marketing` | 广告、归因、Cookie 同意  | `marketing.cookieConsent.message`, `marketing.attribution.source` |
 
 ### 18.2 zh-CN / en-US 字典示例
 
@@ -2437,41 +2625,41 @@ async function auditOverseasDataAccess(adminUserId: string, action: string, user
 
 > 共 15 条覆盖 5 平台核心流程。
 
-| # | 平台 | 用例 | 期望 |
-|---|---|---|---|
-| 1 | Facebook | 首次点「Continue with Facebook」 | 跳 Facebook 授权页 → 回调 → 建账号 → 跳 H5 |
-| 2 | Facebook | Facebook OAuth 拒绝授权 | 弹错「state mismatch」+ 回登录页（**不**建账号） |
-| 3 | Facebook | 长效 token 过期（>60 天） | 后台 cron 刷 token（refresh_token 失败则 status=expired） |
-| 4 | Facebook | 注册时触发 Conversions API | Pixel + Conversions API 同 eventID 都收到 200 |
-| 5 | LinkedIn | 提交 Lead Gen Form | webhook 收到 → 写 lead → 触发 CRM 通知（< 5s） |
-| 6 | LinkedIn | LinkedIn id_token 签名错误 | 401 + 写 AuditLog(severity=critical) |
-| 7 | Google | One Tap 自动弹窗 | EU 用户**不**弹；非 EU 用户首次访问弹 |
-| 8 | Google | 加载 Google Maps | < 2s 完成，含 Places 库 |
-| 9 | Google | Android 用户用 Google Play Billing | purchaseToken 验签成功 + 写 Transaction（**不**走 Stripe） |
-| 10 | WhatsApp | 商家创建 utility 模板 | Meta 审批通过（1-24h）→ 同步到 WhatsAppTemplate 表 |
-| 11 | WhatsApp | 超出 24h 窗口发营销消息 | 拒绝（必须用模板消息） |
-| 12 | WhatsApp | 用户发消息 | webhook 签名验证 + 写会话 + AI Chat 接管（24h 内） |
-| 13 | TikTok | TikTok OAuth 流程（PKCE） | 授权成功 + 拿 open_id / union_id |
-| 14 | TikTok | 同一事件触发 Pixel + Events API | TikTok 服务端按 eventID 去重，仅 1 次 |
-| 15 | 通用 | EU 用户拒绝 Cookie 横幅 | 5 平台 Pixel **不**加载，CAPI **不**发，Conversions API 走最少字段 |
+| #   | 平台     | 用例                               | 期望                                                               |
+| --- | -------- | ---------------------------------- | ------------------------------------------------------------------ |
+| 1   | Facebook | 首次点「Continue with Facebook」   | 跳 Facebook 授权页 → 回调 → 建账号 → 跳 H5                         |
+| 2   | Facebook | Facebook OAuth 拒绝授权            | 弹错「state mismatch」+ 回登录页（**不**建账号）                   |
+| 3   | Facebook | 长效 token 过期（>60 天）          | 后台 cron 刷 token（refresh_token 失败则 status=expired）          |
+| 4   | Facebook | 注册时触发 Conversions API         | Pixel + Conversions API 同 eventID 都收到 200                      |
+| 5   | LinkedIn | 提交 Lead Gen Form                 | webhook 收到 → 写 lead → 触发 CRM 通知（< 5s）                     |
+| 6   | LinkedIn | LinkedIn id_token 签名错误         | 401 + 写 AuditLog(severity=critical)                               |
+| 7   | Google   | One Tap 自动弹窗                   | EU 用户**不**弹；非 EU 用户首次访问弹                              |
+| 8   | Google   | 加载 Google Maps                   | < 2s 完成，含 Places 库                                            |
+| 9   | Google   | Android 用户用 Google Play Billing | purchaseToken 验签成功 + 写 Transaction（**不**走 Stripe）         |
+| 10  | WhatsApp | 商家创建 utility 模板              | Meta 审批通过（1-24h）→ 同步到 WhatsAppTemplate 表                 |
+| 11  | WhatsApp | 超出 24h 窗口发营销消息            | 拒绝（必须用模板消息）                                             |
+| 12  | WhatsApp | 用户发消息                         | webhook 签名验证 + 写会话 + AI Chat 接管（24h 内）                 |
+| 13  | TikTok   | TikTok OAuth 流程（PKCE）          | 授权成功 + 拿 open_id / union_id                                   |
+| 14  | TikTok   | 同一事件触发 Pixel + Events API    | TikTok 服务端按 eventID 去重，仅 1 次                              |
+| 15  | 通用     | EU 用户拒绝 Cookie 横幅            | 5 平台 Pixel **不**加载，CAPI **不**发，Conversions API 走最少字段 |
 
 ### 19.1 5 平台拉新转化验收
 
-| # | 场景 | 期望 |
-|---|---|---|
-| 1 | 5 平台归因 → 注册转化 | 24h 内 AdAttribution.converted=true + conversionType=register |
-| 2 | 5 平台归因 → 下单转化 | 7 天内 AdAttribution.converted=true + conversionType=purchase |
-| 3 | 同一用户多平台归因 | 多个 AdAttribution 记录，**不**覆盖（last-click） |
-| 4 | 广告主后台拉转化数据 | Conversions API 报字段与 GA4 一致 |
+| #   | 场景                  | 期望                                                          |
+| --- | --------------------- | ------------------------------------------------------------- |
+| 1   | 5 平台归因 → 注册转化 | 24h 内 AdAttribution.converted=true + conversionType=register |
+| 2   | 5 平台归因 → 下单转化 | 7 天内 AdAttribution.converted=true + conversionType=purchase |
+| 3   | 同一用户多平台归因    | 多个 AdAttribution 记录，**不**覆盖（last-click）             |
+| 4   | 广告主后台拉转化数据  | Conversions API 报字段与 GA4 一致                             |
 
 ### 19.2 凭证加密验收
 
-| # | 场景 | 期望 |
-|---|---|---|
-| 1 | 首次 Facebook 登录 | DB OverseasAuth.accessTokenEncrypted 是 EncryptedPayload JSON，**不**含明文 |
-| 2 | 后端解 token 调 Graph API | AuditLog.action=SECRET_DECRYPT，module=facebook |
-| 3 | 列表 API 返回 OverseasAuth | accessToken 字段**不**在响应中（@Exclude） |
-| 4 | 改 .env 的 LOCAL_KEK | 历史 access_token 解密失败，需重新登录 |
+| #   | 场景                       | 期望                                                                        |
+| --- | -------------------------- | --------------------------------------------------------------------------- |
+| 1   | 首次 Facebook 登录         | DB OverseasAuth.accessTokenEncrypted 是 EncryptedPayload JSON，**不**含明文 |
+| 2   | 后端解 token 调 Graph API  | AuditLog.action=SECRET_DECRYPT，module=facebook                             |
+| 3   | 列表 API 返回 OverseasAuth | accessToken 字段**不**在响应中（@Exclude）                                  |
+| 4   | 改 .env 的 LOCAL_KEK       | 历史 access_token 解密失败，需重新登录                                      |
 
 ---
 
@@ -2479,22 +2667,22 @@ async function auditOverseasDataAccess(adminUserId: string, action: string, user
 
 ### 20.1 SDK 异步加载
 
-| 优化项 | 措施 | 收益 |
-|---|---|---|
+| 优化项       | 措施                                                   | 收益           |
+| ------------ | ------------------------------------------------------ | -------------- |
 | 5 平台 Pixel | 全部 `next/script` strategy=`lazyOnload` 或动态 import | 首屏 JS -180KB |
-| Google Maps | 仅在「地图选址」页面加载 | 首屏 -150KB |
-| FB SDK | 登录弹窗打开时再加载 | 首屏 -220KB |
-| TikTok Pixel | 仅用户进视频相关页面时加载 | 首屏 -95KB |
+| Google Maps  | 仅在「地图选址」页面加载                               | 首屏 -150KB    |
+| FB SDK       | 登录弹窗打开时再加载                                   | 首屏 -220KB    |
+| TikTok Pixel | 仅用户进视频相关页面时加载                             | 首屏 -95KB     |
 
 ### 20.2 Web Vitals 目标
 
-| 指标 | 目标 | 优化手段 |
-|---|---|---|
-| LCP | < 2.5s | Pixel 异步不阻塞首屏 |
-| FID | < 100ms | 回调函数**不**做重操作（仅打日志） |
-| CLS | < 0.1 | 5 平台弹窗预留固定空间 |
-| TTI | < 3.5s | OAuth 弹窗 + Cookie 横幅不阻塞主线程 |
-| TTFB | < 200ms | /api/h5/marketing/track P99 < 100ms |
+| 指标 | 目标    | 优化手段                             |
+| ---- | ------- | ------------------------------------ |
+| LCP  | < 2.5s  | Pixel 异步不阻塞首屏                 |
+| FID  | < 100ms | 回调函数**不**做重操作（仅打日志）   |
+| CLS  | < 0.1   | 5 平台弹窗预留固定空间               |
+| TTI  | < 3.5s  | OAuth 弹窗 + Cookie 横幅不阻塞主线程 |
+| TTFB | < 200ms | /api/h5/marketing/track P99 < 100ms  |
 
 ### 20.3 Pixel 防丢失
 
@@ -2532,7 +2720,7 @@ Facebook / TikTok Events API 支持批量（最多 1000 事件 / 请求），用
 export class MarketingEventProcessor {
   @Process('flush')
   async flush(job: Job) {
-    const events = job.data.events;  // 1s 内的所有事件
+    const events = job.data.events; // 1s 内的所有事件
     // Facebook CAPI 批量
     await this.fbService.sendBatch(events);
     // TikTok 批量
@@ -2553,13 +2741,13 @@ export class MarketingEventProcessor {
 
 ### 21.2 广告归因欺诈
 
-| 欺诈类型 | 检测 | 处理 |
-|---|---|---|
-| **Click Injection** | 设备刚启动就触发 click | 过滤 5s 内 click → install |
-| **Click Spam** | 同一用户 1 天 ≥ 10 个不同 clickId | 限流 + 标记 |
-| **SDK Spoofing** | 事件 IP 与 click IP 偏差过大 | 标可疑 + 不计入转化 |
-| **Pixel 注入** | Pixel ID 非官方 | 服务端校验 pixel_id |
-| **Bot 注册** | 注册时无 utm / referrer / 设备指纹 | 二次验证 + 人工审核 |
+| 欺诈类型            | 检测                               | 处理                       |
+| ------------------- | ---------------------------------- | -------------------------- |
+| **Click Injection** | 设备刚启动就触发 click             | 过滤 5s 内 click → install |
+| **Click Spam**      | 同一用户 1 天 ≥ 10 个不同 clickId  | 限流 + 标记                |
+| **SDK Spoofing**    | 事件 IP 与 click IP 偏差过大       | 标可疑 + 不计入转化        |
+| **Pixel 注入**      | Pixel ID 非官方                    | 服务端校验 pixel_id        |
+| **Bot 注册**        | 注册时无 utm / referrer / 设备指纹 | 二次验证 + 人工审核        |
 
 ### 21.3 Pixel 注入防护
 
@@ -2594,16 +2782,16 @@ async sendConversionEvent(event) {
 
 ### 22.1 关键指标
 
-| 指标 | 目标 | 报警阈值 |
-|---|---|---|
-| 5 平台 OAuth 成功率 | ≥ 95% | < 90% |
-| Facebook Conversions API 错误率 | < 1% | > 3% |
-| TikTok Events API 错误率 | < 1% | > 3% |
-| WhatsApp 模板发送成功率 | ≥ 98% | < 95% |
-| WhatsApp 24h 窗口覆盖率 | ≥ 99% | < 95% |
-| GA4 事件丢包率 | < 0.5% | > 1% |
-| LinkedIn Lead Webhook 5s 接收率 | 100% | < 99% |
-| 客服 SLA（首响 < 5 min） | ≥ 90% | < 80% |
+| 指标                             | 目标     | 报警阈值       |
+| -------------------------------- | -------- | -------------- |
+| 5 平台 OAuth 成功率              | ≥ 95%    | < 90%          |
+| Facebook Conversions API 错误率  | < 1%     | > 3%           |
+| TikTok Events API 错误率         | < 1%     | > 3%           |
+| WhatsApp 模板发送成功率          | ≥ 98%    | < 95%          |
+| WhatsApp 24h 窗口覆盖率          | ≥ 99%    | < 95%          |
+| GA4 事件丢包率                   | < 0.5%   | > 1%           |
+| LinkedIn Lead Webhook 5s 接收率  | 100%     | < 99%          |
+| 客服 SLA（首响 < 5 min）         | ≥ 90%    | < 80%          |
 | 5 平台漏斗（曝光 → 注册 → 下单） | 1% → 30% | 转化率下降 30% |
 
 ### 22.2 5 平台错误监控
@@ -2724,47 +2912,47 @@ async function checkCSLS() {
 
 ## 附录 A：5 平台费率与抽成
 
-| 平台 | 服务 | 费率 |
-|---|---|---|
-| Facebook | Marketing API 调用 | 免费 |
-| LinkedIn | Marketing API | 按 LinkedIn 销售联系 |
-| Google | Maps JS API | $7/1000 次（按月计） |
-| Google | Places API | $17/1000 次 |
-| Google | reCAPTCHA Enterprise | $1/1000 次 |
+| 平台     | 服务                      | 费率                                            |
+| -------- | ------------------------- | ----------------------------------------------- |
+| Facebook | Marketing API 调用        | 免费                                            |
+| LinkedIn | Marketing API             | 按 LinkedIn 销售联系                            |
+| Google   | Maps JS API               | $7/1000 次（按月计）                            |
+| Google   | Places API                | $17/1000 次                                     |
+| Google   | reCAPTCHA Enterprise      | $1/1000 次                                      |
 | WhatsApp | Cloud API（utility 模板） | $0.0041 / 营销 $0.0255 / 认证 $0.0028（按国家） |
-| TikTok | Events API | 免费 |
-| TikTok | Marketing API | 免费 |
+| TikTok   | Events API                | 免费                                            |
+| TikTok   | Marketing API             | 免费                                            |
 
 ---
 
 ## 附录 B：5 平台官方文档
 
-| 平台 | 文档 |
-|---|---|
-| Facebook | https://developers.facebook.com/docs |
+| 平台                     | 文档                                                               |
+| ------------------------ | ------------------------------------------------------------------ |
+| Facebook                 | https://developers.facebook.com/docs                               |
 | Facebook Conversions API | https://developers.facebook.com/docs/marketing-api/conversions-api |
-| LinkedIn | https://learn.microsoft.com/en-us/linkedin/ |
-| LinkedIn Marketing API | https://learn.microsoft.com/en-us/linkedin/marketing/ |
-| Google Identity | https://developers.google.com/identity |
-| Google Maps | https://developers.google.com/maps/documentation/javascript |
-| Google Analytics 4 | https://developers.google.com/analytics/devguides/collection/ga4 |
-| Google Play Billing | https://developer.android.com/google/play/billing |
-| WhatsApp Cloud API | https://developers.facebook.com/docs/whatsapp/cloud-api |
-| WhatsApp Pricing | https://developers.facebook.com/docs/whatsapp/pricing |
-| TikTok for Developers | https://developers.tiktok.com/doc |
-| TikTok Events API | https://business-api.tiktok.com/portal/docs |
+| LinkedIn                 | https://learn.microsoft.com/en-us/linkedin/                        |
+| LinkedIn Marketing API   | https://learn.microsoft.com/en-us/linkedin/marketing/              |
+| Google Identity          | https://developers.google.com/identity                             |
+| Google Maps              | https://developers.google.com/maps/documentation/javascript        |
+| Google Analytics 4       | https://developers.google.com/analytics/devguides/collection/ga4   |
+| Google Play Billing      | https://developer.android.com/google/play/billing                  |
+| WhatsApp Cloud API       | https://developers.facebook.com/docs/whatsapp/cloud-api            |
+| WhatsApp Pricing         | https://developers.facebook.com/docs/whatsapp/pricing              |
+| TikTok for Developers    | https://developers.tiktok.com/doc                                  |
+| TikTok Events API        | https://business-api.tiktok.com/portal/docs                        |
 
 ---
 
 ## 附录 C：5 平台 SLA 速查
 
-| 平台 | API SLA | Webhook 重试 | 备注 |
-|---|---|---|---|
-| Facebook | 99.9% | 最多 5 次 | 5xx 重试 |
-| LinkedIn | 99.5% | 最多 3 次 | 429 退避 60s |
-| Google | 99.9% | 最多 3 次 | 500/503 重试 |
-| WhatsApp | 99.9% | 最多 5 次 | webhook 失败不重试，需主动拉 |
-| TikTok | 99.5% | 最多 3 次 | 限流 100 req/s |
+| 平台     | API SLA | Webhook 重试 | 备注                         |
+| -------- | ------- | ------------ | ---------------------------- |
+| Facebook | 99.9%   | 最多 5 次    | 5xx 重试                     |
+| LinkedIn | 99.5%   | 最多 3 次    | 429 退避 60s                 |
+| Google   | 99.9%   | 最多 3 次    | 500/503 重试                 |
+| WhatsApp | 99.9%   | 最多 5 次    | webhook 失败不重试，需主动拉 |
+| TikTok   | 99.5%   | 最多 3 次    | 限流 100 req/s               |
 
 ---
 

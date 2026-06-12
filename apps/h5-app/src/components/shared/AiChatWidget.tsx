@@ -16,7 +16,8 @@ const welcomeMessages = [
 
 export default function AiChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ role: 'user' | 'agent'; content: string }[]>(welcomeMessages);
+  const [messages, setMessages] =
+    useState<{ role: 'user' | 'agent'; content: string }[]>(welcomeMessages);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -29,21 +30,25 @@ export default function AiChatWidget() {
     if (!text.trim()) return;
 
     const userMessage = { role: 'user' as const, content: text };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsTyping(true);
 
     // Simulate AI response
     setTimeout(() => {
       const responses: Record<string, string> = {
-        '帮我分析税务优化方案': '根据您当前的3家公司架构，我建议将利润通过萨摩亚SPV进行集中管理，预计可节省约15%的税务成本。需要我详细分析吗？',
-        '帮我检查公司合规状态': '检测到香港公司的周年申报表将在7天内到期，建议您尽快提交。其他公司合规状态良好。',
-        '我想注册一家新公司': '太好了！根据您的业务需求，我建议考虑新加坡或BVI架构。请告诉我您的业务类型和预算范围。',
-        '推荐适合的收款通道': '根据您的业务覆盖区域（东南亚+南美），推荐同时接入GrabPay（东南亚）和Pix（巴西），并保留Visa作为全球通用通道。',
+        帮我分析税务优化方案:
+          '根据您当前的3家公司架构，我建议将利润通过萨摩亚SPV进行集中管理，预计可节省约15%的税务成本。需要我详细分析吗？',
+        帮我检查公司合规状态:
+          '检测到香港公司的周年申报表将在7天内到期，建议您尽快提交。其他公司合规状态良好。',
+        我想注册一家新公司:
+          '太好了！根据您的业务需求，我建议考虑新加坡或BVI架构。请告诉我您的业务类型和预算范围。',
+        推荐适合的收款通道:
+          '根据您的业务覆盖区域（东南亚+南美），推荐同时接入GrabPay（东南亚）和Pix（巴西），并保留Visa作为全球通用通道。',
       };
 
       const response = responses[text] || `收到您的请求："${text}"，我正在为您处理，请稍候...`;
-      setMessages(prev => [...prev, { role: 'agent' as const, content: response }]);
+      setMessages((prev) => [...prev, { role: 'agent' as const, content: response }]);
       setIsTyping(false);
     }, 1500);
   };
@@ -59,11 +64,17 @@ export default function AiChatWidget() {
         )}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.9 }}
-        animate={!isOpen ? { boxShadow: [
-          '0 4px 16px rgba(246,166,35,0.3)',
-          '0 4px 24px rgba(246,166,35,0.5)',
-          '0 4px 16px rgba(246,166,35,0.3)',
-        ]} : {}}
+        animate={
+          !isOpen
+            ? {
+                boxShadow: [
+                  '0 4px 16px rgba(246,166,35,0.3)',
+                  '0 4px 24px rgba(246,166,35,0.5)',
+                  '0 4px 16px rgba(246,166,35,0.3)',
+                ],
+              }
+            : {}
+        }
         transition={{ duration: 2, repeat: Infinity }}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -109,17 +120,16 @@ export default function AiChatWidget() {
                   key={i}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={cn(
-                    'max-w-[85%]',
-                    msg.role === 'user' ? 'ml-auto' : 'mr-auto'
-                  )}
+                  className={cn('max-w-[85%]', msg.role === 'user' ? 'ml-auto' : 'mr-auto')}
                 >
-                  <div className={cn(
-                    'rounded-lg px-3 py-2 text-body-sm',
-                    msg.role === 'user'
-                      ? 'bg-coral text-bg-dark'
-                      : 'bg-bg-elevated text-text-primary'
-                  )}>
+                  <div
+                    className={cn(
+                      'rounded-lg px-3 py-2 text-body-sm',
+                      msg.role === 'user'
+                        ? 'bg-coral text-bg-dark'
+                        : 'bg-bg-elevated text-text-primary'
+                    )}
+                  >
                     {msg.content}
                   </div>
                 </motion.div>
@@ -127,9 +137,18 @@ export default function AiChatWidget() {
 
               {isTyping && (
                 <div className="flex items-center gap-1 text-text-muted">
-                  <span className="w-2 h-2 rounded-full bg-coral animate-pulse" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 rounded-full bg-coral animate-pulse" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 rounded-full bg-coral animate-pulse" style={{ animationDelay: '300ms' }} />
+                  <span
+                    className="w-2 h-2 rounded-full bg-coral animate-pulse"
+                    style={{ animationDelay: '0ms' }}
+                  />
+                  <span
+                    className="w-2 h-2 rounded-full bg-coral animate-pulse"
+                    style={{ animationDelay: '150ms' }}
+                  />
+                  <span
+                    className="w-2 h-2 rounded-full bg-coral animate-pulse"
+                    style={{ animationDelay: '300ms' }}
+                  />
                 </div>
               )}
               <div ref={messagesEndRef} />

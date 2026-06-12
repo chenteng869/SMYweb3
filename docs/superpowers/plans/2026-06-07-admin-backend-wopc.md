@@ -6,6 +6,7 @@
 **Goal:** 把已存在的 `apps/admin-web-legacy/` 升级为 **WOPC 创业家** 品牌,接入 H5 端 JWT 鉴权,补齐 86 个 admin 页面细节,使 H5 + 后台构成完整 Web3 创业家 SaaS。
 
 **Architecture:**
+
 - `apps/admin-web-legacy/`(Next.js 14.1 + React 18 + Ant Design 5 + ECharts + Zustand 4 + React Query 5)— 桌面管理后台,**继续在此开发**
 - `apps/h5-app/`(Vite 7 + React 19 + shadcn/ui + Tailwind 3.4 + Zustand 5)— 移动端 H5,**新增 JWT 鉴权 + 登录页**
 - 两者通过 **localStorage `wopc-auth-storage`** 共享 token + user(由 H5 写入,admin-web-legacy 读取)
@@ -13,6 +14,7 @@
 - 端口:admin-web-legacy **3002**,h5-app **5173**(Vite proxy 转发 `/api` 到 3001 后端预留)
 
 **Tech Stack(两个项目各自保持):**
+
 - admin-web-legacy: Next.js 14.1 / React 18.2 / Antd 5.12 / ECharts 5.4 / Zustand 4.4 / @tanstack/react-query 5.15 / xlsx / axios
 - h5-app(新增):zustand/middleware persist / react-router-dom 6.28 / sonner(已有) / lucide-react / zod(已有)
 
@@ -20,13 +22,13 @@
 
 ## 🎯 用户决策摘要(已确认)
 
-| 决策点 | 选择 | 备注 |
-|---|---|---|
-| 开发方向 | **继续在 admin-web-legacy 上开发** | h5-app 不加 /admin 路由 |
-| 品牌重命名 | **全量重命名为 WOPC 创业家** | 含 Logo/标题/所有"国学出海" "萨摩亚交易所" |
-| 鉴权方式 | **共享 H5 JWT** | h5-app 写 `wopc-auth-storage`,legacy 读 |
-| 测试 | **不引入 Vitest(黄区警告)** | 仅用 `tsc --noEmit` + `next lint` |
-| 后端 | **先 Mock(已有 mock 数据)** | 后端就绪后切 baseURL |
+| 决策点     | 选择                               | 备注                                       |
+| ---------- | ---------------------------------- | ------------------------------------------ |
+| 开发方向   | **继续在 admin-web-legacy 上开发** | h5-app 不加 /admin 路由                    |
+| 品牌重命名 | **全量重命名为 WOPC 创业家**       | 含 Logo/标题/所有"国学出海" "萨摩亚交易所" |
+| 鉴权方式   | **共享 H5 JWT**                    | h5-app 写 `wopc-auth-storage`,legacy 读    |
+| 测试       | **不引入 Vitest(黄区警告)**        | 仅用 `tsc --noEmit` + `next lint`          |
+| 后端       | **先 Mock(已有 mock 数据)**        | 后端就绪后切 baseURL                       |
 
 ---
 
@@ -63,15 +65,15 @@ SMYweb3.020260527/
 
 ## 📋 7 个 Phase × 33 个 Task 总览
 
-| Phase | 任务 | 状态 |
-|---|---|---|
-| **Phase 1: 项目修复与品牌重命名** | 5 tasks | 立即开始 |
-| **Phase 2: H5 端 JWT 鉴权前置** | 5 tasks | 立即开始 |
-| **Phase 3: admin-web-legacy 鉴权对接** | 3 tasks | 立即开始 |
+| Phase                                  | 任务     | 状态     |
+| -------------------------------------- | -------- | -------- |
+| **Phase 1: 项目修复与品牌重命名**      | 5 tasks  | 立即开始 |
+| **Phase 2: H5 端 JWT 鉴权前置**        | 5 tasks  | 立即开始 |
+| **Phase 3: admin-web-legacy 鉴权对接** | 3 tasks  | 立即开始 |
 | **Phase 4: 16 大模块 86 页面细节完善** | 16 tasks | 后续分批 |
-| **Phase 5: 通用组件与表格增强** | 3 tasks | 后续 |
-| **Phase 6: 通用 CRUD 模式与导出** | 1 task | 后续 |
-| **Phase 7: 集成验证 + 跨项目 E2E** | 2 tasks | 最后 |
+| **Phase 5: 通用组件与表格增强**        | 3 tasks  | 后续     |
+| **Phase 6: 通用 CRUD 模式与导出**      | 1 task   | 后续     |
+| **Phase 7: 集成验证 + 跨项目 E2E**     | 2 tasks  | 最后     |
 
 **总计:7 phases × 35 tasks**
 
@@ -84,10 +86,12 @@ SMYweb3.020260527/
 ### Task 1.1: 验证 admin-web-legacy 项目能启动
 
 **Files:**
+
 - Modify: `apps/admin-web-legacy/package.json`(读)
 - Read: `apps/admin-web-legacy/next.config.js`
 
 - [ ] **Step 1: 检查 Node.js 与包管理器**
+
 ```powershell
 node --version
 npm --version
@@ -95,6 +99,7 @@ npm --version
 ```
 
 - [ ] **Step 2: 安装依赖**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npm install
@@ -102,6 +107,7 @@ npm install
 ```
 
 - [ ] **Step 3: 启动开发服务器(后台运行)**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npm run dev
@@ -123,11 +129,13 @@ npm run dev
 ### Task 1.2: 修改 metadata 为 WOPC 创业家
 
 **Files:**
+
 - Modify: `apps/admin-web-legacy/src/app/layout.tsx:7-9`
 
 - [ ] **Step 1: 替换 metadata**
 
 `apps/admin-web-legacy/src/app/layout.tsx` 第 7-9 行:
+
 ```tsx
 // OLD
 export const metadata: Metadata = {
@@ -143,6 +151,7 @@ export const metadata: Metadata = {
 ```
 
 - [ ] **Step 2: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit
@@ -156,11 +165,13 @@ npx tsc --noEmit
 ### Task 1.3: 修改 AdminLayout Sider Logo 与标题
 
 **Files:**
+
 - Modify: `apps/admin-web-legacy/src/components/admin/AdminLayout.tsx:555-561`
 
 - [ ] **Step 1: 替换 Sider Logo 文案**
 
 `apps/admin-web-legacy/src/components/admin/AdminLayout.tsx` 第 555-561 行:
+
 ```tsx
 // OLD
         <div className="h-16 flex items-center justify-center border-b border-blue-800">
@@ -182,6 +193,7 @@ npx tsc --noEmit
 ```
 
 - [ ] **Step 2: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit
@@ -199,9 +211,11 @@ npx tsc --noEmit
 ### Task 1.4: 全量文案搜索替换(国学出海 → WOPC 创业家)
 
 **Files:**
+
 - All `.tsx` `.ts` `.md` files in `apps/admin-web-legacy/src/`
 
 - [ ] **Step 1: 搜索所有"国学出海"出现位置**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | Select-String -Pattern "国学出海" | Select-Object -ExpandProperty Path
@@ -209,6 +223,7 @@ Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | Select-String -Patte
 ```
 
 - [ ] **Step 2: 批量替换"国学出海" → "WOPC 创业家"**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | ForEach-Object {
@@ -218,6 +233,7 @@ Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | ForEach-Object {
 ```
 
 - [ ] **Step 3: 验证替换完成**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | Select-String -Pattern "国学出海" | Measure-Object | Select-Object -ExpandProperty Count
@@ -225,6 +241,7 @@ Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | Select-String -Patte
 ```
 
 - [ ] **Step 4: 替换"萨摩亚交易所" → "WOPC 创业家"**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | Select-String -Pattern "萨摩亚交易所" | Measure-Object | Select-Object -ExpandProperty Count
@@ -232,6 +249,7 @@ Get-ChildItem -Path src -Recurse -Include *.tsx,*.ts,*.md | Select-String -Patte
 ```
 
 - [ ] **Step 5: 验证编译**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit
@@ -245,10 +263,12 @@ npx tsc --noEmit
 ### Task 1.5: 更新 portal 页面与门户菜单映射
 
 **Files:**
+
 - Modify: `apps/admin-web-legacy/src/constants/adminMenuMapping.ts`(L1,L489-507)
 - Modify: `apps/admin-web-legacy/src/app/portal/page.tsx`(title/description)
 
 - [ ] **Step 1: 更新 portal 页面顶部**
+
 ```tsx
 // 查找 const metadata (在 portal/page.tsx)
 // 替换为:
@@ -259,6 +279,7 @@ export const metadata: Metadata = {
 ```
 
 - [ ] **Step 2: 更新 adminMenuMapping.ts 注释**
+
 ```typescript
 // 文件头 L1:
 // OLD
@@ -268,6 +289,7 @@ export const metadata: Metadata = {
 ```
 
 - [ ] **Step 3: 编译验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit && npm run lint
@@ -285,11 +307,13 @@ npx tsc --noEmit && npm run lint
 ### Task 2.1: 定义 auth 类型
 
 **Files:**
+
 - Create: `apps/h5-app/src/types/auth.ts`
 
 - [ ] **Step 1: 创建 auth 类型文件**
 
 `apps/h5-app/src/types/auth.ts`:
+
 ```typescript
 // ============ Auth Types ============
 export interface AuthUser {
@@ -330,6 +354,7 @@ export type AuthError =
 ```
 
 - [ ] **Step 2: 验证 TS 编译**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\h5-app"
 npx tsc --noEmit
@@ -343,11 +368,13 @@ npx tsc --noEmit
 ### Task 2.2: 创建 authSlice(Zustand persist)
 
 **Files:**
+
 - Create: `apps/h5-app/src/store/authSlice.ts`
 
 - [ ] **Step 1: 创建 authSlice**
 
 `apps/h5-app/src/store/authSlice.ts`:
+
 ```typescript
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -417,9 +444,10 @@ export const useAuthStore = create<AuthStore>()(
         });
       },
 
-      setUser: (patch) => set((s) => ({
-        user: s.user ? { ...s.user, ...patch } : null,
-      })),
+      setUser: (patch) =>
+        set((s) => ({
+          user: s.user ? { ...s.user, ...patch } : null,
+        })),
 
       refreshToken: async () => {
         const { token } = get();
@@ -446,6 +474,7 @@ export const selectIsAdmin = (s: AuthStore) => s.user?.isAdmin ?? false;
 ```
 
 - [ ] **Step 2: 验证 TS 编译**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\h5-app"
 npx tsc --noEmit
@@ -459,11 +488,13 @@ npx tsc --noEmit
 ### Task 2.3: 集成 authSlice 到主 store
 
 **Files:**
+
 - Modify: `apps/h5-app/src/store/index.ts`(删除 `isAdmin`,改为引用 useAuthStore)
 
 - [ ] **Step 1: 修改 AppStore 接口**
 
 `apps/h5-app/src/store/index.ts` L75-77:
+
 ```typescript
 // OLD
   // Admin
@@ -479,6 +510,7 @@ npx tsc --noEmit
 - [ ] **Step 2: 修改 store 实现**
 
 `apps/h5-app/src/store/index.ts` L144-146:
+
 ```typescript
 // OLD
   // Admin
@@ -492,6 +524,7 @@ npx tsc --noEmit
 ```
 
 - [ ] **Step 3: 验证 TS 编译**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\h5-app"
 npx tsc --noEmit
@@ -505,12 +538,14 @@ npx tsc --noEmit
 ### Task 2.4: 创建登录页 Login.tsx
 
 **Files:**
+
 - Create: `apps/h5-app/src/pages/auth/Login.tsx`
 - Modify: `apps/h5-app/src/App.tsx`(加 /login 路由)
 
 - [ ] **Step 1: 创建 Login 页面**
 
 `apps/h5-app/src/pages/auth/Login.tsx`:
+
 ```tsx
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -617,12 +652,19 @@ export default function Login() {
             disabled={submitting}
             className="w-full h-12 gradient-accent rounded-xl font-semibold text-bg-dark flex items-center justify-center gap-2 disabled:opacity-50"
           >
-            {submitting ? '登录中...' : (<><LogIn size={18} /> 登录</>)}
+            {submitting ? (
+              '登录中...'
+            ) : (
+              <>
+                <LogIn size={18} /> 登录
+              </>
+            )}
           </button>
         </form>
 
         <p className="text-caption text-text-muted text-center mt-6">
-          提示:用户名含 <code className="px-1 py-0.5 rounded bg-bg-card">admin</code> 即可登录为管理员
+          提示:用户名含 <code className="px-1 py-0.5 rounded bg-bg-card">admin</code>{' '}
+          即可登录为管理员
         </p>
       </motion.div>
     </div>
@@ -633,17 +675,20 @@ export default function Login() {
 - [ ] **Step 2: 添加 /login 路由**
 
 `apps/h5-app/src/App.tsx` 顶部 import 区(L28 之后):
+
 ```tsx
 // Auth Pages
 import Login from '@/pages/auth/Login';
 ```
 
 `apps/h5-app/src/App.tsx` Routes 内(L59 之后,`</Routes>` 之前):
+
 ```tsx
-        <Route path="/login" element={<Login />} />
+<Route path="/login" element={<Login />} />
 ```
 
 - [ ] **Step 3: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\h5-app"
 npx tsc --noEmit
@@ -663,12 +708,14 @@ npx tsc --noEmit
 ### Task 2.5: 创建 AuthGuard 路由守卫
 
 **Files:**
+
 - Create: `apps/h5-app/src/components/layout/AuthGuard.tsx`
 - Modify: `apps/h5-app/src/App.tsx`(包裹需要鉴权的路由)
 
 - [ ] **Step 1: 创建 AuthGuard 组件**
 
 `apps/h5-app/src/components/layout/AuthGuard.tsx`:
+
 ```tsx
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authSlice';
@@ -697,34 +744,109 @@ export function AuthGuard({ children, requireAdmin = false }: AuthGuardProps) {
 - [ ] **Step 2: 修改 App.tsx 包裹需要鉴权的路由**
 
 `apps/h5-app/src/App.tsx` 顶部 import(L29 之后):
+
 ```tsx
 import { AuthGuard } from '@/components/layout/AuthGuard';
 ```
 
 `apps/h5-app/src/App.tsx` 的 Sub Pages Route block,包裹需要登录的:
+
 ```tsx
-        {/* Sub Pages (no bottom nav) */}
-        <Route element={<MobileLayout showNav={false} />}>
-          <Route path="/tax-calculator" element={<AuthGuard><TaxCalculator /></AuthGuard>} />
-          <Route path="/legal-hub" element={<AuthGuard><LegalHub /></AuthGuard>} />
-          <Route path="/company-register" element={<AuthGuard><CompanyRegister /></AuthGuard>} />
-          <Route path="/payment-console" element={<AuthGuard><PaymentConsole /></AuthGuard>} />
-          <Route path="/bank-account" element={<AuthGuard><BankAccount /></AuthGuard>} />
-          <Route path="/dlc-level" element={<AuthGuard><DlcLevel /></AuthGuard>} />
-          <Route path="/documents" element={<AuthGuard><DocumentCenter /></AuthGuard>} />
-          <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
-          <Route path="/did-identity" element={<AuthGuard><DidIdentity /></AuthGuard>} />
-          <Route path="/ai-business-card" element={<AuthGuard><AiBusinessCard /></AuthGuard>} />
-          {/* 以下保持无鉴权 */}
-          <Route path="/video-center" element={<VideoCenter />} />
-          <Route path="/video/:id" element={<VideoPlayer />} />
-          <Route path="/media-center" element={<MediaCenter />} />
-          <Route path="/ai-chat/:agentId" element={<AiChatDetail />} />
-          <Route path="/notifications" element={<Notifications />} />
-        </Route>
+{
+  /* Sub Pages (no bottom nav) */
+}
+<Route element={<MobileLayout showNav={false} />}>
+  <Route
+    path="/tax-calculator"
+    element={
+      <AuthGuard>
+        <TaxCalculator />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/legal-hub"
+    element={
+      <AuthGuard>
+        <LegalHub />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/company-register"
+    element={
+      <AuthGuard>
+        <CompanyRegister />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/payment-console"
+    element={
+      <AuthGuard>
+        <PaymentConsole />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/bank-account"
+    element={
+      <AuthGuard>
+        <BankAccount />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/dlc-level"
+    element={
+      <AuthGuard>
+        <DlcLevel />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/documents"
+    element={
+      <AuthGuard>
+        <DocumentCenter />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/settings"
+    element={
+      <AuthGuard>
+        <Settings />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/did-identity"
+    element={
+      <AuthGuard>
+        <DidIdentity />
+      </AuthGuard>
+    }
+  />
+  <Route
+    path="/ai-business-card"
+    element={
+      <AuthGuard>
+        <AiBusinessCard />
+      </AuthGuard>
+    }
+  />
+  {/* 以下保持无鉴权 */}
+  <Route path="/video-center" element={<VideoCenter />} />
+  <Route path="/video/:id" element={<VideoPlayer />} />
+  <Route path="/media-center" element={<MediaCenter />} />
+  <Route path="/ai-chat/:agentId" element={<AiChatDetail />} />
+  <Route path="/notifications" element={<Notifications />} />
+</Route>;
 ```
 
 - [ ] **Step 3: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\h5-app"
 npx tsc --noEmit
@@ -746,11 +868,13 @@ npx tsc --noEmit
 ### Task 3.1: 改造 authStore 读取 H5 storage
 
 **Files:**
+
 - Modify: `apps/admin-web-legacy/src/stores/authStore.ts`
 
 - [ ] **Step 1: 重写 authStore 读取 H5 storage**
 
 完整重写 `apps/admin-web-legacy/src/stores/authStore.ts`:
+
 ```typescript
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -858,6 +982,7 @@ export const useAuthStore = create<AuthState>()(
 ```
 
 - [ ] **Step 2: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit
@@ -871,12 +996,14 @@ npx tsc --noEmit
 ### Task 3.2: 修改根 layout 自动同步 H5 鉴权
 
 **Files:**
+
 - Create: `apps/admin-web-legacy/src/components/providers/AuthSyncProvider.tsx`
 - Modify: `apps/admin-web-legacy/src/app/layout.tsx`
 
 - [ ] **Step 1: 创建 AuthSyncProvider**
 
 `apps/admin-web-legacy/src/components/providers/AuthSyncProvider.tsx`:
+
 ```tsx
 'use client';
 
@@ -908,6 +1035,7 @@ export default function AuthSyncProvider({ children }: { children: React.ReactNo
 - [ ] **Step 2: 修改 layout.tsx 包裹 AuthSyncProvider**
 
 `apps/admin-web-legacy/src/app/layout.tsx`:
+
 ```tsx
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
@@ -920,11 +1048,7 @@ export const metadata: Metadata = {
   description: 'WOPC 创业家管理后台 - Web3 One Person Company 运营中台',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-CN">
       <body>
@@ -946,6 +1070,7 @@ export default function RootLayout({
 ```
 
 - [ ] **Step 3: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit
@@ -959,11 +1084,13 @@ npx tsc --noEmit
 ### Task 3.3: 改造登录页支持 H5 storage 检测
 
 **Files:**
+
 - Modify: `apps/admin-web-legacy/src/app/login/page.tsx`
 
 - [ ] **Step 1: 读取并修改 login/page.tsx**
 
 读取 `apps/admin-web-legacy/src/app/login/page.tsx` 完整内容(后续 edit),在 `useEffect` 里加:
+
 ```typescript
 useEffect(() => {
   // 检测 H5 端是否已登录
@@ -977,6 +1104,7 @@ useEffect(() => {
 并在登录成功后调用 `syncFromH5()`。
 
 - [ ] **Step 2: 验证**
+
 ```powershell
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-legacy"
 npx tsc --noEmit
@@ -998,26 +1126,27 @@ npx tsc --noEmit
 >
 > **执行方式**:每个 task 重点是**质量审查 + 细节修复**,不重写整个页面
 
-| Task | 模块 | 路径 | 重点 |
-|---|---|---|---|
-| T4.1 | Dashboard | `admin/dashboard/` | KPI 卡片数据准确性,图表主题色 |
-| T4.2 | Web3.0 | `admin/web3/*`(3 页) | dapp 接入流程、区块链监控指标 |
-| T4.3 | 公链 | `admin/chain/*`(5 页) | 节点状态、区块浏览、跨链桥 |
-| T4.4 | CEX | `admin/cex/*`(7 页) | 交易对/订单/行情/风控 |
-| T4.5 | DEX | `admin/dex/*`(4 页) | 流动性池/闪兑/挖矿 |
-| T4.6 | DeFi | `admin/defi/*`(3 页) | 质押/流动性/收益 |
-| T4.7 | Web3 钱包 | `admin/wallet/*`(5 页) | 地址/资产/交易/NFT/安全 |
-| T4.8 | 质押挖矿 | `admin/staking/*`(5 页) | 矿池/记录/收益/推荐/配置 |
-| T4.9 | IDO/Launchpad | `admin/ido/*`(5 页) | 项目/白名单/申购/解锁/发放 |
-| T4.10 | 量化交易 | `admin/quant/*`(5 页) | 策略/回测/跟单/绩效/风控 |
-| T4.11 | 娱乐游戏 | `admin/entertainment/*`(5 页) | 抽奖/盲盒/竞技/奖品/记录 |
-| T4.12 | 电商商城 | `admin/ecommerce/*`(5 页) | 商品/订单/库存/物流/财务 |
-| T4.13 | 国学内容 | `admin/content/*`(5 页) | 动漫/短剧/非遗/审核/NFT |
-| T4.14 | 用户运营 | `admin/users/*`(4 页) | 用户/KYC/等级/邀请 |
-| T4.15 | 财务中心 | `admin/finance/*`(4 页) | 概览/收入/对账/结算 |
-| T4.16 | 系统管理 | `admin/settings/*`(4 页) + `admin/audit-logs/` | 系统/管理员/权限/日志/服务器 |
+| Task  | 模块          | 路径                                           | 重点                          |
+| ----- | ------------- | ---------------------------------------------- | ----------------------------- |
+| T4.1  | Dashboard     | `admin/dashboard/`                             | KPI 卡片数据准确性,图表主题色 |
+| T4.2  | Web3.0        | `admin/web3/*`(3 页)                           | dapp 接入流程、区块链监控指标 |
+| T4.3  | 公链          | `admin/chain/*`(5 页)                          | 节点状态、区块浏览、跨链桥    |
+| T4.4  | CEX           | `admin/cex/*`(7 页)                            | 交易对/订单/行情/风控         |
+| T4.5  | DEX           | `admin/dex/*`(4 页)                            | 流动性池/闪兑/挖矿            |
+| T4.6  | DeFi          | `admin/defi/*`(3 页)                           | 质押/流动性/收益              |
+| T4.7  | Web3 钱包     | `admin/wallet/*`(5 页)                         | 地址/资产/交易/NFT/安全       |
+| T4.8  | 质押挖矿      | `admin/staking/*`(5 页)                        | 矿池/记录/收益/推荐/配置      |
+| T4.9  | IDO/Launchpad | `admin/ido/*`(5 页)                            | 项目/白名单/申购/解锁/发放    |
+| T4.10 | 量化交易      | `admin/quant/*`(5 页)                          | 策略/回测/跟单/绩效/风控      |
+| T4.11 | 娱乐游戏      | `admin/entertainment/*`(5 页)                  | 抽奖/盲盒/竞技/奖品/记录      |
+| T4.12 | 电商商城      | `admin/ecommerce/*`(5 页)                      | 商品/订单/库存/物流/财务      |
+| T4.13 | 国学内容      | `admin/content/*`(5 页)                        | 动漫/短剧/非遗/审核/NFT       |
+| T4.14 | 用户运营      | `admin/users/*`(4 页)                          | 用户/KYC/等级/邀请            |
+| T4.15 | 财务中心      | `admin/finance/*`(4 页)                        | 概览/收入/对账/结算           |
+| T4.16 | 系统管理      | `admin/settings/*`(4 页) + `admin/audit-logs/` | 系统/管理员/权限/日志/服务器  |
 
 **每个 Task 的标准步骤**:
+
 1. `npx tsc --noEmit` 确保无 TS 错误
 2. 浏览器逐个打开页面,检查 mock 数据是否合理
 3. 检查表单/按钮/Modal 是否可用
@@ -1029,14 +1158,17 @@ npx tsc --noEmit
 # Phase 5: 通用组件与表格增强 (3 tasks)
 
 ### T5.1: 通用 CRUD 表格组件
+
 - Files: `apps/admin-web-legacy/src/components/admin/CrudTable.tsx`
 - 功能:封装 Antd Table + 查询/分页/批量操作/导出
 
 ### T5.2: 通用搜索筛选条
+
 - Files: `apps/admin-web-legacy/src/components/admin/FilterBar.tsx`
 - 功能:关键字 + 状态 + 时间范围 + 高级筛选
 
 ### T5.3: 通用详情 Drawer
+
 - Files: `apps/admin-web-legacy/src/components/admin/DetailDrawer.tsx`
 - 功能:右侧滑出,显示详情 + 操作按钮
 
@@ -1045,6 +1177,7 @@ npx tsc --noEmit
 # Phase 6: 通用 CRUD 模式与导出 (1 task)
 
 ### T6.1: 统一 Mock API 与 Excel/CSV 导出
+
 - Files: `apps/admin-web-legacy/src/services/api.ts` + `src/lib/excel.ts`
 - 功能:所有 admin 页面统一从 `*Api` 拉数据;统一导出函数
 
@@ -1053,11 +1186,13 @@ npx tsc --noEmit
 # Phase 7: 集成验证 + 跨项目 E2E (2 tasks)
 
 ### T7.1: 跨项目鉴权 + 路由跳转 E2E
+
 - 验证:H5 端登录 → admin-web-legacy 自动登录 → 跳 Dashboard → 切换页面正常
 - 验证:admin-web-legacy 退出后,H5 端不退出(独立 logout)
 - 验证:H5 端退出后,admin-web-legacy 下次访问会跳登录
 
 ### T7.2: 全量编译 + Lint 验证
+
 ```powershell
 # h5-app
 cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\h5-app"
@@ -1069,6 +1204,7 @@ cd "d:\3、系统项目开发\trae_projects\SMYweb3.020260527\apps\admin-web-leg
 npx tsc --noEmit
 npm run lint
 ```
+
 - 期望:两个项目都 0 error
 
 ---
@@ -1086,6 +1222,7 @@ npm run lint
 5173 和 3002 是**不同源**(不同端口),`localStorage` **不共享**。
 
 **修正方案**:
+
 - 方案 A:把所有 admin 链接改为 `http://localhost:3002/admin/dashboard`,用户在 H5 端登录后,**手动**打开新 tab 到 3002(需要先在 3002 端也登录一次)
 - 方案 B:用 Vite proxy 把 5173 代理到 3002 路径下共享 cookie
 - 方案 C:H5 登录页登录后,**自动新窗口打开 3002 并把 token 通过 URL hash 传过去**
@@ -1098,9 +1235,10 @@ npm run lint
 
 ## 📝 修订记录
 
-| 版本 | 日期 | 变更 |
-|---|---|---|
+| 版本 | 日期       | 变更 |
+| ---- | ---------- | ---- |
 | v0.1 | 2026-06-07 | 初稿 |
 
 ---
-*维护者:AI Dev Team | 项目:SMYweb3.020260527 | 关联 H5:H5 in `apps/h5-app/`*
+
+_维护者:AI Dev Team | 项目:SMYweb3.020260527 | 关联 H5:H5 in `apps/h5-app/`_
