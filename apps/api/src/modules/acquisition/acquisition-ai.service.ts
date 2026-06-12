@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma.service';
 import { LlmProviderFactory } from '../../modules/ai-models/llm/providers/index';
@@ -510,6 +511,7 @@ export class AcquisitionAiService {
   }
 
   /** 从数据库获取活动原始投放数据 */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private async fetchCampaignRawData(
     _campaignId: string,
     _start: string,
@@ -521,18 +523,21 @@ export class AcquisitionAiService {
   }
 
   /** 构建平台对比数据 */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private buildPlatformComparison(_rawData: any[]): PlatformComparisonData[] {
     // TODO: 将原始数据聚合成平台级别汇总
     return [];
   }
 
   /** 计算趋势方向 */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private calculateTrendDirection(_rawData: any[]): 'up' | 'down' | 'stable' {
     // TODO: 对比前后半段数据判断趋势
     return 'stable';
   }
 
   /** LLM生成投放效果分析 */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private async generatePerformanceAnalysisWithLlm(
     _campaignId: string,
     _rawData: any[],
@@ -543,6 +548,7 @@ export class AcquisitionAiService {
   }
 
   /** LLM生成优化建议 */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private async generateRecommendationsWithLlm(
     _campaignId: string,
     _rawData: any[]
