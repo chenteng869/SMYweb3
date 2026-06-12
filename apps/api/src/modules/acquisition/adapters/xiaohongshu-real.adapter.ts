@@ -744,15 +744,15 @@ export class XiaohongshuRealAdapter extends BasePlatformAdapter {
         phone: raw.rcmd_contact?.phone,
         website: raw.link || raw.home_link,
       },
-      businessContact: raw.ad_coop?.accepts_ads
+      businessContact: (raw.ad_coop as { accepts_ads?: boolean })?.accepts_ads
         ? {
             email: raw.rcmd_contact?.email,
             wechatId: raw.rcmd_contact?.wechat,
-            minCooperationFee: raw.ad_coop?.min_price,
+            minCooperationFee: (raw.ad_coop as { min_price?: number })?.min_price,
           }
         : undefined,
-      contentCategories: this.inferContentCategories(userInfo.desc, userInfo.nickname),
-      lastActiveAt: raw.latest_note_time ? new Date(raw.latest_note_time) : undefined,
+      contentCategories: this.inferContentCategories((userInfo.desc as string) || '', (userInfo.nickname as string) || ''),
+      lastActiveAt: raw.latest_note_time ? new Date(String(raw.latest_note_time)) : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
     };
@@ -852,8 +852,9 @@ export class XiaohongshuRealAdapter extends BasePlatformAdapter {
    * @throws 永远抛出异常
    */
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const errorCode = error?.errorCode || error?.code || error?.status;
-    const errorMessage = error?.message || error?.msg || error?.body || String(error);
+    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
+    const errorCode = errRecord?.errorCode || errRecord?.code || errRecord?.status;
+    const errorMessage = (error as Error)?.message || errRecord?.msg || errRecord?.body || String(error);
 
     const knownMessage = errorCode ? XHS_ERROR_CODES[errorCode] : null;
 

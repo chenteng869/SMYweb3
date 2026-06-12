@@ -555,9 +555,9 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
     const accessToken = await this.getValidAccessToken();
 
     const today = new Date();
-    const endDate = options?.end_date || this.formatDate(today);
+    const endDate = String(options?.end_date || this.formatDate(today));
     const startDate =
-      options?.start_date || this.formatDate(new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)); // 默认近 7 天
+      String(options?.start_date || this.formatDate(new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000))); // 默认近 7 天
 
     const params = new URLSearchParams({
       open_id: influencerId,
@@ -570,16 +570,17 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
       `${DouyinRealAdapter.API_BASE_URL}/user/data/?${params.toString()}`
     );
 
-    const data: DouyinUserStatsResponse = await response.json();
+    const data = await response.json();
+    const result = data as DouyinUserStatsResponse;
 
-    if (data.error_code !== 0) {
+    if (result.error_code !== 0) {
       this.handlePlatformError(
-        { errorCode: data.error_code, message: data.description },
+        { errorCode: result.error_code, message: result.description },
         `fetchInfluencerStats(${influencerId})`
       );
     }
 
-    return data;
+    return data as unknown as Record<string, unknown>;
   }
 
   /**
@@ -767,17 +768,17 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
       platformId: originalId,
       displayName: userInfo.nickname || '抖音用户',
       username: userInfo.unique_id || userInfo.short_id,
-      bio: userInfo.signature || '',
+      bio: (userInfo.signature as string) || '',
       followerCount: stats.follower_count ?? 0,
       followingCount: stats.following_count ?? 0,
       postCount: stats.aweme_count ?? 0,
       engagementRate: this.calculateEngagementRate(stats),
-      avatarUrl: userInfo.avatar_thumb?.url_list?.[0] || userInfo.avatar_medium?.url_list?.[0],
+      avatarUrl: (userInfo.avatar_thumb as { url_list?: string[] })?.url_list?.[0] || (userInfo.avatar_medium as { url_list?: string[] })?.url_list?.[0],
       profileUrl: userInfo.unique_id
         ? `https://www.douyin.com/user/${userInfo.unique_id}`
         : undefined,
       lastPostAt: raw.create_time ? new Date(raw.create_time * 1000) : undefined,
-      isVerified: (userInfo.verification_type ?? 0) > 0,
+      isVerified: Number(userInfo.verification_type ?? 0) > 0,
       verificationType: this.getVerificationTypeLabel(userInfo.verification_type),
       location: raw.ip_location || userInfo.country || undefined,
       language: 'zh-CN',
@@ -978,7 +979,7 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
     );
     return {
       user: data.data?.user_info || {},
-      statistics: (stats as any)?.data?.total_data?.[0] || {},
+      statistics: (stats as unknown as DouyinUserStatsResponse)?.data?.total_data?.[0] || {},
     };
   }
 

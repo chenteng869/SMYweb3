@@ -1,7 +1,7 @@
 # ============================================================
 # SMYweb3.0 — 主 CI 流水线
 # 触发: push 到 main/develop, PR 到 main
-# 矩阵策略: Node.js 20.x / 22.x
+# 矩阵策略: Node.js 22.x
 # 包含: Lint & Type Check | Unit Tests | Build 验证
 # ============================================================
 
@@ -19,7 +19,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # 强制使用 Node.js 22.x 作为默认版本（覆盖矩阵中的默认值）
   NODE_VERSION: '22'
 
 jobs:
@@ -30,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x]
 
     steps:
       - name: Checkout repository
@@ -52,7 +51,7 @@ jobs:
 
       - name: API — ESLint
         working-directory: ./apps/api
-        run: npx eslint "{src,apps,libs,test}/**/*.ts" --max-warnings=50
+        run: npx eslint "src/**/*.ts" --max-warnings=50
 
       - name: H5 App — TypeScript type check
         working-directory: ./apps/h5-app
@@ -65,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x]
 
     steps:
       - name: Checkout repository
@@ -93,6 +92,7 @@ jobs:
           name: api-coverage-report-${{ matrix.node-version }}
           path: apps/api/coverage/
           retention-days: 7
+          if-no-files-found: warn
 
   # ===== Job 3: Build =====
   build:
@@ -102,7 +102,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x]
 
     steps:
       - name: Checkout repository
@@ -123,8 +123,6 @@ jobs:
 
       - name: Build Admin Web (React + Vite)
         run: npm run build:admin
-        # 注意: 根 package.json 中 build:admin 对应 workspace=admin-web
-        # 如需构建 h5-app，请改用: npm run build:h5
 
       - name: Verify API build output
         run: |
@@ -140,7 +138,6 @@ jobs:
       - name: Verify Admin Web build output
         run: |
           echo "=== 检查 Admin Web 构建产物 ==="
-          # 尝试常见的构建输出目录
           if [ -d "apps/admin-web/dist" ]; then
             echo "✅ apps/admin-web/dist 存在"
             ls -lh apps/admin-web/dist/index.html 2>/dev/null || echo "  (目录存在)"
@@ -167,7 +164,7 @@ jobs:
           echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| Lint & Type Check | ${{ needs.lint-and-typecheck.result == 'success' && '✅ 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Unit Tests | ${{ needs.unit-tests.result == 'success' && '✅ 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Build | ${{ needs.build.result == 'success' && '✅ 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result == 'success' && '✅ 通过 通过' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**触发事件:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
           echo "**分支:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY

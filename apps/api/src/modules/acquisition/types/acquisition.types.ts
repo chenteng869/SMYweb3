@@ -112,6 +112,9 @@ export interface YoutubeRawData extends RawLeadBase {
     videoCount?: string | number;
     viewCount?: string | number;
   };
+  // 兼容 snake_case API 原始字段 (仅 subscriber/view)
+  subscriber_count?: number;
+  view_count?: number;
   snippet?: {
     title?: string;
     description?: string;

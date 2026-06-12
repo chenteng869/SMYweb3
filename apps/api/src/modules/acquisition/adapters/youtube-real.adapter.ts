@@ -317,7 +317,7 @@ export class YoutubeRealAdapter extends BasePlatformAdapter {
     pag?: PaginationParams
   ): Promise<PaginatedResponse<RawLead>> {
     const ch = await this.fetchSingleChannel(influencerId, {});
-    const playlistId = ch.contentDetails?.relatedPlaylists?.uploads;
+    const playlistId = (ch.contentDetails as { relatedPlaylists?: { uploads?: string } })?.relatedPlaylists?.uploads;
     if (!playlistId)
       return {
         data: [],
@@ -575,26 +575,24 @@ export class YoutubeRealAdapter extends BasePlatformAdapter {
     const endDate = this.formatDate(today);
     const startDate = this.formatDate(new Date(today.getTime() - 28 * 86400000));
     const ids = `channel==${channelId}`;
-    const metrics = (
-      opts?.metrics || 'views,estimatedMinutesWatched,averageViewDuration,subscribersGained'
-    )
-      .split(',')
-      .map((s: string) => s.trim());
-    const dimensions = opts?.dimensions || 'day';
-    const filters = opts?.filters || '';
-    const sort = opts?.sort || '-day';
-    const params = new URLSearchParams({
-      ids,
-      startDate,
-      endDate,
-      metrics: metrics.join(','),
-      dimensions,
-      ...(filters ? { filters } : {}),
-      sort,
-      maxResults: '30',
-      access_token: accessToken,
-    });
-    const res = await fetch(`${YoutubeRealAdapter.API_BASE}/reports?${params.toString()}`);
+    const metricsDefault = 'views,estimatedMinutesWatched,averageViewDuration,subscribersGained';
+    const metricsArr = String(opts?.metrics || metricsDefault).split(',').map((s: string) => s.trim());
+    const dimensionsVal = String(opts?.dimensions || 'day');
+    const filtersVal = String(opts?.filters || '');
+    const sortVal = String(opts?.sort || '-day');
+
+    const searchParams = new URLSearchParams();
+    searchParams.set('ids', ids);
+    searchParams.set('startDate', startDate);
+    searchParams.set('endDate', endDate);
+    searchParams.set('metrics', metricsArr.join(','));
+    searchParams.set('dimensions', dimensionsVal);
+    if (filtersVal) searchParams.set('filters', filtersVal);
+    searchParams.set('sort', sortVal);
+    searchParams.set('maxResults', '30');
+    searchParams.set('access_token', accessToken);
+
+    const res = await fetch(`${YoutubeRealAdapter.API_BASE}/reports?${searchParams.toString()}`);
     const data = await res.json();
     if (data.error) this.handlePlatformError(data.error, `getChannelAnalytics(${channelId})`);
     return data;
