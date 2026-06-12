@@ -529,22 +529,22 @@ export class InstagramAdapter extends BasePlatformAdapter {
     return {
       id: `instagram:${bd.id}`,
       platform: 'instagram' as NormalizedInfluencer['platform'],
-      platformId: bd.id,
-      displayName: bd.name || bd.username || 'Instagram User',
-      username: bd.username,
-      bio: bd.biography || '',
-      followerCount: bd.followers_count ?? 0,
-      followingCount: bd.follows_count ?? 0,
-      postCount: bd.media_count ?? 0,
+      platformId: String(bd.id || ''),
+      displayName: String(bd.name || bd.username || 'Instagram User'),
+      username: String(bd.username || ''),
+      bio: String(bd.biography || ''),
+      followerCount: Number(bd.followers_count ?? 0),
+      followingCount: Number(bd.follows_count ?? 0),
+      postCount: Number(bd.media_count ?? 0),
       engagementRate: this.calculateIgEngagementRate(bd),
-      avatarUrl: bd.profile_picture_url,
+      avatarUrl: String(bd.profile_picture_url || ''),
       profileUrl:
         bd.permalink || (bd.username ? `https://www.instagram.com/${bd.username}/` : undefined),
       isVerified: true, // Business Discovery 仅返回专业/商业账户
       verificationType: 'Instagram Professional Account',
       location: undefined,
       language: undefined,
-      tags: this.extractTags(bd.biography, bd.name),
+      tags: this.extractTags(String(bd.biography || ''), String(bd.name || '')),
       avgEngagement: {
         likes: 0, // 需要逐条媒体聚合计算
         comments: 0,
@@ -552,11 +552,11 @@ export class InstagramAdapter extends BasePlatformAdapter {
         saves: 0,
       },
       contactInfo: {
-        website: bd.website,
+        website: String(bd.website || ''),
       },
-      contentCategories: this.inferCategories(bd.biography, bd.name),
+      contentCategories: this.inferCategories(String(bd.biography || ''), String(bd.name || '')),
       lastActiveAt: raw.last_media_timestamp
-        ? new Date(raw.last_media_timestamp * 1000)
+        ? new Date(Number(raw.last_media_timestamp) * 1000)
         : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
@@ -592,7 +592,7 @@ export class InstagramAdapter extends BasePlatformAdapter {
     }
 
     // 解析 insights 为 engagement 补充数据
-    const insights = raw.insights?.data || {};
+    const insights = (raw.insights as { data?: unknown } | undefined)?.data || {};
     const getMetricValue = (name: string): number => {
       const metric = (insights as Record<string, unknown>)[name] || (Array.isArray(insights) ? (insights as Array<Record<string, unknown>>).find((i) => i.name === name) : undefined);
       return ((metric as Record<string, unknown>)?.values as Array<Record<string, unknown>>)?.[0]?.value as number || 0;
@@ -601,22 +601,22 @@ export class InstagramAdapter extends BasePlatformAdapter {
     return {
       id: `ig_media:${raw.id}`,
       platform: 'instagram',
-      authorId: raw._influencerId || '',
-      contentType: typeMap[raw.media_type] || 'image',
+      authorId: String(raw._influencerId || ''),
+      contentType: typeMap[String(raw.media_type)] || 'image',
       title: undefined,
-      caption: raw.caption,
+      caption: String(raw.caption || ''),
       mediaUrls,
-      thumbnailUrl: raw.thumbnail_url || raw.media_url,
-      publishedAt: new Date(raw.timestamp),
+      thumbnailUrl: String(raw.thumbnail_url || raw.media_url || ''),
+      publishedAt: new Date(String(raw.timestamp)),
       engagement: {
         views: getMetricValue('reach') || getMetricValue('impressions') || 0,
-        likes: raw.like_count || 0,
-        comments: raw.comments_count || 0,
-        shares: getMetricValue('shares') || raw.shares_count || 0,
+        likes: Number(raw.like_count) || 0,
+        comments: Number(raw.comments_count) || 0,
+        shares: getMetricValue('shares') || Number(raw.shares_count) || 0,
         saves: getMetricValue('saves') || 0,
       },
-      tags: this.extractHashtags(raw.caption),
-      url: raw.permalink,
+      tags: this.extractHashtags(String(raw.caption || '')),
+      url: String(raw.permalink || ''),
       rawJson: JSON.stringify(raw),
     };
   }

@@ -766,8 +766,8 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
       id: `douyin:${originalId}`,
       platform: 'douyin' as NormalizedInfluencer['platform'],
       platformId: originalId,
-      displayName: userInfo.nickname || '抖音用户',
-      username: userInfo.unique_id || userInfo.short_id,
+      displayName: String(userInfo.nickname || '抖音用户'),
+      username: String(userInfo.unique_id || userInfo.short_id || ''),
       bio: (userInfo.signature as string) || '',
       followerCount: stats.follower_count ?? 0,
       followingCount: stats.following_count ?? 0,
@@ -777,10 +777,10 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
       profileUrl: userInfo.unique_id
         ? `https://www.douyin.com/user/${userInfo.unique_id}`
         : undefined,
-      lastPostAt: raw.create_time ? new Date(raw.create_time * 1000) : undefined,
+      lastPostAt: raw.create_time ? new Date(Number(raw.create_time) * 1000) : undefined,
       isVerified: Number(userInfo.verification_type ?? 0) > 0,
-      verificationType: this.getVerificationTypeLabel(userInfo.verification_type),
-      location: raw.ip_location || userInfo.country || undefined,
+      verificationType: this.getVerificationTypeLabel(Number(userInfo.verification_type)),
+      location: String(raw.ip_location || userInfo.country || ''),
       language: 'zh-CN',
       tags: this.extractTags(userInfo),
       avgEngagement: {
@@ -792,19 +792,19 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
         saves: 0,
       },
       contactInfo: {
-        email: raw.contact_info?.email,
-        phone: raw.contact_info?.phone,
+        email: (raw.contact_info as { email?: string } | undefined)?.email,
+        phone: (raw.contact_info as { phone?: string } | undefined)?.phone,
         website: raw.link_item?.[0]?.link,
       },
       businessContact: raw.business_contact
         ? {
-            email: raw.business_contact.email,
-            wechatId: raw.business_contact.wechat_id,
-            minCooperationFee: raw.business_contact.min_fee,
+            email: (raw.business_contact as { email?: string }).email,
+            wechatId: (raw.business_contact as { wechat_id?: string }).wechat_id,
+            minCooperationFee: (raw.business_contact as { min_fee?: number }).min_fee,
           }
         : undefined,
-      contentCategories: this.inferContentCategories(userInfo.signature, userInfo.nickname),
-      lastActiveAt: raw.modify_time ? new Date(raw.modify_time * 1000) : undefined,
+      contentCategories: this.inferContentCategories(String(userInfo.signature || ''), String(userInfo.nickname || '')),
+      lastActiveAt: raw.modify_time ? new Date(Number(raw.modify_time) * 1000) : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
     };
@@ -893,8 +893,9 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
    * @throws 永远抛出异常（never 返回类型）
    */
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const errorCode = error?.errorCode || error?.error_code || error?.status;
-    const errorMessage = error?.message || error?.description || error?.body || String(error);
+    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
+    const errorCode = errRecord?.errorCode || errRecord?.error_code || errRecord?.status;
+    const errorMessage = (error as Error)?.message || errRecord?.description || errRecord?.body || String(error);
 
     // 查找已知错误码的人类可读描述
     const knownMessage = errorCode ? DOUYIN_ERROR_CODES[errorCode] : null;
