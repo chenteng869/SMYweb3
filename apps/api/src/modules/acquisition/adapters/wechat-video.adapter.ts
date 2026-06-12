@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import {
   BasePlatformAdapter,
@@ -104,17 +105,6 @@ interface WechatBroadcastStatsResponse {
       goods_pay_amount: number;
     };
   }>;
-}
-
-/**
- * 获取授权方选项值响应
- */
-interface WechatAuthorizerOptionResponse {
-  errcode: number;
-  errmsg: string;
-  authorizer_appid: string;
-  option_name: string;
-  option_value: string;
 }
 
 // ==================== 微信错误码映射表 ====================
@@ -438,7 +428,7 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
    * @param options 可选参数
    * @returns 创作者原始数据数组
    */
-  async fetchInfluencers(query: string, options?: Record<string, any>): Promise<RawLead[]> {
+  async fetchInfluencers(query: string): Promise<RawLead[]> {
     this.logger.log(`[微信视频号] 开始采集创作者数据，查询: ${query}`);
 
     try {
@@ -468,7 +458,10 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
    * @param options 可选参数
    * @returns 统计数据
    */
-  async fetchInfluencerStats(influencerId: string, options?: Record<string, unknown>): Promise<Record<string, unknown>> {
+  async fetchInfluencerStats(
+    influencerId: string,
+    options?: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
     const info = await this.getAuthorizerBasicInfo(influencerId);
 
     // 补充直播数据统计
@@ -554,10 +547,7 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
    * @param pagination 分页参数
    * @returns 分页的弹幕/评论数据
    */
-  async fetchComments(
-    _contentId: string,
-    _pagination?: PaginationParams
-  ): Promise<PaginatedResponse<RawLead>> {
+  async fetchComments(): Promise<PaginatedResponse<RawLead>> {
     // TODO: 微信视频号评论需要通过 WebSocket 实时推送获取
     // 参考文档：https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/livebroadcast/live-comment/getLiveComments.html
     // 当前返回空结果
@@ -596,7 +586,7 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
    */
   normalizeInfluencer(raw: Record<string, unknown>): NormalizedInfluencer {
     const now = new Date();
-    const info = raw.authorizer_info as Record<string, unknown> || raw;
+    const info = (raw.authorizer_info as Record<string, unknown>) || raw;
 
     return {
       id: `wechat_video:${String(raw.authorizer_appid || raw.appid || '')}`,
@@ -611,7 +601,10 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
       engagementRate: undefined,
       avatarUrl: String(info.head_img || ''),
       profileUrl: String(info.qrcode_url || ''),
-      isVerified: !!((info.verify_type_info as { id?: number })?.id && (info.verify_type_info as { id?: number }).id > -1),
+      isVerified: !!(
+        (info.verify_type_info as { id?: number })?.id &&
+        (info.verify_type_info as { id?: number }).id > -1
+      ),
       verificationType: this.getVerifyTypeName(
         (info.verify_type_info as { id?: number })?.id,
         (info.service_type_info as { id?: number })?.id
@@ -622,7 +615,9 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
       avgEngagement: raw.broadcast_avg_data
         ? {
             likes: Number((raw.broadcast_avg_data as Record<string, unknown>).like_count || 0),
-            comments: Number((raw.broadcast_avg_data as Record<string, unknown>).comment_count || 0),
+            comments: Number(
+              (raw.broadcast_avg_data as Record<string, unknown>).comment_count || 0
+            ),
             shares: 0,
             saves: 0,
           }
@@ -630,7 +625,9 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
       contactInfo: {
         website: String(info.qrcode_url || ''),
       },
-      lastActiveAt: raw.last_broadcast_time ? new Date(Number(raw.last_broadcast_time) * 1000) : undefined,
+      lastActiveAt: raw.last_broadcast_time
+        ? new Date(Number(raw.last_broadcast_time) * 1000)
+        : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
     };
@@ -895,7 +892,7 @@ export class WechatVideoAdapter extends BasePlatformAdapter {
    * @param authorizerAppId 授权方 AppID
    * @returns 统计数据
    */
-  private async fetchBroadcastStatistics(_authorizerAppId: string): Promise<any> {
+  private async fetchBroadcastStatistics(): Promise<any> {
     const accessToken = await this.getValidAccessToken();
     const today = new Date();
     const endDate = this.formatDate(today);
