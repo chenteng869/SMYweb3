@@ -28,25 +28,6 @@ interface TiktokTokenResponse {
   };
 }
 
-/** TikTok 影响者信息 */
-interface TiktokInfluencerInfo {
-  advertiser_id: string;
-  user_id: string;
-  nickname: string;
-  avatar_url: string;
-  profile_url: string;
-  bio_description: string;
-  follower_count: number;
-  following_count: number;
-  video_count: number;
-  like_count: number;
-  is_verified: boolean;
-  is_commerce_seller: boolean;
-  region_code: string;
-  language: string;
-  category_tags: Array<{ id: string; name: string }>;
-}
-
 /** TikTok 视频列表项 */
 interface TiktokVideoItem {
   item_id: string;
@@ -69,25 +50,6 @@ interface TiktokVideoItem {
     id: string;
     unique_id: string;
     nickname: string;
-  };
-}
-
-/** TikTok 视频统计数据 */
-interface TiktokVideoStatsResponse {
-  code: number;
-  message?: string;
-  data: {
-    list: Array<{
-      date: string;
-      play_count: number;
-      comment_count: number;
-      digg_count: number;
-      share_count: number;
-      profile_view_count: number;
-      follower_count: number;
-      likes_count: number;
-    }>;
-    page_info: { total_number: number; page_size: number; page_number: number };
   };
 }
 
@@ -430,7 +392,7 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
     }
   }
 
-  async fetchInfluencerStats(influencerId: string, _options?: Record<string, unknown>): Promise<Record<string, unknown>> {
+  async fetchInfluencerStats(influencerId: string): Promise<Record<string, unknown>> {
     const profile = await this.fetchUserProfile(influencerId);
     return profile;
   }
@@ -548,8 +510,9 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
 
   normalizeInfluencer(raw: Record<string, unknown>): NormalizedInfluencer {
     const now = new Date();
-    const ui = raw.user_info as Record<string, unknown> || raw;
-    const oid = (ui.open_id as string) || (ui.user_id as string) || (raw.id as string) || `tt_${Date.now()}`;
+    const ui = (raw.user_info as Record<string, unknown>) || raw;
+    const oid =
+      (ui.open_id as string) || (ui.user_id as string) || (raw.id as string) || `tt_${Date.now()}`;
 
     return {
       id: `tiktok:${oid}`,
@@ -570,15 +533,24 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
       verificationType: ui.is_verified ? 'TikTok Verified Account' : undefined,
       location: String(ui.region || ''),
       language: String(ui.language || ''),
-      tags: this.extractTags(String(ui.bio_description || ''), String(ui.display_name || ''), Array.isArray(ui.category_tags) ? ui.category_tags : []),
+      tags: this.extractTags(
+        String(ui.bio_description || ''),
+        String(ui.display_name || ''),
+        Array.isArray(ui.category_tags) ? ui.category_tags : []
+      ),
       avgEngagement: {
-        likes: ui.likes_count ? Math.floor(Number(ui.likes_count) / Math.max(Number(ui.video_count || 1), 1)) : 0,
+        likes: ui.likes_count
+          ? Math.floor(Number(ui.likes_count) / Math.max(Number(ui.video_count || 1), 1))
+          : 0,
         comments: 0,
         shares: 0,
         saves: 0,
       },
       contactInfo: { website: String(ui.profile_deep_link || '') },
-      contentCategories: this.inferCategories(String(ui.bio_description || ''), String(ui.display_name || '')),
+      contentCategories: this.inferCategories(
+        String(ui.bio_description || ''),
+        String(ui.display_name || '')
+      ),
       lastActiveAt: raw.last_video_time ? new Date(Number(raw.last_video_time) * 1000) : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
@@ -637,7 +609,10 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
   // ==================== 错误处理 ====================
 
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
+    const errRecord =
+      typeof error === 'object' && error && !('message' in error)
+        ? (error as Record<string, unknown>)
+        : null;
     const code = errRecord?.errorCode || errRecord?.code || errRecord?.status;
     const msgStr = (error as Error)?.message || errRecord?.body || String(error);
     const known = code ? TIKTOK_ERROR_CODES[code as number] : null;
@@ -676,7 +651,7 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
   // ==================== 私有辅助方法 ====================
 
   /** 获取用户完整资料 */
-  private async fetchUserProfile(userIdentifier: string, _opts?: any): Promise<any> {
+  private async fetchUserProfile(userIdentifier: string): Promise<any> {
     const accessToken = await this.getValidAccessToken();
     const fields = [
       'open_id',

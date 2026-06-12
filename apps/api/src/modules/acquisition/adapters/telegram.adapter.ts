@@ -98,7 +98,7 @@ export class TelegramAdapter implements PlatformAdapter {
         postCount: isChannelOrGroup ? this.parseNumber(rawAny.message_count) : undefined,
         engagementRate: isChannelOrGroup ? this.calculateTelegramEngagement(raw) : undefined,
         avatarUrl: (rawAny.photo as Record<string, unknown>)?.small_file_id
-          ? `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${((rawAny.photo as Record<string, unknown>).small_file_id as string)}`
+          ? `https://api.telegram.org/file/bot${process.env.TELEGRAM_BOT_TOKEN}/${(rawAny.photo as Record<string, unknown>).small_file_id as string}`
           : undefined,
         profileUrl: rawAny.username
           ? `https://t.me/${String(rawAny.username).replace('@', '')}`
