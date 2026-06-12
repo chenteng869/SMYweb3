@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Logger, Injectable } from '@nestjs/common';
 import { NormalizedLead, RawLead, PlatformCollectOptions } from '../types/acquisition.types';
 

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Query, UseGuards, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { AcquisitionService, CollectResult } from './acquisition.service';
+import { AcquisitionService } from './acquisition.service';
 import {
   CollectDto,
   BatchCollectDto,

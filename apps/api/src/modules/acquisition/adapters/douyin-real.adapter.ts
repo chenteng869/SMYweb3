@@ -9,7 +9,7 @@ import {
   NormalizedContent,
   NormalizedComment,
 } from './base-platform.adapter';
-import { RawLead, NormalizedLead, PlatformCollectOptions } from '../types/acquisition.types';
+import { RawLead } from '../types/acquisition.types';
 
 // ==================== 抖音开放平台 API 类型定义 ====================
 
@@ -139,38 +139,6 @@ interface DouyinCommentItem {
   digg_count: number;
   reply_id?: string;
   replies?: DouyinCommentItem[];
-}
-
-/**
- * 抖音搜索创作者响应
- */
-interface DouyinSearchResponse {
-  error_code: number;
-  description?: string;
-  data: {
-    list: Array<{
-      user: {
-        uid: string;
-        short_id: string;
-        nickname: string;
-        avatar_thumb: {
-          url_list: string[];
-        };
-        signature: string;
-        unique_id: string;
-        verification_type: number;
-      };
-      statistics: {
-        follower_count: number;
-        following_count: number;
-        aweme_count: number;
-        total_favorited: number;
-      };
-    }>;
-    has_more: boolean;
-    cursor: number;
-    total_number: number;
-  };
 }
 
 // ==================== 抖音错误码映射表 ====================

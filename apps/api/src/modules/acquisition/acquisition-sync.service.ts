@@ -5,7 +5,6 @@ import { RedisService } from '../../common/services/redis.service';
 import {
   BasePlatformAdapter,
   NormalizedInfluencer,
-  NormalizedContent,
 } from './adapters/base-platform.adapter';
 
 // ==================== 类型定义 ====================
