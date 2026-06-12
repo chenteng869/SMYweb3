@@ -255,7 +255,7 @@ export class TelegramAdapter implements PlatformAdapter {
    */
   private calculateTelegramEngagement(raw: TelegramRawData): number {
     const members = raw.member_count || 0;
-    const messages = raw.message_count || 0;
+    const messages = raw.messages_count || 0;
 
     if (members === 0) return undefined;
 

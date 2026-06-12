@@ -640,8 +640,9 @@ export class InstagramAdapter extends BasePlatformAdapter {
   // ==================== 错误处理 ====================
 
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const errorCode = error?.errorCode || error?.type || error?.code || error?.status;
-    const errorMessage = error?.message || error?.error_message || error?.body || String(error);
+    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
+    const errorCode = errRecord?.errorCode || errRecord?.type || errRecord?.code || errRecord?.status;
+    const errorMessage = (error as Error)?.message || errRecord?.error_message || errRecord?.body || String(error);
 
     const knownMessage = errorCode ? IG_ERROR_CODES[String(errorCode)] : null;
 
