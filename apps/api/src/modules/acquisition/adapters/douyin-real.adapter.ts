@@ -898,7 +898,7 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
     const errorMessage = (error as Error)?.message || errRecord?.description || errRecord?.body || String(error);
 
     // 查找已知错误码的人类可读描述
-    const knownMessage = errorCode ? DOUYIN_ERROR_CODES[errorCode] : null;
+    const knownMessage = errorCode ? DOUYIN_ERROR_CODES[String(errorCode) as keyof typeof DOUYIN_ERROR_CODES] : null;
 
     // 构建详细的错误信息
     let humanReadableMessage: string;

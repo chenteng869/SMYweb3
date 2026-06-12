@@ -539,7 +539,7 @@ export class InstagramAdapter extends BasePlatformAdapter {
       engagementRate: this.calculateIgEngagementRate(bd),
       avatarUrl: String(bd.profile_picture_url || ''),
       profileUrl:
-        bd.permalink || (bd.username ? `https://www.instagram.com/${bd.username}/` : undefined),
+        String(bd.permalink || '') || (bd.username ? `https://www.instagram.com/${String(bd.username)}/` : undefined),
       isVerified: true, // Business Discovery 仅返回专业/商业账户
       verificationType: 'Instagram Professional Account',
       location: undefined,
