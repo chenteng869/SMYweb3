@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { collectDefaultMetrics, Registry, Counter, Histogram, Gauge, Summary } from 'prom-client';
+import { collectDefaultMetrics, Registry, Counter, Histogram, Gauge } from 'prom-client';
 
 /**
  * Prometheus 指标埋点服务
@@ -114,7 +114,7 @@ export class PrometheusMetricsService implements OnModuleInit {
     this.acquisitionLeadsCollected.inc({ platform });
   }
 
-  recordSyncComplete(platform: string, durationMs: number, count: number): void {
+  recordSyncComplete(platform: string, durationMs: number): void {
     this.acquisitionSyncDurationMs.observe({ platform }, durationMs);
   }
 

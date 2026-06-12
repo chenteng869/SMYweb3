@@ -9,7 +9,7 @@ import {
 } from '../types/rabbitmq.types';
 
 // amqplib 没有提供官方 TypeScript 类型定义，使用 unknown 并在调用时进行类型断言
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-var-requires
 const amqp: any = require('amqplib');
 
 /** ConsumeMessage 简化类型 */

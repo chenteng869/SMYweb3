@@ -25,7 +25,6 @@ export class LoggingInterceptor implements NestInterceptor {
 
     // 基础请求信息
     const { method, originalUrl, ip, headers } = req;
-    const userAgent = headers['user-agent'] || '';
     const contentType = headers['content-type'] || '';
 
     // 脱敏后的请求体

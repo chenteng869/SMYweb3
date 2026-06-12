@@ -2,7 +2,6 @@ import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
 import {
-  CopyObjectOptions,
   MinIOConfig,
   MinIOHealthStatus,
   ObjectListItem,

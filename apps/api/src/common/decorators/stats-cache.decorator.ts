@@ -1,6 +1,6 @@
 import { Injectable, Logger, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 import crypto from 'crypto';
 import { RedisService } from '../services/redis.service';
