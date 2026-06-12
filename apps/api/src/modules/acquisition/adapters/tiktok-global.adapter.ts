@@ -362,7 +362,7 @@ export class TiktokGlobalAdapter extends BasePlatformAdapter {
       const isOpenId = /^[a-f0-9]{32}$/i.test(query.trim());
 
       if (isHandle || isOpenId) {
-        const profile = await this.fetchUserProfile(query.trim(), options);
+        const profile = await this.fetchUserProfile(query.trim());
         return [profile];
       }
 
