@@ -45,10 +45,6 @@ interface IgMediaObject {
   children?: { data: Array<{ id: string; media_type: string; media_url: string }> };
 }
 
-interface IgMediaInsightsResponse {
-  data: Array<{ name: string; period: string; values: Array<{ value: unknown }> }>;
-}
-
 interface IgCommentObject {
   id: string;
   text: string;
@@ -340,7 +336,7 @@ export class InstagramAdapter extends BasePlatformAdapter {
     }
   }
 
-  async fetchInfluencerStats(influencerId: string, _options?: Record<string, unknown>): Promise<Record<string, unknown>> {
+  async fetchInfluencerStats(influencerId: string): Promise<Record<string, unknown>> {
     const accessToken = await this.getValidAccessToken();
     return this.queryBusinessDiscovery(influencerId, accessToken);
   }
@@ -524,7 +520,7 @@ export class InstagramAdapter extends BasePlatformAdapter {
    */
   normalizeInfluencer(raw: Record<string, unknown>): NormalizedInfluencer {
     const now = new Date();
-    const bd = raw.business_discovery as Record<string, unknown> || raw;
+    const bd = (raw.business_discovery as Record<string, unknown>) || raw;
 
     return {
       id: `instagram:${bd.id}`,
@@ -539,7 +535,8 @@ export class InstagramAdapter extends BasePlatformAdapter {
       engagementRate: this.calculateIgEngagementRate(bd),
       avatarUrl: String(bd.profile_picture_url || ''),
       profileUrl:
-        String(bd.permalink || '') || (bd.username ? `https://www.instagram.com/${String(bd.username)}/` : undefined),
+        String(bd.permalink || '') ||
+        (bd.username ? `https://www.instagram.com/${String(bd.username)}/` : undefined),
       isVerified: true, // Business Discovery 仅返回专业/商业账户
       verificationType: 'Instagram Professional Account',
       location: undefined,
@@ -586,7 +583,9 @@ export class InstagramAdapter extends BasePlatformAdapter {
     let mediaUrls: string[] = [];
     const childrenData = raw.children as Record<string, unknown> | undefined;
     if (childrenData?.data && Array.isArray(childrenData.data)) {
-      mediaUrls = (childrenData.data as Array<Record<string, unknown>>).map((c) => c.media_url as string).filter(Boolean);
+      mediaUrls = (childrenData.data as Array<Record<string, unknown>>)
+        .map((c) => c.media_url as string)
+        .filter(Boolean);
     } else if (raw.media_url) {
       mediaUrls = [raw.media_url as string];
     }
@@ -594,8 +593,15 @@ export class InstagramAdapter extends BasePlatformAdapter {
     // 解析 insights 为 engagement 补充数据
     const insights = (raw.insights as { data?: unknown } | undefined)?.data || {};
     const getMetricValue = (name: string): number => {
-      const metric = (insights as Record<string, unknown>)[name] || (Array.isArray(insights) ? (insights as Array<Record<string, unknown>>).find((i) => i.name === name) : undefined);
-      return ((metric as Record<string, unknown>)?.values as Array<Record<string, unknown>>)?.[0]?.value as number || 0;
+      const metric =
+        (insights as Record<string, unknown>)[name] ||
+        (Array.isArray(insights)
+          ? (insights as Array<Record<string, unknown>>).find((i) => i.name === name)
+          : undefined);
+      return (
+        (((metric as Record<string, unknown>)?.values as Array<Record<string, unknown>>)?.[0]
+          ?.value as number) || 0
+      );
     };
 
     return {
@@ -626,10 +632,10 @@ export class InstagramAdapter extends BasePlatformAdapter {
     return {
       id: `ig_comment:${raw.id}`,
       contentId: '',
-      authorId: fromData?.id as string || '',
-      authorName: fromData?.username as string || 'Instagram User',
+      authorId: (fromData?.id as string) || '',
+      authorName: (fromData?.username as string) || 'Instagram User',
       authorAvatarUrl: fromData?.profile_picture_url as string | undefined,
-      text: raw.text as string || '',
+      text: (raw.text as string) || '',
       createdAt: new Date(raw.timestamp as string),
       likes: (raw.like_count as number) || 0,
       replyCount: ((raw.replies as Record<string, unknown>)?.data as Array<unknown>)?.length || 0,
@@ -640,9 +646,14 @@ export class InstagramAdapter extends BasePlatformAdapter {
   // ==================== 错误处理 ====================
 
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
-    const errorCode = errRecord?.errorCode || errRecord?.type || errRecord?.code || errRecord?.status;
-    const errorMessage = (error as Error)?.message || errRecord?.error_message || errRecord?.body || String(error);
+    const errRecord =
+      typeof error === 'object' && error && !('message' in error)
+        ? (error as Record<string, unknown>)
+        : null;
+    const errorCode =
+      errRecord?.errorCode || errRecord?.type || errRecord?.code || errRecord?.status;
+    const errorMessage =
+      (error as Error)?.message || errRecord?.error_message || errRecord?.body || String(error);
 
     const knownMessage = errorCode ? IG_ERROR_CODES[String(errorCode)] : null;
 

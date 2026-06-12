@@ -2,10 +2,7 @@ import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/commo
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../../common/prisma.service';
 import { RedisService } from '../../common/services/redis.service';
-import {
-  BasePlatformAdapter,
-  NormalizedInfluencer,
-} from './adapters/base-platform.adapter';
+import { BasePlatformAdapter, NormalizedInfluencer } from './adapters/base-platform.adapter';
 
 // ==================== 类型定义 ====================
 

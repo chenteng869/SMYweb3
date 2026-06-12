@@ -519,13 +519,17 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
    *   - end_date: 统计结束日期（默认今天）
    * @returns 原始统计数据对象
    */
-  async fetchInfluencerStats(influencerId: string, options?: Record<string, unknown>): Promise<Record<string, unknown>> {
+  async fetchInfluencerStats(
+    influencerId: string,
+    options?: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
     const accessToken = await this.getValidAccessToken();
 
     const today = new Date();
     const endDate = String(options?.end_date || this.formatDate(today));
-    const startDate =
-      String(options?.start_date || this.formatDate(new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000))); // 默认近 7 天
+    const startDate = String(
+      options?.start_date || this.formatDate(new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000))
+    ); // 默认近 7 天
 
     const params = new URLSearchParams({
       open_id: influencerId,
@@ -728,7 +732,11 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
     const userInfo = (raw.user as Record<string, unknown>) || raw;
     const stats = (raw.statistics as Record<string, number>) || {};
 
-    const originalId = (userInfo.open_id as string) || (userInfo.uid as string) || (raw.uid as string) || `dy_unknown_${Date.now()}`;
+    const originalId =
+      (userInfo.open_id as string) ||
+      (userInfo.uid as string) ||
+      (raw.uid as string) ||
+      `dy_unknown_${Date.now()}`;
 
     return {
       id: `douyin:${originalId}`,
@@ -741,7 +749,9 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
       followingCount: stats.following_count ?? 0,
       postCount: stats.aweme_count ?? 0,
       engagementRate: this.calculateEngagementRate(stats),
-      avatarUrl: (userInfo.avatar_thumb as { url_list?: string[] })?.url_list?.[0] || (userInfo.avatar_medium as { url_list?: string[] })?.url_list?.[0],
+      avatarUrl:
+        (userInfo.avatar_thumb as { url_list?: string[] })?.url_list?.[0] ||
+        (userInfo.avatar_medium as { url_list?: string[] })?.url_list?.[0],
       profileUrl: userInfo.unique_id
         ? `https://www.douyin.com/user/${userInfo.unique_id}`
         : undefined,
@@ -771,7 +781,10 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
             minCooperationFee: (raw.business_contact as { min_fee?: number }).min_fee,
           }
         : undefined,
-      contentCategories: this.inferContentCategories(String(userInfo.signature || ''), String(userInfo.nickname || '')),
+      contentCategories: this.inferContentCategories(
+        String(userInfo.signature || ''),
+        String(userInfo.nickname || '')
+      ),
       lastActiveAt: raw.modify_time ? new Date(Number(raw.modify_time) * 1000) : undefined,
       rawJson: JSON.stringify(raw),
       collectedAt: now,
@@ -861,13 +874,19 @@ export class DouyinRealAdapter extends BasePlatformAdapter {
    * @throws 永远抛出异常（never 返回类型）
    */
   handlePlatformError(error: Error | Record<string, unknown>, context: string): never {
-    const errRecord = typeof error === 'object' && error && !('message' in error) ? error as Record<string, unknown> : null;
+    const errRecord =
+      typeof error === 'object' && error && !('message' in error)
+        ? (error as Record<string, unknown>)
+        : null;
     const rawErrorCode = errRecord?.errorCode || errRecord?.error_code || errRecord?.status;
     const errorCode: number = Number(rawErrorCode ?? 0);
-    const errorMessage = (error as Error)?.message || errRecord?.description || errRecord?.body || String(error);
+    const errorMessage =
+      (error as Error)?.message || errRecord?.description || errRecord?.body || String(error);
 
     // 查找已知错误码的人类可读描述
-    const knownMessage = errorCode ? DOUYIN_ERROR_CODES[errorCode as keyof typeof DOUYIN_ERROR_CODES] : null;
+    const knownMessage = errorCode
+      ? DOUYIN_ERROR_CODES[errorCode as keyof typeof DOUYIN_ERROR_CODES]
+      : null;
 
     // 构建详细的错误信息
     let humanReadableMessage: string;
